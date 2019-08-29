@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">{{control.title}}</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="control.description">
+    <ion-list-header>
+      Description
+    </ion-list-header>
+    <div padding [innerHtml]="control.description | sanitizeHtml"></div>
+
+    <ion-list-header>
+      Responsible manager
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ control.responsible.name }}</h2>
+        <p>{{ control.responsible.email }}</p>
+      </ion-label>
+
+    </ion-item>
+    <ion-list-header>
+      Responsible employee
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ control.responsibleEmployee.name }}</h2>
+        <p>{{ control.responsibleEmployee.email }}</p>
+      </ion-label>
+
+    </ion-item>
+
+    <ion-list-header>
+      Files
+    </ion-list-header>
+    <ion-item *ngFor="let file of files" (click)="downloadAndOpen(file)">
+      <ion-icon name="document" slot="start"></ion-icon>
+      <ion-label>
+        {{file.name}}
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      Upcoming Audits
+    </ion-list-header>
+
+    <ion-item *ngFor="let audit of upcomingAudits">
+      <ion-label>
+        {{audit.date | date}}
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      Overdue Audits
+    </ion-list-header>
+
+    <ion-item *ngFor="let audit of overdueAudits">
+      <ion-icon color="danger" slot="start" name="close-circle"></ion-icon>
+      <ion-label>
+        {{audit.date | date}}
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header>
+      Completed Audits
+    </ion-list-header>
+
+    <ion-item *ngFor="let audit of completedAudits">
+      <ion-icon color="success" slot="start" name="checkmark-circle"></ion-icon>
+      <ion-label>
+        {{audit.date | date}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

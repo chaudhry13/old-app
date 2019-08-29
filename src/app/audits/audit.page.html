@@ -1,0 +1,34 @@
+<ion-header>
+	<ion-toolbar color="primary" class="ion-color ion-color-primary">
+		<ion-title class="title-ios hydrated">Audits</ion-title>
+	</ion-toolbar>
+
+	<form [formGroup]="controlFilterForm">
+		<ion-toolbar color="primary" class="ion-color ion-color-primary">
+			<ion-searchbar formControlName="search" debounce="500" animated></ion-searchbar>
+		</ion-toolbar>
+
+		<ion-toolbar>
+			<ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
+				okText="Okay">
+				<ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
+				</ion-select-option>
+			</ion-select>
+		</ion-toolbar>
+	</form>
+</ion-header>
+<ion-content>
+	<ion-list>
+		<ion-item *ngFor="let control of controls" routerLink="/tabs/tab1/details/{{control.id}}"
+			routerDirection="forward" routerLinkActive="router-link-active">
+			<ion-label> {{ control.title }}</ion-label>
+
+			<ion-icon color="danger" class="ion-float-right" *ngIf="control.exceeded" name="close-circle"></ion-icon>
+
+			<ion-icon color="success" class="ion-float-right" *ngIf="!control.exceeded" name="checkmark-circle">
+			</ion-icon>
+
+			<ion-icon color="warning" class="ion-float-right" *ngIf="control.followUp" name="alert"></ion-icon>
+		</ion-item>
+	</ion-list>
+</ion-content>

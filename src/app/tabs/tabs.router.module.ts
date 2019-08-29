@@ -1,0 +1,73 @@
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { TabsPage } from "./tabs.page";
+import { AuditDetailsPage } from '../audits/audit-details/audit-details.page';
+
+const routes: Routes = [
+	{
+		path: "tabs",
+		component: TabsPage,
+		children: [
+			{
+				path: "tab1",
+				children: [
+					{
+						path: "",
+						loadChildren: "../audits/audit.module#AuditPageModule"
+					},
+					{
+						path: 'details/:id',
+						loadChildren: '../audits/audit-details/audit-details.module#AuditDetailsPageModule'
+					}
+				]
+			},
+			{
+				path: "tab2",
+				children: [
+					{
+						path: "",
+						loadChildren: "../incident-reports/incident-report.module#IncidentReportPageModule"
+					},
+					{
+						path: 'details/:id/:source',
+						loadChildren: '../incident-reports/incident-report-details/incident-report-details.module#IncidentReportDetailsPageModule'
+					}
+				]
+			},
+			{
+				path: "tab3",
+				children: [
+					{
+						path: "",
+						loadChildren: "../notifications/notification.module#NotificationPageModule"
+					}
+				]
+			},
+			{
+				path: "tab4",
+				children: [
+					{
+						path: "",
+						loadChildren: "../profile/profile.module#ProfilePageModule"
+					}
+				]
+			},
+			{
+				path: "",
+				redirectTo: "/tabs/tab1",
+				pathMatch: "full"
+			}
+		]
+	},
+	{
+		path: "",
+		redirectTo: "/tabs/tab1",
+		pathMatch: "full"
+	}
+];
+
+@NgModule({
+	imports: [RouterModule.forChild(routes)],
+	exports: [RouterModule]
+})
+export class TabsPageRoutingModule { }

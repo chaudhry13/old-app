@@ -1,0 +1,51 @@
+<ion-header>
+	<ion-toolbar color="primary" class="ion-color ion-color-primary">
+		<ion-title class="title-ios hydrated">Incident Reports</ion-title>
+		<ion-buttons slot="primary">
+			<ion-button (click)="filter()">
+				<ion-icon name="funnel"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-virtual-scroll *ngIf="incidentReports" [items]="incidentReports" approxItemHeight="66px">
+		<ion-item *virtualItem="let incidentReport"
+			routerLink="/tabs/tab2/details/{{incidentReport.id}}/{{incidentReport.source}}" routerDirection="forward"
+			routerLinkActive="router-link-active">
+			<ion-avatar slot="start">
+				<img src="{{ incidentReport.icon }}" />
+			</ion-avatar>
+
+			<ion-label>
+				<h2>{{ incidentReport.title }}</h2>
+			</ion-label>
+		</ion-item>
+	</ion-virtual-scroll>
+
+	<ion-list *ngIf="!incidentReports">
+		<ion-item *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
+			<ion-avatar slot="start">
+				<ion-skeleton-text animated></ion-skeleton-text>
+			</ion-avatar>
+			<ion-label>
+				<h3>
+					<ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+				</h3>
+				<p>
+					<ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+				</p>
+				<p>
+					<ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+				</p>
+			</ion-label>
+		</ion-item>
+	</ion-list>
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button>
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>

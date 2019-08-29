@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Incident Report</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="incidentReport">
+  <agm-map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
+    <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
+  </agm-map>
+
+  <ion-card-header>
+    <ion-card-subtitle *ngIf="incidentReport.source == 0">Internal</ion-card-subtitle>
+    <ion-card-subtitle *ngIf="incidentReport.source == 1">External</ion-card-subtitle>
+    <ion-card-title>{{incidentReport.title}}</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    {{incidentReport.description}}
+  </ion-card-content>
+  <ion-card-header *ngIf="incidentReport.source == 1">
+    <ion-card-subtitle>Source</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content *ngIf="incidentReport.source == 1">
+    <img width="200px" src="assets/img/riskline_logo.png">
+  </ion-card-content>
+
+  <ion-card-header *ngIf="files">
+    <ion-card-subtitle>Files</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-item *ngFor="let file of files">
+    <ion-icon name="document" slot="start"></ion-icon>
+    <ion-label>
+      {{file.name}}
+    </ion-label>
+  </ion-item>
+</ion-content>

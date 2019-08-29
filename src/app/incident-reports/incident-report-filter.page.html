@@ -1,0 +1,51 @@
+<ion-header>
+	<ion-toolbar color="primary" class="ion-color ion-color-primary">
+		<ion-title class="title-ios hydrated">Filter</ion-title>
+
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">Close</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<form [formGroup]="filterForm">
+		<ion-list>
+			<ion-item>
+				<ion-label>Divisions</ion-label>
+				<ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
+					okText="Okay" interface="alert">
+					<ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+
+			<ion-item>
+				<ion-label>Internal</ion-label>
+				<ion-toggle slot="end" formControlName="internal" name="internal" checked></ion-toggle>
+			</ion-item>
+			<ion-item>
+				<ion-label>External</ion-label>
+				<ion-toggle slot="end" formControlName="external" name="external" checked></ion-toggle>
+			</ion-item>
+			<ion-item>
+				<ion-label>Start Date</ion-label>
+				<ion-datetime formControlName="startDate" placeholder="Select Date"></ion-datetime>
+			</ion-item>
+
+			<ion-item>
+				<ion-label>End Date</ion-label>
+				<ion-datetime formControlName="endDate" placeholder="Select Date"></ion-datetime>
+			</ion-item>
+
+			<ion-item>
+				<ion-label>Incident Categories</ion-label>
+				<ion-select formControlName="incidentCategoryIds" (ionChange)="incidentCategoryChange()" multiple="true"
+					placeholder="Incident categories.." cancelText="Close" okText="Okay" interface="alert">
+					<ion-select-option *ngFor="let incidentCategory of incidentCategories"
+						value="{{ incidentCategory.id }}">{{ incidentCategory.name }}</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</ion-list>
+	</form>
+</ion-content>

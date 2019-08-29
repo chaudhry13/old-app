@@ -1,0 +1,7 @@
+{
+  "name": "humanrisks-app",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
