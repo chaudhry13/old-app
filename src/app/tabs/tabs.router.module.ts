@@ -31,6 +31,9 @@ const routes: Routes = [
 					{
 						path: 'details/:id/:source',
 						loadChildren: '../incident-reports/incident-report-details/incident-report-details.module#IncidentReportDetailsPageModule'
+					}, {
+						path: 'create',
+						loadChildren: '../incident-reports/incident-report-create/incident-report-create.module#IncidentReportCreatePageModule'
 					}
 				]
 			},

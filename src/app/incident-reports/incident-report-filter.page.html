@@ -40,10 +40,10 @@
 
 			<ion-item>
 				<ion-label>Incident Categories</ion-label>
-				<ion-select formControlName="incidentCategoryIds" (ionChange)="incidentCategoryChange()" multiple="true"
-					placeholder="Incident categories.." cancelText="Close" okText="Okay" interface="alert">
-					<ion-select-option *ngFor="let incidentCategory of incidentCategories"
-						value="{{ incidentCategory.id }}">{{ incidentCategory.name }}</ion-select-option>
+				<ion-select formControlName="incidentCategoryIds" multiple="true" placeholder="Incident categories.."
+					cancelText="Close" okText="Okay" interface="alert">
+					<ion-select-option *ngFor="let incidentCategory of incidentCategories" value="{{ incidentCategory.id }}">
+						{{ incidentCategory.name }}</ion-select-option>
 				</ion-select>
 			</ion-item>
 		</ion-list>

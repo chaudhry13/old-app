@@ -11,4 +11,4 @@ import { IncidentReportFilterPage } from "./incident-report-filter.page";
 	declarations: [IncidentReportPage, IncidentReportFilterPage],
 	entryComponents: [IncidentReportFilterPage]
 })
-export class IncidentReportPageModule {}
+export class IncidentReportPageModule { }

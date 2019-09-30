@@ -18,7 +18,7 @@ import { LoginComponent } from "./login/login.component";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
 import { ControlService } from "./_services/control.service";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormsModule } from "@angular/forms";
 import { TokenInterceptor } from "./_interceptors/auth.interceptor";
 import { DivisionService } from "./_services/division.service";
 import { StorageService } from "./_services/storage.service";
@@ -35,10 +35,11 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { AgmCoreModule } from '@agm/core';
+import { LocationModalPage } from './modals/location-modal.page';
 
 @NgModule({
-	declarations: [AppComponent, CallbackComponent, LoginComponent],
-	entryComponents: [CallbackComponent, LoginComponent],
+	declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
+	entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
@@ -49,7 +50,8 @@ import { AgmCoreModule } from '@agm/core';
 				sendAccessToken: true
 			}
 		}),
-		AppRoutingModule
+		AppRoutingModule,
+		FormsModule
 	],
 	providers: [
 		File,

@@ -3,6 +3,8 @@ import { UserService } from "../_services/user.service";
 import { DivisionService } from "../_services/division.service";
 import { TokenService } from "../_services/token.service";
 import { User } from "../_models/user";
+import { Observable } from 'rxjs';
+import { OAuthErrorEvent, OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
 	selector: "app-profile",
@@ -12,9 +14,10 @@ import { User } from "../_models/user";
 export class ProfilePage implements OnInit {
 	user: User;
 
-	constructor(public userService: UserService, public divisionService: DivisionService, public tokenService: TokenService) {}
+	constructor(public userService: UserService, public divisionService: DivisionService, public tokenService: TokenService, public oAuthService: OAuthService) { }
 
 	ngOnInit() {
+		this.tokenService.readToken(this.oAuthService.getAccessToken());
 		this.user = this.tokenService.getUser();
 	}
 }

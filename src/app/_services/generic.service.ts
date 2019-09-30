@@ -1,5 +1,5 @@
 export class GenericService {
-  public apiBase = "https://humanrisks-core-api.azurewebsites.net/api";
+  public apiBase = "https://localhost:5000/api";
   public authBase = "https://localhost:5001/connect/token";
 
   constructor(extension: string = "") {

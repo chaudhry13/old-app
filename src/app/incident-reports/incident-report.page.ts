@@ -30,8 +30,8 @@ export class IncidentReportPage implements OnInit {
 		this.startDate.setDate(this.startDate.getDay() - 7);
 
 		this.incidentFilterForm = this.formBuilder.group({
-			startDate: [this.startDate],
-			endDate: [new Date()],
+			startDate: [this.startDate.toJSON()],
+			endDate: [new Date().toJSON()],
 			incidentCategoryIds: [""],
 			incidentTypeIds: [""],
 			riskLevels: [""],
@@ -70,14 +70,12 @@ export class IncidentReportPage implements OnInit {
 		const modal = await this.modalController.create({
 			component: IncidentReportFilterPage,
 			componentProps: {
-				'form': this.incidentFilterForm,
-				'test': "test"
+				'form': this.incidentFilterForm
 			}
 		});
 
 		modal.onDidDismiss().then(data => {
 			this.incidentFilterForm = data.data;
-
 			this.list(data.data.value);
 		});
 

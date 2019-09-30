@@ -26,12 +26,14 @@ export class AppComponent {
 		this.platform.ready().then(() => {
 			this.statusBar.styleDefault();
 			this.splashScreen.hide();
+			console.log("App.component: initialize");
 
 			this.configureImplicitFlowAuthentication();
 		});
 	}
 
 	configureImplicitFlowAuthentication() {
+		console.log("App.component: implicitFlowAuth");
 		this.oauthService.configure(authConfig);
 		this.oauthService.setStorage(localStorage);
 

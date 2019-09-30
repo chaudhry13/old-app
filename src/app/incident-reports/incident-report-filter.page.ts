@@ -58,8 +58,8 @@ export class IncidentReportFilterPage implements OnInit {
 		let startDate = this.form.controls.startDate.value;
 		let endDate = this.form.controls.endDate.value;
 
-		this.filterForm.controls.startDate.setValue(startDate.toJSON());
-		this.filterForm.controls.endDate.setValue(endDate.toJSON());
+		this.filterForm.controls.startDate.setValue(startDate);
+		this.filterForm.controls.endDate.setValue(endDate);
 	}
 
 
