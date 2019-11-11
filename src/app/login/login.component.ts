@@ -12,7 +12,7 @@ declare const window: any;
 	templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-	private cordova: boolean = false;
+	private cordova: boolean = true;
 
 	constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device) {
 		oauthService.redirectUri = "http://localhost:8100/callback";
@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
 				}
 			);
 		} else {
+			console.log("login web");
 			this.loginWeb();
 		}
 	}
@@ -62,7 +63,11 @@ export class LoginComponent implements OnInit {
 
 				const browser = this.inAppBrowser.create(oauthUrl, "_blank", "location=no,clearsessioncache=yes,clearcache=yes");
 				console.log("Login.component: Post browser 1");
-				browser.on("loadstart").subscribe(event => {
+
+				browser.on("loaderror").subscribe(error => {
+					console.log(error);
+				})
+				browser.on("loadstop").subscribe(event => {
 					console.log("Login.component: Post browser 2: " + event.url);
 					if (event.url.indexOf("http://localhost:8100/callback") === 0) {
 						browser.on("exit").subscribe(() => { });

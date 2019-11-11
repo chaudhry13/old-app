@@ -15,11 +15,11 @@
 			routerLink="/tabs/tab2/details/{{incidentReport.id}}/{{incidentReport.source}}" routerDirection="forward"
 			routerLinkActive="router-link-active">
 			<ion-avatar slot="start">
-				<img src="{{ incidentReport.icon }}" />
+				<img src="{{ incidentReport.icon }}" (error)="setFallbackIcon(incidentReport)" />
 			</ion-avatar>
 
 			<ion-label>
-				<h2>{{ incidentReport.title }}</h2>
+				<h3>{{ incidentReport.title }}</h3>
 			</ion-label>
 		</ion-item>
 	</ion-virtual-scroll>

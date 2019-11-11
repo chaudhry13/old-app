@@ -19,5 +19,16 @@ export class ProfilePage implements OnInit {
 	ngOnInit() {
 		this.tokenService.readToken(this.oAuthService.getAccessToken());
 		this.user = this.tokenService.getUser();
+
+		this.divisionService.list().then(
+			data => {
+				this.user.divisions = data
+			}
+		);
 	}
+
+	logout() {
+		// Not implemented yet! :-P
+	}
+
 }

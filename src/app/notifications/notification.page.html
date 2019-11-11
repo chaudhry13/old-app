@@ -2,7 +2,7 @@
 	<ion-toolbar color="primary" class="ion-color ion-color-primary">
 		<ion-title class="title-ios hydrated">Notifications</ion-title>
 
-		<ion-buttons slot="primary">
+		<ion-buttons slot="primary" *ngIf="!read">
 			<ion-button (click)="readAllNotifications()">Read all</ion-button>
 		</ion-buttons>
 	</ion-toolbar>

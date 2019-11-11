@@ -42,9 +42,49 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-button expand="full" color="primary" (click)="showLocationModal()">Search address..</ion-button>
+          <ion-button expand="block" color="primary" (click)="showLocationModal()">Search address..</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Date</ion-label>
+        <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="startDate">
+        </ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-textarea rows="3" formControlName="description"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Address</ion-label>
+        <ion-input type="text" value="" formControlName="address"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">City</ion-label>
+        <ion-input type="text" value="" formControlName="city"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Country</ion-label>
+        <ion-input type="text" value="" formControlName="countryId"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Latitude</ion-label>
+        <ion-input type="text" value="{{latitude}}" formControlName="latitude" readonly></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Longitude</ion-label>
+        <ion-input type="text" value="{{longitude}}" formControlName="longitude" readonly></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" color="primary" type="submit" [disabled]="!incidentForm.valid" (click)="submitForm()">
+      Create</ion-button>
   </form>
 </ion-content>

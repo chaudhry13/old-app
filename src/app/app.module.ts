@@ -36,6 +36,8 @@ import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { AgmCoreModule } from '@agm/core';
 import { LocationModalPage } from './modals/location-modal.page';
+import { GeocodingService } from './_services/geocoding.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @NgModule({
 	declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -70,6 +72,8 @@ import { LocationModalPage } from './modals/location-modal.page';
 		StorageService,
 		CountryService,
 		AuditService,
+		GeocodingService,
+		Geolocation,
 		IncidentCategoryService,
 		UserService,
 		IncidentReportService,

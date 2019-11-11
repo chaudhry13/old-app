@@ -23,13 +23,10 @@ export class IncidentReportFilterPage implements OnInit {
 	incidentCategories: IncidentCategory[];
 	incidentTypes: IncidentType[];
 
-	startDate: Date = new Date();
-
 	constructor(private modal: ModalController, public incidentCategoryService: IncidentCategoryService, public divisionService: DivisionService, public formBuilder: FormBuilder) {
-		this.startDate.setDate(this.startDate.getDay() - 14);
 
 		this.filterForm = this.formBuilder.group({
-			startDate: [this.startDate.toJSON()],
+			startDate: [new Date().toJSON()],
 			endDate: [new Date().toJSON()],
 			incidentCategoryIds: [""],
 			riskLevels: [""],

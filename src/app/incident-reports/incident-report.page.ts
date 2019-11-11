@@ -15,7 +15,8 @@ export class IncidentReportPage implements OnInit {
 	public incidentReports: IncidentReport[];
 	public incidentFilterForm: FormGroup;
 
-	public startDate: Date = new Date();
+	public startDate: Date;
+	public endDate: Date;
 
 	public loadingOverlay: any;
 
@@ -27,11 +28,14 @@ export class IncidentReportPage implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.startDate.setDate(this.startDate.getDay() - 7);
+		this.startDate = new Date();
+		this.endDate = new Date();
+		this.startDate.setMonth(this.startDate.getMonth() - 1);
+		this.endDate.setMonth(this.endDate.getMonth() + 1);
 
 		this.incidentFilterForm = this.formBuilder.group({
 			startDate: [this.startDate.toJSON()],
-			endDate: [new Date().toJSON()],
+			endDate: [this.endDate.toJSON()],
 			incidentCategoryIds: [""],
 			incidentTypeIds: [""],
 			riskLevels: [""],
@@ -80,5 +84,9 @@ export class IncidentReportPage implements OnInit {
 		});
 
 		return await modal.present();
+	}
+
+	setFallbackIcon(incidentReport) {
+		incidentReport.icon = '/assets/img/incident-reports/other_i.png';
 	}
 }

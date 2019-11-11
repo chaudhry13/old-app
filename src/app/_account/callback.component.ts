@@ -14,9 +14,10 @@ export class CallbackComponent implements OnInit {
 		private oAuthService: OAuthService,
 		public alertController: AlertController,
 		public tokenService: TokenService
-	) {}
+	) { }
 
 	ngOnInit() {
+		console.log("Callback component");
 		this.oAuthService.tryLogin();
 
 		setTimeout(() => {
@@ -24,8 +25,10 @@ export class CallbackComponent implements OnInit {
 				this.tokenService.readToken(this.oAuthService.getAccessToken());
 
 				this.router.navigate([""]);
+				console.log("navigates to ''");
 			} else {
 				this.router.navigate(["/login"]);
+				console.log("navigates to '/login'");
 			}
 		}, 500);
 	}

@@ -8,8 +8,8 @@
     </ion-buttons>
   </ion-toolbar>
   <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="query" showCancelButton="always" (ionInput)="updateSearch()" (ionCancel)="dismiss()"
-      placeholder="Start typing and select ...">
+    <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ionChange)="updateSearch()"
+      (ionCancel)="dismiss()" placeholder="Start typing and select ...">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>

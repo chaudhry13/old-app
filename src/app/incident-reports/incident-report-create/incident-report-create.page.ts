@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
@@ -8,6 +8,12 @@ import { IncidentCategory } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
 import { ModalController } from '@ionic/angular';
 import { LocationModalPage } from 'src/app/modals/location-modal.page';
+import { GeocodingService } from 'src/app/_services/geocoding.service';
+import { ToastController } from '@ionic/angular';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { IncidentReportService } from 'src/app/_services/incident-report.service';
+import { CountryService } from 'src/app/_services/country.service';
+import { Country } from 'src/app/_models/country';
 
 @Component({
   selector: 'app-incident-report-create',
@@ -18,30 +24,44 @@ import { LocationModalPage } from 'src/app/modals/location-modal.page';
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
   public divisions: Division[];
+  public countries: Country[];
+  public country: Country;
   public incidentCategories: IncidentCategory[];
   public incidentTypes: IncidentType[];
+
+  public locationEnabled: boolean = true;
+  public latitude = null;
+  public longitude = null;
 
   public incidentCategory: IncidentCategory;
 
   public healthAndSafety: boolean;
 
   constructor(public activatedRoute: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
+    private incidentReportService: IncidentReportService,
     public divisionService: DivisionService,
+    public countryService: CountryService,
     public incidentCategoryService: IncidentCategoryService,
-    private modalController: ModalController) {
+    private modalController: ModalController,
+    private geocodeService: GeocodingService,
+    private geolocation: Geolocation,
+    private toastCtrl: ToastController) {
     this.incidentForm = this.formBuilder.group({
+      description: ["", Validators.required],
+      other: [""],
+      nearMiss: [false],
       divisionIds: [null, Validators.required],
-      incidentTypeId: [null, Validators.required],
-      incidentCategoryId: [null, Validators.required],
-      description: [""],
-      latitude: ["", Validators.required],
-      longitude: ["", Validators.required],
       address: [""],
       city: [""],
-      country: [""],
       startDate: [new Date().toISOString(), Validators.required],
-      nearMiss: [false]
+      endDate: [new Date().toISOString(), Validators.required],
+      latitude: ["", Validators.required],
+      longitude: ["", Validators.required],
+      incidentTypeId: [null, Validators.required],
+      incidentCategoryId: [null, Validators.required],
+      countryId: [""],
     });
   }
 
@@ -51,7 +71,12 @@ export class IncidentReportCreatePage implements OnInit {
       this.divisions = divisions;
     });
 
-    // On incident type change
+    // List countries
+    this.countryService.list().subscribe(countries => {
+      this.countries = countries;
+    });
+
+    // On incidentType change
     this.onIncidentTypeChange();
 
     // List incident types
@@ -60,6 +85,8 @@ export class IncidentReportCreatePage implements OnInit {
       this.incidentCategories = data;
       data.forEach(cat => this.incidentTypes = cat.incidentTypes.concat(this.incidentTypes));
     });
+
+    this.onAddressToggleChange();
   }
 
   onIncidentTypeChange() {
@@ -79,10 +106,77 @@ export class IncidentReportCreatePage implements OnInit {
     return this.incidentCategories.find(cat => cat.incidentTypes.includes(incidentType));
   }
 
+  async presentToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 3000
+    });
+    toast.present();
+  }
+
   async showLocationModal(event: any) {
     const modal = await this.modalController.create({
       component: LocationModalPage
     });
-    return await modal.present();
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data != null) {
+      this.geocodeService
+        .geocode(data)
+        .then(data => {
+          var model = this.geocodeService.geocodeResult(data.results);
+
+          this.incidentForm.controls["address"].setValue(model.street + " " + model.street_number);
+          this.incidentForm.controls["city"].setValue(model.city);
+          this.country = this.countries.find(c => c.code == model.country);
+          this.incidentForm.controls["countryId"].setValue(this.country.name);
+          this.incidentForm.controls["latitude"].setValue(model.latitude);
+          this.incidentForm.controls["longitude"].setValue(model.longitude);
+        })
+        .catch(error => {
+          this.presentToast("Your location could not be found!");
+        });
+    }
+  }
+
+  onAddressToggleChange() {
+    if (this.locationEnabled) {
+      this.presentToast("Getting your location...");
+
+      this.geolocation
+        .getCurrentPosition({ enableHighAccuracy: true, timeout: 5000, maximumAge: 0 })
+        .then(position => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+
+          this.geocodeService
+            .reverseGeocode(position.coords.latitude, position.coords.longitude)
+            .then(data => {
+              var model = this.geocodeService.geocodeResult(data.results);
+
+              this.incidentForm.controls["address"].setValue(model.street + " " + model.street_number);
+              this.incidentForm.controls["city"].setValue(model.city);
+              this.country = this.countries.find(c => c.code == model.country);
+              this.incidentForm.controls["countryId"].setValue(this.country.name);
+              this.incidentForm.controls["latitude"].setValue(model.latitude);
+              this.incidentForm.controls["longitude"].setValue(model.longitude);
+            })
+            .catch(error => {
+              this.presentToast("We couldn't find any locations based on your position");
+            });
+        })
+        .catch(error => {
+          this.locationEnabled = false;
+          this.presentToast("Your location could not be found!");
+        });
+    }
+  }
+
+  async submitForm() {
+    if (this.incidentForm.valid) {
+      this.incidentForm.controls["countryId"].setValue(this.country.id);
+      var result = await this.incidentReportService.insert(this.incidentForm.value);
+      this.router.navigate(["/tabs/tab2"]);
+    }
   }
 }

@@ -20,10 +20,9 @@ export class LocationModalPage implements OnInit {
   }
 
   ngOnInit() {
-    this.acService = google.maps.places.AutocompleteService();
+    this.acService = new google.maps.places.AutocompleteService();
     this.autocompleteItems = [];
-    this.autocomplete = {
-    };
+    this.autocomplete = {};
   }
 
   dismiss() {
@@ -35,22 +34,23 @@ export class LocationModalPage implements OnInit {
   }
 
   updateSearch() {
-    if (this.query == '') {
+    if (!this.query || this.query == '') {
       this.autocompleteItems = [];
       return;
     }
-
-    let self = this;
 
     let config = {
       types: ['geocode'],
       input: this.query
     }
 
-    this.acService.getPlacePredictions(config, function (predictions, status) {
-      self.autocompleteItems = [];
-      predictions.forEach(function (prediction) {
-        self.autocompleteItems.push(prediction);
+    this.acService.getPlacePredictions(config, (predictions, status) => {
+      if (status != google.maps.places.PlacesServiceStatus.OK) {
+        return;
+      }
+      this.autocompleteItems = [];
+      predictions.forEach(prediction => {
+        this.autocompleteItems.push(prediction);
       });
     });
   }
