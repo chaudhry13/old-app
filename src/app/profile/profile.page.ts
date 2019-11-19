@@ -22,9 +22,12 @@ export class ProfilePage implements OnInit {
 
 		this.divisionService.list().then(
 			data => {
+				console.log("Divisions List in component");
+				console.log(data);
 				this.user.divisions = data
 			}
 		);
+		console.log("Users divs: " + this.user.divisions);
 	}
 
 	logout() {

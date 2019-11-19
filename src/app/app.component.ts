@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { OAuthService, NullValidationHandler, OAuthErrorEvent } from "angular-oauth2-oidc";
+import { OAuthService, NullValidationHandler, OAuthErrorEvent, JwksValidationHandler } from "angular-oauth2-oidc";
 import { authConfig } from "./_settings/auth.config";
 import { Router } from "@angular/router";
 
@@ -37,7 +37,7 @@ export class AppComponent {
 		this.oauthService.configure(authConfig);
 		this.oauthService.setStorage(localStorage);
 
-		this.oauthService.tokenValidationHandler = new NullValidationHandler();
+		this.oauthService.tokenValidationHandler = new JwksValidationHandler();
 		this.oauthService.loadDiscoveryDocument();
 
 		this.oauthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e) : console.warn(e)));

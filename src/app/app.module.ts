@@ -48,7 +48,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 		IonicModule.forRoot(),
 		OAuthModule.forRoot({
 			resourceServer: {
-				allowedUrls: ["https://humanrisks-core-api.azurewebsites.net/"],
+				allowedUrls: ["https://test1api.humanrisks.com/"],
 				sendAccessToken: true
 			}
 		}),

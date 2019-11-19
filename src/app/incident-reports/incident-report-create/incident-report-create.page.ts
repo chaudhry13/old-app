@@ -149,6 +149,8 @@ export class IncidentReportCreatePage implements OnInit {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
 
+          //console.log("long: " + position.coords.longitude + ", lat: " + position.coords.latitude);
+
           this.geocodeService
             .reverseGeocode(position.coords.latitude, position.coords.longitude)
             .then(data => {
@@ -162,10 +164,12 @@ export class IncidentReportCreatePage implements OnInit {
               this.incidentForm.controls["longitude"].setValue(model.longitude);
             })
             .catch(error => {
+              console.log(error);
               this.presentToast("We couldn't find any locations based on your position");
             });
         })
         .catch(error => {
+          console.log(error);
           this.locationEnabled = false;
           this.presentToast("Your location could not be found!");
         });
@@ -176,7 +180,9 @@ export class IncidentReportCreatePage implements OnInit {
     if (this.incidentForm.valid) {
       this.incidentForm.controls["countryId"].setValue(this.country.id);
       var result = await this.incidentReportService.insert(this.incidentForm.value);
-      this.router.navigate(["/tabs/tab2"]);
+      this.router.navigate(["/tabs/tab2"]).then(() => {
+        this.presentToast("New incident report created!");
+      });
     }
   }
 }

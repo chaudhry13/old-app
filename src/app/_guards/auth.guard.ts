@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, CanLoad, Route, Router } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, Route, Router } from "@angular/router";
 import { OAuthService } from "angular-oauth2-oidc";
 
 @Injectable()
@@ -12,5 +12,6 @@ export class AuthGuard implements CanActivate {
 			this.router.navigate(['/login']);
 		}
 		return hasAccessToken;
+		//return true;
 	}
 }

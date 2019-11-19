@@ -27,11 +27,12 @@ export class LoginComponent implements OnInit {
 					const idToken = success.id_token;
 					const accessToken = success.access_token;
 					const keyValuePair = `#id_token=${encodeURIComponent(idToken)}&access_token=${encodeURIComponent(accessToken)}`;
+					console.log("\n" + "key val pair:" + keyValuePair + "\n");
 					this.oauthService.tryLogin({
 						customHashFragment: keyValuePair,
 						disableOAuth2StateCheck: true
 					});
-
+					
 					this.router.navigate(["/callback"]);
 				},
 				error => {
@@ -67,7 +68,9 @@ export class LoginComponent implements OnInit {
 				browser.on("loaderror").subscribe(error => {
 					console.log(error);
 				})
-				browser.on("loadstop").subscribe(event => {
+				browser.on("loadstart").subscribe(event => {
+					console.log(event)
+					console.log("valid token:" + this.oauthService.hasValidAccessToken());
 					console.log("Login.component: Post browser 2: " + event.url);
 					if (event.url.indexOf("http://localhost:8100/callback") === 0) {
 						browser.on("exit").subscribe(() => { });
@@ -84,10 +87,12 @@ export class LoginComponent implements OnInit {
 						const defaultError = "Problem authenticating with Okta";
 
 						if (parsedResponse["state"] !== state) {
+							console.log("ERRRRRRORRRRR!!!!");
 							reject(defaultError);
 						} else if (parsedResponse["access_token"] !== undefined && parsedResponse["access_token"] !== null) {
 							resolve(parsedResponse);
 						} else {
+							console.log("REJECTED!!!!");
 							reject(defaultError);
 						}
 					}
