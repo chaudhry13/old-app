@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary" class="ion-color ion-color-primary">
-    <ion-title class="title-ios hydrated">{{control.title}}</ion-title>
+    <ion-title *ngIf="control" class="title-ios hydrated">{{control.title}}</ion-title>
 
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -8,8 +8,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-list *ngIf="control.description">
+<ion-content *ngIf="control">
+  <ion-list>
     <ion-list-header>
       Description
     </ion-list-header>
@@ -73,7 +73,7 @@
       Completed Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of completedAudits">
+    <ion-item *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}" routerDirection="forward" routerLinkActive="router-link-active">
       <ion-icon color="success" slot="start" name="checkmark-circle"></ion-icon>
       <ion-label>
         {{audit.date | date}}

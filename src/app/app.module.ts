@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { Camera } from '@ionic-native/camera/ngx';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -38,6 +39,9 @@ import { AgmCoreModule } from '@agm/core';
 import { LocationModalPage } from './modals/location-modal.page';
 import { GeocodingService } from './_services/geocoding.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ToastService } from './_services/toast.service';
+import { MapService } from './_services/maps.service';
+import { CameraService } from './_services/photo.service';
 
 @NgModule({
 	declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -74,6 +78,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 		AuditService,
 		GeocodingService,
 		Geolocation,
+		ToastService,
+		MapService,
+		CameraService,
+		Camera,
 		IncidentCategoryService,
 		UserService,
 		IncidentReportService,

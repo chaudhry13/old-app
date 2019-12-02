@@ -18,6 +18,10 @@ const routes: Routes = [
 					{
 						path: 'details/:id',
 						loadChildren: '../audits/audit-details/audit-details.module#AuditDetailsPageModule'
+					},
+					{
+						path: 'complete/:id',
+						loadChildren: '../audits/audit-complete/audit-complete.module#AuditCompletePageModule'
 					}
 				]
 			},
