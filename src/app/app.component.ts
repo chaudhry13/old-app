@@ -1,10 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, isDevMode } from "@angular/core";
 
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { OAuthService, NullValidationHandler, OAuthErrorEvent, JwksValidationHandler } from "angular-oauth2-oidc";
-import { authConfig } from "./_settings/auth.config";
+import { authConfig, authConfigLocal } from "./_settings/auth.config";
 import { Router } from "@angular/router";
 
 @Component({
@@ -34,7 +34,12 @@ export class AppComponent {
 
 	configureImplicitFlowAuthentication() {
 		console.log("App.component: implicitFlowAuth");
-		this.oauthService.configure(authConfig);
+		if (isDevMode) {
+			this.oauthService.configure(authConfigLocal);
+		} else {
+			this.oauthService.configure(authConfig);
+		}
+		
 		this.oauthService.setStorage(localStorage);
 
 		this.oauthService.tokenValidationHandler = new JwksValidationHandler();
