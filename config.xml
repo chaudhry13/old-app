@@ -2,7 +2,7 @@
 <widget id="com.humanrisks.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Human Risks</name>
     <description>Human Risks ApS</description>
-    <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
+    <author email="info@humanrisks.com" href="https://humanrisks.com/">Human Risks ApS</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
