@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { OAuthService } from "angular-oauth2-oidc";
+import { OAuthService, AuthConfig, OAuthErrorEvent } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { AlertController } from "@ionic/angular";
@@ -12,7 +12,7 @@ declare const window: any;
 	templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-	private cordova: boolean = true;
+	private cordova: boolean = false;
 
 	constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device) {
 		oauthService.redirectUri = "http://localhost:8100/callback";
@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit {
 				}
 			);
 		} else {
-			console.log("login web");
 			this.loginWeb();
 		}
 	}
