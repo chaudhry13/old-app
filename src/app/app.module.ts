@@ -42,53 +42,55 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ToastService } from './_services/toast.service';
 import { MapService } from './_services/maps.service';
 import { CameraService } from './_services/photo.service';
+import { AccountService } from './_services/account.service';
 
 @NgModule({
-	declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
-	entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
-	imports: [
-		BrowserModule,
-		HttpClientModule,
-		IonicModule.forRoot(),
-		OAuthModule.forRoot({
-			resourceServer: {
-				allowedUrls: ["https://test1api.humanrisks.com/"],
-				sendAccessToken: true
-			}
-		}),
-		AppRoutingModule,
-		FormsModule
-	],
-	providers: [
-		File,
-		FileOpener,
-		FileTransfer,
-		DocumentViewer,
-		AuthGuard,
-		StatusBar,
-		SplashScreen,
-		InAppBrowser,
-		Device,
-		FormBuilder,
-		TokenService,
-		ControlService,
-		DivisionService,
-		StorageService,
-		CountryService,
-		AuditService,
-		GeocodingService,
-		Geolocation,
-		ToastService,
-		MapService,
-		CameraService,
-		Camera,
-		IncidentCategoryService,
-		UserService,
-		IncidentReportService,
-		NotificationService,
-		{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-	],
-	bootstrap: [AppComponent]
+  declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
+  entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    IonicModule.forRoot(),
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: ["https://test1api.humanrisks.com/", "https://localhost:5000"],
+        sendAccessToken: true
+      }
+    }),
+    AppRoutingModule,
+    FormsModule
+  ],
+  providers: [
+    AccountService,
+    File,
+    FileOpener,
+    FileTransfer,
+    DocumentViewer,
+    AuthGuard,
+    StatusBar,
+    SplashScreen,
+    InAppBrowser,
+    Device,
+    FormBuilder,
+    TokenService,
+    ControlService,
+    DivisionService,
+    StorageService,
+    CountryService,
+    AuditService,
+    GeocodingService,
+    Geolocation,
+    ToastService,
+    MapService,
+    CameraService,
+    Camera,
+    IncidentCategoryService,
+    UserService,
+    IncidentReportService,
+    NotificationService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
