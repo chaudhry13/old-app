@@ -10,7 +10,7 @@ import { ToastService } from "src/app/_services/toast.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ControlService } from "src/app/_services/control.service";
-//import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer";
+import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer/ngx";
 import { File } from "@ionic-native/file";
 import { TokenService } from 'src/app/_services/token.service';
 import { User } from 'src/app/_models/user';
@@ -70,11 +70,10 @@ export class AuditCompletePage implements OnInit {
     public cameraService: CameraService,
     public toastService: ToastService,
     public geolocation: Geolocation,
-    //public fileTransfer: FileTransfer,
+    public fileTransfer: FileTransfer,
     public accountService: AccountService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
-    this.getAudit();
 
     this.auditForm = this.formBuilder.group({
       id: ["", Validators.required],
@@ -100,6 +99,11 @@ export class AuditCompletePage implements OnInit {
     })
   }
 
+  // When ever the view becomes active
+  ionViewWillEnter() {
+    this.getAudit();
+  }
+
   getAudit() {
     this.auditService.get(this.id).then(
       data => {
@@ -114,49 +118,49 @@ export class AuditCompletePage implements OnInit {
   }
 
 
-  // takePicture() {
-  //   if (this.photos.length === 50) {
-  //     this.toastService.show("You cannot add more than 50 photos");
-  //   } else {
-  //     this.cameraService.camera().then(image => {
-  //       var uri = encodeURI(
-  //         "https://humanrisks-core-api.azurewebsites.net/api" +
-  //         "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id
-  //       );
+  takePicture() {
+    if (this.photos.length === 50) {
+      this.toastService.show("You cannot add more than 50 photos");
+    } else {
+      this.cameraService.camera().then(image => {
+        var uri = encodeURI(
+          "https://humanrisks-core-api.azurewebsites.net/api" +
+          "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id
+        );
 
-  //       const fileTransfer: FileTransferObject = this.fileTransfer;
-  //       const options = this.cameraService.options(image);
+        const fileTransfer: FileTransferObject = this.fileTransfer.create();
+        const options = this.cameraService.options(image);
 
-  //       this.progress();
+        this.progress();
 
-  //       fileTransfer
-  //         .upload(image, uri, options)
-  //         .then(result => {
-  //           let file: Attachment = JSON.parse(result.response);
+        fileTransfer
+          .upload(image, uri, options)
+          .then(result => {
+            let file: Attachment = JSON.parse(result.response);
 
-  //           file.name = options.fileName;
+            file.name = options.fileName;
 
-  //           this.audit.files.push(file);
-  //           this.photos.reverse();
+            this.audit.files.push(file);
+            this.photos.reverse();
 
-  //           this.toastService.show("Photo was uploaded successfully");
+            this.toastService.show("Photo was uploaded successfully");
 
-  //           this.uploadAlert.dismiss();
-  //         })
-  //         .catch(error => {
-  //           this.toastService.show("An error occurred uploading the image");
-  //         });
+            this.uploadAlert.dismiss();
+          })
+          .catch(error => {
+            this.toastService.show("An error occurred uploading the image");
+          });
 
-  //       fileTransfer.onProgress(progress => {
-  //         this.uploadProgress = (progress.loaded / progress.total) * 100;
+        fileTransfer.onProgress(progress => {
+          this.uploadProgress = (progress.loaded / progress.total) * 100;
 
-  //         var percent = Math.round(this.uploadProgress);
+          var percent = Math.round(this.uploadProgress);
 
-  //         this.uploadAlert.subHeader = (percent.toString() + "% uploaded");
-  //       });
-  //     });
-  //   }
-  // }
+          this.uploadAlert.subHeader = (percent.toString() + "% uploaded");
+        });
+      });
+    }
+  }
 
   progress() {
     this.alertCtrl.create({

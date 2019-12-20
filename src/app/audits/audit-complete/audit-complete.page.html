@@ -41,22 +41,22 @@
     </ion-item>
   </ion-list>
 
-  <ion-grid>
+  <ion-grid *ngIf="!audit.completed">
     <ion-row>
-      <ion-col *ngIf="!audit.completed">
+      <ion-col>
         <ion-button color="secondary" expand="block" margin-top (click)="takePicture()">Take photo</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-list>
+  <ion-list *ngIf="!audit.completed">
     <ion-list-header>
       Photos
     </ion-list-header>
     <ion-item *ngFor="let file of audit.files; let id = index">{{ file.name }}
       <ion-icon (click)="removePicture(id, audit.id, file)" name="trash" color="red" item-end></ion-icon>
     </ion-item>
-    <div *ngIf="!audit.completed">
+    <div>
       <ion-button color="primary" expand="block" margin-bottom (click)="updateAudit(true)">Complete</ion-button>
     </div>
   </ion-list>

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { OAuthService, AuthConfig, OAuthErrorEvent } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
-import { AlertController } from "@ionic/angular";
+import { AlertController, Platform } from "@ionic/angular";
 import { Device } from "@ionic-native/device/ngx";
 
 declare const window: any;
@@ -12,9 +12,9 @@ declare const window: any;
   templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-  private cordova: boolean = false;
+  private cordova: boolean = true;
 
-  constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device) {
+  constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device, private platform: Platform) {
     oauthService.redirectUri = "http://localhost:8100/callback";
   }
 
@@ -86,12 +86,10 @@ export class LoginComponent implements OnInit {
             const defaultError = "Problem authenticating with Okta";
 
             if (parsedResponse["state"] !== state) {
-              console.log("ERRRRRRORRRRR!!!!");
               reject(defaultError);
             } else if (parsedResponse["access_token"] !== undefined && parsedResponse["access_token"] !== null) {
               resolve(parsedResponse);
             } else {
-              console.log("REJECTED!!!!");
               reject(defaultError);
             }
           }

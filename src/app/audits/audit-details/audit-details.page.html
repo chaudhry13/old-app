@@ -52,7 +52,8 @@
       Upcoming Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of upcomingAudits">
+    <ion-item *ngFor="let audit of upcomingAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward" routerLinkActive="router-link-active">
       <ion-label>
         {{audit.date | date}}
       </ion-label>
@@ -62,7 +63,8 @@
       Overdue Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of overdueAudits">
+    <ion-item *ngFor="let audit of overdueAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward" routerLinkActive="router-link-active">
       <ion-icon color="danger" slot="start" name="close-circle"></ion-icon>
       <ion-label>
         {{audit.date | date}}
@@ -73,7 +75,8 @@
       Completed Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}" routerDirection="forward" routerLinkActive="router-link-active">
+    <ion-item *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward" routerLinkActive="router-link-active">
       <ion-icon color="success" slot="start" name="checkmark-circle"></ion-icon>
       <ion-label>
         {{audit.date | date}}

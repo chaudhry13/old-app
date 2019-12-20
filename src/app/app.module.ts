@@ -53,7 +53,7 @@ import { AccountService } from './_services/account.service';
     IonicModule.forRoot(),
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ["https://test1api.humanrisks.com/", "https://localhost:5000"],
+        allowedUrls: ["https://test1api.humanrisks.com/"],
         sendAccessToken: true
       }
     }),
