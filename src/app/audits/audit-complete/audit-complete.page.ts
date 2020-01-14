@@ -11,24 +11,24 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ControlService } from "src/app/_services/control.service";
 import { FileTransfer, FileTransferObject } from "@ionic-native/file-transfer/ngx";
-import { File } from "@ionic-native/file";
 import { TokenService } from 'src/app/_services/token.service';
 import { User } from 'src/app/_models/user';
 import { AccountService } from 'src/app/_services/account.service';
 import { Attachment } from 'src/app/_models/file';
-import { Alert } from 'selenium-webdriver';
+import { SettingsService } from 'src/app/_services/settings.service';
+import { StorageService } from 'src/app/_services/storage.service';
 
 @Component({
   selector: "app-audit-complete",
+  styleUrls: ["audit-complete.page.scss"],
   templateUrl: "audit-complete.page.html"
 })
 export class AuditCompletePage implements OnInit {
-  @ViewChild("map") mapRef: ElementRef;
-
   @Input()
   id: string;
 
   audit: Audit = new Audit();
+  files: Attachment[] = new Array();
 
   auditForm: FormGroup;
 
@@ -39,23 +39,6 @@ export class AuditCompletePage implements OnInit {
   uploadAlert: HTMLIonAlertElement;
 
   user: User;
-
-  // id: string;
-  // controlId: string;
-  // title: string;
-  // description: string;
-  // date: string;
-  // remarks?: string;
-  // other?: string;
-  // followUp: boolean;
-  // followUpId: string;
-  // late: boolean;
-  // completed: boolean;
-  // completedAt: Date;
-  // location: boolean;
-  // latitude: number;
-  // longitude: number;
-  // files: Attachment[];
 
   constructor(
     public oauthService: OAuthService,
@@ -71,32 +54,28 @@ export class AuditCompletePage implements OnInit {
     public toastService: ToastService,
     public geolocation: Geolocation,
     public fileTransfer: FileTransfer,
-    public accountService: AccountService
-  ) {
+    public accountService: AccountService,
+    public settingsService: SettingsService,
+    public tokenService: TokenService,
+    public oAuthService: OAuthService,
+    public storageService: StorageService) {
+
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
     this.auditForm = this.formBuilder.group({
       id: ["", Validators.required],
-      description: ["", Validators.required],
       other: [""],
-      nearMiss: [false],
-      divisionIds: [null, Validators.required],
-      address: [""],
-      city: [""],
-      startDate: [new Date().toISOString(), Validators.required],
-      endDate: [new Date().toISOString(), Validators.required],
+      remarks: [""],
+      followUp: [false],
       latitude: ["", Validators.required],
       longitude: ["", Validators.required],
-      incidentTypeId: [null, Validators.required],
-      incidentCategoryId: [null, Validators.required],
-      countryId: [""]
     });
   }
 
   ngOnInit() {
-    this.accountService.get().then(user => {
-      this.user = user;
-    })
+    this.tokenService.readToken(this.oAuthService.getAccessToken());
+    this.user = this.tokenService.getUser();
+    this.getAudit();
   }
 
   // When ever the view becomes active
@@ -108,8 +87,7 @@ export class AuditCompletePage implements OnInit {
     this.auditService.get(this.id).then(
       data => {
         this.audit = data;
-
-        // this.showMap();
+        this.listFiles()
       },
       error => {
         this.toastService.show("An error occurred retrieving the audit..");
@@ -117,6 +95,35 @@ export class AuditCompletePage implements OnInit {
     );
   }
 
+  completeAudit() {
+    console.debug("Trying to complete audit..");
+    // TODO: View should bind to Form instead of this.
+    this.auditForm.controls["id"].setValue(this.audit.id);
+    this.auditForm.controls["other"].setValue(null);
+    this.auditForm.controls["remarks"].setValue(null);
+    this.auditForm.controls["followUp"].setValue(false);
+
+    if (this.audit.followUp) {
+      this.auditForm.controls["other"].setValue(this.audit.other);
+      this.auditForm.controls["remarks"].setValue(this.audit.remarks);
+      this.auditForm.controls["followUp"].setValue(this.audit.followUp);
+    }
+
+    this.auditForm.controls["latitude"].setValue(this.audit.latitude);
+    this.auditForm.controls["longitude"].setValue(this.audit.longitude);
+    this.auditService.complete(this.auditForm).then(
+      data => {
+        console.debug("CompleteAudit: Succuessfully completed the audit");
+        this.toastService.show("Audit completed successfully");
+      }).catch(
+        error => {
+          console.debug("CompleteAudit: An error occured!")
+          console.debug(error.data);
+          this.toastService.show("An error occurred updating the audit");
+        }
+      );
+    this.ngOnInit();
+  }
 
   takePicture() {
     if (this.photos.length === 50) {
@@ -124,41 +131,74 @@ export class AuditCompletePage implements OnInit {
     } else {
       this.cameraService.camera().then(image => {
         var uri = encodeURI(
-          "https://humanrisks-core-api.azurewebsites.net/api" +
-          "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id
+          "https://test1api.humanrisks.com/api/storage" +
+          "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id + "&uid=" + this.user.id
         );
 
         const fileTransfer: FileTransferObject = this.fileTransfer.create();
         const options = this.cameraService.options(image);
+        options.chunkedMode = false;
+        options.params = {};
 
         this.progress();
 
         fileTransfer
           .upload(image, uri, options)
           .then(result => {
-            let file: Attachment = JSON.parse(result.response);
-
-            file.name = options.fileName;
-
-            this.audit.files.push(file);
-            this.photos.reverse();
-
             this.toastService.show("Photo was uploaded successfully");
 
             this.uploadAlert.dismiss();
+            this.listFiles();
           })
           .catch(error => {
+            console.debug(error);
             this.toastService.show("An error occurred uploading the image");
+            this.uploadAlert.dismiss();
           });
 
         fileTransfer.onProgress(progress => {
           this.uploadProgress = (progress.loaded / progress.total) * 100;
-
           var percent = Math.round(this.uploadProgress);
-
           this.uploadAlert.subHeader = (percent.toString() + "% uploaded");
         });
+      }).then(result => {
+        console.log(result);
+      }).catch(error => {
+        console.debug(error);
       });
+    }
+  }
+
+  enableLocation() {
+    console.debug(this.audit.location);
+    if (this.audit.location) {
+      this.toastService.show("Getting your location...");
+
+      this.geolocation
+        .getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        })
+        .then(position => {
+          this.audit.latitude = position.coords.latitude;
+          this.audit.longitude = position.coords.longitude;
+
+          this.toastService.show("Location found!");
+
+          if (this.audit.completed) {
+            //this.updateAudit(false);
+          }
+        })
+        .catch(error => {
+          this.toastService.show("Your location could not be found!");
+
+          this.audit.location = false;
+        });
+    } else {
+      this.audit.location = false;
+
+      //this.updateAudit(true);
     }
   }
 
@@ -168,17 +208,46 @@ export class AuditCompletePage implements OnInit {
       subHeader: this.uploadProgress.toString()
     }).then(alert => {
       this.uploadAlert = alert;
+      this.uploadAlert.present();
     });
-
-    this.uploadAlert.present();
   }
 
-  showMap() {
-    this.mapService.init(
-      this.audit.latitude,
-      this.audit.longitude,
-      this.mapRef,
-      true
-    );
+  async listFiles() {
+    this.storageService.listAudit(this.audit.controlId, this.audit.id).then(files => {
+      this.files = files;
+    });
+  }
+
+  async removePicture(file: Attachment) {
+    const confirm = await this.deleteConfirmationAlert();
+    if (confirm) {
+      console.log("DELETED!!!");
+      this.storageService.deleteAudit(this.audit.controlId, this.audit.id, file.name).then(() => {
+        this.listFiles();
+      });
+    }
+  }
+
+  async deleteConfirmationAlert(): Promise<boolean> {
+    let resolver: (confirm: boolean) => void;
+    const promise = new Promise<boolean>(resolve => {
+      resolver = resolve;
+    });
+    const alert = await this.alertCtrl.create({
+      header: 'Warning!',
+      message: "Are you sure you want to delete this file?",
+      buttons: [
+        {
+          text: 'Delete',
+          handler: () => resolver(true)
+        },
+        {
+          text: 'Cancel',
+          handler: () => resolver(false)
+        }
+      ]
+    });
+    await alert.present();
+    return promise;
   }
 }

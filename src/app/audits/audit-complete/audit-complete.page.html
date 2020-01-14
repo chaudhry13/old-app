@@ -34,10 +34,12 @@
     </ion-item>
     <ion-item>
       <ion-label> Location</ion-label>
-      <ion-toggle [(ngModel)]="audit.location" (ngModelChange)="enableLocation()"></ion-toggle>
+      <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
     </ion-item>
     <ion-item *ngIf="audit.location">
-      <div #map id="map"></div>
+      <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
+        <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
+      </agm-map>
     </ion-item>
   </ion-list>
 
@@ -53,11 +55,17 @@
     <ion-list-header>
       Photos
     </ion-list-header>
-    <ion-item *ngFor="let file of audit.files; let id = index">{{ file.name }}
-      <ion-icon (click)="removePicture(id, audit.id, file)" name="trash" color="red" item-end></ion-icon>
+    <ion-item *ngFor="let file of files; let id = index">
+      <ion-thumbnail slot="start" *ngIf="file">
+        <img src="{{ file.url }}">
+      </ion-thumbnail>
+      <ion-label>
+        {{ file.name }}
+      </ion-label>
+      <ion-icon (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
     </ion-item>
-    <div>
-      <ion-button color="primary" expand="block" margin-bottom (click)="updateAudit(true)">Complete</ion-button>
+    <div *ngIf="!audit.completed">
+      <ion-button color="primary" expand="block" margin-bottom (click)="completeAudit()">Complete</ion-button>
     </div>
   </ion-list>
 </ion-content>

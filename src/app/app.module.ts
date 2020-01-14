@@ -43,6 +43,7 @@ import { ToastService } from './_services/toast.service';
 import { MapService } from './_services/maps.service';
 import { CameraService } from './_services/photo.service';
 import { AccountService } from './_services/account.service';
+import { SettingsService } from './_services/settings.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -76,6 +77,7 @@ import { AccountService } from './_services/account.service';
     ControlService,
     DivisionService,
     StorageService,
+    SettingsService,
     CountryService,
     AuditService,
     GeocodingService,
