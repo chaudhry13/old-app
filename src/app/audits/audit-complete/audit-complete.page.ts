@@ -96,7 +96,6 @@ export class AuditCompletePage implements OnInit {
   }
 
   completeAudit() {
-    console.debug("Trying to complete audit..");
     // TODO: View should bind to Form instead of this.
     this.auditForm.controls["id"].setValue(this.audit.id);
     this.auditForm.controls["other"].setValue(null);
@@ -151,7 +150,6 @@ export class AuditCompletePage implements OnInit {
             this.listFiles();
           })
           .catch(error => {
-            console.debug(error);
             this.toastService.show("An error occurred uploading the image");
             this.uploadAlert.dismiss();
           });
@@ -185,20 +183,13 @@ export class AuditCompletePage implements OnInit {
           this.audit.longitude = position.coords.longitude;
 
           this.toastService.show("Location found!");
-
-          if (this.audit.completed) {
-            //this.updateAudit(false);
-          }
         })
         .catch(error => {
           this.toastService.show("Your location could not be found!");
-
           this.audit.location = false;
         });
     } else {
       this.audit.location = false;
-
-      //this.updateAudit(true);
     }
   }
 

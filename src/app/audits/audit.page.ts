@@ -8,49 +8,49 @@ import { DivisionService } from "../_services/division.service";
 import { NavController } from '@ionic/angular';
 
 @Component({
-	selector: "app-audit-page",
-	templateUrl: "audit.page.html",
-	styleUrls: ["audit.page.scss"]
+  selector: "app-audit-page",
+  templateUrl: "audit.page.html",
+  styleUrls: ["audit.page.scss"]
 })
 export class AuditPage implements OnInit {
-	controls: Control[];
-	divisions: Division[];
+  controls: Control[];
+  divisions: Division[];
 
-	public controlFilterForm: FormGroup;
+  public controlFilterForm: FormGroup;
 
-	constructor(public controlService: ControlService, public navigationService: NavController, public divisionService: DivisionService, public formBuilder: FormBuilder) {
-		this.controlFilterForm = this.formBuilder.group({
-			divisionIds: [""],
-			responsibility: [""],
-			active: [null],
-			search: [""]
-		});
-	}
+  constructor(public controlService: ControlService, public navigationService: NavController, public divisionService: DivisionService, public formBuilder: FormBuilder) {
+    this.controlFilterForm = this.formBuilder.group({
+      divisionIds: [""],
+      responsibility: [""],
+      active: [null],
+      search: [""]
+    });
+  }
 
-	ngOnInit() {
-		this.list();
+  ngOnInit() {
+    this.list();
 
-		this.divisionService.list().then(divisions => {
-			this.divisions = divisions;
-		});
+    this.divisionService.list().then(divisions => {
+      this.divisions = divisions;
+    });
 
-		this.controlFilterForm.valueChanges
-			.pipe(
-				debounceTime(250),
-				distinctUntilChanged()
-			)
-			.subscribe(() => {
-				this.list();
-			});
-	}
+    this.controlFilterForm.valueChanges
+      .pipe(
+        debounceTime(250),
+        distinctUntilChanged()
+      )
+      .subscribe(() => {
+        this.list();
+      });
+  }
 
-	list() {
-		this.controlService.list(this.controlFilterForm.value).then(controls => {
-			this.controls = controls;
-		});
-	}
+  list() {
+    this.controlService.list(this.controlFilterForm.value).then(controls => {
+      this.controls = controls;
+    });
+  }
 
-	navigate(id: string) {
-		this.navigationService.navigateForward('audits/' + id);
-	}
+  navigate(id: string) {
+    this.navigationService.navigateForward('audits/' + id);
+  }
 }

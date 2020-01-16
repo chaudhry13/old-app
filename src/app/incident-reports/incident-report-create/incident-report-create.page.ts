@@ -149,8 +149,6 @@ export class IncidentReportCreatePage implements OnInit {
           this.latitude = position.coords.latitude;
           this.longitude = position.coords.longitude;
 
-          //console.log("long: " + position.coords.longitude + ", lat: " + position.coords.latitude);
-
           this.geocodeService
             .reverseGeocode(position.coords.latitude, position.coords.longitude)
             .then(data => {
