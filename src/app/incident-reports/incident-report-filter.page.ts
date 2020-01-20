@@ -9,58 +9,60 @@ import { IncidentType } from '../_models/incident-type';
 import { IncidentCategoryService } from '../_services/incident-category.service';
 
 @Component({
-	selector: "app-incident-report-filter-page",
-	templateUrl: "incident-report-filter.page.html",
-	styleUrls: ["incident-report-filter.page.scss"]
+  selector: "app-incident-report-filter-page",
+  templateUrl: "incident-report-filter.page.html",
+  styleUrls: ["incident-report-filter.page.scss"]
 })
 export class IncidentReportFilterPage implements OnInit {
-	@Input() form: FormGroup;
+  @Input() form: FormGroup;
 
-	filterForm: FormGroup;
+  filterForm: FormGroup;
 
-	divisions: Division[];
-	countries: Country[];
-	incidentCategories: IncidentCategory[];
-	incidentTypes: IncidentType[];
+  divisions: Division[];
+  countries: Country[];
+  incidentCategories: IncidentCategory[];
+  incidentTypes: IncidentType[];
 
-	constructor(private modal: ModalController, public incidentCategoryService: IncidentCategoryService, public divisionService: DivisionService, public formBuilder: FormBuilder) {
+  constructor(private modal: ModalController, public incidentCategoryService: IncidentCategoryService, public divisionService: DivisionService, public formBuilder: FormBuilder) {
 
-		this.filterForm = this.formBuilder.group({
-			startDate: [new Date().toJSON()],
-			endDate: [new Date().toJSON()],
-			incidentCategoryIds: [""],
-			riskLevels: [""],
-			divisionIds: [""],
-			countryIds: [""],
-			internal: [true],
-			external: [true],
-			southWestLatitude: [0, Validators.required],
-			southWestLongitude: [0, Validators.required],
-			northEastLatitude: [0, Validators.required],
-			northEastLongitude: [0, Validators.required]
-		});
-	}
+    this.filterForm = this.formBuilder.group({
+      startDate: [new Date().toJSON()],
+      endDate: [new Date().toJSON()],
+      incidentCategoryIds: [""],
+      riskLevels: [""],
+      divisionIds: [""],
+      countryIds: [""],
+      internal: [true],
+      external: [true],
+      southWestLatitude: [0, Validators.required],
+      southWestLongitude: [0, Validators.required],
+      northEastLatitude: [0, Validators.required],
+      northEastLongitude: [0, Validators.required]
+    });
+  }
 
-	ngOnInit() {
-		this.divisionService.list().then(divisions => {
-			this.divisions = divisions;
-		});
+  ngOnInit() {
+    this.divisionService.list().then(divisions => {
+      this.divisions = divisions;
+      var divisionIds: string[] = this.divisions.map(x => x.id);
+      this.filterForm.controls.divisionIds.setValue(divisionIds);
+    });
 
-		this.incidentCategoryService.list(true).then(categories => {
-			this.incidentCategories = categories;
-		});
+    this.incidentCategoryService.list(true).then(categories => {
+      this.incidentCategories = categories;
+    });
 
-		this.filterForm = this.form;
+    this.filterForm = this.form;
 
-		let startDate = this.form.controls.startDate.value;
-		let endDate = this.form.controls.endDate.value;
+    let startDate = this.form.controls.startDate.value;
+    let endDate = this.form.controls.endDate.value;
 
-		this.filterForm.controls.startDate.setValue(startDate);
-		this.filterForm.controls.endDate.setValue(endDate);
-	}
+    this.filterForm.controls.startDate.setValue(startDate);
+    this.filterForm.controls.endDate.setValue(endDate);
+  }
 
 
-	dismiss() {
-		this.modal.dismiss(this.filterForm);
-	}
+  dismiss() {
+    this.modal.dismiss(this.filterForm);
+  }
 }
