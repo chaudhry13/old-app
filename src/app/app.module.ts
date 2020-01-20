@@ -45,6 +45,8 @@ import { CameraService } from './_services/photo.service';
 import { AccountService } from './_services/account.service';
 import { SettingsService } from './_services/settings.service';
 
+import { IonicStorageModule } from '@ionic/storage';
+
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
   entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
@@ -58,6 +60,7 @@ import { SettingsService } from './_services/settings.service';
         sendAccessToken: true
       }
     }),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     FormsModule
   ],

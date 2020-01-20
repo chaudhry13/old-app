@@ -12,7 +12,7 @@ declare const window: any;
   templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-  private cordova: boolean = true;
+  private cordova: boolean = false;
 
   constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device, private platform: Platform) {
     oauthService.redirectUri = "http://localhost:8100/callback";
