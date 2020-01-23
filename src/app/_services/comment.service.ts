@@ -3,11 +3,12 @@ import { GenericService } from "./generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Comment, CommentType } from "../_models/comment";
 import { FormGroup } from "@angular/forms";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class CommentService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/comments");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/comments", appConfigService);
   }
 
   async list(id: string, commentType: CommentType): Promise<Comment[]> {

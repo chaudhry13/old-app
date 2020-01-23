@@ -3,11 +3,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { User } from "../_models/user";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class AccountService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/account");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/account", appConfigService);
   }
 
   async get(): Promise<User> {

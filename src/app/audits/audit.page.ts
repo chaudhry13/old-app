@@ -25,6 +25,7 @@ export class AuditPage implements OnInit {
       active: [null],
       search: [""]
     });
+    this.list();
   }
 
   ngOnInit() {
@@ -45,8 +46,10 @@ export class AuditPage implements OnInit {
   }
 
   list() {
+    this.controls = [];
     this.controlService.list(this.controlFilterForm.value).then(controls => {
       this.controls = controls;
+      controls.forEach(c => console.log(c.title));
     });
   }
 

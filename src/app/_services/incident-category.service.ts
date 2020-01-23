@@ -3,11 +3,12 @@ import { HttpClient } from "@angular/common/http";
 import { GenericService } from "./generic.service";
 import { IncidentCategory } from "../_models/incident-category";
 import { FormGroup } from "@angular/forms";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class IncidentCategoryService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/incident-categories");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/incident-categories", appConfigService);
   }
 
   async create(filter: FormGroup): Promise<string> {

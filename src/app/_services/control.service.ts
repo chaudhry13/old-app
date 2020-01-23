@@ -4,11 +4,12 @@ import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Audit } from "../_models/audit";
 import { Control } from "../_models/control";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class ControlService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/controls");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/controls", appConfigService);
   }
 
   async get(id: string): Promise<Control> {
@@ -16,6 +17,7 @@ export class ControlService extends GenericService {
   }
 
   async list(filter: FormGroup): Promise<Control[]> {
+    console.log("Control/List -> " + this.apiBase);
     return this.http.post<Control[]>(this.apiBase + "/list/", filter).toPromise();
   }
 

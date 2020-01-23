@@ -4,9 +4,9 @@ import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { OAuthService, NullValidationHandler, OAuthErrorEvent, JwksValidationHandler, AuthConfig } from "angular-oauth2-oidc";
-import { authConfigDefault } from "./_settings/auth.config";
+import { AppConfig } from "./_settings/auth.config";
 import { Router } from "@angular/router";
-import { Storage } from '@ionic/storage';
+import { AppConfigService } from './_services/auth-config.service';
 
 @Component({
   selector: "app-root",
@@ -18,8 +18,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private oauthService: OAuthService,
-    private router: Router,
-    private storage: Storage
+    private appConfigService: AppConfigService
   ) {
     this.initialize();
   }
@@ -28,6 +27,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.appConfigService.loadAppConfig();
       console.log("App.component: initialize");
 
       this.configureImplicitFlowAuthentication();
@@ -36,36 +36,19 @@ export class AppComponent {
 
   configureImplicitFlowAuthentication() {
     console.log("App.component: implicitFlowAuth");
+    console.log("used in auth config -> clientId: " + this.appConfigService.appConfig.clientId);
+    console.log("used in auth config -> issuer: " + this.appConfigService.appConfig.issuer);
+    console.log("used in auth config -> scope: " + this.appConfigService.appConfig.scope);
+    console.log("used in auth config -> logoutUrl: " + this.appConfigService.appConfig.logoutUrl);
+    console.log("used in auth config -> redirectUri: " + this.appConfigService.appConfig.redirectUri);
+    console.log("used in auth config -> oidc: " + this.appConfigService.appConfig.oidc);
+    this.oauthService.configure(this.appConfigService.appConfig);
 
-    var authConfig = new AuthConfig();
+    console.log("oauth now configured!");
 
-    this.storage.get("client_id").then(ci => {
-      authConfig.clientId = ci;
-    });
-    this.storage.get("iss").then(i => {
-      authConfig.issuer = i;
-    });
-    this.storage.get("scope").then(s => {
-      authConfig.scope = s;
-    });
-    this.storage.get("logout_url").then(l => {
-      authConfig.logoutUrl = l;
-    });
-    this.storage.get("redirect_uri").then(r => {
-      authConfig.redirectUri = r;
-    });
-    this.storage.get("oidc").then(o => {
-      authConfig.oidc = o;
-    });
+    if (this.oauthService.hasValidAccessToken()) {
 
-    console.debug("The issuer: " + authConfig.issuer);
-
-    if (authConfig.issuer) {
-      this.oauthService.configure(authConfig);
-    } else {
-      this.oauthService.configure(authConfigDefault);
     }
-
 
     this.oauthService.setStorage(localStorage);
 
@@ -73,5 +56,6 @@ export class AppComponent {
     this.oauthService.loadDiscoveryDocument();
 
     this.oauthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e) : console.warn(e)));
+
   }
 }

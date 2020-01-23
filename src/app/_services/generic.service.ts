@@ -1,8 +1,19 @@
-export class GenericService {
-  public apiBase = "https://test1api.humanrisks.com/api";
-  public authBase = "https://test1auth.humanrisks.com/connect/token";
+import { AppConfigService } from './auth-config.service';
+import { AuthConfig } from 'angular-oauth2-oidc';
+import { AppConfig } from '../_settings/auth.config';
 
-  constructor(extension: string = "") {
-    this.apiBase = this.apiBase + extension;
+export class GenericService {
+  private extension: String;
+  public appConfigService: AppConfigService;
+  public appConfig: AppConfig = new AppConfig();
+  constructor(_extension: string = "", _appConfigService: AppConfigService) {
+    this.extension = _extension;
+    this.appConfigService = _appConfigService;
+    _appConfigService.loadAppConfig();
+  }
+
+  public get apiBase() {
+    console.log("GenericService -> api_url: " + this.appConfigService.apiBaseUrl + "/api" + this.extension);
+    return this.appConfigService.apiBaseUrl + "/api" + this.extension;
   }
 }

@@ -5,6 +5,10 @@ import { TokenService } from "../_services/token.service";
 import { User } from "../_models/user";
 import { Observable } from 'rxjs';
 import { OAuthErrorEvent, OAuthService } from 'angular-oauth2-oidc';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { AccountService } from '../_services/account.service';
+import { Division } from '../_models/division';
 
 @Component({
   selector: "app-profile",
@@ -12,26 +16,28 @@ import { OAuthErrorEvent, OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ["./profile.page.scss"]
 })
 export class ProfilePage implements OnInit {
-  user: User;
-
-  constructor(public userService: UserService, public divisionService: DivisionService, public tokenService: TokenService, public oAuthService: OAuthService) { }
+  divisions: Division[] = [];
+  user: User = new User();
+  constructor(public userService: UserService, public divisionService: DivisionService, public accountService: AccountService, public oAuthService: OAuthService, private router: Router) { }
 
   ngOnInit() {
-    this.tokenService.readToken(this.oAuthService.getAccessToken());
-    this.user = this.tokenService.getUser();
-
     this.divisionService.list().then(
       data => {
-        console.log("Divisions List in component");
-        console.log(data);
-        this.user.divisions = data
+        this.divisions = data
+        this.divisions.forEach(d => console.log(d.name));
       }
     );
-    console.log("Users divs: " + this.user.divisions);
+
+    this.accountService.get().then(user => {
+      this.user = user;
+    });
   }
 
   logout() {
-    // Not implemented yet! :-P
+    this.oAuthService.logOut(false);
+    localStorage.clear();
+    setTimeout(() => {
+      this.router.navigate(["/login"]);
+    }, 1000);
   }
-
 }

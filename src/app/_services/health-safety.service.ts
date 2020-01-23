@@ -3,11 +3,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { InjuryPart, InjuryType, InjuryLocation, InvolvedPerson } from "../_models/health-safety";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class HealthSafetyService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/health-safety");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/health-safety", appConfigService);
   }
 
   injuryParts(): Promise<InjuryPart[]> {

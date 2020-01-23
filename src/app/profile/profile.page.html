@@ -17,24 +17,21 @@
         <p class="email">{{ user.email }}</p>
         <ion-badge color="secondary">{{ user.role }}</ion-badge>
       </ion-col>
-      <ion-col>
-        Debug: {{user.organization}}
-      </ion-col>
     </ion-row>
   </ion-grid>
 
   <ion-list>
     <ion-list-header>
-      Divisions
+      Divisions ({{divisions.length}})
     </ion-list-header>
     <div></div>
-    <ion-item *ngFor="let division of user.divisions">{{ division.name }}</ion-item>
+    <ion-item *ngFor="let division of divisions">{{ division.name }}</ion-item>
   </ion-list>
 
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-button color="primary" expand="block">Log out</ion-button>
+        <ion-button color="primary" expand="block" (click)="logout()">Log out</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { User } from "../_models/user";
+import { AppConfigService } from './auth-config.service';
 import { Storage } from "@ionic/storage";
 
 @Injectable()
 export class TokenService {
   user: User;
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage, private appConfigService: AppConfigService) { }
 
   public readToken(token: string) {
     const tokens: Array<any> = token.split(".");
@@ -34,16 +35,14 @@ export class TokenService {
     this.user.incidentsArea = tokenPayload.incidentsarea.toLowerCase() == "true" ? true : false;
     this.user.healthSafetyArea = tokenPayload.healthsafetyarea.toLowerCase() == "true" ? true : false;
 
-    // Save auth config
-    this.storage.set("client_id", tokenPayload.client_id);
-    this.storage.set("iss", tokenPayload.iss);
-    this.storage.set("scope", tokenPayload.scope);
-    this.storage.set("logout_url", tokenPayload.iss + "/account/logout");
-    this.storage.set("redirect_uri", "http://localhost:8100/callback");
-    this.storage.set("oidc", false);
+    this.appConfigService.setAppConfig(tokenPayload);
+  }
 
-    // TODO: Api url should be sent in token aswell.
-    //this.storage.set("api_url", )
+  public getTokenPayload(token: string): any {
+    const tokens: Array<any> = token.split(".");
+    const decoded = this.decodeB64(tokens[1]);
+    const tokenPayload: any = JSON.parse(decoded);
+    return tokenPayload;
   }
 
   public getUser(): User {

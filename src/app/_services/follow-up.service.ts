@@ -5,11 +5,12 @@ import { FormGroup } from "@angular/forms";
 import { Audit } from "../_models/audit";
 import { FollowUp } from "../_models/follow-up";
 import { Observable } from "rxjs";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class FollowUpService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/follow-ups");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/follow-ups", appConfigService);
   }
 
   async get(id: string): Promise<FollowUp> {
@@ -60,7 +61,7 @@ export class FollowUpService extends GenericService {
       // this is necessary as link.click() does not work on the latest firefox
       link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
 
-      setTimeout(function() {
+      setTimeout(function () {
         // For Firefox it is necessary to delay revoking the ObjectURL
         window.URL.revokeObjectURL(data);
       }, 100);

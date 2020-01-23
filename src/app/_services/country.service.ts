@@ -3,11 +3,12 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Country } from "../_models/country";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class CountryService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/countries");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/countries", appConfigService);
   }
 
   list(): Observable<Country[]> {

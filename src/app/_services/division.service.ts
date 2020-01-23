@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { GenericService } from "./generic.service";
 import { FormGroup } from "@angular/forms";
 import { OAuthService } from 'angular-oauth2-oidc';
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class DivisionService extends GenericService {
@@ -14,13 +15,13 @@ export class DivisionService extends GenericService {
 
   private subject = new Subject<any>();
 
-  constructor(private http: HttpClient, private oauthService: OAuthService) {
-    super("/divisions");
+  constructor(private http: HttpClient, private oauthService: OAuthService, appConfigService: AppConfigService) {
+    super("/divisions", appConfigService);
 
     this.selected$ = this.subject.asObservable();
   }
 
-  set(divisions: Division[]) {}
+  set(divisions: Division[]) { }
 
   selected(data) {
     this.divisions = data;

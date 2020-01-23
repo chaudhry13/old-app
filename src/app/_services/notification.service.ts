@@ -4,11 +4,12 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { Notification } from "../_models/notification";
+import { AppConfigService } from './auth-config.service';
 
 @Injectable()
 export class NotificationService extends GenericService {
-  constructor(private http: HttpClient) {
-    super("/notifications");
+  constructor(private http: HttpClient, appConfigService: AppConfigService) {
+    super("/notifications", appConfigService);
   }
 
   list(expired: boolean): Promise<Notification[]> {

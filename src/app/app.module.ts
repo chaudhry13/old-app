@@ -46,6 +46,8 @@ import { AccountService } from './_services/account.service';
 import { SettingsService } from './_services/settings.service';
 
 import { IonicStorageModule } from '@ionic/storage';
+import { AppConfigService } from './_services/auth-config.service';
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -66,6 +68,17 @@ import { IonicStorageModule } from '@ionic/storage';
   ],
   providers: [
     AccountService,
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        return () => {
+          //Make sure to return a promise!
+          return appConfigService.loadAppConfig();
+        };
+      }
+    },
     File,
     FileOpener,
     FileTransfer,
@@ -93,6 +106,7 @@ import { IonicStorageModule } from '@ionic/storage';
     UserService,
     IncidentReportService,
     NotificationService,
+    QRScanner,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

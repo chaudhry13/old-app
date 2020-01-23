@@ -9,6 +9,7 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     var hasAccessToken = this.oauthService.hasValidAccessToken();
     if (!hasAccessToken) {
+      console.log("Got redirected to login with authguard");
       this.router.navigate(['/login']);
     }
     return hasAccessToken;
