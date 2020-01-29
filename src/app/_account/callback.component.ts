@@ -21,13 +21,11 @@ export class CallbackComponent implements OnInit {
 
   ngOnInit() {
     this.oAuthService.tryLogin();
-    // this.tokenService.readToken(this.oAuthService.getAccessToken());
 
     if (this.oAuthService.hasValidAccessToken()) {
-      console.log("Callback 1: " + this.appConfigService.apiBaseUrl);
-      console.debug("Access token:");
-      console.debug(this.oAuthService.getAccessToken());
-      this.router.navigate([""]);
+      setTimeout(() => {
+        this.router.navigate([""]);
+      }, 1000);
     } else {
       console.log("Callback sends us back!!!");
       this.router.navigate(["/login"]);

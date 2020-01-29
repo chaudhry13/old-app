@@ -14,17 +14,18 @@ declare const window: any;
   templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-  private cordova: boolean = false;
-
-  constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device, private platform: Platform, private authConfigService: AppConfigService, private tokenService: TokenService) {
+  constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device, private platform: Platform, private appConfigService: AppConfigService, private tokenService: TokenService) {
     oauthService.redirectUri = "http://localhost:8100/callback";
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log("Login init");
+    this.appConfigService.loadAppConfig();
+  }
 
   redirectLogin() {
     if (window.cordova) {
-      var authConfigLogin = this.authConfigService.appConfig;
+      var authConfigLogin = this.appConfigService.appConfig;
       console.log("Before Login -> clientId: " + authConfigLogin.clientId);
       console.log("Before Login -> issuer: " + authConfigLogin.issuer);
       console.log("Before Login -> scope: " + authConfigLogin.scope);
@@ -110,8 +111,8 @@ export class LoginComponent implements OnInit {
         });
         browser.on("exit").subscribe(() => {
           console.log("Login.component: browser exit 2");
-          this.authConfigService.loadAppConfig();
-          var authConfigLogin = this.authConfigService.appConfig;
+          this.appConfigService.loadAppConfig();
+          var authConfigLogin = this.appConfigService.appConfig;
           console.log("browser exit 2 -> clientId: " + authConfigLogin.clientId);
           console.log("browser exit 2 -> issuer: " + authConfigLogin.issuer);
           console.log("browser exit 2 -> scope: " + authConfigLogin.scope);

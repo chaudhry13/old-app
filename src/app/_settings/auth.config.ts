@@ -9,11 +9,11 @@ export class AppConfig extends AuthConfig {
 }
 
 export const authConfigDefault: AppConfig = {
-  issuer: "https://test1auth.humanrisks.com",
+  issuer: "https://auth.humanrisks.com",
   redirectUri: "http://localhost:8100/callback",
-  logoutUrl: "https://test1auth.humanrisks.com/account/logout",
+  logoutUrl: "https://auth.humanrisks.com/account/logout",
   clientId: "ionic",
   oidc: false,
   scope: "api",
-  apiUrl: "https:/test1api.humanrisks.com"
+  apiUrl: "https://humanrisks-core-api.azurewebsites.net"
 };

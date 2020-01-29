@@ -34,13 +34,13 @@ export class AppConfigService {
       console.log("From DB -> apiBaseUrl: " + this.appConfig.apiUrl);
     } else {
       // Default auth configuration
-      this.appConfig.issuer = "https://test1auth.humanrisks.com";
+      this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
       this.appConfig.redirectUri = "http://localhost:8100/callback";
-      this.appConfig.logoutUrl = "https://test1auth.humanrisks.com/account/logout";
+      this.appConfig.logoutUrl = "https://humanrisks-core-auth.azurewebsites.net/account/logout";
       this.appConfig.clientId = "ionic";
       this.appConfig.oidc = false;
       this.appConfig.scope = "api";
-      this.appConfig.apiUrl = "https://test1api.humanrisks.com/"
+      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
       console.log("Default -> clientId: " + this.appConfig.clientId);
       console.log("Default -> issuer: " + this.appConfig.issuer);
       console.log("Default -> scope: " + this.appConfig.scope);
