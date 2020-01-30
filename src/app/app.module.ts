@@ -48,6 +48,9 @@ import { SettingsService } from './_services/settings.service';
 import { IonicStorageModule } from '@ionic/storage';
 import { AppConfigService } from './_services/auth-config.service';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { SanitizeHtmlPipe } from './_settings/sanitazion.pipe';
+import { ApplicationPipesModule } from './_settings/application-pipes.module';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -64,7 +67,8 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
     }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ApplicationPipesModule
   ],
   providers: [
     AccountService,
@@ -74,7 +78,7 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
       deps: [AppConfigService],
       useFactory: (appConfigService: AppConfigService) => {
         return () => {
-          //Make sure to return a promise!
+          // Make sure to return a promise!
           return appConfigService.loadAppConfig();
         };
       }
@@ -88,6 +92,7 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
     SplashScreen,
     InAppBrowser,
     Device,
+    Keyboard,
     FormBuilder,
     TokenService,
     ControlService,
