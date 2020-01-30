@@ -17,6 +17,7 @@ import { AccountService } from 'src/app/_services/account.service';
 import { Attachment } from 'src/app/_models/file';
 import { SettingsService } from 'src/app/_services/settings.service';
 import { StorageService } from 'src/app/_services/storage.service';
+import { AppConfigService } from 'src/app/_services/auth-config.service';
 
 @Component({
   selector: "app-audit-complete",
@@ -40,6 +41,8 @@ export class AuditCompletePage implements OnInit {
 
   user: User;
 
+  showLocation: boolean = false;
+
   constructor(
     public oauthService: OAuthService,
     public router: Router,
@@ -58,7 +61,9 @@ export class AuditCompletePage implements OnInit {
     public settingsService: SettingsService,
     public accoutnService: AccountService,
     public oAuthService: OAuthService,
-    public storageService: StorageService) {
+    public storageService: StorageService,
+    public appConfigService: AppConfigService,
+    public tokenService: TokenService) {
 
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
@@ -73,9 +78,8 @@ export class AuditCompletePage implements OnInit {
   }
 
   ngOnInit() {
-    this.accountService.get().then(user => {
-      this.user = user;
-    });
+    this.tokenService.readToken(this.oauthService.getAccessToken());
+    this.user = this.tokenService.getUser();
     this.getAudit();
   }
 
@@ -84,11 +88,28 @@ export class AuditCompletePage implements OnInit {
     this.getAudit();
   }
 
+  // When leaving the view
+  ionViewWillLeave() {
+    let listaFrames = document.getElementsByTagName("iframe");
+
+    // Need to pause iFrame video when leaving view or sends the app to background
+    for (var index = 0; index < listaFrames.length; index++) {
+      let iframe = listaFrames[index].contentWindow;
+      iframe.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+    }
+  }
+
   getAudit() {
     this.auditService.get(this.id).then(
       data => {
         this.audit = data;
+        if (this.audit.longitude && this.audit.latitude) {
+          this.showLocation = true;
+        }
         this.listFiles()
+        this.controlService.get(this.audit.controlId).then(control => {
+          this.audit.description = control.description;
+        });
       },
       error => {
         this.toastService.show("An error occurred retrieving the audit..");
@@ -108,13 +129,17 @@ export class AuditCompletePage implements OnInit {
       this.auditForm.controls["remarks"].setValue(this.audit.remarks);
       this.auditForm.controls["followUp"].setValue(this.audit.followUp);
     }
+    if (this.audit.longitude && this.audit.latitude) {
+      this.auditForm.controls["latitude"].setValue(this.audit.latitude);
+      this.auditForm.controls["longitude"].setValue(this.audit.longitude);
+    }
 
-    this.auditForm.controls["latitude"].setValue(this.audit.latitude);
-    this.auditForm.controls["longitude"].setValue(this.audit.longitude);
     this.auditService.complete(this.auditForm).then(
       data => {
         console.debug("CompleteAudit: Succuessfully completed the audit");
-        this.toastService.show("Audit completed successfully");
+        this.router.navigate(["/tabs/tab1/details/" + this.audit.controlId]).then(() => {
+          this.toastService.show("Audit completed successfully");
+        });
       }).catch(
         error => {
           console.debug("CompleteAudit: An error occured!")
@@ -122,7 +147,6 @@ export class AuditCompletePage implements OnInit {
           this.toastService.show("An error occurred updating the audit");
         }
       );
-    this.ngOnInit();
   }
 
   takePicture() {
@@ -131,7 +155,7 @@ export class AuditCompletePage implements OnInit {
     } else {
       this.cameraService.camera().then(image => {
         var uri = encodeURI(
-          "https://test1api.humanrisks.com/api/storage" +
+          this.appConfigService.apiBaseUrl + "/api/storage" +
           "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id + "&uid=" + this.user.id
         );
 
@@ -169,7 +193,7 @@ export class AuditCompletePage implements OnInit {
   }
 
   enableLocation() {
-    console.debug(this.audit.location);
+    console.log("Audit location: " + this.audit.location);
     if (this.audit.location) {
       this.toastService.show("Getting your location...");
 
@@ -188,9 +212,13 @@ export class AuditCompletePage implements OnInit {
         .catch(error => {
           this.toastService.show("Your location could not be found!");
           this.audit.location = false;
+          this.audit.latitude = undefined;
+          this.audit.longitude = undefined;
         });
     } else {
       this.audit.location = false;
+      this.audit.latitude = undefined;
+      this.audit.longitude = undefined;
     }
   }
 

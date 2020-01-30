@@ -11,7 +11,7 @@ import { DocumentViewer, DocumentViewerOptions } from '@ionic-native/document-vi
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { AuditService } from 'src/app/_services/audit.service';
 import { Audit } from 'src/app/_models/audit';
-import { audit } from 'rxjs/operators';
+import cronstrue from 'cronstrue';
 
 
 @Component({
@@ -31,14 +31,25 @@ export class AuditDetailsPage implements OnInit {
 
   public files: Attachment[];
 
+  public frequency: string;
+
   constructor(public activatedRoute: ActivatedRoute, private controlService: ControlService, private auditService: AuditService, private storageService: StorageService, private platform: Platform, private file: File, private ft: FileTransfer,
     private fileOpener: FileOpener, private document: DocumentViewer) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
+    this.getAudits();
+  }
+
+  ionViewWillEnter() {
+    this.getAudits();
+  }
+
+  getAudits() {
     this.controlService.get(this.id).then(control => {
       this.control = control;
+      this.frequency = cronstrue.toString(control.frequency);
 
       this.auditService.completed(control.id).then(audits => {
         this.completedAudits = audits;
@@ -55,7 +66,7 @@ export class AuditDetailsPage implements OnInit {
       this.storageService.listControl(control.id).then(files => {
         this.files = files;
       });
-    })
+    });
   }
 
   downloadAndOpen(attachement: Attachment) {
@@ -65,7 +76,7 @@ export class AuditDetailsPage implements OnInit {
 
     const transfer = this.ft.create();
 
-    transfer.download(downloadUrl, path + 'myfile.pdf', true).then(entry => {
+    transfer.download(downloadUrl, path + attachement.name, true).then(entry => {
       let url = entry.toURL();
 
       if (this.platform.is('ios')) {

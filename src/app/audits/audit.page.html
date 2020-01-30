@@ -5,11 +5,12 @@
 
   <form [formGroup]="controlFilterForm">
     <ion-toolbar color="primary" class="ion-color ion-color-primary">
-      <ion-searchbar formControlName="search" debounce="500" animated></ion-searchbar>
+      <ion-searchbar (search)="onSearch()" formControlName="search" debounce="500" animated>
+      </ion-searchbar>
     </ion-toolbar>
 
     <ion-toolbar>
-      <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
+      <ion-select formControlName="divisionIds" multiple="true" placeholder="All Divisions.." cancelText="Close"
         okText="Okay">
         <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
         </ion-select-option>
@@ -18,17 +19,28 @@
   </form>
 </ion-header>
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let control of controls" routerLink="/tabs/tab1/details/{{control.id}}" routerDirection="forward"
-      routerLinkActive="router-link-active">
+  <ion-list *ngIf="controls">
+    <ion-item button *ngFor="let control of controls" routerLink="/tabs/tab1/details/{{control.id}}"
+      routerDirection="forward" routerLinkActive="router-link-active">
       <ion-label> {{ control.title }}</ion-label>
-
-      <ion-icon color="danger" class="ion-float-right" *ngIf="control.exceeded" name="close-circle"></ion-icon>
-
+      <ion-icon color="danger" class="ion-float-right" *ngIf="control.exceeded" name="alert"></ion-icon>
       <ion-icon color="success" class="ion-float-right" *ngIf="!control.exceeded" name="checkmark-circle">
       </ion-icon>
+      <ion-icon color="warning" class="ion-float-right" *ngIf="control.followUp" name="help-circle"></ion-icon>
+    </ion-item>
+  </ion-list>
 
-      <ion-icon color="warning" class="ion-float-right" *ngIf="control.followUp" name="alert"></ion-icon>
+  <ion-list *ngIf="!controls">
+    <ion-item *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
+      <ion-label>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-label>
+      <ion-icon>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-icon>
+      <ion-icon>
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-icon>
     </ion-item>
   </ion-list>
   <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar color="primary" class="ion-color ion-color-primary">
-    <ion-title *ngIf="control" class="title-ios hydrated">{{control.title}}</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title *ngIf="control">{{control.title}}</ion-title>
 
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -13,8 +13,9 @@
     <ion-list-header>
       Description
     </ion-list-header>
-    <div padding [innerHtml]="control.description | sanitizeHtml"></div>
-
+    <div *ngIf="control.description" padding [innerHtml]="control.description | sanitizeHtml">
+    </div>
+    <div *ngIf="!control.description" padding>No description</div>
     <ion-list-header>
       Responsible manager
     </ion-list-header>
@@ -35,7 +36,24 @@
         <h2>{{ control.responsibleEmployee.name }}</h2>
         <p>{{ control.responsibleEmployee.email }}</p>
       </ion-label>
-
+    </ion-item>
+    <ion-list-header>
+      Start date
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="time" slot="start"></ion-icon>
+      <ion-label>
+        {{ control.startDate | date:'MMM dd, yyyy'}}
+      </ion-label>
+    </ion-item>
+    <ion-list-header>
+      Frequency
+    </ion-list-header>
+    <ion-item>
+      <ion-icon name="refresh" slot="start"></ion-icon>
+      <ion-label class="ion-text-wrap">
+        {{ frequency }}
+      </ion-label>
     </ion-item>
 
     <ion-list-header>
@@ -52,35 +70,38 @@
       Upcoming Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of upcomingAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+    <ion-item button *ngFor="let audit of upcomingAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
       routerDirection="forward" routerLinkActive="router-link-active">
       <ion-label>
         {{audit.date | date}}
       </ion-label>
+      <ion-icon name="arrow-forward" end></ion-icon>
     </ion-item>
 
     <ion-list-header>
       Overdue Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of overdueAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+    <ion-item button *ngFor="let audit of overdueAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
       routerDirection="forward" routerLinkActive="router-link-active">
       <ion-icon color="danger" slot="start" name="close-circle"></ion-icon>
       <ion-label>
         {{audit.date | date}}
       </ion-label>
+      <ion-icon name="arrow-forward" end></ion-icon>
     </ion-item>
 
     <ion-list-header>
       Completed Audits
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
+    <ion-item button *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
       routerDirection="forward" routerLinkActive="router-link-active">
       <ion-icon color="success" slot="start" name="checkmark-circle"></ion-icon>
       <ion-label>
         {{audit.date | date}}
       </ion-label>
+      <ion-icon name="arrow-forward" end></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

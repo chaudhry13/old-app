@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary" class="ion-color ion-color-primary">
-    <ion-title *ngIf="audit" class="title-ios hydrated">{{audit.title}}</ion-title>
+    <ion-title *ngIf="audit">{{audit.title}}</ion-title>
 
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -13,59 +13,82 @@
     <ion-list-header>
       Description
     </ion-list-header>
-    <div padding *ngIf="audit.description">{{audit.description}}</div>
-    <div padding *ngIf="!audit.description">No description</div>
-  </ion-list>
-  <ion-list>
+    <div *ngIf="audit.description" padding [innerHtml]="audit.description | sanitizeHtml"></div>
+    <div *ngIf="!audit.description" padding>No description</div>
+    <ion-list-header>Deadline</ion-list-header>
     <ion-item>
-      Deadline
-      <span item-end class="text-right">{{ audit.date }}</span>
+      <ion-label>{{ audit.date | date:'MMM dd, yyyy'}}</ion-label>
     </ion-item>
-    <ion-item>
-      <ion-label> Follow-Up</ion-label>
-      <ion-toggle [(ngModel)]="audit.followUp"></ion-toggle>
-    </ion-item>
-    <ion-item>
-      <ion-textarea [disabled]="!audit.followUp" placeholder="Enter remarks here.." [(ngModel)]="audit.remarks">
-      </ion-textarea>
-    </ion-item>
-    <ion-item>
-      <ion-input placeholder="Enter name.." [(ngModel)]="audit.other"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label> Location</ion-label>
-      <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
-    </ion-item>
-    <ion-item *ngIf="audit.location">
-      <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
-        <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
-      </agm-map>
-    </ion-item>
+    <!-- If audit is not completed -->
+    <div *ngIf="!audit.completed">
+      <ion-item>
+        <ion-label> Follow-Up</ion-label>
+        <ion-toggle [(ngModel)]="audit.followUp"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-textarea [disabled]="!audit.followUp" placeholder="Enter remarks here.." [(ngModel)]="audit.remarks"
+          rows="10">
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Enter name.." [(ngModel)]="audit.other"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label> Location</ion-label>
+        <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="audit.location">
+        <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
+          <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
+        </agm-map>
+      </ion-item>
+    </div>
+    <!-- If audit is completed -->
+    <div *ngIf="audit.completed">
+      <div *ngIf="audit.followUp">
+        <ion-list-header> Follow-Up</ion-list-header>
+        <ion-item>
+          <ion-textarea>
+            {{ audit.remarks }}
+          </ion-textarea>
+        </ion-item>
+      </div>
+      <div *ngIf="audit.other">
+        <ion-list-header>Name</ion-list-header>
+        <ion-item>{{ audit.other }}</ion-item>
+      </div>
+      <div *ngIf="showLocation">
+        <ion-list-header>Location</ion-list-header>
+        <ion-item>
+          <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
+            <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
+          </agm-map>
+        </ion-item>
+      </div>
+    </div>
   </ion-list>
 
   <ion-grid *ngIf="!audit.completed">
     <ion-row>
       <ion-col>
-        <ion-button color="secondary" expand="block" margin-top (click)="takePicture()">Take photo</ion-button>
+        <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">Take photo</ion-button>
+        <ion-button color="primary" expand="block" margin-top (click)="completeAudit()">Complete
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="!audit.completed">
-    <ion-list-header>
-      Photos
-    </ion-list-header>
-    <ion-item *ngFor="let file of files; let id = index">
-      <ion-thumbnail slot="start" *ngIf="file">
-        <img src="{{ file.url }}">
-      </ion-thumbnail>
-      <ion-label>
-        {{ file.name }}
-      </ion-label>
-      <ion-icon (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
-    </ion-item>
-    <div *ngIf="!audit.completed">
-      <ion-button color="primary" expand="block" margin-bottom (click)="completeAudit()">Complete</ion-button>
-    </div>
-  </ion-list>
+  <ion-list-header>
+    Photos
+  </ion-list-header>
+  <ion-item *ngFor="let file of files; let id = index">
+    <ion-thumbnail slot="start" *ngIf="file">
+      <img src="{{ file.url }}">
+    </ion-thumbnail>
+    <ion-label>
+      {{ file.name }}
+    </ion-label>
+    <ion-icon *ngIf="!audit.completed" (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
+  </ion-item>
+
 </ion-content>

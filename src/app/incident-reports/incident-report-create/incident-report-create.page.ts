@@ -76,7 +76,7 @@ export class IncidentReportCreatePage implements OnInit {
       this.countries = countries;
     });
 
-    // On incidentType change
+    // Subscribe on incidentType change
     this.onIncidentTypeChange();
 
     // List incident types
@@ -84,8 +84,12 @@ export class IncidentReportCreatePage implements OnInit {
     this.incidentCategoryService.list(true).then(data => {
       this.incidentCategories = data;
       data.forEach(cat => this.incidentTypes = cat.incidentTypes.concat(this.incidentTypes));
+
+      // Sort incident types
+      this.incidentTypes.sort(this.compareIncidentTypes);
     });
 
+    // Subscribe on address change
     this.onAddressToggleChange();
   }
 
@@ -182,5 +186,14 @@ export class IncidentReportCreatePage implements OnInit {
         this.presentToast("New incident report created!");
       });
     }
+  }
+
+  compareIncidentTypes(a: IncidentType, b: IncidentType) {
+    if (a.name.includes("Other")) {
+      return 1;
+    } else if (b.name.includes("Other")) {
+      return -1;
+    }
+    return (a.name > b.name ? 1 : -1);
   }
 }

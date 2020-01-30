@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Division } from "../_models/division";
 import { DivisionService } from "../_services/division.service";
 import { NavController } from '@ionic/angular';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: "app-audit-page",
@@ -18,7 +19,7 @@ export class AuditPage implements OnInit {
 
   public controlFilterForm: FormGroup;
 
-  constructor(public controlService: ControlService, public navigationService: NavController, public divisionService: DivisionService, public formBuilder: FormBuilder) {
+  constructor(public controlService: ControlService, public navigationService: NavController, public divisionService: DivisionService, public formBuilder: FormBuilder, private keyboard: Keyboard) {
     this.controlFilterForm = this.formBuilder.group({
       divisionIds: [""],
       responsibility: [""],
@@ -26,6 +27,10 @@ export class AuditPage implements OnInit {
       search: [""]
     });
     this.list();
+  }
+
+  onSearch() {
+    this.keyboard.hide();
   }
 
   ngOnInit() {
@@ -46,10 +51,8 @@ export class AuditPage implements OnInit {
   }
 
   list() {
-    this.controls = [];
     this.controlService.list(this.controlFilterForm.value).then(controls => {
       this.controls = controls;
-      controls.forEach(c => console.log(c.title));
     });
   }
 

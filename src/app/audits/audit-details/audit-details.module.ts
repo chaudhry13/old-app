@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { AuditDetailsPage } from './audit-details.page';
 import { SanitizeHtmlPipe } from 'src/app/_settings/sanitazion.pipe';
+import { ApplicationPipesModule } from 'src/app/_settings/application-pipes.module';
 
 const routes: Routes = [
   {
@@ -20,8 +21,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ApplicationPipesModule
   ],
-  declarations: [AuditDetailsPage, SanitizeHtmlPipe]
+  declarations: [AuditDetailsPage]
 })
 export class AuditDetailsPageModule { }

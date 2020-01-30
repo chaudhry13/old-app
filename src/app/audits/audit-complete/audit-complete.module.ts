@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule, Routes } from '@angular/router';
+import { ApplicationPipesModule } from 'src/app/_settings/application-pipes.module';
 
 const routes: Routes = [{
   path: '',
@@ -21,7 +22,8 @@ const routes: Routes = [{
       libraries: ["places"]
     }),
     RouterModule.forChild(routes),
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    ApplicationPipesModule],
   exports: [],
   declarations: [AuditCompletePage],
 })
