@@ -28,23 +28,13 @@ export class AppComponent {
       this.statusBar.styleLightContent()
       this.splashScreen.hide();
       this.appConfigService.loadAppConfig();
-      console.log("App.component: initialize");
 
       this.configureImplicitFlowAuthentication();
     });
   }
 
   configureImplicitFlowAuthentication() {
-    console.log("App.component: implicitFlowAuth");
-    console.log("used in auth config -> clientId: " + this.appConfigService.appConfig.clientId);
-    console.log("used in auth config -> issuer: " + this.appConfigService.appConfig.issuer);
-    console.log("used in auth config -> scope: " + this.appConfigService.appConfig.scope);
-    console.log("used in auth config -> logoutUrl: " + this.appConfigService.appConfig.logoutUrl);
-    console.log("used in auth config -> redirectUri: " + this.appConfigService.appConfig.redirectUri);
-    console.log("used in auth config -> oidc: " + this.appConfigService.appConfig.oidc);
     this.oauthService.configure(this.appConfigService.appConfig);
-
-    console.log("oauth now configured!");
 
     if (this.oauthService.hasValidAccessToken()) {
 

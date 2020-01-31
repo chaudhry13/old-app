@@ -17,7 +17,6 @@ export class ControlService extends GenericService {
   }
 
   async list(filter: FormGroup): Promise<Control[]> {
-    console.log("Control/List -> " + this.apiBase);
     return this.http.post<Control[]>(this.apiBase + "/list/", filter).toPromise();
   }
 

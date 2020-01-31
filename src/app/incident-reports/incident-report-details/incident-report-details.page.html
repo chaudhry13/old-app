@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content *ngIf="incidentReport">
-  <agm-map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
+  <agm-map #map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
     <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
   </agm-map>
 
@@ -29,7 +29,8 @@
     <img width="200px" src="assets/img/riskline_logo.png">
   </ion-card-content>
 
-  <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">Take photo</ion-button>
+  <ion-button *ngIf="incidentReport.source == 0" color="secondary" expand="block" margin-bottom (click)="takePicture()">
+    Take photo</ion-button>
 
   <ion-card-header *ngIf="files">
     <ion-card-subtitle>Files</ion-card-subtitle>

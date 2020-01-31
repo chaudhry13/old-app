@@ -24,7 +24,7 @@
 
   <ion-list *ngIf="notifications">
     <ion-item-sliding *ngFor="let notification of notifications">
-      <ion-item>
+      <ion-item button (click)="notificationClicked(notification.entityId)">
         <ion-label>
           <h2>{{ notification.title }}</h2>
           <p slot="end">{{ notification.created | date }}</p>

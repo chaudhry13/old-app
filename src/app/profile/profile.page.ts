@@ -24,7 +24,6 @@ export class ProfilePage implements OnInit {
     this.divisionService.list().then(
       data => {
         this.divisions = data
-        this.divisions.forEach(d => console.log(d.name));
       }
     );
 

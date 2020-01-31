@@ -193,7 +193,6 @@ export class AuditCompletePage implements OnInit {
   }
 
   enableLocation() {
-    console.log("Audit location: " + this.audit.location);
     if (this.audit.location) {
       this.toastService.show("Getting your location...");
 
@@ -241,7 +240,6 @@ export class AuditCompletePage implements OnInit {
   async removePicture(file: Attachment) {
     const confirm = await this.deleteConfirmationAlert();
     if (confirm) {
-      console.log("DELETED!!!");
       this.storageService.deleteAudit(this.audit.controlId, this.audit.id, file.name).then(() => {
         this.listFiles();
       });

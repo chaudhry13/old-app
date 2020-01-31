@@ -3,7 +3,7 @@
     <name>Human Risks</name>
     <description>Human Risks ApS</description>
     <author email="info@humanrisks.com" href="https://humanrisks.com/">Human Risks ApS</author>
-    <content original-src="index.html" src="http://localhost:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -111,11 +111,6 @@
     <plugin name="cordova-plugin-file-opener2" spec="^2.2.1" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="cordova-plugin-document-viewer" spec="^0.9.11" />
-    <plugin name="cordova-plugin-googlemaps" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps#multiple_maps">
-        <variable name="LOCATION_WHEN_IN_USE_DESCRIPTION" value="This app wants to get your location while this app runs only." />
-        <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="This app wants to get your location always, even this app runs in background." />
-    </plugin>
     <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4" />
     <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4" />
-    <allow-navigation href="http://localhost:8100" sessionid="bfe20b31" />
 </widget>

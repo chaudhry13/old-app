@@ -182,7 +182,6 @@ export class IncidentReportCreatePage implements OnInit {
     if (this.incidentForm.valid) {
       this.incidentForm.controls["countryId"].setValue(this.country.id);
       this.incidentReportService.insert(this.incidentForm.value).then(id => {
-        console.log("id form incidnet Report " + id);
         this.router.navigate(["/tabs/tab2/details/" + id + "/0"]).then(() => {
           this.presentToast("New incident report created!");
         });

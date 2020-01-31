@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IncidentReport } from 'src/app/_models/incident-report';
 import { IncidentReportService } from 'src/app/_services/incident-report.service';
@@ -10,6 +10,7 @@ import { AppConfigService } from 'src/app/_services/auth-config.service';
 import { FileTransferObject, FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { User } from 'src/app/_models/user';
 import { AlertController } from '@ionic/angular';
+import { AgmMap, AgmMarker } from '@agm/core';
 
 @Component({
   selector: 'app-incident-report-details',
@@ -17,6 +18,8 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./incident-report-details.page.scss'],
 })
 export class IncidentReportDetailsPage implements OnInit {
+
+  @ViewChild('map') myMap: AgmMap;
 
   private id: string;
   private source: any;
@@ -115,7 +118,6 @@ export class IncidentReportDetailsPage implements OnInit {
   async removePicture(file: Attachment) {
     const confirm = await this.deleteConfirmationAlert();
     if (confirm) {
-      console.log("DELETED!!!");
       this.storageService.deleteIncidentReport(this.incidentReport.id, file.name).then(() => {
         this.listFiles();
       });

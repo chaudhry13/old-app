@@ -27,7 +27,6 @@ export class CallbackComponent implements OnInit {
         this.router.navigate([""]);
       }, 1000);
     } else {
-      console.log("Callback sends us back!!!");
       this.router.navigate(["/login"]);
     }
   }

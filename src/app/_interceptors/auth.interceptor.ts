@@ -14,7 +14,6 @@ export class TokenInterceptor extends GenericService implements HttpInterceptor 
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("intercept -> apiBaseUrl " + this.apiBase);
     if (req.url.startsWith(this.apiBase)) {
 
       if (req.url.includes("reset-password")) {
@@ -35,7 +34,7 @@ export class TokenInterceptor extends GenericService implements HttpInterceptor 
           if (error.status === 401) {
             this.handleAuthError();
           } else {
-            console.log("On Error Status: " + error.Status);
+            console.debug("On Error Status: " + error.Status);
           }
 
           throw error;
@@ -47,8 +46,6 @@ export class TokenInterceptor extends GenericService implements HttpInterceptor 
   }
 
   private handleAuthError() {
-    console.log("Got redirected because of authErrorHandler");
-    console.log("ApibaseUrl in error: " + this.apiBase);
     this.router.navigate(["/login"]);
   }
 }
