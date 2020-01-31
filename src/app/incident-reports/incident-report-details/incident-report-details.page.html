@@ -29,12 +29,16 @@
     <img width="200px" src="assets/img/riskline_logo.png">
   </ion-card-content>
 
+  <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">Take photo</ion-button>
+
   <ion-card-header *ngIf="files">
     <ion-card-subtitle>Files</ion-card-subtitle>
   </ion-card-header>
 
   <ion-item *ngFor="let file of files">
-    <ion-icon name="document" slot="start"></ion-icon>
+    <ion-thumbnail slot="start" *ngIf="file">
+      <img src="{{ file.url }}">
+    </ion-thumbnail>
     <ion-label>
       {{file.name}}
     </ion-label>

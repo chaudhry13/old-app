@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
 
 declare var google: any;
@@ -15,14 +15,16 @@ export class LocationModalPage implements OnInit {
   placesService: any;
   query: string;
 
-  constructor(public modalController: ModalController) {
-
-  }
+  constructor(public modalController: ModalController, public zone: NgZone, ) { }
 
   ngOnInit() {
-    this.acService = new google.maps.places.AutocompleteService();
     this.autocompleteItems = [];
     this.autocomplete = {};
+  }
+
+  ionViewWillEnter() {
+    this.acService = new google.maps.places.AutocompleteService();
+    this.updateSearch();
   }
 
   dismiss() {
@@ -48,10 +50,7 @@ export class LocationModalPage implements OnInit {
       if (status != google.maps.places.PlacesServiceStatus.OK) {
         return;
       }
-      this.autocompleteItems = [];
-      predictions.forEach(prediction => {
-        this.autocompleteItems.push(prediction);
-      });
+      this.autocompleteItems = predictions;
     });
   }
 

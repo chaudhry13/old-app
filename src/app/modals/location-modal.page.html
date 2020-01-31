@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Search address</ion-title>
-    <ion-buttons end>
+    <!-- <ion-buttons end>
       <ion-button icon-only (click)="dismiss()">
         <ion-icon item-right name="close"></ion-icon>
       </ion-button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-toolbar>
   <ion-toolbar color="primary">
     <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ionChange)="updateSearch()"
