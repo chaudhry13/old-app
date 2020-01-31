@@ -7,86 +7,90 @@ import { LoadingController, ModalController } from "@ionic/angular";
 import { IncidentReportFilterPage } from "./incident-report-filter.page";
 
 @Component({
-	selector: "app-incident-report-page",
-	templateUrl: "incident-report.page.html",
-	styleUrls: ["incident-report.page.scss"]
+  selector: "app-incident-report-page",
+  templateUrl: "incident-report.page.html",
+  styleUrls: ["incident-report.page.scss"]
 })
 export class IncidentReportPage implements OnInit {
-	public incidentReports: IncidentReport[];
-	public incidentFilterForm: FormGroup;
+  public incidentReports: IncidentReport[];
+  public incidentFilterForm: FormGroup;
 
-	public startDate: Date;
-	public endDate: Date;
+  public startDate: Date;
+  public endDate: Date;
 
-	public loadingOverlay: any;
+  public loadingOverlay: any;
 
-	constructor(
-		public incidentReportService: IncidentReportService,
-		public loadingController: LoadingController,
-		private formBuilder: FormBuilder,
-		public modalController: ModalController
-	) { }
+  constructor(
+    public incidentReportService: IncidentReportService,
+    public loadingController: LoadingController,
+    private formBuilder: FormBuilder,
+    public modalController: ModalController
+  ) { }
 
-	ngOnInit() {
-		this.startDate = new Date();
-		this.endDate = new Date();
-		this.startDate.setMonth(this.startDate.getMonth() - 1);
-		this.endDate.setMonth(this.endDate.getMonth() + 1);
+  ngOnInit() {
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.startDate.setMonth(this.startDate.getMonth() - 1);
+    this.endDate.setMonth(this.endDate.getMonth() + 1);
 
-		this.incidentFilterForm = this.formBuilder.group({
-			startDate: [this.startDate.toJSON()],
-			endDate: [this.endDate.toJSON()],
-			incidentCategoryIds: [""],
-			incidentTypeIds: [""],
-			riskLevels: [""],
-			divisionIds: [""],
-			countryIds: [""],
-			internal: [true],
-			external: [true],
-			southWestLatitude: [0, Validators.required],
-			southWestLongitude: [0, Validators.required],
-			northEastLatitude: [0, Validators.required],
-			northEastLongitude: [0, Validators.required]
-		});
+    this.incidentFilterForm = this.formBuilder.group({
+      startDate: [this.startDate.toJSON()],
+      endDate: [this.endDate.toJSON()],
+      incidentCategoryIds: [""],
+      incidentTypeIds: [""],
+      riskLevels: [""],
+      divisionIds: [""],
+      countryIds: [""],
+      internal: [true],
+      external: [true],
+      southWestLatitude: [0, Validators.required],
+      southWestLongitude: [0, Validators.required],
+      northEastLatitude: [0, Validators.required],
+      northEastLongitude: [0, Validators.required]
+    });
 
-		this.list(this.incidentFilterForm.value);
-	}
+    this.list(this.incidentFilterForm.value);
+  }
 
-	async list(filter: any) {
-		this.incidentReports = null;
+  ionViewWillEnter() {
+    this.list(this.incidentFilterForm.value);
+  }
 
-		this.incidentReportService.list(filter).then(incidentReports => {
-			setTimeout(() => {
-				this.incidentReports = incidentReports.data;
+  async list(filter: any) {
+    this.incidentReports = null;
 
-				this.incidentReports.forEach(incidentReport => {
-					incidentReport.icon = this.incidentReportService.getIcon(
-						incidentReport.incidentCategory.name,
-						incidentReport.source,
-						incidentReport.riskLevel
-					);
-				});
-			}, 1000);
-		});
-	}
+    this.incidentReportService.list(filter).then(incidentReports => {
+      setTimeout(() => {
+        this.incidentReports = incidentReports.data;
 
-	async filter() {
-		const modal = await this.modalController.create({
-			component: IncidentReportFilterPage,
-			componentProps: {
-				'form': this.incidentFilterForm
-			}
-		});
+        this.incidentReports.forEach(incidentReport => {
+          incidentReport.icon = this.incidentReportService.getIcon(
+            incidentReport.incidentCategory.name,
+            incidentReport.source,
+            incidentReport.riskLevel
+          );
+        });
+      }, 1000);
+    });
+  }
 
-		modal.onDidDismiss().then(data => {
-			this.incidentFilterForm = data.data;
-			this.list(data.data.value);
-		});
+  async filter() {
+    const modal = await this.modalController.create({
+      component: IncidentReportFilterPage,
+      componentProps: {
+        'form': this.incidentFilterForm
+      }
+    });
 
-		return await modal.present();
-	}
+    modal.onDidDismiss().then(data => {
+      this.incidentFilterForm = data.data;
+      this.list(data.data.value);
+    });
 
-	setFallbackIcon(incidentReport) {
-		incidentReport.icon = '/assets/img/incident-reports/other_i.png';
-	}
+    return await modal.present();
+  }
+
+  setFallbackIcon(incidentReport) {
+    incidentReport.icon = '/assets/img/incident-reports/other_i.png';
+  }
 }
