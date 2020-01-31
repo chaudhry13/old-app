@@ -117,5 +117,5 @@
     </plugin>
     <preference name="GOOGLE_MAPS_ANDROID_API_KEY" value="AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4" />
     <preference name="GOOGLE_MAPS_IOS_API_KEY" value="AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4" />
-    <allow-navigation href="http://localhost:8100" sessionid="e9ef3ad5" />
+    <allow-navigation href="http://localhost:8100" sessionid="bfe20b31" />
 </widget>
