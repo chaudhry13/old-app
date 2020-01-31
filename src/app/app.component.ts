@@ -25,7 +25,7 @@ export class AppComponent {
 
   initialize() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent()
       this.splashScreen.hide();
       this.appConfigService.loadAppConfig();
       console.log("App.component: initialize");
