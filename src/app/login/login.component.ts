@@ -19,20 +19,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Login init");
     this.appConfigService.loadAppConfig();
   }
 
-  redirectLogin() {
+  ionViewWillEnter() {
     if (window.cordova) {
       var authConfigLogin = this.appConfigService.appConfig;
-      console.log("Before Login -> clientId: " + authConfigLogin.clientId);
-      console.log("Before Login -> issuer: " + authConfigLogin.issuer);
-      console.log("Before Login -> scope: " + authConfigLogin.scope);
-      console.log("Before Login -> logoutUrl: " + authConfigLogin.logoutUrl);
-      console.log("Before Login -> redirectUri: " + authConfigLogin.redirectUri);
-      console.log("Before Login -> oidc: " + authConfigLogin.oidc);
-      console.log("Before Login -> apiUrl: " + authConfigLogin.apiUrl);
       this.oauthService.configure(authConfigLogin);
       this.loginDevice().then(
         success => {
