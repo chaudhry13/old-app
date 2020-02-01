@@ -47,9 +47,7 @@ import { SettingsService } from './_services/settings.service';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { AppConfigService } from './_services/auth-config.service';
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { SanitizeHtmlPipe } from './_settings/sanitazion.pipe';
 import { ApplicationPipesModule } from './_settings/application-pipes.module';
 
 @NgModule({
@@ -111,7 +109,6 @@ import { ApplicationPipesModule } from './_settings/application-pipes.module';
     UserService,
     IncidentReportService,
     NotificationService,
-    QRScanner,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

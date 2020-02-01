@@ -22,11 +22,11 @@ const routes: Routes = [
           {
             path: 'complete/:id',
             loadChildren: '../audits/audit-complete/audit-complete.module#AuditCompletePageModule'
-          },
-          {
-            path: 'qrscan',
-            loadChildren: '../audits/audit-qrscanner/audit-qr.module#AuditQrPageModule'
-          }
+          }// ,
+          // {
+          //   path: 'qrscan',
+          //   loadChildren: '../audits/audit-qrscanner/audit-qr.module#AuditQrPageModule'
+          // }
         ]
       },
       {
