@@ -38,7 +38,7 @@
         <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
       </ion-item>
       <ion-item *ngIf="audit.location">
-        <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
+        <agm-map *ngIf="renderMapComplete" [latitude]="audit.latitude" [longitude]="audit.longitude">
           <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
         </agm-map>
       </ion-item>
@@ -60,7 +60,7 @@
       <div *ngIf="showLocation">
         <ion-list-header>Location</ion-list-header>
         <ion-item>
-          <agm-map [latitude]="audit.latitude" [longitude]="audit.longitude">
+          <agm-map *ngIf="renderMap" [latitude]="audit.latitude" [longitude]="audit.longitude">
             <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
           </agm-map>
         </ion-item>

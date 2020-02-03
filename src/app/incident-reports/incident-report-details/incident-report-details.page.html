@@ -9,7 +9,7 @@
 </ion-header>
 
 <ion-content *ngIf="incidentReport">
-  <agm-map #map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
+  <agm-map *ngIf="renderMap" #map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
     <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
   </agm-map>
 

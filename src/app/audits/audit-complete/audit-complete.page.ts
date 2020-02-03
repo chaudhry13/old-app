@@ -43,6 +43,9 @@ export class AuditCompletePage implements OnInit {
 
   showLocation: boolean = false;
 
+  renderMap: boolean = false;
+  renderMapComplete: boolean = false;
+
   constructor(
     public oauthService: OAuthService,
     public router: Router,
@@ -86,6 +89,11 @@ export class AuditCompletePage implements OnInit {
   // When ever the view becomes active
   ionViewWillEnter() {
     this.getAudit();
+  }
+
+  // When everything is rendered
+  ionViewDidEnter() {
+    this.renderMap = true;
   }
 
   // When leaving the view
@@ -205,6 +213,8 @@ export class AuditCompletePage implements OnInit {
         .then(position => {
           this.audit.latitude = position.coords.latitude;
           this.audit.longitude = position.coords.longitude;
+
+          this.renderMapComplete = true;
 
           this.toastService.show("Location found!");
         })

@@ -34,6 +34,8 @@ export class IncidentReportDetailsPage implements OnInit {
 
   user: User;
 
+  renderMap: boolean;
+
   constructor(public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,
     private storageService: StorageService,
@@ -47,6 +49,7 @@ export class IncidentReportDetailsPage implements OnInit {
   }
 
   ngOnInit() {
+    this.renderMap = false;
     this.incidentReportService.get(this.id, this.source).then(incidentReport => {
       this.incidentReport = incidentReport;
 
@@ -54,6 +57,10 @@ export class IncidentReportDetailsPage implements OnInit {
         this.listFiles();
       }
     });
+  }
+
+  ionViewDidEnter() {
+    this.renderMap = true;
   }
 
   takePicture() {
