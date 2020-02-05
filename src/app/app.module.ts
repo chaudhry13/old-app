@@ -49,6 +49,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppConfigService } from './_services/auth-config.service';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ApplicationPipesModule } from './_settings/application-pipes.module';
+import { QRScanner } from '@ionic-native/qr-scanner/ngx';
+import { DeeplinkService } from './_services/deeplink.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -85,6 +87,7 @@ import { ApplicationPipesModule } from './_settings/application-pipes.module';
     FileOpener,
     FileTransfer,
     DocumentViewer,
+    DeeplinkService,
     AuthGuard,
     StatusBar,
     SplashScreen,
@@ -109,6 +112,7 @@ import { ApplicationPipesModule } from './_settings/application-pipes.module';
     UserService,
     IncidentReportService,
     NotificationService,
+    QRScanner,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
