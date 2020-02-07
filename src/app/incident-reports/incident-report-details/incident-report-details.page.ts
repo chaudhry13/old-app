@@ -34,7 +34,7 @@ export class IncidentReportDetailsPage implements OnInit {
 
   user: User;
 
-  renderMap: boolean;
+  renderMap: boolean = false;
 
   constructor(public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,

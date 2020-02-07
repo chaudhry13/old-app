@@ -225,6 +225,7 @@ export class AuditCompletePage implements OnInit {
           this.audit.longitude = undefined;
         });
     } else {
+      this.renderMapComplete = false;
       this.audit.location = false;
       this.audit.latitude = undefined;
       this.audit.longitude = undefined;
