@@ -21,6 +21,7 @@ export class AuditQrPage implements OnInit {
     this.scanQr().then(qrLink => {
       this.deepLinkService.handleLink(qrLink).catch(() => {
         this.toastService.show("QR Code not valid!");
+        this.router.navigate(["tabs/tab1", { replaceUrl: true }]);
       });
     });
   }
@@ -30,10 +31,15 @@ export class AuditQrPage implements OnInit {
     this.qrScanner.destroy();
   }
 
+  ionViewWillEnter() {
+    this.ngOnInit();
+  }
+
   async scanQr(): Promise<string> {
     let hash: string = '';
     try {
       hash = await this._startScanner();
+      this.scanSub.unsubscribe();
       this.qrScanner.destroy();
     }
     catch (err) {
