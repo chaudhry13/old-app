@@ -44,13 +44,13 @@ export class AuditCompletePage implements OnInit {
   uploadAlert: HTMLIonAlertElement;
 
   user: User;
-  completedUser: User;
+  completedUser: User = new User();
 
   showLocation: boolean = false;
 
   renderMap: boolean = false;
   renderMapComplete: boolean = false;
-  followUp: FollowUp;
+  followUp: FollowUp = new FollowUp();
 
   constructor(
     public oauthService: OAuthService,
