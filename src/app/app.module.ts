@@ -30,7 +30,7 @@ import { IncidentReportService } from "./_services/incident-report.service";
 import { CountryService } from './_services/country.service';
 import { IncidentCategoryService } from './_services/incident-category.service';
 
-import { File } from '@ionic-native/File/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
