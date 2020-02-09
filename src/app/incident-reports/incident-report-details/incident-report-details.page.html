@@ -29,23 +29,53 @@
   <ion-card-content>
     {{incidentReport.description}}
   </ion-card-content>
-  <ion-card-header *ngIf="incidentReport.source == 1">
-    <ion-card-subtitle>Source</ion-card-subtitle>
-  </ion-card-header>
-
-  <ion-card-content *ngIf="incidentReport.source == 1">
-    <img width="200px" src="assets/img/riskline_logo.png">
-  </ion-card-content>
-  <ion-grid *ngIf="incidentReport.source == 0">
-    <ion-row>
-      <ion-col>
-        <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">
-          Take photo</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div *ngIf="incidentReport.source == 1">
+    <ion-card-header>
+      <ion-card-subtitle>Risk Level</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [ngSwitch]="incidentReport.riskLevel">
+      <ion-badge *ngSwitchCase="1" class="risk-low">Low (1)</ion-badge>
+      <ion-badge *ngSwitchCase="2" class="risk-moderate">Moderate (2)</ion-badge>
+      <ion-badge *ngSwitchCase="3" class="risk-medium">Medium (3)</ion-badge>
+      <ion-badge *ngSwitchCase="4" class="risk-high">High (4)</ion-badge>
+      <ion-badge *ngSwitchCase="5" class="risk-extreme">Extreme (5)</ion-badge>
+      <ion-badge *ngSwitchDefault color="primary">Internal</ion-badge>
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Created</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.created | date:'MMM dd, yyyy' }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Start</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.startDate | date:'MMM dd, yyyy' }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>End</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.endDate | date:'MMM dd, yyyy' }}
+    </ion-card-content>
+    <ion-card-header *ngIf="incidentReport.source == 1">
+      <ion-card-subtitle>Source</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content *ngIf="incidentReport.source == 1">
+      <img width="200px" src="assets/img/riskline_logo.png">
+    </ion-card-content>
+  </div>
 
   <div *ngIf="incidentReport.source == 0">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">
+            Take photo</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
     <ion-card-header>
       <ion-card-subtitle>Reported By</ion-card-subtitle>
     </ion-card-header>
@@ -53,7 +83,7 @@
       {{ incidentReport.user.name }}
     </ion-card-content>
     <ion-card-header>
-      <ion-card-subtitle>Creation Date</ion-card-subtitle>
+      <ion-card-subtitle>Created</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
       {{ incidentReport.created | date:'MMM dd, yyyy' }}
@@ -96,7 +126,7 @@
     </ion-label>
   </ion-item>
 
-  <ion-item style="color: lightgray; font-size: small;">
+  <ion-card-content style="color: lightgray; font-size: small;">
     {{ incidentReport.id }}
-  </ion-item>
+  </ion-card-content>
 </ion-content>

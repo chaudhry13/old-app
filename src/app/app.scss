@@ -4,3 +4,31 @@
 // styles are for the entire app and not just one component. Additionally, this 
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
+
+//
+// Risk levels
+
+.risk-low {
+    background: rgb(67, 155, 22) !important;
+    color: #fff !important;
+  }
+  
+  .risk-moderate {
+    background: rgb(232, 190, 12) !important;
+    color: #fff !important;
+  }
+  
+  .risk-medium {
+    background: rgb(232, 122, 10) !important;
+    color: #fff !important;
+  }
+  
+  .risk-high {
+    background: rgb(214, 35, 36) !important;
+    color: #fff !important;
+  }
+  
+  .risk-extreme {
+    background: #000 !important;
+    color: #fff !important;
+  }

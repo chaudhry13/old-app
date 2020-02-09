@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { IncidentReportDetailsPage } from './incident-report-details.page';
 import { AgmMap, AgmCoreModule } from '@agm/core';
+import { ApplicationPipesModule } from 'src/app/_settings/application-pipes.module';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
       libraries: ["places"]
     }),
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    ApplicationPipesModule
   ],
   declarations: [IncidentReportDetailsPage]
 })
