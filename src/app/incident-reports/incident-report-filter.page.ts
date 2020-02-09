@@ -23,8 +23,10 @@ export class IncidentReportFilterPage implements OnInit {
   incidentCategories: IncidentCategory[];
   incidentTypes: IncidentType[];
 
-  constructor(private modal: ModalController, public incidentCategoryService: IncidentCategoryService, public divisionService: DivisionService, public formBuilder: FormBuilder) {
-
+  constructor(private modal: ModalController,
+    public incidentCategoryService: IncidentCategoryService,
+    public divisionService: DivisionService,
+    public formBuilder: FormBuilder) {
     this.filterForm = this.formBuilder.group({
       startDate: [new Date().toJSON()],
       endDate: [new Date().toJSON()],
@@ -44,8 +46,6 @@ export class IncidentReportFilterPage implements OnInit {
   ngOnInit() {
     this.divisionService.list().then(divisions => {
       this.divisions = divisions;
-      var divisionIds: string[] = this.divisions.map(x => x.id);
-      this.filterForm.controls.divisionIds.setValue(divisionIds);
     });
 
     this.incidentCategoryService.list(true).then(categories => {

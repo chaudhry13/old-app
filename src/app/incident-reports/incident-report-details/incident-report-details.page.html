@@ -28,9 +28,21 @@
   <ion-card-content *ngIf="incidentReport.source == 1">
     <img width="200px" src="assets/img/riskline_logo.png">
   </ion-card-content>
+  <ion-grid *ngIf="incidentReport.source == 0">
+    <ion-row>
+      <ion-col>
+        <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">
+          Take photo</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
-  <ion-button *ngIf="incidentReport.source == 0" color="secondary" expand="block" margin-bottom (click)="takePicture()">
-    Take photo</ion-button>
+  <ion-card-header>
+    <ion-card-subtitle>Created By</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    Torben Nielsen
+  </ion-card-content>
 
   <ion-card-header *ngIf="files">
     <ion-card-subtitle>Files</ion-card-subtitle>
