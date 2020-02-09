@@ -4,6 +4,7 @@ import { IncidentType } from "./incident-type";
 import { Attachment } from "./file";
 import { Country } from "./country";
 import { InjuryType, InjuryLocation, InjuryPart, InvolvedPerson } from "./health-safety";
+import { User } from './user';
 
 export class IncidentReport {
 	id: string;
@@ -25,6 +26,7 @@ export class IncidentReport {
 	personsInjured: number;
 	files: Attachment[];
 	divisions: Division[];
+	user: User[];
 
 	incidentType: IncidentType;
 	incidentCategory: IncidentCategory;

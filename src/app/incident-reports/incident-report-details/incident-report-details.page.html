@@ -8,6 +8,14 @@
   </ion-toolbar>
 </ion-header>
 
+<!-- user can't see:
+
+    address
+    completed by
+    start- and end date (only created date is shown)
+    division(s)
+    unique ID -->
+
 <ion-content *ngIf="incidentReport">
   <agm-map *ngIf="renderMap" #map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
     <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
@@ -37,14 +45,45 @@
     </ion-row>
   </ion-grid>
 
-  <ion-card-header>
-    <ion-card-subtitle>Created By</ion-card-subtitle>
-  </ion-card-header>
-  <ion-card-content>
-    Torben Nielsen
-  </ion-card-content>
+  <div *ngIf="incidentReport.source == 0">
+    <ion-card-header>
+      <ion-card-subtitle>Reported By</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.user.name }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Creation Date</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.created | date:'MMM dd, yyyy' }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Address</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.address }}
+    </ion-card-content>
+    <ion-card-content *ngIf="incidentReport.city">
+      {{ incidentReport.city }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Country</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ incidentReport.country.name }}
+    </ion-card-content>
+    <ion-card-header>
+      <ion-card-subtitle>Divisions</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <span *ngFor="let division of incidentReport.divisions; let isLast=last">
+        {{ division.name }}{{isLast ? '' : ', '}}
+      </span>
+    </ion-card-content>
+  </div>
 
-  <ion-card-header *ngIf="files">
+  <ion-card-header *ngIf="files && files.length > 0">
     <ion-card-subtitle>Files</ion-card-subtitle>
   </ion-card-header>
 
@@ -55,5 +94,9 @@
     <ion-label>
       {{file.name}}
     </ion-label>
+  </ion-item>
+
+  <ion-item style="color: lightgray; font-size: small;">
+    {{ incidentReport.id }}
   </ion-item>
 </ion-content>
