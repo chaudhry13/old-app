@@ -13,6 +13,7 @@ export class Audit {
   late: boolean;
   completed: boolean;
   completedAt: Date;
+  completedById: string;
   location: boolean;
   latitude: number;
   longitude: number;

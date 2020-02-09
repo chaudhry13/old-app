@@ -18,6 +18,10 @@ import { Attachment } from 'src/app/_models/file';
 import { SettingsService } from 'src/app/_services/settings.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { AppConfigService } from 'src/app/_services/auth-config.service';
+import { stringify } from 'querystring';
+import { FollowUpService } from 'src/app/_services/follow-up.service';
+import { FollowUp } from 'src/app/_models/follow-up';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: "app-audit-complete",
@@ -40,11 +44,13 @@ export class AuditCompletePage implements OnInit {
   uploadAlert: HTMLIonAlertElement;
 
   user: User;
+  completedUser: User;
 
   showLocation: boolean = false;
 
   renderMap: boolean = false;
   renderMapComplete: boolean = false;
+  followUp: FollowUp;
 
   constructor(
     public oauthService: OAuthService,
@@ -62,11 +68,12 @@ export class AuditCompletePage implements OnInit {
     public fileTransfer: FileTransfer,
     public accountService: AccountService,
     public settingsService: SettingsService,
-    public accoutnService: AccountService,
     public oAuthService: OAuthService,
     public storageService: StorageService,
     public appConfigService: AppConfigService,
-    public tokenService: TokenService) {
+    public tokenService: TokenService,
+    public followUpService: FollowUpService,
+    public userService: UserService) {
 
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
@@ -114,10 +121,25 @@ export class AuditCompletePage implements OnInit {
         if (this.audit.longitude && this.audit.latitude) {
           this.showLocation = true;
         }
+
+        if (this.audit.followUpId) {
+          this.audit.followUp = true;
+          this.followUpService.get(this.audit.followUpId).then(followUp => {
+            this.followUp = followUp;
+          });
+        }
+
+        if (this.audit.completedById) {
+          this.userService.get(this.audit.completedById).subscribe(user => {
+            this.completedUser = user;
+          });
+        }
+
         this.listFiles()
         this.controlService.get(this.audit.controlId).then(control => {
           this.audit.description = control.description;
         });
+
       },
       error => {
         this.toastService.show("An error occurred retrieving the audit..");

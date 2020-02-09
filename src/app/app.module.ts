@@ -51,6 +51,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { ApplicationPipesModule } from './_settings/application-pipes.module';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { DeeplinkService } from './_services/deeplink.service';
+import { FollowUpService } from './_services/follow-up.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -96,6 +97,7 @@ import { DeeplinkService } from './_services/deeplink.service';
     Keyboard,
     FormBuilder,
     TokenService,
+    FollowUpService,
     ControlService,
     DivisionService,
     StorageService,

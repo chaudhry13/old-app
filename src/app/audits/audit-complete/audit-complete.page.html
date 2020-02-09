@@ -45,17 +45,21 @@
     </div>
     <!-- If audit is completed -->
     <div *ngIf="audit.completed">
+      <ion-list-header>Completed On</ion-list-header>
+      <ion-item>
+        {{ audit.completedAt | date:'EEE, MMM dd, yyyy h:mm a' }}
+      </ion-item>
+      <div *ngIf="audit.completedById">
+        <ion-list-header>Completed By</ion-list-header>
+        <ion-item>{{ completedUser.name }}</ion-item>
+      </div>
       <div *ngIf="audit.followUp">
-        <ion-list-header> Follow-Up</ion-list-header>
+        <ion-list-header>Remarks</ion-list-header>
         <ion-item>
           <ion-textarea>
-            {{ audit.remarks }}
+            {{ followUp.remarks }}
           </ion-textarea>
         </ion-item>
-      </div>
-      <div *ngIf="audit.other">
-        <ion-list-header>Name</ion-list-header>
-        <ion-item>{{ audit.other }}</ion-item>
       </div>
       <div *ngIf="showLocation">
         <ion-list-header>Location</ion-list-header>
@@ -78,8 +82,8 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list-header>
-    Photos
+  <ion-list-header *ngIf="files && files.length > 0">
+    Files
   </ion-list-header>
   <ion-item *ngFor="let file of files; let id = index">
     <ion-thumbnail slot="start" *ngIf="file">
