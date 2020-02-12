@@ -54,6 +54,10 @@
         <ion-list-header>Completed By</ion-list-header>
         <ion-item>{{ completedUser.name }}</ion-item>
       </div>
+      <div *ngIf="audit.other">
+        <ion-list-header>Name</ion-list-header>
+        <ion-item>{{ audit.other }}</ion-item>
+      </div>
       <div *ngIf="audit.followUp">
         <ion-list-header>Remarks</ion-list-header>
         <ion-item>
