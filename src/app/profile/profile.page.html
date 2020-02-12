@@ -20,6 +20,14 @@
     </ion-row>
   </ion-grid>
 
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" expand="block" (click)="logout()">Log out</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
   <ion-list>
     <ion-list-header>
       Divisions ({{divisions.length}})
@@ -27,12 +35,4 @@
     <div></div>
     <ion-item *ngFor="let division of divisions">{{ division.name }}</ion-item>
   </ion-list>
-
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button color="primary" expand="block" (click)="logout()">Log out</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>
