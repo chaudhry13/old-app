@@ -27,7 +27,7 @@
       </ion-item>
       <ion-item>
         <ion-textarea [disabled]="!audit.followUp" placeholder="Enter remarks here.." [(ngModel)]="audit.remarks"
-          rows="10">
+          rows="7">
         </ion-textarea>
       </ion-item>
       <ion-item>
@@ -37,12 +37,13 @@
         <ion-label> Location</ion-label>
         <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="audit.location">
+      <ion-item *ngIf="audit.location" style="padding-top: 5px;">
         <agm-map *ngIf="renderMapComplete" [latitude]="audit.latitude" [longitude]="audit.longitude">
           <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
         </agm-map>
       </ion-item>
     </div>
+
     <!-- If audit is completed -->
     <div *ngIf="audit.completed">
       <ion-list-header>Completed On</ion-list-header>
