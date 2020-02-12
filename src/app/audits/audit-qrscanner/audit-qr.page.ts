@@ -18,17 +18,24 @@ export class AuditQrPage implements OnInit {
   scanSub: Subscription;
 
   ngOnInit() {
-    this.scanQr().then(qrLink => {
-      this.deepLinkService.handleLink(qrLink).catch(() => {
-        this.toastService.show("QR Code not valid!");
-        this.router.navigate(["tabs/tab1", { replaceUrl: true }]);
+    if (window.cordova) {
+      this.scanQr().then(qrLink => {
+        this.deepLinkService.handleLink(qrLink).catch(() => {
+          this.toastService.show("QR Code not valid!");
+          this.router.navigate(["tabs/tab1", { replaceUrl: true }]);
+        });
       });
-    });
+    } else {
+      this.router.navigate(["tabs/tab1"]);
+      this.toastService.show("Cannot open camera in browser!");
+    }
   }
 
   ionViewDidLeave() {
-    this.scanSub.unsubscribe();
-    this.qrScanner.destroy();
+    if (this.scanSub) {
+      this.scanSub.unsubscribe();
+      this.qrScanner.destroy();
+    }
   }
 
   ionViewWillEnter() {
