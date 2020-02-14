@@ -35,17 +35,9 @@ export class AppComponent {
 
   configureImplicitFlowAuthentication() {
     this.oauthService.configure(this.appConfigService.appConfig);
-
-    if (this.oauthService.hasValidAccessToken()) {
-
-    }
-
     this.oauthService.setStorage(localStorage);
-
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocument();
-
-    this.oauthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e) : console.warn(e)));
-
+    this.oauthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e.reason) : console.warn(e)));
   }
 }
