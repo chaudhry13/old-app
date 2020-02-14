@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { OAuthService } from "angular-oauth2-oidc";
-import { AlertController } from "@ionic/angular";
+import { AlertController, NavController } from "@ionic/angular";
 import { TokenService } from "../_services/token.service";
 import { Storage } from "@ionic/storage";
 import { AppConfigService } from '../_services/auth-config.service';
@@ -16,7 +16,8 @@ export class CallbackComponent implements OnInit {
     private oAuthService: OAuthService,
     public alertController: AlertController,
     public tokenService: TokenService,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
+    private navController: NavController
   ) { }
 
   ngOnInit() {
@@ -24,10 +25,12 @@ export class CallbackComponent implements OnInit {
 
     if (this.oAuthService.hasValidAccessToken()) {
       setTimeout(() => {
-        this.router.navigate([""]);
+        this.navController.navigateRoot("/");
+        // this.router.navigate(["/"]);
       }, 1000);
     } else {
-      this.router.navigate(["/login"]);
+      this.navController.navigateRoot("/login");
+      //this.router.navigate(["/login"]);
     }
   }
 }

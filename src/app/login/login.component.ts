@@ -1,8 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, NgZone } from "@angular/core";
 import { OAuthService, AuthConfig, OAuthErrorEvent } from "angular-oauth2-oidc";
-import { Router } from "@angular/router";
+import { Router, RouterState } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
-import { AlertController, Platform } from "@ionic/angular";
+import { AlertController, Platform, NavController } from "@ionic/angular";
 import { Device } from "@ionic-native/device/ngx";
 import { AppConfigService } from '../_services/auth-config.service';
 import { TokenService } from '../_services/token.service';
@@ -14,7 +14,14 @@ declare const window: any;
   templateUrl: "login.component.html"
 })
 export class LoginComponent implements OnInit {
-  constructor(private oauthService: OAuthService, private router: Router, private inAppBrowser: InAppBrowser, private device: Device, private platform: Platform, private appConfigService: AppConfigService, private tokenService: TokenService) {
+  constructor(private oauthService: OAuthService,
+    private router: Router,
+    private inAppBrowser: InAppBrowser,
+    private device: Device,
+    private platform: Platform,
+    private appConfigService: AppConfigService,
+    private tokenService: TokenService,
+    private navController: NavController) {
     oauthService.redirectUri = "http://localhost:8100/callback";
   }
 
@@ -35,7 +42,7 @@ export class LoginComponent implements OnInit {
             customHashFragment: keyValuePair,
             disableOAuth2StateCheck: true
           });
-          this.router.navigate(["/callback"]);
+          this.navController.navigateForward("/callback");
         },
         error => {
           console.log(error);
@@ -95,7 +102,6 @@ export class LoginComponent implements OnInit {
         });
         browser.on("exit").subscribe(() => {
           this.appConfigService.loadAppConfig();
-          var authConfigLogin = this.appConfigService.appConfig;
         });
       });
     });
