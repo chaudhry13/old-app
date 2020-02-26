@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
       return new Promise((resolve, reject) => {
         const oauthUrl = this.buildOAuthUrl(state);
 
-        const browser = this.inAppBrowser.create(oauthUrl, "_blank", "location=no,clearsessioncache=yes,clearcache=yes,disallowoverscroll=yes,hardwareback=no");
+        const browser = this.inAppBrowser.create(oauthUrl, "_blank", "location=no,clearsessioncache=yes,clearcache=yes,disallowoverscroll=yes,hardwareback=no,toolbar=no,footer=no");
 
         browser.on("loaderror").subscribe(error => {
           console.log(error);
