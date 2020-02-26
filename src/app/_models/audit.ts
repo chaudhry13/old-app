@@ -1,4 +1,5 @@
 import { Attachment } from "./file";
+import { QuestionAnsweredStatus } from './questionaire';
 
 export class Audit {
   id: string;
@@ -19,7 +20,20 @@ export class Audit {
   longitude: number;
   files: Attachment[];
 
+  questionnaire: boolean;
+  questionnaireUserAnswers: Array<QuestionnaireUserAnswerAudit>;
+
   constructor() {
     this.files = new Array<Attachment>();
   }
+}
+
+export class QuestionnaireUserAnswerAudit {
+  id: string;
+  status: QuestionAnsweredStatus;
+  userId: string;
+  auditId: string;
+  questionnaireId: string;
+  questionsAnswered: number;
+  numberOfQuestions: number;
 }

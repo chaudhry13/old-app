@@ -22,6 +22,7 @@ export class Control {
 
   followingAudits: Audit[];
   completedAudits: Audit[];
+  questionnaireIds: QuestionnaireSmall[];
 
   upcomingAudit: Audit;
 
@@ -38,4 +39,12 @@ export class Control {
 
     this.files = [];
   }
+}
+
+export class QuestionnaireSmall {
+  title: string;
+  id: string;
+  active: boolean;
+  questionnaireId: string;
+  questionnaireSentoutId: string;
 }

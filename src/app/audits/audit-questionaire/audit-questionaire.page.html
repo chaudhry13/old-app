@@ -1,9 +1,31 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>audit-questionaire</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Questionaire</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
+  <div *ngIf="testQuestionaire">
+    {{ testQuestionaire.id }}
+    {{ testQuestionaire.title }}
+    {{ testQuestionaire.author.name + ", " + testQuestionaire.author.email }}
+    {{ testQuestionaire.latitude }}
+    {{ testQuestionaire.longitude }}
+    {{ testQuestionaire.description }}
+    {{ testQuestionaire.created | date:'MMM dd, yyyy' }}
+    {{ testQuestionaire.Updated | date:'MMM dd, yyyy' }}
+    <div *ngFor="let division of testQuestionaire.divisions">
+      {{ division.name }}
+    </div>
+    <div *ngFor="let group of testQuestionaire.questionGroups">
+      {{ group.groupTitle }}
 
+    </div>
+    <div *ngFor="let question of testQuestionaire.questions">
+      {{ question.title }}
+
+    </div>
+  </div>
 </ion-content>
