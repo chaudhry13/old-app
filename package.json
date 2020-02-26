@@ -48,7 +48,7 @@
     "angular-oauth2-oidc": "^5.0.2",
     "com-sarriaroman-photoviewer": "^1.2.4",
     "cordova-android": "^8.1.0",
-    "cordova-ios": "5.1.1",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-android-permissions": "^1.0.2",
     "cordova-plugin-camera": "^4.1.0",
@@ -139,8 +139,8 @@
       "cordova-plugin-file-transfer": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
