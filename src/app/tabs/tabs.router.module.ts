@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { TabsPage } from "./tabs.page";
-import { AuditDetailsPage } from '../audits/audit-details/audit-details.page';
 
 const routes: Routes = [
   {
@@ -26,6 +25,10 @@ const routes: Routes = [
           {
             path: 'qrscan',
             loadChildren: '../audits/audit-qrscanner/audit-qr.module#AuditQrPageModule'
+          },
+          {
+            path: 'questionaire',
+            loadChildren: '../audits/audit-questionaire/audit-questionaire.module#AuditQuestionairePageModule'
           }
         ]
       },

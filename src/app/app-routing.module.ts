@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: "", canActivate: [AuthGuard], loadChildren: "./tabs/tabs.module#TabsPageModule" },
   { path: "login", component: LoginComponent },
   { path: "callback", component: CallbackComponent },
-  { path: "**", redirectTo: "" }
+  { path: "**", redirectTo: "" },  { path: 'audit-questionaire', loadChildren: './audits/audit-questionaire/audit-questionaire.module#AuditQuestionairePageModule' }
+
 ];
 
 @NgModule({
