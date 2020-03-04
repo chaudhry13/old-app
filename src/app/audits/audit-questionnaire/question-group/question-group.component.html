@@ -1,0 +1,7 @@
+<div *ngIf="questionGroup">
+  <div *ngFor="let question of questionGroup.questions">
+    Group Title: {{ questionGroup.groupTitle }}
+    Title: {{ question.title }}
+    Index: {{ question.index }}
+  </div>
+</div>

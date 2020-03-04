@@ -5,6 +5,8 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 import { AuditQuestionnairePage } from './audit-questionnaire.page';
+import { QuestionGroupComponent } from './question-group/question-group.component';
+import { QuestionComponent } from './question/question.component';
 
 
 const routes: Routes = [
@@ -21,6 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AuditQuestionnairePage]
+  declarations: [AuditQuestionnairePage, QuestionGroupComponent, QuestionComponent],
+  exports: [QuestionGroupComponent, QuestionComponent]
 })
 export class AuditQuestionnairePageModule {}
