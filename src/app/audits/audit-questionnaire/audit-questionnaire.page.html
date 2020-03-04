@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Answer Questionnaire</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-card *ngIf="testQuestionnaire">
+    <ion-card-header>
+      <ion-card-subtitle>Questionnaire</ion-card-subtitle>
+      <ion-card-title>{{ testQuestionnaire.title }}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <div>
+        {{ testQuestionnaire.description }}
+
+        
+        {{ testQuestionnaire.id }}
+        {{ testQuestionnaire.author.name + ", " + testQuestionnaire.author.email }}
+        {{ testQuestionnaire.latitude }}
+        {{ testQuestionnaire.longitude }}
+        {{ testQuestionnaire.created | date:'MMM dd, yyyy' }}
+        {{ testQuestionnaire.Updated | date:'MMM dd, yyyy' }}
+        <div *ngFor="let division of testQuestionnaire.divisions">
+          {{ division.name }}
+        </div>
+        <div *ngFor="let group of testQuestionnaire.questionGroups">
+          {{ group.groupTitle }}
+    
+        </div>
+        <div *ngFor="let question of testQuestionnaire.questions">
+          {{ question.title }}
+    
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

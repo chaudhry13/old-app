@@ -53,7 +53,7 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { DeeplinkService } from './_services/deeplink.service';
 import { FollowUpService } from './_services/follow-up.service';
 
-import { QuestionaireService } from './_services/questionaire.service';
+import { QuestionnaireService } from './_services/questionnaire.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -117,7 +117,7 @@ import { QuestionaireService } from './_services/questionaire.service';
     IncidentReportService,
     NotificationService,
     QRScanner,
-    QuestionaireService,
+    QuestionnaireService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

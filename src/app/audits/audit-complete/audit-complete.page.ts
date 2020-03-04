@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
-import { Audit } from "../../_models/audit";
+import { Audit, QuestionnaireUserAnswerAudit } from "../../_models/audit";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Router, ActivatedRoute } from "@angular/router";
-import { LoadingController, AlertController, NavParams } from "@ionic/angular";
+import { LoadingController, AlertController, NavParams, NavController } from "@ionic/angular";
 import { AuditService } from "src/app/_services/audit.service";
 import { CameraService } from "src/app/_services/photo.service";
 import { MapService } from "src/app/_services/maps.service";
@@ -18,10 +18,10 @@ import { Attachment } from 'src/app/_models/file';
 import { SettingsService } from 'src/app/_services/settings.service';
 import { StorageService } from 'src/app/_services/storage.service';
 import { AppConfigService } from 'src/app/_services/auth-config.service';
-import { stringify } from 'querystring';
 import { FollowUpService } from 'src/app/_services/follow-up.service';
 import { FollowUp } from 'src/app/_models/follow-up';
 import { UserService } from 'src/app/_services/user.service';
+import { QuestionnaireService } from 'src/app/_services/questionnaire.service';
 
 @Component({
   selector: "app-audit-complete",
@@ -34,6 +34,9 @@ export class AuditCompletePage implements OnInit {
 
   audit: Audit = new Audit();
   files: Attachment[] = new Array();
+
+  hasQuestionnaires: boolean = false;
+  questionnairesIsLoading: boolean = false;
 
   auditForm: FormGroup;
 
@@ -73,7 +76,9 @@ export class AuditCompletePage implements OnInit {
     public appConfigService: AppConfigService,
     public tokenService: TokenService,
     public followUpService: FollowUpService,
-    public userService: UserService) {
+    public userService: UserService,
+    private navigationService: NavController,
+    private questionnaireService: QuestionnaireService) {
 
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
@@ -140,11 +145,26 @@ export class AuditCompletePage implements OnInit {
           this.audit.description = control.description;
         });
 
+        this.getAuditQuestionnaires();
       },
       error => {
         this.toastService.show("An error occurred retrieving the audit..");
       }
     );
+  }
+
+  getAuditQuestionnaires() {
+    if (this.audit.questionnaire) {
+      this.hasQuestionnaires = true;
+
+      if (!this.questionnairesIsLoading && this.audit.questionnaireUserAnswers.length == 0) {
+        this.questionnairesIsLoading = true;
+        this.auditService.generateUserAnswers(this.audit.id).then(response => {
+          this.audit.questionnaireUserAnswers = response;
+          this.questionnairesIsLoading = false;
+        });
+      }
+    }
   }
 
   completeAudit() {

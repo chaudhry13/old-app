@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigService } from './auth-config.service';
-import { QuestionnaireList, QuestionnaireDetails, QuestionnaireCopy, QuestionnaireUserAnswer, QuestionnaireUserAnswerList, QuestionnaireUserAnswerCreate } from '../_models/questionaire';
+import { QuestionnaireList, QuestionnaireDetails, QuestionnaireCopy, QuestionnaireUserAnswer, QuestionnaireUserAnswerList, QuestionnaireUserAnswerCreate } from '../_models/questionnaire';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class QuestionaireService extends GenericService {
+export class QuestionnaireService extends GenericService {
 
   constructor(private http: HttpClient, appConfigService: AppConfigService) {
     super("/questionnaire", appConfigService);

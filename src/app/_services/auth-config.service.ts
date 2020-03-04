@@ -31,7 +31,7 @@ export class AppConfigService {
       // this.appConfig.clientId = "ionic";
       // this.appConfig.oidc = false;
       // this.appConfig.scope = "api";
-      // this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
+      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
       this.appConfig.issuer = "https://test1auth.humanrisks.com";
       this.appConfig.redirectUri = "http://localhost:8100/callback";
       this.appConfig.logoutUrl = "https://test1auth.humanrisks.com/account/logout";

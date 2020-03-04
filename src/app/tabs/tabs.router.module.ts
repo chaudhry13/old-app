@@ -27,8 +27,8 @@ const routes: Routes = [
             loadChildren: '../audits/audit-qrscanner/audit-qr.module#AuditQrPageModule'
           },
           {
-            path: 'questionaire',
-            loadChildren: '../audits/audit-questionaire/audit-questionaire.module#AuditQuestionairePageModule'
+            path: 'questionnaire/:id',
+            loadChildren: '../audits/audit-questionnaire/audit-questionnaire.module#AuditQuestionnairePageModule'
           }
         ]
       },
