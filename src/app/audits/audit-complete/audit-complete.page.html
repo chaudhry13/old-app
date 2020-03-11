@@ -44,9 +44,15 @@
       </ion-item>
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
         <ion-list-header>Questionnaires</ion-list-header>
-        <ion-item *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          {{ userAnswer.questionnaireTitle }}
-        </ion-item>
+        <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
+          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
+            routerLinkActive="router-link-active">
+            <ion-label class="ion-text-wrap">
+              {{ userAnswer.questionnaireTitle }}
+            </ion-label>
+            <ion-icon name="help-circle-outline"></ion-icon>
+          </ion-item>
+        </div>
       </div>
     </div>
 

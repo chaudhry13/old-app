@@ -17,10 +17,13 @@
 
     <!-- Slider Answer -->
     <div *ngIf="question.type == QuestionTypes['Slider']">
-      <ion-range min="-200" max="200" color="secondary">
-        <ion-label slot="start">-200</ion-label>
-        <ion-label slot="end">200</ion-label>
+      <ion-range formControlName="slider" min="question.sliderOptions.sliderFrom"
+        max="question.sliderOptions.sliderFrom" step="question.sliderOption.sliderStep" pin="true" color="primary"
+        value="answerForm.slider">
+        <ion-label slot="start">{{ question.sliderOptions.sliderFrom }}</ion-label>
+        <ion-label slot="end">{{ question.sliderOptions.sliderTo }}</ion-label>
       </ion-range>
+      <p>this: {{answerForm.slider}}</p>
       <!-- <ng5-slider class="questionnaire-slider" [(value)]="rangeValue" [options]="rangeOptions"
           (userChangeEnd)="onRangeChange()"></ng5-slider> -->
     </div>
