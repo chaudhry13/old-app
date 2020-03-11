@@ -7,13 +7,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="questionnaire">
+  <div *ngIf="questionnaireUserAnswer">
     <div *ngFor="let item of questionsAndQuestionGroups">
       <div *ngIf="item.type == 'Group'">
-        <question-group [questionGroup]="item.reference"></question-group>
+        <question-group [questionGroup]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer">
+        </question-group>
       </div>
       <div *ngIf="item.type == 'Question'">
-        <question [question]="item.reference"></question>
+        <question [question]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"></question>
       </div>
     </div>
   </div>

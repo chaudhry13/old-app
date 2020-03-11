@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { QuestionGroupDetails } from 'src/app/_models/questionnaire';
+import { QuestionGroupDetails, QuestionnaireUserAnswer } from 'src/app/_models/questionnaire';
 
 @Component({
   selector: 'question-group',
@@ -9,6 +9,7 @@ import { QuestionGroupDetails } from 'src/app/_models/questionnaire';
 })
 export class QuestionGroupComponent implements OnInit {
   @Input() questionGroup: QuestionGroupDetails;
+  @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
 
   constructor() { }
 

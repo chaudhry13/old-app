@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { GenericService } from './generic.service';
 import { HttpClient } from '@angular/common/http';
 import { AppConfigService } from './auth-config.service';
-import { QuestionnaireList, QuestionnaireDetails, QuestionnaireCopy, QuestionnaireUserAnswer, QuestionnaireUserAnswerList, QuestionnaireUserAnswerCreate } from '../_models/questionnaire';
+import { QuestionnaireList, QuestionnaireDetails, QuestionnaireCopy, QuestionnaireUserAnswer, QuestionnaireUserAnswerList, QuestionnaireUserAnswerCreate, QuestionAnsweredCreate, QuestionAnsweres } from '../_models/questionnaire';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -71,5 +71,24 @@ export class QuestionnaireUserAnswerService extends GenericService {
 
   async insert(form: QuestionnaireUserAnswerCreate): Promise<string> {
     return this.http.post<string>(this.apiBase, form).toPromise();
+  }
+}
+
+@Injectable()
+export class QuestionAnsweredService extends GenericService {
+  constructor(private http: HttpClient, public appConfigService: AppConfigService) {
+    super("/question-answered", appConfigService);
+  }
+
+  async insert(questionAnswer: QuestionAnsweredCreate): Promise<string> {
+    return this.http.post<string>(this.apiBase, questionAnswer).toPromise();
+  }
+
+  async update(questionAnswer: QuestionAnsweredCreate): Promise<string> {
+    return this.http.put<string>(this.apiBase, questionAnswer).toPromise();
+  }
+
+  async get(id: string): Promise<QuestionAnsweres> {
+    return this.http.get<QuestionAnsweres>(this.apiBase + "/" + id).toPromise();
   }
 }

@@ -1,7 +1,13 @@
-<div *ngIf="questionGroup">
-  <div *ngFor="let question of questionGroup.questions">
-    Group Title: {{ questionGroup.groupTitle }}
-    Title: {{ question.title }}
-    Index: {{ question.index }}
-  </div>
-</div>
+<ion-card *ngIf="questionGroup">
+  <ion-card-header>
+    <ion-card-subtitle>
+      Hello There!
+    </ion-card-subtitle>
+    <ion-card-title>
+      {{ questionGroup.groupTitle }}
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content *ngFor="let question of questionGroup.questions">
+    <question [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"></question>
+  </ion-card-content>
+</ion-card>

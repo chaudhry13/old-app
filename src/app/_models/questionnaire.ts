@@ -146,6 +146,7 @@ export class QuestionAnsweredCreate {
     comment: string;
     na: boolean;
     optionAnswered: Array<optionAnswerFromQuestionAnswer>;
+    answered: boolean;
 }
 
 export class QuestionAnsweredEdit extends QuestionAnsweredCreate {

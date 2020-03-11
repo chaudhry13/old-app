@@ -1,6 +1,6 @@
-import { QuestionAndGroups } from './../../_models/questionnaire';
+import { QuestionAndGroups, QuestionnaireUserAnswer } from './../../_models/questionnaire';
 import { Component, OnInit } from '@angular/core';
-import { QuestionnaireService } from 'src/app/_services/questionnaire.service';
+import { QuestionnaireService, QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
 import { QuestionnaireDetails } from 'src/app/_models/questionnaire';
 import { ActivatedRoute } from '@angular/router';
 
@@ -11,25 +11,32 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AuditQuestionnairePage implements OnInit {
 
-  questionnaireId: string;
+  id: string;
   questionnaire: QuestionnaireDetails;
+  questionnaireUserAnswer: QuestionnaireUserAnswer;
 
   questionsAndQuestionGroups: QuestionAndGroups[] = [];
 
   constructor(private questionnaireService: QuestionnaireService,
-    public activatedRoute: ActivatedRoute) {
-    this.questionnaireId = this.activatedRoute.snapshot.paramMap.get('id');
+    public activatedRoute: ActivatedRoute,
+    public questionnaireUserAnswerService: QuestionnaireUserAnswerService) {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
-    this.questionnaireService.get(this.questionnaireId).then(result => {
-      this.questionnaire = result;
+    // this.questionnaireService.get(this.questionnaireId).then(result => {
+    //   this.questionnaire = result;
+    //   this.addQuestionsAndGroups();
+    // });
+
+    this.questionnaireUserAnswerService.get(this.id).then(qua => {
+      this.questionnaireUserAnswer = qua;
+      this.questionnaire = qua.questionnaireSentOut.questionnaire;
       this.addQuestionsAndGroups();
     });
   }
 
   addQuestionsAndGroups() {
-
     //Sorts the questions within each group
     this.questionnaire.questionGroups.forEach(g => g.questions = g.questions.sort((q1, q2) => q1.index - q2.index));
 
