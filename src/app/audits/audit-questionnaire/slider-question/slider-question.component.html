@@ -1,6 +1,6 @@
 <div [formGroup]="answerForm">
   <ion-range formControlName="slider" min="question.sliderOptions.sliderFrom" max="question.sliderOptions.sliderFrom"
-    step="question.sliderOption.sliderStep" pin="true" color="primary" value="answerForm.slider">
+    value="answerForm.slider">
     <ion-label slot="start">{{ question.sliderOptions.sliderFrom }}</ion-label>
     <ion-label slot="end">{{ question.sliderOptions.sliderTo }}</ion-label>
   </ion-range>

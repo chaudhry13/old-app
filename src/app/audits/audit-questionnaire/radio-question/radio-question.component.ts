@@ -36,6 +36,7 @@ export class RadioQuestionComponent implements OnInit {
   ngOnInit() {
     this.questionAnswer = this.findQuestionAnswer(this.question.id);
   }
+
   optionPressed(option: QuestionOption) {
     if (!this.viewAnswer) {
       this.addUpdateQuestionOptionAnswer(option);

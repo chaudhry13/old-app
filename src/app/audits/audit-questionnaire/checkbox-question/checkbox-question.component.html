@@ -3,8 +3,8 @@
   <div class="row question mt-4" *ngFor="let option of question.possibleAnswers" (click)="optionPressed(option)">
     <div class="col-1">
       <!-- Checkbox button icons -->
-      <i *ngIf="CheckValue(option)" class="far fa-check-square"></i>
-      <i *ngIf="!CheckValue(option)" class="far fa-square"></i>
+      <i *ngIf="qhs.CheckOptionValue(option)" class="far fa-check-square"></i>
+      <i *ngIf="!qhs.CheckOptionValue(option)" class="far fa-square"></i>
     </div>
     <div class="col">
       <h5>

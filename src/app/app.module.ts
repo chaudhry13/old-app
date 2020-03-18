@@ -1,3 +1,4 @@
+import { QuestionnaireHelperService } from './_services/questionnaire-helper.service';
 import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
@@ -120,6 +121,7 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     QuestionnaireUserAnswerService,
     QRScanner,
     QuestionnaireService,
+    QuestionnaireHelperService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

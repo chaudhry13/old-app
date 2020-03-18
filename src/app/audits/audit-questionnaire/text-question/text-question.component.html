@@ -1,8 +1,7 @@
 <div [formGroup]="answerForm">
-  <ion-textarea *ngIf="!pattern" formControlName="text" contenteditable="true" placeholder="Free text"></ion-textarea>
+  <ion-textarea formControlName="text" contenteditable="true" placeholder="Free speech"></ion-textarea>
 </div>
-
-<div [formGroup]="answerForm">
-  <ion-input *ngIf="pattern" pattern="{{pattern}}" formControlName="text" class="form-control" contenteditable="true"
-    placeholder="{{ textTypeToString[Type] }}"></ion-input>
+<div [formGroup]="answerForm" *ngIf="pattern">
+  <ion-input pattern="email" formControlName="text" class="form-control" contenteditable="true"
+    placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
 </div>

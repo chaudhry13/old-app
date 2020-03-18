@@ -26,8 +26,8 @@
     </checkbox-question>
 
     <!-- If Radio Button Question -->
-    <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio'])" [question]="question"
-      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
+    <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio Button'])"
+      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
     </radio-question>
 
   </form>
