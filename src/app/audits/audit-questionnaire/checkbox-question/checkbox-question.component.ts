@@ -1,24 +1,24 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Question, QuestionTypes, QuestionTextType, QuestionOption, QuestionnaireUserAnswer, QuestionAnsweres, QuestionAnsweredEdit, optionAnswerFromQuestionAnswer } from 'src/app/_models/questionnaire';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastService } from 'src/app/_services/toast.service';
-import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
+import { ToastService } from './../../../_services/toast.service';
+import { QuestionAnsweredService } from './../../../_services/questionnaire.service';
+import { FormGroup } from '@angular/forms';
+import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionTypes, QuestionTextType, QuestionAnsweres, optionAnswerFromQuestionAnswer, QuestionAnsweredEdit } from './../../../_models/questionnaire';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'checkbox-question',
+  templateUrl: './checkbox-question.component.html',
+  styleUrls: ['./checkbox-question.component.scss'],
 })
-export class QuestionComponent implements OnInit {
+export class CheckboxQuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Input() answerForm: FormGroup;
 
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
   questionAnswer: QuestionAnsweres;
 
-  answerForm: FormGroup;
+  viewAnswer: Boolean;
 
   message: string = "";
   pattern: string = "";
@@ -27,28 +27,22 @@ export class QuestionComponent implements OnInit {
   saving: boolean;
   saved: boolean;
 
-  constructor(public formBuilder: FormBuilder, public toastService: ToastService, public questionAnsweredService: QuestionAnsweredService) {
-    this.answerForm = this.formBuilder.group({
-      id: [""],
-      questionId: [""],
-      userAnswerId: [""],
-      text: [""],
-      slider: [0],
-      numberAnswer: [0],
-      comment: [""],
-      na: [false],
-      answered: [false]
-    });
-  }
+
+  constructor(
+    private questionAnsweredService: QuestionAnsweredService,
+    private toastService: ToastService
+  ) { }
 
   ngOnInit() {
-    this.questionAnswer = this.questionnaireUserAnswer.questionAnsweres.find(q => q.questionId == this.question.id);
-    if (this.question.type == QuestionTypes.Text)
-      this.Type = this.question.textOptions.type;
+    this.questionAnswer = this.findQuestionAnswer(this.question.id);
   }
 
   optionPressed(option: QuestionOption) {
-    this.addUpdateQuestionOptionAnswer(option);
+    console.log(this.questionAnswer);
+    if (!this.viewAnswer) {
+      this.addUpdateQuestionOptionAnswer(option);
+    }
+    console.log(this.answerForm);
   }
 
   CheckValue(option: QuestionOption) {
@@ -74,23 +68,13 @@ export class QuestionComponent implements OnInit {
         questionOptionId: option.id,
       }
 
-      if (this.question.type == QuestionTypes["Radio Button"]) {
-        answerEdit.optionAnswered.forEach(x => x.selected = false);
-      }
       answerEdit.optionAnswered.push(optionAnswered);
 
       this.updateAnswer(answerEdit);
     }
     //Update the option answer
     else {
-      if (this.question.type == QuestionTypes.Checkbox) {
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = !this.CheckValue(option);
-      }
-      else if (this.question.type == QuestionTypes["Radio Button"]) {
-        answerEdit.optionAnswered.forEach(x => x.selected = false);
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = true;
-      }
-
+      answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = !this.CheckValue(option);
       this.updateAnswer(answerEdit);
     }
   }
@@ -113,7 +97,14 @@ export class QuestionComponent implements OnInit {
     return answerEdit;
   }
 
+  findQuestionAnswer(questionId: string): QuestionAnsweres {
+    if (this.questionnaireUserAnswer) {
+      return this.questionnaireUserAnswer.questionAnsweres.find(x => x.questionId == questionId);
+    }
+  }
+
   GetQuestionAnswer(Id: string) {
+    console.log("ERror here? checkbox");
     this.questionAnsweredService.get(Id).then(model => {
       this.questionAnswer = model;
       //this.answerUpdated.emit(this.questionAnswer);
@@ -146,26 +137,8 @@ export class QuestionComponent implements OnInit {
 
   HasAnswer(answer: QuestionAnsweredEdit): boolean {
     var answered = true;
-    switch (this.question.type) {
-      case QuestionTypes.Number:
-        answered = answer.numberAnswer != null
-        break;
-
-      case QuestionTypes.Text:
-        answered = !this.isNullOrWhitespace(answer.text);
-        break;
-
-      case QuestionTypes.Slider:
-        answered = answer.slider != null
-        break;
-
-      case QuestionTypes.Checkbox:
-      case QuestionTypes["Radio Button"]:
-        var options = answer.optionAnswered.filter(x => x.selected);
-        answered = options.length >= 1;
-        break;
-    }
-
+    var options = answer.optionAnswered.filter(x => x.selected);
+    answered = options.length >= 1;
     return answered;
   }
 
@@ -174,6 +147,5 @@ export class QuestionComponent implements OnInit {
 
     return input.replace(/\s/g, '').length < 1;
   }
+
 }
-
-

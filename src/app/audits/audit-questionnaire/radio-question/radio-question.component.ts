@@ -1,24 +1,24 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Question, QuestionTypes, QuestionTextType, QuestionOption, QuestionnaireUserAnswer, QuestionAnsweres, QuestionAnsweredEdit, optionAnswerFromQuestionAnswer } from 'src/app/_models/questionnaire';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastService } from 'src/app/_services/toast.service';
-import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
+import { ToastService } from './../../../_services/toast.service';
+import { QuestionAnsweredService } from './../../../_services/questionnaire.service';
+import { Component, OnInit, Input } from '@angular/core';
+import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionTypes, QuestionAnsweres, QuestionOption, optionAnswerFromQuestionAnswer, QuestionAnsweredEdit } from 'src/app/_models/questionnaire';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'radio-question',
+  templateUrl: './radio-question.component.html',
+  styleUrls: ['./radio-question.component.scss'],
 })
-export class QuestionComponent implements OnInit {
+export class RadioQuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Input() answerForm: FormGroup;
 
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
   questionAnswer: QuestionAnsweres;
 
-  answerForm: FormGroup;
+  viewAnswer: Boolean;
 
   message: string = "";
   pattern: string = "";
@@ -27,28 +27,19 @@ export class QuestionComponent implements OnInit {
   saving: boolean;
   saved: boolean;
 
-  constructor(public formBuilder: FormBuilder, public toastService: ToastService, public questionAnsweredService: QuestionAnsweredService) {
-    this.answerForm = this.formBuilder.group({
-      id: [""],
-      questionId: [""],
-      userAnswerId: [""],
-      text: [""],
-      slider: [0],
-      numberAnswer: [0],
-      comment: [""],
-      na: [false],
-      answered: [false]
-    });
+  constructor(
+    public questionAnsweredService: QuestionAnsweredService,
+    public toastService: ToastService
+  ) {
   }
 
   ngOnInit() {
-    this.questionAnswer = this.questionnaireUserAnswer.questionAnsweres.find(q => q.questionId == this.question.id);
-    if (this.question.type == QuestionTypes.Text)
-      this.Type = this.question.textOptions.type;
+    this.questionAnswer = this.findQuestionAnswer(this.question.id);
   }
-
   optionPressed(option: QuestionOption) {
-    this.addUpdateQuestionOptionAnswer(option);
+    if (!this.viewAnswer) {
+      this.addUpdateQuestionOptionAnswer(option);
+    }
   }
 
   CheckValue(option: QuestionOption) {
@@ -74,24 +65,20 @@ export class QuestionComponent implements OnInit {
         questionOptionId: option.id,
       }
 
-      if (this.question.type == QuestionTypes["Radio Button"]) {
-        answerEdit.optionAnswered.forEach(x => x.selected = false);
-      }
+      answerEdit.optionAnswered.forEach(x => x.selected = false);
       answerEdit.optionAnswered.push(optionAnswered);
 
       this.updateAnswer(answerEdit);
-    }
-    //Update the option answer
-    else {
-      if (this.question.type == QuestionTypes.Checkbox) {
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = !this.CheckValue(option);
-      }
-      else if (this.question.type == QuestionTypes["Radio Button"]) {
-        answerEdit.optionAnswered.forEach(x => x.selected = false);
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = true;
-      }
-
+    } else { //Update the option answer
+      answerEdit.optionAnswered.forEach(x => x.selected = false);
+      answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = true;
       this.updateAnswer(answerEdit);
+    }
+  }
+
+  findQuestionAnswer(questionId: string): QuestionAnsweres {
+    if (this.questionnaireUserAnswer) {
+      return this.questionnaireUserAnswer.questionAnsweres.find(x => x.questionId == questionId);
     }
   }
 
@@ -114,6 +101,7 @@ export class QuestionComponent implements OnInit {
   }
 
   GetQuestionAnswer(Id: string) {
+    console.log("ERror here?");
     this.questionAnsweredService.get(Id).then(model => {
       this.questionAnswer = model;
       //this.answerUpdated.emit(this.questionAnswer);
@@ -174,6 +162,5 @@ export class QuestionComponent implements OnInit {
 
     return input.replace(/\s/g, '').length < 1;
   }
+
 }
-
-

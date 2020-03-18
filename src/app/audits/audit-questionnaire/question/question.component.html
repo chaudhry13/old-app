@@ -4,64 +4,31 @@
       {{ question.title }}
     </ion-card-subtitle>
   </ion-card-header>
-  <!-- Answeres -->
+
+  <!-- AnswerForm -->
   <form [formGroup]="answerForm" *ngIf="question">
-    <!-- Text answer -->
-    <div class="input-group" *ngIf="question.type == QuestionTypes['Text']">
-      <ion-textarea *ngIf="!pattern" formControlName="text" class="form-control" contenteditable="true"
-        placeholder="Free text"></ion-textarea>
 
-      <ion-input *ngIf="pattern" pattern="{{pattern}}" formControlName="text" class="form-control"
-        contenteditable="true" placeholder="{{ textTypeToString[Type] }}"></ion-input>
-    </div>
+    <!-- If Text Question -->
+    <text-question *ngIf="question.type == QuestionTypes['Text']" [question]="question"
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></text-question>
 
-    <!-- Slider Answer -->
-    <div *ngIf="question.type == QuestionTypes['Slider']">
-      <ion-range formControlName="slider" min="question.sliderOptions.sliderFrom"
-        max="question.sliderOptions.sliderFrom" step="question.sliderOption.sliderStep" pin="true" color="primary"
-        value="answerForm.slider">
-        <ion-label slot="start">{{ question.sliderOptions.sliderFrom }}</ion-label>
-        <ion-label slot="end">{{ question.sliderOptions.sliderTo }}</ion-label>
-      </ion-range>
-      <p>this: {{answerForm.slider}}</p>
-      <!-- <ng5-slider class="questionnaire-slider" [(value)]="rangeValue" [options]="rangeOptions"
-          (userChangeEnd)="onRangeChange()"></ng5-slider> -->
-    </div>
+    <!-- If Text Question -->
+    <slider-question *ngIf="question.type == QuestionTypes['Slider']" [question]="question"
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></slider-question>
 
-    <!-- Number answer -->
-    <div *ngIf="question.type == QuestionTypes['Number']">
-      <input formControlName="numberAnswer" class="form-control" type="number" min="{{ from }}" max="{{ to }}" />
-    </div>
+    <!-- If Number Question -->
+    <number-question *ngIf="question.type == QuestionTypes['Number']" [question]="question"
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></number-question>
 
-    <!-- Checkbox/radio button answer -->
-    <div class="col" *ngIf="question && question.possibleAnswers && (question.type == QuestionTypes['Checkbox'] || question.type ==
-        QuestionTypes['Radio Button'])">
-      <div class="row">
-        <!-- Prints out the options -->
-        <div class="row question mt-4" *ngFor="let option of question.possibleAnswers"
-          [style.border-color]="option.colorHexValue" (click)="optionPressed(option)">
+    <!-- If Checkbox Question -->
+    <checkbox-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Checkbox'])"
+      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
+    </checkbox-question>
 
-          <div class="col-1">
-            <!-- Checkbox buttons -->
-            <div *ngIf="question.type == QuestionTypes['Checkbox']">
-              <i *ngIf="CheckValue(option)" class="far fa-check-square"></i>
-              <i *ngIf="!CheckValue(option)" class="far fa-square"></i>
-            </div>
+    <!-- If Radio Button Question -->
+    <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio'])" [question]="question"
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
+    </radio-question>
 
-            <!-- Radio button buttons -->
-            <div *ngIf="question.type == QuestionTypes['Radio Button']">
-              <i *ngIf="CheckValue(option)" class="far fa-dot-circle"></i>
-              <i *ngIf="!CheckValue(option)" class="far fa-circle"></i>
-            </div>
-          </div>
-
-          <div class="col">
-            <h5>
-              {{ option.text }}
-            </h5>
-          </div>
-        </div>
-      </div>
-    </div>
   </form>
 </ion-card>

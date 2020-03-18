@@ -7,6 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { AuditQuestionnairePage } from './audit-questionnaire.page';
 import { QuestionGroupComponent } from './question-group/question-group.component';
 import { QuestionComponent } from './question/question.component';
+import { TextQuestionComponent } from './text-question/text-question.component';
+import { SliderQuestionComponent } from './slider-question/slider-question.component';
+import { RadioQuestionComponent } from './radio-question/radio-question.component';
+import { CheckboxQuestionComponent } from './checkbox-question/checkbox-question.component';
+import { NumberQuestionComponent } from './number-question/number-question.component';
 
 
 const routes: Routes = [
@@ -24,7 +29,16 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AuditQuestionnairePage, QuestionGroupComponent, QuestionComponent],
+  declarations: [
+    AuditQuestionnairePage,
+    QuestionGroupComponent,
+    QuestionComponent,
+    TextQuestionComponent,
+    SliderQuestionComponent,
+    RadioQuestionComponent,
+    CheckboxQuestionComponent,
+    NumberQuestionComponent
+  ],
   exports: [QuestionGroupComponent, QuestionComponent]
 })
 export class AuditQuestionnairePageModule { }

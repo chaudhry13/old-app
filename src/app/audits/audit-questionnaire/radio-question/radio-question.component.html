@@ -1,0 +1,18 @@
+<div class="row">
+  <!-- Prints out the options -->
+  <div class="row question mt-4" *ngFor="let option of question.possibleAnswers"
+    [style.border-color]="option.colorHexValue" (click)="optionPressed(option)">
+
+    <div class="col-1">
+      <!-- Radio button buttons -->
+      <i *ngIf="CheckValue(option)" class="far fa-dot-circle"></i>
+      <i *ngIf="!CheckValue(option)" class="far fa-circle"></i>
+    </div>
+
+    <div class="col">
+      <h5>
+        {{ option.text }}
+      </h5>
+    </div>
+  </div>
+</div>
