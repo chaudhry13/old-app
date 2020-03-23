@@ -50,7 +50,8 @@
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
-            <ion-icon name="help-circle-outline"></ion-icon>
+            ({{ userAnswer.questionsAnswered }} / {{ userAnswer.numberOfQuestions }})
+            <ion-icon class="ion-padding-start" name="help-circle-outline"></ion-icon>
           </ion-item>
         </div>
       </div>
