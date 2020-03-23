@@ -1,3 +1,4 @@
+import { QuestionnaireHelperService } from './../../_services/questionnaire-helper.service';
 import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { Audit, QuestionnaireUserAnswerAudit } from "../../_models/audit";
 import { OAuthService } from "angular-oauth2-oidc";
@@ -77,8 +78,7 @@ export class AuditCompletePage implements OnInit {
     public tokenService: TokenService,
     public followUpService: FollowUpService,
     public userService: UserService,
-    private navigationService: NavController,
-    private questionnaireService: QuestionnaireService) {
+    public qhs: QuestionnaireHelperService) {
 
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 

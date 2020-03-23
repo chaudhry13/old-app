@@ -1,10 +1,7 @@
-<ion-card *ngIf="question">
-  <ion-card-header>
-    <ion-card-subtitle>
-      {{ question.title }}
-    </ion-card-subtitle>
-  </ion-card-header>
-
+<div *ngIf="question">
+  <ion-label>
+    {{ question.title }}
+  </ion-label>
   <!-- AnswerForm -->
   <form [formGroup]="answerForm" *ngIf="question">
 
@@ -29,6 +26,5 @@
     <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio Button'])"
       [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
     </radio-question>
-
   </form>
-</ion-card>
+</div>

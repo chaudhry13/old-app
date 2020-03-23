@@ -12,8 +12,16 @@ export class NumberQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
 
+  from: number;
+  to: number;
+
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.from = this.question.numberOptions.from;
+    this.to = this.question.numberOptions.to;
+    console.log("from : " + this.from);
+    console.log("to : " + this.to);
+  }
 
 }

@@ -36,4 +36,5 @@ export class QuestionnaireUserAnswerAudit {
   questionnaireId: string;
   questionsAnswered: number;
   numberOfQuestions: number;
+  questionnaireTitle: string;
 }

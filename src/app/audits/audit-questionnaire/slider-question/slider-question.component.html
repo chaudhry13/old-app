@@ -1,6 +1,8 @@
 <div [formGroup]="answerForm">
-  <ion-range formControlName="slider" min="question.sliderOptions.sliderFrom" max="question.sliderOptions.sliderFrom"
-    value="answerForm.slider">
+
+  <ion-range pin debounce="500" formControlName="slider" min="{{question.sliderOptions.sliderFrom}}"
+    max="{{question.sliderOptions.sliderTo}}" step="{{question.sliderOptions.sliderStep}}" value="{{sliderValue}}"
+    (ionChange)="valueChanged()">
     <ion-label slot="start">{{ question.sliderOptions.sliderFrom }}</ion-label>
     <ion-label slot="end">{{ question.sliderOptions.sliderTo }}</ion-label>
   </ion-range>
