@@ -30,8 +30,6 @@ export class CheckboxQuestionComponent implements OnInit {
 
 
   constructor(
-    private questionAnsweredService: QuestionAnsweredService,
-    private toastService: ToastService,
     public qhs: QuestionnaireHelperService
   ) { }
 

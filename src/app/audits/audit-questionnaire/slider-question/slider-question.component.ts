@@ -1,3 +1,5 @@
+import { QuestionnaireHelperService } from 'src/app/_services/questionnaire-helper.service';
+import { QuestionAnsweres } from './../../../_models/questionnaire';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { QuestionnaireUserAnswer, Question } from 'src/app/_models/questionnaire';
@@ -12,8 +14,24 @@ export class SliderQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
 
-  constructor() { }
+  sliderValue: number;
+  questionAnswer: QuestionAnsweres;
 
-  ngOnInit() { }
+  constructor(public qhs: QuestionnaireHelperService) { }
+
+  ngOnInit() {
+    this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
+
+    this.answerForm.controls["slider"].setValue(this.question.sliderOptions.sliderFrom);
+    this.sliderValue = this.question.sliderOptions.sliderFrom;
+    this.valueChanged();
+  }
+
+  valueChanged() {
+    var answerEdit = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
+    answerEdit.answered = true;
+    console.log(answerEdit.answered);
+    this.qhs.updateAnswer(answerEdit, this.questionAnswer, this.question);
+  }
 
 }
