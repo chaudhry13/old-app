@@ -13,6 +13,7 @@ import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service
 export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Input() isInGroup: boolean;
 
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;

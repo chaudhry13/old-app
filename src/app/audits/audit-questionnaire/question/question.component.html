@@ -1,8 +1,4 @@
-<div *ngIf="question">
-  <ion-label>
-    {{ question.title }}
-  </ion-label>
-  <!-- AnswerForm -->
+<ion-item *ngIf="question" lines="none">
   <form [formGroup]="answerForm" *ngIf="question">
 
     <!-- If Text Question -->
@@ -27,4 +23,4 @@
       [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
     </radio-question>
   </form>
-</div>
+</ion-item>

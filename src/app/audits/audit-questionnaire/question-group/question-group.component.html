@@ -4,9 +4,16 @@
       {{ questionGroup.groupTitle }}
     </ion-card-title>
   </ion-card-header>
-  <ion-list>
-    <ion-item *ngFor="let question of questionGroup.questions">
-      <question [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"></question>
-    </ion-item>
-  </ion-list>
+  <ion-card-content>
+    <ion-item-group>
+      <div *ngFor="let question of questionGroup.questions">
+        <ion-item-divider>
+          <ion-label>
+            {{ question.title }}
+          </ion-label>
+        </ion-item-divider>
+          <question [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [isInGroup]="true"></question>
+      </div>
+    </ion-item-group>
+  </ion-card-content>
 </ion-card>

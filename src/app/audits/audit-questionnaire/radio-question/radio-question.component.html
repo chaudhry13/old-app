@@ -1,17 +1,13 @@
-<div class="row">
-  <!-- Prints out the options -->
-  <div class="row question mt-4" *ngFor="let option of question.possibleAnswers"
-    [style.border-color]="option.colorHexValue" (click)="optionPressed(option)">
-    <div class="col-1">
-      <!-- Radio button buttons -->
-      <i *ngIf="qhs.CheckOptionValue(option)" class="far fa-dot-circle"></i>
-      <i *ngIf="!qhs.CheckOptionValue(option)" class="far fa-circle"></i>
-    </div>
+<ion-list lines="none">
+  <ion-radio-group>
+    <ion-item *ngFor="let option of question.possibleAnswers"
+    (click)="optionPressed(option)">
+      <ion-radio class="ion-float-start" color="secondary">
+      </ion-radio>
 
-    <div class="col">
-      <h5>
+      <ion-label class="ion-padding-start">
         {{ option.text }}
-      </h5>
-    </div>
-  </div>
-</div>
+      </ion-label>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>

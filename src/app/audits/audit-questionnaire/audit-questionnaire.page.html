@@ -9,14 +9,26 @@
 <ion-content>
   <div *ngIf="questionnaireUserAnswer">
     <div *ngFor="let item of questionsAndQuestionGroups">
+
+      <!-- Question groups -->
       <div *ngIf="item.type == 'Group'">
         <question-group [questionGroup]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer">
         </question-group>
       </div>
-      <div *ngIf="item.type == 'Question'">
-        <question [question]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"></question>
-      </div>
+
+      <!-- Standalone questions -->
+      <ion-card *ngIf="item.type == 'Question'">
+        <ion-card-header>
+          <ion-card-title>
+            {{ item.reference.title }}
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <question [question]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer" [isInGroup]="false">
+          </question>
+        </ion-card-content>
+      </ion-card>
+
     </div>
   </div>
-  <question></question>
 </ion-content>
