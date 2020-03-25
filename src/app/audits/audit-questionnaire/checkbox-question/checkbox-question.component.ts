@@ -5,6 +5,8 @@ import { FormGroup } from '@angular/forms';
 import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionTypes, QuestionTextType, QuestionAnsweres, optionAnswerFromQuestionAnswer, QuestionAnsweredEdit } from './../../../_models/questionnaire';
 import { Component, OnInit, Input } from '@angular/core';
 
+// TODO: Sort question options!
+
 @Component({
   selector: 'checkbox-question',
   templateUrl: './checkbox-question.component.html',

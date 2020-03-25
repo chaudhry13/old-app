@@ -4,8 +4,7 @@ import { QuestionGroupDetails, QuestionnaireUserAnswer } from 'src/app/_models/q
 @Component({
   selector: 'question-group',
   templateUrl: './question-group.component.html',
-  styleUrls: ['./question-group.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./question-group.component.scss']
 })
 export class QuestionGroupComponent implements OnInit {
   @Input() questionGroup: QuestionGroupDetails;

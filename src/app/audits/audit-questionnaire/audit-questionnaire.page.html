@@ -18,17 +18,17 @@
 
       <!-- Standalone questions -->
       <ion-card *ngIf="item.type == 'Question'">
-        <ion-card-header>
-          <ion-card-title>
-            {{ item.reference.title }}
-          </ion-card-title>
-        </ion-card-header>
         <ion-card-content>
-          <question [question]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer" [isInGroup]="false">
+          <ion-item-divider color="primary" style="border-radius: 5px !important;">
+            <ion-label class="ion-text-wrap">
+              {{ item.reference.title }}
+            </ion-label>
+          </ion-item-divider>
+          <question [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
+            [isInGroup]="false">
           </question>
         </ion-card-content>
       </ion-card>
-
     </div>
   </div>
 </ion-content>

@@ -1,14 +1,14 @@
 <ion-card *ngIf="questionGroup">
-  <ion-card-header>
+  <ion-card-header translucent="true">
     <ion-card-title>
       {{ questionGroup.groupTitle }}
     </ion-card-title>
   </ion-card-header>
   <ion-card-content>
     <ion-item-group>
-      <div *ngFor="let question of questionGroup.questions">
-        <ion-item-divider color="primary">
-          <ion-label>
+      <div *ngFor="let question of questionGroup.questions" class="ion-padding-bottom">
+        <ion-item-divider color="primary" style="border-radius: 5px !important;">
+          <ion-label class="ion-text-wrap">
             {{ question.title }}
           </ion-label>
         </ion-item-divider>

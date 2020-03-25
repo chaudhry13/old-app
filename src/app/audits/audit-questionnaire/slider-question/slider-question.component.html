@@ -1,8 +1,20 @@
-<ion-input [formGroup]="answerForm">
-  <ion-range pin debounce="500" formControlName="slider" min="{{question.sliderOptions.sliderFrom}}"
-    max="{{question.sliderOptions.sliderTo}}" step="{{question.sliderOptions.sliderStep}}" value="{{sliderValue}}"
+<div [formGroup]="answerForm">
+  <ion-range slot="start" pin debounce="500" formControlName="slider" min="{{question.sliderOptions.sliderFrom}}"
+    max="{{question.sliderOptions.sliderTo}}" step="{{question.sliderOptions.sliderStep}}" value="{{rangeValue}}"
     (ionChange)="valueChanged()">
-    <ion-label slot="start">{{ question.sliderOptions.sliderFrom }}</ion-label>
-    <ion-label slot="end">{{ question.sliderOptions.sliderTo }}</ion-label>
   </ion-range>
-</ion-input>
+  <!-- <ion-label slot="start">{{question.sliderOptions.sliderLabelMin}}: {{ question.sliderOptions.sliderFrom }}
+  </ion-label>
+  <ion-label slot="end">{{question.sliderOptions.sliderLabelMax}}: {{ question.sliderOptions.sliderTo }}
+  </ion-label> -->
+  <ion-grid>
+    <ion-row class="ion-nowrap">
+      <ion-col class="ion-text-left">
+        {{question.sliderOptions.sliderLabelMin}}: {{ question.sliderOptions.sliderFrom }}
+      </ion-col>
+      <ion-col class="ion-text-right">
+        {{question.sliderOptions.sliderLabelMax}}: {{ question.sliderOptions.sliderTo }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

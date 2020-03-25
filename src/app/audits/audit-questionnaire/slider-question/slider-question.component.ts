@@ -14,7 +14,7 @@ export class SliderQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
 
-  sliderValue: number;
+  rangeValue: number;
   questionAnswer: QuestionAnsweres;
 
   constructor(public qhs: QuestionnaireHelperService) { }
@@ -22,9 +22,13 @@ export class SliderQuestionComponent implements OnInit {
   ngOnInit() {
     this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
 
-    this.answerForm.controls["slider"].setValue(this.question.sliderOptions.sliderFrom);
-    this.sliderValue = this.question.sliderOptions.sliderFrom;
-    this.valueChanged();
+    if (this.questionAnswer != null) {
+      this.answerForm.controls["slider"].setValue(this.questionAnswer.slider);
+      this.rangeValue = this.questionAnswer.slider;
+    } else {
+      this.answerForm.controls["slider"].setValue(this.question.sliderOptions.sliderFrom);
+      this.rangeValue = this.question.sliderOptions.sliderFrom;
+    }
   }
 
   valueChanged() {

@@ -5,7 +5,6 @@ import { FormGroup } from '@angular/forms';
 import { QuestionnaireUserAnswer, Question, QuestionTypes } from './../_models/questionnaire';
 import { Injectable } from '@angular/core';
 import { QuestionOption, QuestionAnsweres, QuestionAnsweredEdit, optionAnswerFromQuestionAnswer } from '../_models/questionnaire';
-import { QuestionnaireUserAnswerAudit } from '../_models/audit';
 
 @Injectable()
 export class QuestionnaireHelperService {
@@ -138,7 +137,7 @@ export class QuestionnaireHelperService {
     return answered;
   }
 
-  private isNullOrWhitespace(input): boolean {
+  public isNullOrWhitespace(input): boolean {
     if (typeof input === 'undefined' || input == null) return true;
 
     return input.replace(/\s/g, '').length < 1;

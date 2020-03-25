@@ -1,4 +1,4 @@
-<ion-item *ngIf="question" lines="none">
+<div *ngIf="question" class="ion-padding-top">
   <form [formGroup]="answerForm" *ngIf="question">
 
     <!-- If Text Question -->
@@ -23,4 +23,4 @@
       [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
     </radio-question>
   </form>
-</ion-item>
+</div>

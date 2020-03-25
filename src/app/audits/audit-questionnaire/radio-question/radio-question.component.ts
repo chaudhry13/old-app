@@ -5,6 +5,8 @@ import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionTypes, Que
 import { FormGroup } from '@angular/forms';
 import { QuestionnaireHelperService } from 'src/app/_services/questionnaire-helper.service';
 
+// TODO: Sort question options!
+
 @Component({
   selector: 'radio-question',
   templateUrl: './radio-question.component.html',

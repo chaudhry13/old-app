@@ -1,7 +1,24 @@
-<div [formGroup]="answerForm">
-  <ion-textarea rows="6" cols="20" formControlName="text" contenteditable="true" placeholder="Text answer here.."></ion-textarea>
+<!-- Free Text Answer -->
+<div [formGroup]="answerForm" class="ion-padding-start"
+  *ngIf="question.textOptions.type == textTypeToString['Free Text']">
+  <ion-textarea autoGrow="true" formControlName="text" contenteditable="true" placeholder="Text answer here..">
+  </ion-textarea>
 </div>
-<!-- <div [formGroup]="answerForm" *ngIf="pattern">
-  <ion-input pattern="email" formControlName="text" class="form-control" contenteditable="true"
-    placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
-</div> -->
+
+<!-- Email Answer -->
+<div [formGroup]="answerForm" *ngIf="question.textOptions.type == textTypeToString['Email']">
+  <ion-input type="email" [pattern]="question.textOptions.regex" formControlName="text" class="form-control"
+    contenteditable="true" placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
+</div>
+
+<!-- Phone Number Answer -->
+<div [formGroup]="answerForm" *ngIf="question.textOptions.type == textTypeToString['Phone Number']">
+  <ion-input type="tel" [pattern]="question.textOptions.regex" formControlName="text" class="form-control"
+    contenteditable="true" placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
+</div>
+
+<!-- Custom Regex Answer -->
+<div [formGroup]="answerForm" *ngIf="question.textOptions.type == textTypeToString['Custom Regex']">
+  <ion-input type="text" [pattern]="question.textOptions.regex" formControlName="text" class="form-control"
+    contenteditable="true" placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
+</div>
