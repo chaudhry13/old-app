@@ -1,15 +1,8 @@
-<div class="row">
-  <!-- Checkbox question options -->
-  <div class="row question mt-4" *ngFor="let option of question.possibleAnswers" (click)="optionPressed(option)">
-    <div class="col-1">
-      <!-- Checkbox button icons -->
-      <i *ngIf="qhs.CheckOptionValue(option)" class="far fa-check-square"></i>
-      <i *ngIf="!qhs.CheckOptionValue(option)" class="far fa-square"></i>
-    </div>
-    <div class="col">
-      <h5>
-        {{ option.text }}
-      </h5>
-    </div>
-  </div>
-</div>
+<ion-item *ngFor="let option of question.possibleAnswers" (click)="optionPressed(option)" lines="none">
+  <!-- Checkbox button icons -->
+  <ion-checkbox slot="start">
+  </ion-checkbox>
+  <ion-label>
+    {{ option.text}}
+  </ion-label>
+</ion-item>
