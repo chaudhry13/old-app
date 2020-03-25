@@ -47,6 +47,7 @@ export class TextQuestionComponent implements OnInit {
       case this.textTypeToString["Phone Number"]:
         this.regularExpression = this.PhoneNumber;
       default:
+        this.regularExpression = new RegExp("");
         break;
     }
 
