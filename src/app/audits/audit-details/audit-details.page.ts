@@ -43,7 +43,7 @@ export class AuditDetailsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getAudits();
+    this.getAudits(); // TODO: Should not be loaded twice.
   }
 
   getAudits() {

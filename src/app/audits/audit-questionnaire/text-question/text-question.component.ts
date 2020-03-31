@@ -38,18 +38,7 @@ export class TextQuestionComponent implements OnInit {
       this.answerForm.controls["text"].setValue(this.questionAnswer.text);
     }
 
-    switch (this.question.textOptions.type) {
-      case this.textTypeToString["Custom Regex"]:
-        this.regularExpression = new RegExp(this.question.textOptions.regex);
-        break;
-      case this.textTypeToString.Email:
-        this.regularExpression = this.Email;
-      case this.textTypeToString["Phone Number"]:
-        this.regularExpression = this.PhoneNumber;
-      default:
-        this.regularExpression = new RegExp("");
-        break;
-    }
+    this.readTextQuestionType();
 
 
     this.answerForm.valueChanges
@@ -57,23 +46,21 @@ export class TextQuestionComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
       )
-      .subscribe(x => {
-        console.log("Text Changed in Question: " + this.question.title);
-        console.log(x);
-        console.log("regex: " + this.regularExpression);
-        console.log("is valid: " + this.answerForm.controls["text"].valid + " && " + this.regularExpression.test(this.answerForm.controls["text"].value) + " && " + !this.qhs.isNullOrWhitespace(this.answerForm.controls["text"].value));
-        if (this.answerForm.controls["text"].valid
+      .subscribe(() => {
+        if (
+          !this.qhs.isNullOrWhitespace(this.answerForm.controls["text"].value)
           && this.regularExpression.test(this.answerForm.controls["text"].value)
-          && !this.qhs.isNullOrWhitespace(this.answerForm.controls["text"].value)) {
+          && this.answerForm.controls["text"].valid
+        ) {
           var answer = this.getQuestionAnswerEdit();
           this.questionAnsweredService.update(answer);
-          console.log("Text updated");
         } else {
-          console.log("not valid text!!");
+          // Handle error here
         }
       });
   }
 
+  /* TODO: These functions should be extracted to the questionnaire helper service */
   findQuestionAnswer(questionId: string): QuestionAnsweres {
     if (this.questionnaireUserAnswer) {
       return this.questionnaireUserAnswer.questionAnsweres.find(x => x.questionId == questionId);
@@ -96,5 +83,23 @@ export class TextQuestionComponent implements OnInit {
     };
 
     return answerEdit;
+  }
+  /* ************************************************************************** */
+
+  private readTextQuestionType() {
+    switch (this.question.textOptions.type) {
+      case this.textTypeToString["Custom Regex"]:
+        this.regularExpression = new RegExp(this.question.textOptions.regex);
+        break;
+      case this.textTypeToString.Email:
+        this.regularExpression = this.Email;
+        break;
+      case this.textTypeToString["Phone Number"]:
+        this.regularExpression = this.PhoneNumber;
+        break;
+      default:
+        this.regularExpression = new RegExp("");
+        break;
+    }
   }
 }
