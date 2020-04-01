@@ -19,6 +19,7 @@ export class SliderQuestionComponent implements OnInit {
 
   constructor(public qhs: QuestionnaireHelperService) { }
 
+  // TODO: Cleanup
   ngOnInit() {
     this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
 
@@ -32,9 +33,8 @@ export class SliderQuestionComponent implements OnInit {
   }
 
   valueChanged() {
+    this.rangeValue = this.answerForm.controls["slider"].value;
     var answerEdit = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
-    answerEdit.answered = true;
-    console.log(answerEdit.answered);
     this.qhs.updateAnswer(answerEdit, this.questionAnswer, this.question);
   }
 
