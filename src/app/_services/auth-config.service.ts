@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AppConfig } from '../_settings/auth.config';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { OAuthService, JwksValidationHandler, OAuthErrorEvent } from 'angular-oauth2-oidc';
 import { TokenService } from './token.service';
 @Injectable({
   providedIn: 'root'
@@ -75,6 +75,14 @@ export class AppConfigService {
     this.storage.set("logout_url", tokenPayload.iss + "/account/logout");
     this.storage.set("redirect_uri", "http://localhost:8100/callback");
     this.storage.set("oidc", false);
+  }
+
+  configureImplicitFlowAuthentication() {
+    this.oAuthService.configure(this.appConfig);
+    this.oAuthService.setStorage(localStorage);
+    this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oAuthService.loadDiscoveryDocument();
+    this.oAuthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e.reason) : console.warn(e)));
   }
 
   private decodeB64(payload: string) {

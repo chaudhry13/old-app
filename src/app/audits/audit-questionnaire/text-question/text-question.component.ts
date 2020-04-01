@@ -1,4 +1,3 @@
-import { Validators } from '@angular/forms';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Question, QuestionnaireUserAnswer, QuestionTypes, QuestionTextType, QuestionAnsweres, QuestionAnsweredEdit } from 'src/app/_models/questionnaire';

@@ -17,7 +17,6 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private oauthService: OAuthService,
     private appConfigService: AppConfigService
   ) {
     this.initialize();
@@ -28,16 +27,7 @@ export class AppComponent {
       this.statusBar.styleLightContent()
       this.splashScreen.hide();
       this.appConfigService.loadAppConfig();
-
-      this.configureImplicitFlowAuthentication();
+      this.appConfigService.configureImplicitFlowAuthentication();
     });
-  }
-
-  configureImplicitFlowAuthentication() {
-    this.oauthService.configure(this.appConfigService.appConfig);
-    this.oauthService.setStorage(localStorage);
-    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oauthService.loadDiscoveryDocument();
-    this.oauthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e.reason) : console.warn(e)));
   }
 }
