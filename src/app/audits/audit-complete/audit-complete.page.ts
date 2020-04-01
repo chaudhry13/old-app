@@ -183,20 +183,24 @@ export class AuditCompletePage implements OnInit {
       this.auditForm.controls["latitude"].setValue(this.audit.latitude);
       this.auditForm.controls["longitude"].setValue(this.audit.longitude);
     }
-
-    this.auditService.complete(this.auditForm).then(
-      data => {
-        console.debug("CompleteAudit: Succuessfully completed the audit");
-        this.router.navigate(["/tabs/tab1/details/" + this.audit.controlId]).then(() => {
-          this.toastService.show("Audit completed successfully");
-        });
-      }).catch(
-        error => {
-          console.debug("CompleteAudit: An error occured!")
-          console.debug(error.data);
-          this.toastService.show("An error occurred updating the audit");
-        }
-      );
+    this.auditService.canFinishAudit(this.audit.id).then(canFinish => {
+      if (canFinish) {
+        this.auditService.complete(this.auditForm).then(
+          () => {
+            console.debug("CompleteAudit: Succuessfully completed the audit");
+            this.router.navigate(["/tabs/tab1/details/" + this.audit.controlId]).then(() => {
+              this.toastService.show("Audit completed successfully");
+            });
+          }).catch(
+            error => {
+              console.debug("CompleteAudit: An error occured!")
+              console.debug(error.data);
+              this.toastService.show("An error occurred completing the audit");
+            });
+      } else {
+        this.toastService.showWithDuration("All required questions needs answer before the audit can be completed!", 5000);
+      }
+    });
   }
 
   takePicture() {

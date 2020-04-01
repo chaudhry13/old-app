@@ -17,18 +17,13 @@ export class AuditQuestionnairePage implements OnInit {
 
   questionsAndQuestionGroups: QuestionAndGroups[] = [];
 
-  constructor(private questionnaireService: QuestionnaireService,
+  constructor(
     public activatedRoute: ActivatedRoute,
     public questionnaireUserAnswerService: QuestionnaireUserAnswerService) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
   ngOnInit() {
-    // this.questionnaireService.get(this.questionnaireId).then(result => {
-    //   this.questionnaire = result;
-    //   this.addQuestionsAndGroups();
-    // });
-
     this.questionnaireUserAnswerService.get(this.id).then(qua => {
       this.questionnaireUserAnswer = qua;
       this.questionnaire = qua.questionnaireSentOut.questionnaire;

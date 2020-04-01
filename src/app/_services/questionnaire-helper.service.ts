@@ -137,6 +137,7 @@ export class QuestionnaireHelperService {
     return answered;
   }
 
+  // TODO: This function is also in validation.service... Maybe remove here.
   public isNullOrWhitespace(input): boolean {
     if (typeof input === 'undefined' || input == null) return true;
 

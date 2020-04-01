@@ -61,7 +61,7 @@ export class QuestionnaireUserAnswerService extends GenericService {
     return this.http.put<string>(this.apiBase, model).toPromise();
   }
 
-  async CanFinish(id: string): Promise<boolean> {
+  async canFinish(id: string): Promise<boolean> {
     return this.http.get<boolean>(this.apiBase + "/CanFinish/" + id).toPromise();
   }
 
