@@ -23,4 +23,6 @@
       [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
     </radio-question>
   </form>
+  <error-msg [displayError]="!validationService.isQuestionAnswerValid(question, answerForm).isValid"
+    [errorMsg]="validationService.isQuestionAnswerValid(question, answerForm).errorMsg"></error-msg>
 </div>

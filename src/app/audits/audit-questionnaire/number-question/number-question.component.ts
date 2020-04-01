@@ -1,3 +1,4 @@
+import { ValidationService } from './../../../_services/validation.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { QuestionnaireUserAnswer, Question, QuestionAnsweres, QuestionAnsweredEdit } from 'src/app/_models/questionnaire';
@@ -19,7 +20,7 @@ export class NumberQuestionComponent implements OnInit {
 
   questionAnswer: QuestionAnsweres;
 
-  constructor(private questionAnsweredService: QuestionAnsweredService) { }
+  constructor(private questionAnsweredService: QuestionAnsweredService, public validationService: ValidationService) { }
 
   ngOnInit() {
     this.questionAnswer = this.findQuestionAnswer(this.question.id);
@@ -38,17 +39,10 @@ export class NumberQuestionComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
       )
-      .subscribe(x => {
-        console.log("Number Changed in Question: " + this.question.title);
-        console.log(x);
-        console.log("is valid: " + this.answerForm.controls["numberAnswer"].valid);
-        if (this.answerForm.controls["numberAnswer"].valid) {
+      .subscribe(() => {
+        if (this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid) {
           var answer = this.getQuestionAnswerEdit();
           this.questionAnsweredService.update(answer);
-          console.log("Number updated");
-        }
-        else {
-          console.log("not valid number");
         }
       });
   }

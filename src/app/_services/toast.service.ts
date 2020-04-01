@@ -13,4 +13,13 @@ export class ToastService {
 
         toast.then(toast => toast.present());
     }
+
+    showWithDuration(message: string, duration: number) {
+        let toast = this.toastCtrl.create({
+            message: message,
+            duration: duration
+        });
+
+        toast.then(toast => toast.present());
+    }
 }

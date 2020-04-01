@@ -1,3 +1,4 @@
+import { ValidationService } from './_services/validation.service';
 import { QuestionnaireHelperService } from './_services/questionnaire-helper.service';
 import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -98,6 +99,7 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     InAppBrowser,
     Device,
     Keyboard,
+    Camera,
     FormBuilder,
     TokenService,
     FollowUpService,
@@ -112,7 +114,6 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     ToastService,
     MapService,
     CameraService,
-    Camera,
     IncidentCategoryService,
     UserService,
     IncidentReportService,
@@ -122,6 +123,7 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     QRScanner,
     QuestionnaireService,
     QuestionnaireHelperService,
+    ValidationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

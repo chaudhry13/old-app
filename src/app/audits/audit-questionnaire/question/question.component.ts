@@ -1,3 +1,4 @@
+import { ValidationService } from './../../../_services/validation.service';
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Question, QuestionTypes, QuestionTextType, QuestionOption, QuestionnaireUserAnswer, QuestionAnsweres, QuestionAnsweredEdit, optionAnswerFromQuestionAnswer } from 'src/app/_models/questionnaire';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,19 +16,10 @@ export class QuestionComponent implements OnInit {
   @Input() isInGroup: boolean;
 
   QuestionTypes = QuestionTypes;
-  textTypeToString = QuestionTextType;
   questionAnswer: QuestionAnsweres;
-
   answerForm: FormGroup;
 
-  message: string = "";
-  pattern: string = "";
-
-  Type: QuestionTextType;
-  saving: boolean;
-  saved: boolean;
-
-  constructor(public formBuilder: FormBuilder, public toastService: ToastService, public questionAnsweredService: QuestionAnsweredService) {
+  constructor(public formBuilder: FormBuilder, public validationService: ValidationService) {
     this.answerForm = this.formBuilder.group({
       id: [""],
       questionId: [""],
@@ -41,8 +33,7 @@ export class QuestionComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 }
 
 

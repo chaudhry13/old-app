@@ -1,12 +1,21 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Answer Questionnaire</ion-title>
+    <ion-title *ngIf="questionnaire">{{questionnaire.title}}</ion-title>
+    <ion-title *ngIf="!questionnaire">Questionnaire</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <div class="ion-margin-top ion-margin-start">
+    <ion-label style="color: red;">
+      *
+      <ion-text color="dark">
+        Required
+      </ion-text>
+    </ion-label>
+  </div>
   <div *ngIf="questionnaireUserAnswer">
     <div *ngFor="let item of questionsAndQuestionGroups">
 
@@ -23,6 +32,9 @@
             <ion-label class="ion-text-wrap">
               {{ item.reference.title }}
             </ion-label>
+            <div style="color: red;" *ngIf="item.reference.required">
+              *
+            </div>
           </ion-item-divider>
           <question [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
             [isInGroup]="false">

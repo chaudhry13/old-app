@@ -1,3 +1,4 @@
+import { ValidationService } from './../../../_services/validation.service';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { Question, QuestionnaireUserAnswer, QuestionTypes, QuestionTextType, QuestionAnsweres, QuestionAnsweredEdit } from 'src/app/_models/questionnaire';
@@ -20,15 +21,11 @@ export class TextQuestionComponent implements OnInit {
   questionAnswer: QuestionAnsweres;
 
   viewAnswer: Boolean;
-  regularExpression: RegExp;
 
   saving: boolean;
   saved: boolean;
 
-  public Email = /[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}/
-  public PhoneNumber = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/
-
-  constructor(private questionAnsweredService: QuestionAnsweredService, public qhs: QuestionnaireHelperService) { }
+  constructor(private questionAnsweredService: QuestionAnsweredService, public qhs: QuestionnaireHelperService, public validationService: ValidationService) { }
 
   ngOnInit() {
     this.questionAnswer = this.findQuestionAnswer(this.question.id);
@@ -37,24 +34,16 @@ export class TextQuestionComponent implements OnInit {
       this.answerForm.controls["text"].setValue(this.questionAnswer.text);
     }
 
-    this.readTextQuestionType();
-
-
     this.answerForm.valueChanges
       .pipe(
-        debounceTime(1000),
+        debounceTime(2000),
         distinctUntilChanged(),
       )
       .subscribe(() => {
-        if (
-          !this.qhs.isNullOrWhitespace(this.answerForm.controls["text"].value)
-          && this.regularExpression.test(this.answerForm.controls["text"].value)
-          && this.answerForm.controls["text"].valid
-        ) {
+        console.log(this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid);
+        if (this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid) {
           var answer = this.getQuestionAnswerEdit();
           this.questionAnsweredService.update(answer);
-        } else {
-          // Handle error here
         }
       });
   }
@@ -84,21 +73,4 @@ export class TextQuestionComponent implements OnInit {
     return answerEdit;
   }
   /* ************************************************************************** */
-
-  private readTextQuestionType() {
-    switch (this.question.textOptions.type) {
-      case this.textTypeToString["Custom Regex"]:
-        this.regularExpression = new RegExp(this.question.textOptions.regex);
-        break;
-      case this.textTypeToString.Email:
-        this.regularExpression = this.Email;
-        break;
-      case this.textTypeToString["Phone Number"]:
-        this.regularExpression = this.PhoneNumber;
-        break;
-      default:
-        this.regularExpression = new RegExp("");
-        break;
-    }
-  }
 }

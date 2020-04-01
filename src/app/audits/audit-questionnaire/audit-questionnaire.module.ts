@@ -1,3 +1,4 @@
+import { ErrorMessageComponent } from './../../_shared/error-message/error-message.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,7 +38,8 @@ const routes: Routes = [
     SliderQuestionComponent,
     RadioQuestionComponent,
     CheckboxQuestionComponent,
-    NumberQuestionComponent
+    NumberQuestionComponent,
+    ErrorMessageComponent
   ],
   exports: [QuestionGroupComponent, QuestionComponent]
 })
