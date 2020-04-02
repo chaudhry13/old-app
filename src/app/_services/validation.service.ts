@@ -1,7 +1,7 @@
 import { QuestionTextOptions } from './../_models/questionnaire';
 import { QuestionTypes, Question, QuestionTextType } from 'src/app/_models/questionnaire';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Injectable()
 export class ValidationService {
@@ -9,7 +9,14 @@ export class ValidationService {
   constructor() { }
 
   isQuestionAnswerValid(question: Question, answerForm: FormGroup): QuestionValidation {
-    // TODO: Maybe a field parameter should be introduced to check for "untouched" inputs early
+    if (!Object.keys(answerForm.controls).every(c => answerForm.controls[c].untouched)) { // If NOT all controls are untouched we validate
+      return this.validateQuestion(question, answerForm);
+    } else {
+      return { isValid: false, regExp: new RegExp(""), errorMsg: "" };
+    }
+  }
+
+  validateQuestion(question: Question, answerForm: FormGroup) {
     switch (question.type) {
       case QuestionTypes.Checkbox:
         return this.checkboxValidation()
@@ -24,16 +31,14 @@ export class ValidationService {
         return this.textValidation(question, answerForm);
 
       case QuestionTypes.Slider:
-        return { isValid: true, regExp: null, errorMsg: null };
+        return this.sliderValidation();
 
       default:
-        return { isValid: false, regExp: new RegExp(""), errorMsg: "Default error" };
+        return { isValid: false, regExp: new RegExp(""), errorMsg: "An error occured!" };
     }
   }
 
   numberValidation(question: Question, answerForm: FormGroup): QuestionValidation {
-    if (answerForm.controls["numberAnswer"].untouched) return { isValid: false, regExp: null, errorMsg: null };
-
     if (this.isNullOrWhitespace(answerForm.controls["numberAnswer"])) {
       if (question.required) {
         return { isValid: true, regExp: null, errorMsg: "Please enter a value" }
@@ -41,27 +46,13 @@ export class ValidationService {
     }
 
     if (this.checkNumberRange(answerForm, question)) {
-      console.log("in range");
       return { isValid: true, regExp: null, errorMsg: null };
     } else {
       return { isValid: false, regExp: null, errorMsg: "Your response must be between " + question.numberOptions.from + " and " + question.numberOptions.to };
     }
   }
 
-  private checkNumberRange(answerForm: FormGroup, question: Question) {
-    return answerForm.controls["numberAnswer"].value >= question.numberOptions.from && answerForm.controls["numberAnswer"].value <= question.numberOptions.to;
-  }
-
-  radioButtonValidation() {
-    return { isValid: true, regExp: null, errorMsg: null };
-  }
-  checkboxValidation() {
-    return { isValid: true, regExp: null, errorMsg: null };
-  }
-
   textValidation(question: Question, answerForm: FormGroup): QuestionValidation {
-    if (answerForm.controls["text"].untouched) return { isValid: false, regExp: new RegExp(""), errorMsg: null };
-
     var regularExpType = this.findRegularExpressionAndErrorMessage(question);
 
     if (regularExpType.regExp.test(answerForm.controls["text"].value)
@@ -76,6 +67,21 @@ export class ValidationService {
     }
 
     return regularExpType;
+  }
+
+  // No validation here yet
+  sliderValidation() {
+    return { isValid: true, regExp: null, errorMsg: null };
+  }
+
+  // No validation here yet
+  radioButtonValidation() {
+    return { isValid: true, regExp: null, errorMsg: null };
+  }
+
+  // No validation here yet
+  checkboxValidation() {
+    return { isValid: true, regExp: null, errorMsg: null };
   }
 
   private findRegularExpressionAndErrorMessage(question: Question): QuestionValidation {
@@ -100,7 +106,11 @@ export class ValidationService {
 
   private isNullOrWhitespace(input): boolean {
     if (typeof input === 'undefined' || input == null) return true;
-    return input.replace(/\s/g, '').length < 1;
+    return input.toString().replace(/\s/g, '').length < 1;
+  }
+
+  private checkNumberRange(answerForm: FormGroup, question: Question) {
+    return +answerForm.controls["numberAnswer"].value >= question.numberOptions.from && +answerForm.controls["numberAnswer"].value <= question.numberOptions.to;
   }
 }
 

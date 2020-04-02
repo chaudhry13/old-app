@@ -13,9 +13,9 @@ export class SliderQuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
+  @Input() questionAnswer: QuestionAnsweres;
 
   rangeValue: number;
-  questionAnswer: QuestionAnsweres;
 
   constructor(public qhs: QuestionnaireHelperService) { }
 

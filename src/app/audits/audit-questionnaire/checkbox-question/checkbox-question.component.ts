@@ -16,10 +16,10 @@ export class CheckboxQuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
+  @Input() questionAnswer: QuestionAnsweres;
 
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
-  questionAnswer: QuestionAnsweres;
 
   viewAnswer: Boolean;
 
@@ -36,7 +36,6 @@ export class CheckboxQuestionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
   }
 
   optionPressed(option: QuestionOption) {

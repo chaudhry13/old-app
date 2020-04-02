@@ -24,6 +24,3 @@
   <ion-input type="text" [pattern]="question.textOptions.regex" formControlName="text" class="form-control"
     contenteditable="true" placeholder="{{ textTypeToString[question.textOptions.type] }}"></ion-input>
 </div>
-
-<div *ngIf="answerForm.invalid && (answerForm.dirty || answerForm.touched)" class="alert alert-danger">
-</div>
