@@ -1,26 +1,40 @@
+<ion-item-divider color="primary" style="border-radius: 5px !important;">
+  <ion-label class="ion-text-wrap">
+    {{ question.title }}
+  </ion-label>
+  <div style="color: red;" *ngIf="question.required">
+    *
+  </div>
+  <ion-icon slot="end" name="chatbubbles" class="ion-margin-end"></ion-icon>
+</ion-item-divider>
 <div *ngIf="question" class="ion-padding-top">
   <form [formGroup]="answerForm" *ngIf="question">
 
     <!-- If Text Question -->
     <text-question *ngIf="question.type == QuestionTypes['Text']" [question]="question"
-      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></text-question>
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm" [questionAnswer]="questionAnswer">
+    </text-question>
 
     <!-- If Text Question -->
     <slider-question *ngIf="question.type == QuestionTypes['Slider']" [question]="question"
-      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></slider-question>
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm" [questionAnswer]="questionAnswer">
+    </slider-question>
 
     <!-- If Number Question -->
     <number-question *ngIf="question.type == QuestionTypes['Number']" [question]="question"
-      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"></number-question>
+      [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm" [questionAnswer]="questionAnswer">
+    </number-question>
 
     <!-- If Checkbox Question -->
     <checkbox-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Checkbox'])"
-      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
+      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"
+      [questionAnswer]="questionAnswer">
     </checkbox-question>
 
     <!-- If Radio Button Question -->
     <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio Button'])"
-      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm">
+      [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm"
+      [questionAnswer]="questionAnswer">
     </radio-question>
   </form>
   <error-msg [displayError]="!validationService.isQuestionAnswerValid(question, answerForm).isValid"

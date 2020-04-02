@@ -7,7 +7,7 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content *ngIf="questionnaire">
   <div class="ion-margin-top ion-margin-start">
     <ion-label style="color: red;">
       *
@@ -28,14 +28,6 @@
       <!-- Standalone questions -->
       <ion-card *ngIf="item.type == 'Question'">
         <ion-card-content>
-          <ion-item-divider color="primary" style="border-radius: 5px !important;">
-            <ion-label class="ion-text-wrap">
-              {{ item.reference.title }}
-            </ion-label>
-            <div style="color: red;" *ngIf="item.reference.required">
-              *
-            </div>
-          </ion-item-divider>
           <question [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
             [isInGroup]="false">
           </question>

@@ -7,11 +7,6 @@
   <ion-card-content>
     <ion-item-group>
       <div *ngFor="let question of questionGroup.questions" class="ion-padding-bottom">
-        <ion-item-divider color="primary" style="border-radius: 5px !important;">
-          <ion-label class="ion-text-wrap">
-            {{ question.title }}
-          </ion-label>
-        </ion-item-divider>
         <question [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer" [isInGroup]="true">
         </question>
       </div>
