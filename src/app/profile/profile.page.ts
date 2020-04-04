@@ -21,12 +21,16 @@ export class ProfilePage implements OnInit {
   constructor(public userService: UserService, public divisionService: DivisionService, public accountService: AccountService, public oAuthService: OAuthService, private router: Router) { }
 
   ngOnInit() {
-    this.divisionService.list().then(
-      data => {
-        this.divisions = data
-      }
-    );
+    this.listProfileInfo();
+  }
 
+  ionViewWillEnter() {
+    this.listProfileInfo();
+  }
+  private listProfileInfo() {
+    this.divisionService.list().then(data => {
+      this.divisions = data;
+    });
     this.accountService.get().then(user => {
       this.user = user;
     });
