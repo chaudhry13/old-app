@@ -11,15 +11,13 @@ export class QuestionnaireHelperService {
 
   constructor(
     private toastService: ToastService,
-    private questionAnsweredService: QuestionAnsweredService,
-    private questionnaireService: QuestionnaireService
+    private questionAnsweredService: QuestionAnsweredService
   ) { }
 
   public CheckOptionValue(questionAnswer: QuestionAnsweres, option: QuestionOption): boolean {
     try {
       return questionAnswer.optionAnswered.find(x => x.questionOptionId == option.id).selected;
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
   }
@@ -36,33 +34,30 @@ export class QuestionnaireHelperService {
     answerForm: FormGroup
   ) {
 
-    var answerEdit: QuestionAnsweredEdit =
+    const answerEdit: QuestionAnsweredEdit =
       this.getQuestionAnswer(questionAnswer, question, questionnaireUserAnswer, answerForm);
 
     answerEdit.optionAnswered = questionAnswer.optionAnswered;
 
-    //Checks if there is an answer for the option
-    var optionAnsweredTest = questionAnswer.optionAnswered.find(x => x.questionOptionId == option.id);
-    //Create the option answer
+    // Checks if there is an answer for the option
+    const optionAnsweredTest = questionAnswer.optionAnswered.find(x => x.questionOptionId == option.id);
+    // Create the option answer
     if (optionAnsweredTest == null) {
-      var optionAnswered: optionAnswerFromQuestionAnswer = {
+      const optionAnswered: optionAnswerFromQuestionAnswer = {
         selected: true,
         questionOptionId: option.id,
-      }
+      };
 
-      if (question.type == QuestionTypes["Radio Button"]) {
+      if (question.type == QuestionTypes['Radio Button']) {
         answerEdit.optionAnswered.forEach(x => x.selected = false);
       }
       answerEdit.optionAnswered.push(optionAnswered);
 
       this.updateAnswer(answerEdit, questionAnswer, question);
-    }
-    //Update the option answer
-    else {
+    } else {
       if (question.type == QuestionTypes.Checkbox) {
         answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = !this.CheckOptionValue(questionAnswer, option);
-      }
-      else if (question.type == QuestionTypes["Radio Button"]) {
+      } else if (question.type == QuestionTypes['Radio Button']) {
         answerEdit.optionAnswered.forEach(x => x.selected = false);
         answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = true;
       }
@@ -76,11 +71,11 @@ export class QuestionnaireHelperService {
       id: questionAnswer.id,
       questionId: question.id,
       userAnswerId: questionnaireUserAnswer.id,
-      text: answerForm.controls["text"].value,
-      slider: answerForm.controls["slider"].value,
-      numberAnswer: answerForm.controls["numberAnswer"].value,
-      comment: answerForm.controls["comment"].value,
-      na: answerForm.controls["na"].value,
+      text: answerForm.controls.text.value,
+      slider: answerForm.controls.slider.value,
+      numberAnswer: answerForm.controls.numberAnswer.value,
+      comment: answerForm.controls.comment.value,
+      na: answerForm.controls.na.value,
       optionAnswered: questionAnswer.optionAnswered,
       answered: true
     };
@@ -88,35 +83,34 @@ export class QuestionnaireHelperService {
 
   public updateAnswer(answerEdit: QuestionAnsweredEdit, questionAnswer: QuestionAnsweres, question: Question, ) {
     // TODO: Fix Saving / Saved toasts
-    var saving = false;
-    var saved = false;
-    var isanswered = this.HasAnswer(answerEdit, question);
-    answerEdit.answered = isanswered;
+    let saving = false;
+    let saved = false;
+    const hasAnswer = this.HasAnswer(answerEdit, question);
+    answerEdit.answered = hasAnswer;
     saving = true;
-    this.toastService.show("Saving");
+    this.toastService.show('Saving');
 
     this.questionAnsweredService.update(answerEdit).then(Id => {
       saving = false;
-      if (isanswered || questionAnswer.na) {
+      if (hasAnswer || questionAnswer.na) {
         saved = true;
-      }
-      else {
+      } else {
         saved = false;
       }
-      this.toastService.show("Saved");
+      this.toastService.show('Saved');
     }).catch(onrejected => {
       saving = false;
       saved = false;
 
-      this.toastService.show("Could not save!");
+      this.toastService.show('Could not save!');
     });
   }
 
   private HasAnswer(answer: QuestionAnsweredEdit, question: Question): boolean {
-    var answered = true;
+    let answered = true;
     switch (question.type) {
       case QuestionTypes.Number:
-        answered = answer.numberAnswer != null
+        answered = answer.numberAnswer != null;
         break;
 
       case QuestionTypes.Text:
@@ -124,12 +118,12 @@ export class QuestionnaireHelperService {
         break;
 
       case QuestionTypes.Slider:
-        answered = answer.slider != null
+        answered = answer.slider != null;
         break;
 
       case QuestionTypes.Checkbox:
-      case QuestionTypes["Radio Button"]:
-        var options = answer.optionAnswered.filter(x => x.selected);
+      case QuestionTypes['Radio Button']:
+        const options = answer.optionAnswered.filter(x => x.selected);
         answered = options.length >= 1;
         break;
     }
@@ -139,7 +133,7 @@ export class QuestionnaireHelperService {
 
   // TODO: This function is also in validation.service... Maybe remove here.
   public isNullOrWhitespace(input): boolean {
-    if (typeof input === 'undefined' || input == null) return true;
+    if (typeof input === 'undefined' || input == null) { return true; }
 
     return input.replace(/\s/g, '').length < 1;
   }

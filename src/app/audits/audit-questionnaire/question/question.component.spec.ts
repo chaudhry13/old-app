@@ -1,8 +1,6 @@
 import { QuestionComponent } from './question.component';
 import { async, ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
-import { combineAll } from 'rxjs/operators';
 
 describe('QuestionComponent', () => {
     let component: QuestionComponent;
@@ -25,5 +23,5 @@ describe('QuestionComponent', () => {
 
     it('should create', () => {
         expect(component).toBeTruthy();
-    })
+    });
 });

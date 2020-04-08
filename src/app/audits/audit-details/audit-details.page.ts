@@ -13,7 +13,6 @@ import { AuditService } from 'src/app/_services/audit.service';
 import { Audit } from 'src/app/_models/audit';
 import cronstrue from 'cronstrue';
 
-
 @Component({
   selector: 'app-audit-details',
   templateUrl: './audit-details.page.html',
@@ -33,17 +32,18 @@ export class AuditDetailsPage implements OnInit {
 
   public frequency: string;
 
-  constructor(public activatedRoute: ActivatedRoute, private controlService: ControlService, private auditService: AuditService, private storageService: StorageService, private platform: Platform, private file: File, private ft: FileTransfer,
-    private fileOpener: FileOpener, private document: DocumentViewer) {
+  constructor(public activatedRoute: ActivatedRoute, private controlService: ControlService,
+              private auditService: AuditService, private storageService: StorageService,
+              private platform: Platform, private file: File, private ft: FileTransfer, // TODO: Fix this warning:
+                                                                                        // FileTransfer is deprecated
+              private fileOpener: FileOpener, private document: DocumentViewer) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
-  ngOnInit() {
-    this.getAudits();
-  }
+  ngOnInit() { }
 
   ionViewWillEnter() {
-    this.getAudits(); // TODO: Should not be loaded twice.
+    this.getAudits(); // To make sure audits are updated properly
   }
 
   getAudits() {
@@ -69,15 +69,15 @@ export class AuditDetailsPage implements OnInit {
     });
   }
 
-  downloadAndOpen(attachement: Attachment) {
-    let downloadUrl = attachement.url;
+  downloadAndOpen(attachment: Attachment) {
+    const downloadUrl = attachment.url;
 
-    let path = this.file.dataDirectory;
+    const path = this.file.dataDirectory;
 
     const transfer = this.ft.create();
 
-    transfer.download(downloadUrl, path + attachement.name, true).then(entry => {
-      let url = entry.toURL();
+    transfer.download(downloadUrl, path + attachment.name, true).then(entry => {
+      const url = entry.toURL();
 
       if (this.platform.is('ios')) {
         this.document.viewDocument(url, 'application/pdf', {});

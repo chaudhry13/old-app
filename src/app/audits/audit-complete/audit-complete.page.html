@@ -13,8 +13,8 @@
     <ion-list-header>
       Description
     </ion-list-header>
-    <div *ngIf="audit.description" padding [innerHtml]="audit.description | sanitizeHtml"></div>
-    <div *ngIf="!audit.description" padding>No description</div>
+    <div *ngIf="audit.description" class="ion-padding" [innerHtml]="audit.description | sanitizeHtml"></div>
+    <div *ngIf="!audit.description" class="ion-padding">No description</div>
     <ion-list-header>Deadline</ion-list-header>
     <ion-item>
       <ion-label>{{ audit.date | date:'MMM dd, yyyy'}}</ion-label>
@@ -37,7 +37,7 @@
         <ion-label> Location</ion-label>
         <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
       </ion-item>
-      <ion-item *ngIf="audit.location" style="padding-top: 5px;">
+      <ion-item *ngIf="audit.location" class="ion-padding-top">
         <agm-map *ngIf="renderMapComplete" [latitude]="audit.latitude" [longitude]="audit.longitude">
           <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
         </agm-map>
@@ -105,8 +105,8 @@
   <ion-grid *ngIf="!audit.completed">
     <ion-row>
       <ion-col>
-        <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">Take photo</ion-button>
-        <ion-button color="primary" expand="block" margin-top (click)="completeAudit()">Complete
+        <ion-button color="secondary" expand="block" class="ion-margin-bottom" (click)="takePicture()">Take photo</ion-button>
+        <ion-button class="ion-margin-top" color="primary" expand="block"  (click)="completeAudit()">Complete
         </ion-button>
       </ion-col>
     </ion-row>

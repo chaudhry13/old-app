@@ -1,8 +1,7 @@
-import { QuestionnaireHelperService } from './../../../_services/questionnaire-helper.service';
-import { ToastService } from './../../../_services/toast.service';
-import { QuestionAnsweredService } from './../../../_services/questionnaire.service';
+import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
 import { FormGroup } from '@angular/forms';
-import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionTypes, QuestionTextType, QuestionAnsweres, optionAnswerFromQuestionAnswer, QuestionAnsweredEdit } from './../../../_models/questionnaire';
+import { Question, QuestionnaireUserAnswer, QuestionOption,
+  QuestionTypes, QuestionTextType, QuestionAnsweres} from '../../../_models/questionnaire';
 import { Component, OnInit, Input } from '@angular/core';
 
 // TODO: Sort question options!
@@ -21,10 +20,8 @@ export class CheckboxQuestionComponent implements OnInit {
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
 
-  viewAnswer: Boolean;
-
-  message: string = "";
-  pattern: string = "";
+  message = '';
+  pattern = '';
 
   Type: QuestionTextType;
   saving: boolean;

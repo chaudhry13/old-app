@@ -2,10 +2,11 @@
   <ion-label class="ion-text-wrap">
     {{ question.title }}
   </ion-label>
-  <div style="color: red;" *ngIf="question.required">
+  <span style="color: red;" *ngIf="question.required">
     *
-  </div>
-  <ion-icon slot="end" name="chatbubbles" class="ion-margin-end"></ion-icon>
+  </span>
+  <ion-icon *ngIf="hasComment"  (click)="toggleComment()" slot="end" name="chatbubbles" class="ion-margin-start" style="color: #ffce00;"></ion-icon>
+  <ion-icon *ngIf="!hasComment" (click)="toggleComment()" slot="end" name="chatbubbles" class="ion-margin-start"></ion-icon>
 </ion-item-divider>
 <div *ngIf="question" class="ion-padding-top">
   <form [formGroup]="answerForm" *ngIf="question">
@@ -37,6 +38,16 @@
       [questionAnswer]="questionAnswer">
     </radio-question>
   </form>
-  <error-msg [displayError]="!validationService.isQuestionAnswerValid(question, answerForm).isValid"
+
+  <error-msg class="ion-padding-bottom" [displayError]="!validationService.isQuestionAnswerValid(question, answerForm).isValid"
     [errorMsg]="validationService.isQuestionAnswerValid(question, answerForm).errorMsg"></error-msg>
+
+  <div [formGroup]="answerForm" class="ion-padding-start ion-padding-top" *ngIf="showComment">
+    <ion-icon style="display: inline-block; color: #2c3752; vertical-align: middle; font-size: small" slot="start" name="create"></ion-icon>
+      <ion-label style="font-size: small;">
+        Comment on this question
+      </ion-label>
+    <ion-textarea style="font-size: small" autoGrow="true" formControlName="comment" contenteditable="true" wrap="soft" placeholder="Comment on the question here..">
+    </ion-textarea>
+  </div>
 </div>

@@ -16,13 +16,13 @@ export class TextQuestionComponent implements OnInit {
   QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
 
-  viewAnswer: Boolean;
+  viewAnswer: boolean;
 
   constructor() { }
 
   ngOnInit() {
     if (this.questionAnswer != null) {
-      this.answerForm.controls["text"].setValue(this.questionAnswer.text);
+      this.answerForm.controls.text.setValue(this.questionAnswer.text);
     }
   }
 }

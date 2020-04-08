@@ -1,8 +1,10 @@
-import { QuestionAndGroups, QuestionnaireUserAnswer } from './../../_models/questionnaire';
 import { Component, OnInit } from '@angular/core';
-import { QuestionnaireService, QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
+import { QuestionAndGroups, QuestionnaireUserAnswer } from '../../_models/questionnaire';
+import { QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
 import { QuestionnaireDetails } from 'src/app/_models/questionnaire';
 import { ActivatedRoute } from '@angular/router';
+import {AlertController} from '@ionic/angular';
+import {Storage} from "@ionic/storage";
 
 @Component({
   selector: 'app-audit-questionnaire',
@@ -19,7 +21,9 @@ export class AuditQuestionnairePage implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    public questionnaireUserAnswerService: QuestionnaireUserAnswerService) {
+    public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
+    public alertController: AlertController,
+    public storage: Storage) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
 
