@@ -3,8 +3,8 @@ import { QuestionAndGroups, QuestionnaireUserAnswer } from '../../_models/questi
 import { QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
 import { QuestionnaireDetails } from 'src/app/_models/questionnaire';
 import { ActivatedRoute } from '@angular/router';
-import {AlertController} from '@ionic/angular';
-import {Storage} from "@ionic/storage";
+import { AlertController } from '@ionic/angular';
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: 'app-audit-questionnaire',
@@ -14,17 +14,20 @@ import {Storage} from "@ionic/storage";
 export class AuditQuestionnairePage implements OnInit {
 
   id: string;
+  readOnly: boolean = false;
+
   questionnaire: QuestionnaireDetails;
   questionnaireUserAnswer: QuestionnaireUserAnswer;
 
   questionsAndQuestionGroups: QuestionAndGroups[] = [];
 
+
   constructor(
     public activatedRoute: ActivatedRoute,
-    public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
-    public alertController: AlertController,
-    public storage: Storage) {
+    public questionnaireUserAnswerService: QuestionnaireUserAnswerService
+  ) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.readOnly = this.activatedRoute.snapshot.paramMap.get('readonly').toLowerCase() == 'true';
   }
 
   ngOnInit() {
@@ -33,6 +36,7 @@ export class AuditQuestionnairePage implements OnInit {
       this.questionnaire = qua.questionnaireSentOut.questionnaire;
       this.addQuestionsAndGroups();
     });
+    console.log("readOnly: " + this.readOnly);
   }
 
   addQuestionsAndGroups() {

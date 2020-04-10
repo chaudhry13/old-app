@@ -45,8 +45,8 @@
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
         <ion-list-header>Questionnaires</ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
-            routerLinkActive="router-link-active">
+          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}/{{audit.completed}}"
+            routerDirection="forward" routerLinkActive="router-link-active">
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
@@ -90,11 +90,12 @@
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
         <ion-list-header>Questionnaires</ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
-            routerLinkActive="router-link-active">
+          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}/{{audit.completed}}"
+            routerDirection="forward" routerLinkActive="router-link-active">
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
+            ({{ userAnswer.questionsAnswered }} / {{ userAnswer.numberOfQuestions }})
             <ion-icon name="help-circle-outline"></ion-icon>
           </ion-item>
         </div>
@@ -105,8 +106,9 @@
   <ion-grid *ngIf="!audit.completed">
     <ion-row>
       <ion-col>
-        <ion-button color="secondary" expand="block" class="ion-margin-bottom" (click)="takePicture()">Take photo</ion-button>
-        <ion-button class="ion-margin-top" color="primary" expand="block"  (click)="completeAudit()">Complete
+        <ion-button color="secondary" expand="block" class="ion-margin-bottom" (click)="takePicture()">Take photo
+        </ion-button>
+        <ion-button class="ion-margin-top" color="primary" expand="block" (click)="completeAudit()">Complete
         </ion-button>
       </ion-col>
     </ion-row>
