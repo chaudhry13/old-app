@@ -45,8 +45,8 @@
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
         <ion-list-header>Questionnaires</ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}/{{audit.completed}}"
-            routerDirection="forward" routerLinkActive="router-link-active">
+          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
+            routerLinkActive="router-link-active">
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
@@ -90,8 +90,8 @@
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
         <ion-list-header>Questionnaires</ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}/{{audit.completed}}"
-            routerDirection="forward" routerLinkActive="router-link-active">
+          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
+            routerLinkActive="router-link-active">
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>

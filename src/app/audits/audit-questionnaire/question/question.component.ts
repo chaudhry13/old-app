@@ -1,10 +1,10 @@
-import {QuestionnaireHelperService} from '../../../_services/questionnaire-helper.service';
-import {ValidationService} from '../../../_services/validation.service';
-import {Component, Input, OnInit} from '@angular/core';
-import {Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes} from 'src/app/_models/questionnaire';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {QuestionAnsweredService} from 'src/app/_services/questionnaire.service';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
+import { ValidationService } from '../../../_services/validation.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes } from 'src/app/_models/questionnaire';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'question',
@@ -44,6 +44,7 @@ export class QuestionComponent implements OnInit {
     this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
 
     if (this.questionAnswer != null) {
+      this.answerForm.controls.na.setValue(this.questionAnswer.na);
       if (!this.qhs.isNullOrWhitespace(this.questionAnswer.comment)) {
         this.answerForm.controls.comment.setValue(this.questionAnswer.comment);
         this.hasComment = true;
@@ -56,9 +57,15 @@ export class QuestionComponent implements OnInit {
         distinctUntilChanged(),
       )
       .subscribe(() => {
-        // Update hasComment here...
+        if (!this.qhs.isNullOrWhitespace(this.answerForm.controls.comment.value)) {
+          this.hasComment = true;
+        } else {
+          this.hasComment = false;
+        }
+
         if (this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid) {
           const answer = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
+          console.log("na: " + answer.na);
           this.questionAnsweredService.update(answer);
         }
       });

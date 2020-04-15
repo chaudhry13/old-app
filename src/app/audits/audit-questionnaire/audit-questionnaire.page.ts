@@ -3,8 +3,7 @@ import { QuestionAndGroups, QuestionnaireUserAnswer } from '../../_models/questi
 import { QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
 import { QuestionnaireDetails } from 'src/app/_models/questionnaire';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController } from '@ionic/angular';
-import { Storage } from "@ionic/storage";
+import { AuditService } from 'src/app/_services/audit.service';
 
 @Component({
   selector: 'app-audit-questionnaire',
@@ -24,10 +23,10 @@ export class AuditQuestionnairePage implements OnInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    public questionnaireUserAnswerService: QuestionnaireUserAnswerService
+    public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
+    public auditService: AuditService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.readOnly = this.activatedRoute.snapshot.paramMap.get('readonly').toLowerCase() == 'true';
   }
 
   ngOnInit() {
@@ -35,8 +34,8 @@ export class AuditQuestionnairePage implements OnInit {
       this.questionnaireUserAnswer = qua;
       this.questionnaire = qua.questionnaireSentOut.questionnaire;
       this.addQuestionsAndGroups();
+      this.checkAuditStatus(this.questionnaireUserAnswer.auditId);
     });
-    console.log("readOnly: " + this.readOnly);
   }
 
   addQuestionsAndGroups() {
@@ -69,5 +68,12 @@ export class AuditQuestionnairePage implements OnInit {
     });
     //Sorts the questions outside with the groups
     this.questionsAndQuestionGroups.sort((q1, q2) => q1.index - q2.index);
+  }
+
+  checkAuditStatus(auditId: string) {
+    this.auditService.get(auditId).then(a => {
+      if (a.completed)
+        this.readOnly = true;
+    });
   }
 }
