@@ -8,14 +8,14 @@
   </ion-toolbar>
 </ion-header>
 <ion-content *ngIf="questionnaire">
-  <div class="ion-margin-top ion-margin-start">
+  <!-- <div class="ion-margin-top ion-margin-start">
     <ion-label style="color: red;">
       *
       <ion-text color="dark">
         Required
       </ion-text>
     </ion-label>
-  </div>
+  </div> -->
   <div *ngIf="questionnaireUserAnswer">
     <div *ngFor="let item of questionsAndQuestionGroups">
 
@@ -26,7 +26,7 @@
       </div>
 
       <!-- Standalone questions -->
-      <ion-card *ngIf="item.type == 'Question'">
+      <ion-card *ngIf="item.type == 'Question'" class="card ion-no-margin ion-margin-top ion-margin-bottom">
         <ion-card-content>
           <question [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
             [isInGroup]="false">
