@@ -1,10 +1,12 @@
 import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
 import { ValidationService } from '../../../_services/validation.service';
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import { Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes } from 'src/app/_models/questionnaire';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {IonTextarea, NavController} from '@ionic/angular';
+import {ToastService} from "../../../_services/toast.service";
 
 @Component({
   selector: 'question',
@@ -16,6 +18,8 @@ export class QuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() isInGroup: boolean;
 
+  @ViewChild('comment', { read: IonTextarea}) commentTextArea: IonTextarea;
+
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;
   answerForm: FormGroup;
@@ -26,7 +30,9 @@ export class QuestionComponent implements OnInit {
     public formBuilder: FormBuilder,
     public validationService: ValidationService,
     public qhs: QuestionnaireHelperService,
-    public questionAnsweredService: QuestionAnsweredService) {
+    public questionAnsweredService: QuestionAnsweredService,
+    private navCtrl: NavController,
+    public toastService: ToastService) {
     this.answerForm = this.formBuilder.group({
       id: [''],
       questionId: [''],
@@ -57,22 +63,26 @@ export class QuestionComponent implements OnInit {
         distinctUntilChanged(),
       )
       .subscribe(() => {
-        if (!this.qhs.isNullOrWhitespace(this.answerForm.controls.comment.value)) {
-          this.hasComment = true;
-        } else {
-          this.hasComment = false;
-        }
+        this.hasComment = !this.qhs.isNullOrWhitespace(this.answerForm.controls.comment.value);
 
         if (this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid) {
           const answer = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
-          console.log("na: " + answer.na);
-          this.questionAnsweredService.update(answer);
+          this.questionAnsweredService.update(answer).then(() => {
+            this.toastService.show('Answer saved!');
+          }).catch(() => {
+            this.toastService.show('Could not save answer!');
+          });
         }
       });
   }
 
   toggleComment() {
     this.showComment = !this.showComment;
+    if (this.showComment) {
+      setTimeout(() => { // Needs timeout to setFocus()
+        this.commentTextArea.setFocus().then();
+      }, 150);
+    }
   }
 }
 

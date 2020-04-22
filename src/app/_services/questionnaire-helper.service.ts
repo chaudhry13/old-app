@@ -48,25 +48,28 @@ export class QuestionnaireHelperService {
         questionOptionId: option.id,
       };
 
-      if (question.type == QuestionTypes['Radio Button']) {
+      if (question.type === QuestionTypes['Radio Button']) {
         answerEdit.optionAnswered.forEach(x => x.selected = false);
       }
       answerEdit.optionAnswered.push(optionAnswered);
 
       this.updateAnswer(answerEdit, questionAnswer, question);
     } else {
-      if (question.type == QuestionTypes.Checkbox) {
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = !this.CheckOptionValue(questionAnswer, option);
-      } else if (question.type == QuestionTypes['Radio Button']) {
+      if (question.type === QuestionTypes.Checkbox) {
+        answerEdit.optionAnswered.find(x => x.questionOptionId === option.id).selected = !this.CheckOptionValue(questionAnswer, option);
+      } else if (question.type === QuestionTypes['Radio Button']) {
         answerEdit.optionAnswered.forEach(x => x.selected = false);
-        answerEdit.optionAnswered.find(x => x.questionOptionId == option.id).selected = true;
+        answerEdit.optionAnswered.find(x => x.questionOptionId === option.id).selected = true;
       }
 
       this.updateAnswer(answerEdit, questionAnswer, question);
     }
   }
 
-  public getQuestionAnswer(questionAnswer: QuestionAnsweres, question: Question, questionnaireUserAnswer: QuestionnaireUserAnswer, answerForm: FormGroup): QuestionAnsweredEdit {
+  public getQuestionAnswer(questionAnswer: QuestionAnsweres,
+                           question: Question,
+                           questionnaireUserAnswer: QuestionnaireUserAnswer,
+                           answerForm: FormGroup): QuestionAnsweredEdit {
     return {
       id: questionAnswer.id,
       questionId: question.id,
@@ -82,27 +85,16 @@ export class QuestionnaireHelperService {
   }
 
   public updateAnswer(answerEdit: QuestionAnsweredEdit, questionAnswer: QuestionAnsweres, question: Question, ) {
-    // TODO: Fix Saving / Saved toasts
-    let saving = false;
-    let saved = false;
     const hasAnswer = this.HasAnswer(answerEdit, question);
+
     answerEdit.answered = hasAnswer;
-    saving = true;
-    this.toastService.show('Saving');
 
-    this.questionAnsweredService.update(answerEdit).then(Id => {
-      saving = false;
+    this.questionAnsweredService.update(answerEdit).then(() => {
       if (hasAnswer || questionAnswer.na) {
-        saved = true;
-      } else {
-        saved = false;
+        this.toastService.show('Answer saved!');
       }
-      this.toastService.show('Saved');
-    }).catch(onrejected => {
-      saving = false;
-      saved = false;
-
-      this.toastService.show('Could not save!');
+    }).catch(() => {
+      this.toastService.show('Could not save answer!');
     });
   }
 

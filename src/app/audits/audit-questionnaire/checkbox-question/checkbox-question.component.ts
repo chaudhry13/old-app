@@ -17,17 +17,6 @@ export class CheckboxQuestionComponent implements OnInit {
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
 
-  QuestionTypes = QuestionTypes;
-  textTypeToString = QuestionTextType;
-
-  message = '';
-  pattern = '';
-
-  Type: QuestionTextType;
-  saving: boolean;
-  saved: boolean;
-
-
   constructor(
     public qhs: QuestionnaireHelperService
   ) { }

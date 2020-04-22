@@ -16,7 +16,7 @@
           <ion-checkbox formControlName="na" mode="md" [checked]="answerForm.controls['na'].value">
           </ion-checkbox>
         </div>
-        <ion-label style="font-size: small;">
+        <ion-label class="ion-text-wrap" style="font-size: small; text-overflow: clip; padding-left: 8px">
           N/A
         </ion-label>
         <div>
@@ -69,7 +69,7 @@
       <ion-icon style="display: inline-block; color: #2c3752; font-size: small" slot="start" name="create"></ion-icon>
       Comment on this question
     </ion-label>
-    <ion-textarea style="font-size: small" autoGrow="true" formControlName="comment" contenteditable="true" wrap="soft"
+    <ion-textarea #comment style="font-size: small" autoGrow="true" formControlName="comment" contenteditable="true" wrap="soft"
       placeholder="Write your comment here..">
     </ion-textarea>
   </div>
