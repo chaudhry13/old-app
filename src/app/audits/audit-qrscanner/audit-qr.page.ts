@@ -13,28 +13,31 @@ import { Subscription } from 'rxjs';
 
 export class AuditQrPage implements OnInit {
 
-  constructor(private qrScanner: QRScanner, private router: Router, private deepLinkService: DeeplinkService, private toastService: ToastService) { }
+  constructor(private qrScanner: QRScanner,
+    private router: Router,
+    private deepLinkService: DeeplinkService,
+    private toastService: ToastService) { }
 
   scanSub: Subscription;
 
   ngOnInit() {
-    if (window['cordova']) {
+    if (!window['cordova']) {
+      this.router.navigate(['tabs/tab1']);
+      this.toastService.show('Cannot open camera in browser!');
+    } else {
       this.scanQr().then(qrLink => {
         this.deepLinkService.handleLink(qrLink).catch(() => {
-          this.toastService.show("QR Code not valid!");
-          this.router.navigate(["tabs/tab1", { replaceUrl: true }]);
+          this.toastService.show('QR Code not valid!');
+          this.router.navigate(['tabs/tab1', { replaceUrl: true }]);
         });
       });
-    } else {
-      this.router.navigate(["tabs/tab1"]);
-      this.toastService.show("Cannot open camera in browser!");
     }
   }
 
   ionViewDidLeave() {
     if (this.scanSub) {
       this.scanSub.unsubscribe();
-      this.qrScanner.destroy();
+      this.qrScanner.destroy().then();
     }
   }
 
@@ -43,13 +46,12 @@ export class AuditQrPage implements OnInit {
   }
 
   async scanQr(): Promise<string> {
-    let hash: string = '';
+    let hash = '';
     try {
       hash = await this._startScanner();
       this.scanSub.unsubscribe();
-      this.qrScanner.destroy();
-    }
-    catch (err) {
+      await this.qrScanner.destroy();
+    } catch (err) {
       throw err;
     }
 
