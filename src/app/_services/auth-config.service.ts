@@ -14,7 +14,7 @@ export class AppConfigService {
   public async loadAppConfig() {
     var num_keys = await this.storage.length();
     var issuer = await this.storage.get("iss");
-    if (false && (num_keys > 0 || issuer)) {
+    if (num_keys > 0 || issuer) {
       this.appConfig.clientId = await this.storage.get("client_id");
       this.appConfig.issuer = await this.storage.get("iss");
       this.appConfig.scope = await this.storage.get("scope");
@@ -25,20 +25,12 @@ export class AppConfigService {
       this.apiBaseUrl;
     } else {
       // Default auth configuration
-      // this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
-      // this.appConfig.redirectUri = "http://localhost:8100/callback";
-      // this.appConfig.logoutUrl = "https://humanrisks-core-auth.azurewebsites.net/account/logout";
-      // this.appConfig.clientId = "ionic";
-      // this.appConfig.oidc = false;
-      // this.appConfig.scope = "api";
-      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
-      this.appConfig.issuer = "https://test1auth.humanrisks.com";
+      this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
       this.appConfig.redirectUri = "http://localhost:8100/callback";
-      this.appConfig.logoutUrl = "https://test1auth.humanrisks.com/account/logout";
+      this.appConfig.logoutUrl = "https://humanrisks-core-auth.azurewebsites.net/account/logout";
       this.appConfig.clientId = "ionic";
       this.appConfig.oidc = false;
       this.appConfig.scope = "api";
-      this.appConfig.apiUrl = "https://test1api.humanrisks.com/"
     }
   }
 
