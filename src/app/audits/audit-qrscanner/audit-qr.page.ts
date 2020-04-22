@@ -18,7 +18,7 @@ export class AuditQrPage implements OnInit {
   scanSub: Subscription;
 
   ngOnInit() {
-    if (window.cordova) {
+    if (window['cordova']) {
       this.scanQr().then(qrLink => {
         this.deepLinkService.handleLink(qrLink).catch(() => {
           this.toastService.show("QR Code not valid!");
