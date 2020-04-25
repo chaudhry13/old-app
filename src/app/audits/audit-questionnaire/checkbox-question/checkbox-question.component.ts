@@ -17,11 +17,15 @@ export class CheckboxQuestionComponent implements OnInit {
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
 
+  questionOptions: QuestionOption[];
+
   constructor(
     public qhs: QuestionnaireHelperService
   ) { }
 
   ngOnInit() {
+    this.questionOptions = this.question.possibleAnswers;
+    this.questionOptions.sort((a, b) => a.index - b.index);
   }
 
   optionPressed(option: QuestionOption) {

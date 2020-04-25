@@ -1,7 +1,5 @@
-import { ToastService } from './../../../_services/toast.service';
-import { QuestionAnsweredService } from './../../../_services/questionnaire.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionTypes, QuestionAnsweres, QuestionOption, optionAnswerFromQuestionAnswer, QuestionAnsweredEdit } from 'src/app/_models/questionnaire';
+import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionOption } from 'src/app/_models/questionnaire';
 import { FormGroup } from '@angular/forms';
 import { QuestionnaireHelperService } from 'src/app/_services/questionnaire-helper.service';
 
@@ -18,13 +16,10 @@ export class RadioQuestionComponent implements OnInit {
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
 
-  QuestionTypes = QuestionTypes;
-  textTypeToString = QuestionTextType;
+  questionOptions: QuestionOption[];
 
-  viewAnswer: Boolean;
-
-  message: string = "";
-  pattern: string = "";
+  message = '';
+  pattern = '';
 
   Type: QuestionTextType;
   saving: boolean;
@@ -35,6 +30,8 @@ export class RadioQuestionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.questionOptions = this.question.possibleAnswers;
+    this.questionOptions.sort((a, b) => a.index - b.index);
   }
 
   optionPressed(option: QuestionOption) {
