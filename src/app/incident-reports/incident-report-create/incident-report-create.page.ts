@@ -118,7 +118,7 @@ export class IncidentReportCreatePage implements OnInit {
     toast.present();
   }
 
-  async showLocationModal(event: any) {
+  async showLocationModal() {
     const modal = await this.modalController.create({
       component: LocationModalPage
     });

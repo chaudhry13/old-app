@@ -13,6 +13,6 @@ export class GenericService {
   }
 
   public get apiBase() {
-    return this.appConfigService.apiBaseUrl + "/api" + this.extension;
+    return this.appConfigService.getApiBaseUrl + "/api" + this.extension;
   }
 }

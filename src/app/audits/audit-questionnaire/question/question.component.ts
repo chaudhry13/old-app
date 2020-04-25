@@ -1,12 +1,12 @@
 import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
 import { ValidationService } from '../../../_services/validation.service';
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes } from 'src/app/_models/questionnaire';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import {IonTextarea, NavController} from '@ionic/angular';
-import {ToastService} from "../../../_services/toast.service";
+import { IonTextarea, NavController } from '@ionic/angular';
+import { ToastService } from "../../../_services/toast.service";
 
 @Component({
   selector: 'question',
@@ -18,7 +18,7 @@ export class QuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() isInGroup: boolean;
 
-  @ViewChild('comment', { read: IonTextarea}) commentTextArea: IonTextarea;
+  @ViewChild('comment', { static: true }) commentTextArea: IonTextarea;
 
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;

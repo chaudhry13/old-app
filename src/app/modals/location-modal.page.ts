@@ -15,7 +15,7 @@ export class LocationModalPage implements OnInit {
   placesService: any;
   query: string;
 
-  constructor(public modalController: ModalController, public zone: NgZone, ) { }
+  constructor(public modalController: ModalController) { }
 
   ngOnInit() {
     this.autocompleteItems = [];

@@ -19,7 +19,7 @@ import { AgmMap, AgmMarker } from '@agm/core';
 })
 export class IncidentReportDetailsPage implements OnInit {
 
-  @ViewChild('map') myMap: AgmMap;
+  @ViewChild('map', { static: false }) myMap: AgmMap;
 
   private id: string;
   private source: any;
@@ -69,7 +69,7 @@ export class IncidentReportDetailsPage implements OnInit {
     } else {
       this.cameraService.camera().then(image => {
         var uri = encodeURI(
-          this.appConfigService.apiBaseUrl + "/api/storage" +
+          this.appConfigService.getApiBaseUrl + "/api/storage" +
           "/incident-report?incidentReportId=" + this.incidentReport.id
         );
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { OAuthService, AuthConfig, OAuthErrorEvent } from "angular-oauth2-oidc";
 import { Router, RouterState } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";

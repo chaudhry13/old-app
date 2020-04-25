@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AppConfig } from '../_settings/auth.config';
 import { OAuthService, JwksValidationHandler, OAuthErrorEvent } from 'angular-oauth2-oidc';
-import { TokenService } from './token.service';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +22,10 @@ export class AppConfigService {
       this.appConfig.redirectUri = await this.storage.get("redirect_uri");
       this.appConfig.oidc = await this.storage.get("oidc");
       this.appConfig.apiUrl = await this.storage.get("api_url");
-      this.apiBaseUrl;
+      this.getApiBaseUrl;
     } else {
       // Default auth configuration
+      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
       this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
       this.appConfig.redirectUri = "http://localhost:8100/callback";
       this.appConfig.logoutUrl = "https://humanrisks-core-auth.azurewebsites.net/account/logout";
@@ -34,7 +35,7 @@ export class AppConfigService {
     }
   }
 
-  public get apiBaseUrl(): string {
+  public get getApiBaseUrl(): string {
     if (this.oAuthService.hasValidAccessToken()) {
       var token = this.oAuthService.getAccessToken();
       const tokens: Array<any> = token.split(".");

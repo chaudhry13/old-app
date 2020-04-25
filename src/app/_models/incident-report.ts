@@ -12,6 +12,7 @@ export class IncidentReport {
 	description?: string | null;
 	other?: string | null;
 	logo: string;
+	created: string;
 	startDate: string;
 	endDate: string;
 	source: number;
@@ -26,7 +27,7 @@ export class IncidentReport {
 	personsInjured: number;
 	files: Attachment[];
 	divisions: Division[];
-	user: User[];
+	user: User;
 
 	incidentType: IncidentType;
 	incidentCategory: IncidentCategory;

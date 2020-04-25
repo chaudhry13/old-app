@@ -209,7 +209,7 @@ export class AuditCompletePage implements OnInit {
     } else {
       this.cameraService.camera().then(image => {
         var uri = encodeURI(
-          this.appConfigService.apiBaseUrl + "/api/storage" +
+          this.appConfigService.getApiBaseUrl + "/api/storage" +
           "/audit?organizationId=" + this.user.organization + "&controlId=" + this.audit.controlId + "&auditId=" + this.audit.id + "&uid=" + this.user.id
         );
 
