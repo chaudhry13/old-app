@@ -1,4 +1,5 @@
-<ion-card *ngIf="questionGroup" class="ion-no-margin ion-margin-bottom" style="--background: white; border-radius: 0">
+<ion-card *ngIf="questionGroup && questionGroup.questions.length > 0" class="ion-no-margin ion-margin-bottom"
+  style="--background: white; border-radius: 0">
   <ion-card-header>
     <ion-card-title mode="md">
       {{ questionGroup.groupTitle }}

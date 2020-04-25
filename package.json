@@ -1,6 +1,6 @@
 {
   "name": "humanrisks-app",
-  "version": "0.0.1",
+  "version": "2.1.5",
   "author": "Human Risks Aps",
   "homepage": "https://www.humanrisks.com/",
   "scripts": {
@@ -113,7 +113,7 @@
     "typescript": "~3.4.5",
     "@babel/compat-data": "~7.8.0"
   },
-  "description": "An Ionic project",
+  "description": "The Human Risks App",
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
