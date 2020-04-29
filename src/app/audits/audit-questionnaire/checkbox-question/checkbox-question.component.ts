@@ -16,6 +16,7 @@ export class CheckboxQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
+  @Input() isReadOnly: boolean;
 
   questionOptions: QuestionOption[];
 

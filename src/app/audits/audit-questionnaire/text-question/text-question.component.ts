@@ -12,11 +12,9 @@ export class TextQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
+  @Input() isReadOnly: boolean;
 
-  QuestionTypes = QuestionTypes;
   textTypeToString = QuestionTextType;
-
-  viewAnswer: boolean;
 
   constructor() { }
 

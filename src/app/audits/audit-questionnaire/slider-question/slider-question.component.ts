@@ -14,6 +14,7 @@ export class SliderQuestionComponent implements OnInit {
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() answerForm: FormGroup;
   @Input() questionAnswer: QuestionAnsweres;
+  @Input() isReadOnly: boolean;
 
   rangeValue: number;
 
@@ -24,16 +25,16 @@ export class SliderQuestionComponent implements OnInit {
     this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
 
     if (this.questionAnswer != null) {
-      this.answerForm.controls["slider"].setValue(this.questionAnswer.slider);
+      this.answerForm.controls.slider.setValue(this.questionAnswer.slider);
       this.rangeValue = this.questionAnswer.slider;
     } else {
-      this.answerForm.controls["slider"].setValue(this.question.sliderOptions.sliderFrom);
+      this.answerForm.controls.slider.setValue(this.question.sliderOptions.sliderFrom);
       this.rangeValue = this.question.sliderOptions.sliderFrom;
     }
   }
 
   valueChanged() {
-    this.rangeValue = this.answerForm.controls["slider"].value;
+    this.rangeValue = this.answerForm.controls.slider.value;
     var answerEdit = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
     this.qhs.updateAnswer(answerEdit, this.questionAnswer, this.question);
   }

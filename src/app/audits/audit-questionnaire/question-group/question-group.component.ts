@@ -9,10 +9,10 @@ import { QuestionGroupDetails, QuestionnaireUserAnswer } from 'src/app/_models/q
 export class QuestionGroupComponent implements OnInit {
   @Input() questionGroup: QuestionGroupDetails;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Input() isReadOnly: boolean;
 
   constructor() { }
 
   ngOnInit() {
   }
-
 }

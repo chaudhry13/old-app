@@ -13,14 +13,14 @@
 
       <!-- Question groups -->
       <div *ngIf="item.type == 'Group'">
-        <question-group [questionGroup]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer">
+        <question-group [isReadOnly]="isReadOnly" [questionGroup]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer">
         </question-group>
       </div>
 
       <!-- Standalone questions -->
       <ion-card *ngIf="item.type == 'Question'" class="card ion-no-margin ion-margin-bottom" style="--background: white; border-radius: 0px">
         <ion-card-content>
-          <question [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
+          <question [isReadOnly]="isReadOnly" [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
             [isInGroup]="false">
           </question>
         </ion-card-content>

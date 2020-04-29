@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { IonTextarea, NavController } from '@ionic/angular';
-import { ToastService } from "../../../_services/toast.service";
+import { ToastService } from '../../../_services/toast.service';
 
 @Component({
   selector: 'question',
@@ -17,6 +17,7 @@ export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() isInGroup: boolean;
+  @Input() isReadOnly: boolean;
 
   @ViewChild('comment', { static: true }) commentTextArea: IonTextarea;
 

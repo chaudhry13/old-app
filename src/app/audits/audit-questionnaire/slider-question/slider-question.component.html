@@ -9,7 +9,7 @@
     </ion-row>
   </ion-grid> -->
 
-  <ion-range class="range" pin="true" debounce="500" formControlName="slider"
+  <ion-range [attr.disabled]="isReadOnly" class="range" pin="true" debounce="500" formControlName="slider"
     min="{{question.sliderOptions.sliderFrom}}" max="{{question.sliderOptions.sliderTo}}"
     step="{{question.sliderOptions.sliderStep}}" value="{{rangeValue}}" (ngModelChange)="valueChanged()">
   </ion-range>

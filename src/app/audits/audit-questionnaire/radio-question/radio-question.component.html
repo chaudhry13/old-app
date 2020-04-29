@@ -2,7 +2,7 @@
   <ion-radio-group mode="md">
     <ion-item *ngFor="let option of questionOptions" (click)="optionPressed(option)"
       [style.border-color]="option.colorHexValue" class="radio-buttons" style="margin: 8px">
-      <ion-radio class="ion-float-start" color="primary" mode="md"
+      <ion-radio [attr.disabled]="isReadOnly" class="ion-float-start" color="primary" mode="md"
         [checked]="qhs.CheckOptionValue(questionAnswer, option)">
       </ion-radio>
 

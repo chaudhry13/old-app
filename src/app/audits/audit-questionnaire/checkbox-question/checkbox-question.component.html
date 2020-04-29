@@ -1,7 +1,7 @@
 <ion-item class="checkbox-question" *ngFor="let option of questionOptions" (click)="optionPressed(option)"
   lines="none" [style.border-color]="option.colorHexValue" class="checkbox-buttons" style="margin: 8px">
   <!-- Checkbox button icons -->
-  <ion-checkbox slot="start" mode="md" [checked]="qhs.CheckOptionValue(questionAnswer, option)">
+  <ion-checkbox [attr.disabled]="isReadOnly" slot="start" mode="md" [checked]="qhs.CheckOptionValue(questionAnswer, option)">
   </ion-checkbox>
   <ion-label>
     <ion-text class="ion-text-wrap">

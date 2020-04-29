@@ -13,7 +13,7 @@ import { AuditService } from 'src/app/_services/audit.service';
 export class AuditQuestionnairePage implements OnInit {
 
   id: string;
-  readOnly: boolean = false;
+  isReadOnly = false;
 
   questionnaire: QuestionnaireDetails;
   questionnaireUserAnswer: QuestionnaireUserAnswer;
@@ -39,25 +39,25 @@ export class AuditQuestionnairePage implements OnInit {
   }
 
   addQuestionsAndGroups() {
-    //Sorts the questions within each group
+    // Sorts the questions within each group
     this.questionnaire.questionGroups.forEach(g => g.questions = g.questions.sort((q1, q2) => q1.index - q2.index));
 
-    //Adds the questions outside
+    // Adds the questions outside
     this.questionnaire.questions.filter(q => q.questionGroupId == null).forEach(x => {
       this.questionsAndQuestionGroups.push(
         {
           index: x.index,
-          type: "Question",
+          type: 'Question',
           reference: x,
-        })
+        });
     });
 
-    //Adds the questiongroups
+    // Adds the questiongroups
     this.questionnaire.questionGroups.forEach(x => {
       var theGroup = { ...x };
       theGroup.questions = x.questions;
 
-      //Adds the groups
+      // Adds the groups
       this.questionsAndQuestionGroups.push(
         {
           index: theGroup.index,
@@ -66,14 +66,15 @@ export class AuditQuestionnairePage implements OnInit {
         }
       );
     });
-    //Sorts the questions outside with the groups
+    // Sorts the questions outside with the groups
     this.questionsAndQuestionGroups.sort((q1, q2) => q1.index - q2.index);
   }
 
   checkAuditStatus(auditId: string) {
-    this.auditService.get(auditId).then(a => {
-      if (a.completed)
-        this.readOnly = true;
+    this.auditService.get(auditId).then(audit => {
+      if (audit.completed) {
+        this.isReadOnly = true;
+      }
     });
   }
 }
