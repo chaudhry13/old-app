@@ -52,10 +52,10 @@ export class AuditService extends GenericService {
   }
 
   async canFinishAudit(id: string): Promise<boolean> {
-		return this.http.get<boolean>(this.apiBase + "/CanFinishAudit/" + id).toPromise();
-	}
+    return this.http.get<boolean>(this.apiBase + "/CanFinishAudit/" + id).toPromise();
+  }
 
-	async generateUserAnswers(auditId: string): Promise<QuestionnaireUserAnswerAudit[]> {
-		return this.http.post<QuestionnaireUserAnswerAudit[]>(this.apiBase + "/insertquestionnaire?id=" + auditId, null).toPromise();
-	}
+  async generateUserAnswers(auditId: string): Promise<QuestionnaireUserAnswerAudit[]> {
+    return this.http.post<QuestionnaireUserAnswerAudit[]>(this.apiBase + "/InsertUserAnswers?id=" + auditId, null).toPromise();
+  }
 }
