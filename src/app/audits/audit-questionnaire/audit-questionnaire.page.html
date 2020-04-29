@@ -13,20 +13,22 @@
 
       <!-- Question groups -->
       <div *ngIf="item.type == 'Group'">
-        <question-group [isReadOnly]="isReadOnly" [questionGroup]="item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer">
+        <question-group [isReadOnly]="isReadOnly" [questionGroup]="item.reference"
+          [questionnaireUserAnswer]="questionnaireUserAnswer">
         </question-group>
       </div>
 
       <!-- Standalone questions -->
-      <ion-card *ngIf="item.type == 'Question'" class="card ion-no-margin ion-margin-bottom" style="--background: white; border-radius: 0px">
+      <ion-card *ngIf="item.type == 'Question'" class="card ion-no-margin ion-margin-bottom"
+        style="--background: white; border-radius: 0px">
         <ion-card-content>
-          <question [isReadOnly]="isReadOnly" [question]=" item.reference" [questionnaireUserAnswer]="questionnaireUserAnswer"
-            [isInGroup]="false">
+          <question [isReadOnly]="isReadOnly" [question]=" item.reference"
+            [questionnaireUserAnswer]="questionnaireUserAnswer" [isInGroup]="false">
           </question>
         </ion-card-content>
       </ion-card>
     </div>
-    <ion-button color="primary" class="ion-margin-horizontal" expand="block"
-                (click)="navigateBackToCompleteView()" >Complete Questionnaire</ion-button>
+    <ion-button *ngIf="!isReadOnly" color="primary" class="ion-margin-horizontal" expand="block"
+      (click)="navigateBackToCompleteView()">Complete Questionnaire</ion-button>
   </div>
 </ion-content>
