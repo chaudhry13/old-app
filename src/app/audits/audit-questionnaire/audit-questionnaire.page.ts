@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { QuestionAndGroups, QuestionnaireUserAnswer } from '../../_models/questionnaire';
+import {QuestionAndGroups, QuestionnaireUserAnswer, QuestionTypes} from '../../_models/questionnaire';
 import { QuestionnaireUserAnswerService } from 'src/app/_services/questionnaire.service';
 import { QuestionnaireDetails } from 'src/app/_models/questionnaire';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import { AuditService } from 'src/app/_services/audit.service';
+import {NavController} from '@ionic/angular';
 
 @Component({
   selector: 'app-audit-questionnaire',
@@ -24,7 +25,8 @@ export class AuditQuestionnairePage implements OnInit {
   constructor(
     public activatedRoute: ActivatedRoute,
     public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
-    public auditService: AuditService
+    public auditService: AuditService,
+    public navCtrl: NavController
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
   }
@@ -52,7 +54,7 @@ export class AuditQuestionnairePage implements OnInit {
         });
     });
 
-    // Adds the questiongroups
+    // Adds the QuestionGroups
     this.questionnaire.questionGroups.forEach(x => {
       var theGroup = { ...x };
       theGroup.questions = x.questions;
@@ -76,5 +78,13 @@ export class AuditQuestionnairePage implements OnInit {
         this.isReadOnly = true;
       }
     });
+  }
+
+  navigateBackToCompleteView() {
+    this.navCtrl.navigateBack('/tabs/tab1/complete/' + this.questionnaireUserAnswer.auditId).then();
+  }
+
+  validateQuestionnaire(): boolean {
+    return true;
   }
 }

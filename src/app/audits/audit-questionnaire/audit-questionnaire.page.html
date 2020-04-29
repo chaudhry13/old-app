@@ -27,7 +27,6 @@
       </ion-card>
     </div>
     <ion-button color="primary" class="ion-margin-horizontal" expand="block"
-                routerLink="/tabs/tab1/complete/{{ questionnaireUserAnswer.auditId }}" routerDirection="back"
-                routerLinkActive="router-link-active">Complete Questionnaire</ion-button>
+                (click)="navigateBackToCompleteView()" >Complete Questionnaire</ion-button>
   </div>
 </ion-content>

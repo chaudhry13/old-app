@@ -65,7 +65,7 @@ export class Question {
     numberOptions: QuestionNumberOptions;
 
     possibleAnswers: Array<QuestionOption>;
-    answeres: Array<QuestionAnsweredEdit>
+    answeres: Array<QuestionAnsweredEdit>;
 }
 
 export class QuestionCreate {
@@ -241,11 +241,11 @@ export class QuestionnaireUserAnswerList {
 export class QuestionnaireUserAnswer {
     id: string;
     created: Date;
-    updated: Date
+    updated: Date;
     status: QuestionAnsweredStatus;
     userId: string;
     user: UserList;
-    score: Number;
+    score: number;
     questionnaireSentOutId: string;
     questionnaireSentOut: QuestionnaireSentOutDetails;
     questionAnsweres: Array<QuestionAnsweres>;
