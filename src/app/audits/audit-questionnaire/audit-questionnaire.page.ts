@@ -34,7 +34,7 @@ export class AuditQuestionnairePage implements OnInit {
       this.questionnaireUserAnswer = qua;
       this.questionnaire = qua.questionnaireSentOut.questionnaire;
       this.addQuestionsAndGroups();
-      this.checkAuditStatus(this.questionnaireUserAnswer.auditId);
+      this.checkAuditCompleteStatus(this.questionnaireUserAnswer.auditId);
     });
   }
 
@@ -61,7 +61,7 @@ export class AuditQuestionnairePage implements OnInit {
       this.questionsAndQuestionGroups.push(
         {
           index: theGroup.index,
-          type: "Group",
+          type: 'Group',
           reference: theGroup,
         }
       );
@@ -70,7 +70,7 @@ export class AuditQuestionnairePage implements OnInit {
     this.questionsAndQuestionGroups.sort((q1, q2) => q1.index - q2.index);
   }
 
-  checkAuditStatus(auditId: string) {
+  checkAuditCompleteStatus(auditId: string) {
     this.auditService.get(auditId).then(audit => {
       if (audit.completed) {
         this.isReadOnly = true;

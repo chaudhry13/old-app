@@ -16,7 +16,6 @@ export class ValidationService {
     }
   }
 
-  // TODO: on empty input of non-required question the Number and regex text can't save (api-call error)
   validateQuestion(question: Question, answerForm: FormGroup) {
     switch (question.type) {
       case QuestionTypes.Checkbox:
