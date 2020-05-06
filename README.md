@@ -20,8 +20,10 @@ The app can be run with:
 ionic serve
 ```
 
-To run it in the browser. _Here some features won't work, e.g. camera_.
+This is open the app for debugging in the browser. For Mobile view, go to "Developer Tools" in your browser and select "Toggle device toolbar".
 
+
+To run it in the browser. _Here some features won't work, e.g. camera_.
 
 Run the app on an Android device with
 ```bash
