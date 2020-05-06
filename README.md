@@ -28,6 +28,11 @@ Run the app on an Android device with
 ionic cordova run android
 ```
 
+When developing with an Android phone, you can use the following to see console.log()'s and get live-reload:
+```bash
+ionic cordova run android --device -l -s -c
+```
+
 Or on IOS device with
 ```bash
 ionic cordova run ios
