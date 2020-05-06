@@ -4,7 +4,23 @@ The Human Risks Ionic app for both Android and IOS.
 
 ## Installation
 
-Install all dependencies with:
+Make sure you have installed nodejs version 10 or higher.
+
+Install the Ionic CLI and ionic angular packages:
+```bash
+npm install -g @ionic/cli
+npm install @ionic/angular@latest --save
+```
+
+Also, make sure XCode and ios-sim and ios-deploy is installed:
+
+```bash
+xcode-select --install
+npm install -g ios-sim
+brew install ios-deploy
+```
+
+Install all pakcages dependencies with:
 
 ```bash
 npm install
