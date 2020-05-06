@@ -32,6 +32,7 @@ Or on IOS device with
 ```bash
 ionic cordova run ios
 ```
+## Run the app in Android Studio or XCode
 
 To prepare the app for building in Android Studio or XCode, run
 ```bash
