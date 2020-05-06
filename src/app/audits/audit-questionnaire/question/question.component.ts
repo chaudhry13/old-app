@@ -1,6 +1,6 @@
 import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
 import { ValidationService } from '../../../_services/validation.service';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes } from 'src/app/_models/questionnaire';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
@@ -19,7 +19,7 @@ export class QuestionComponent implements OnInit {
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
 
-  @ViewChild('comment', { static: true }) commentTextArea: IonTextarea;
+  @ViewChild('comment', { static: false }) commentTextArea: IonTextarea;
 
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;
@@ -81,8 +81,9 @@ export class QuestionComponent implements OnInit {
     this.showComment = !this.showComment;
     if (this.showComment) {
       setTimeout(() => { // Needs timeout to setFocus()
+        console.log("should focus!");
         this.commentTextArea.setFocus().then();
-      }, 150);
+      }, 200);
     }
   }
 }
