@@ -33,7 +33,7 @@ Or on IOS device with
 ionic cordova run ios
 ```
 
-To build the app run
+To prepare the app for building in Android Studio or XCode, run
 ```bash
 ionic cordova prepare android
 ```
@@ -42,3 +42,7 @@ Or
 ```bash
 ionic cordova prepare ios
 ```
+
+When the app is prepared open the project in Android Studio or XCode.
+
+*Make sure to open the XCode Workspace file when using XCode to make sure all dependencies are loaded*
