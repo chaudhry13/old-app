@@ -12,13 +12,16 @@ import { IncidentReportFilterPage } from "./incident-report-filter.page";
   styleUrls: ["incident-report.page.scss"]
 })
 export class IncidentReportPage implements OnInit {
-  public incidentReports: IncidentReport[];
+  public incidentReports: IncidentReport[] = [];
+  public infScrollincidentReports: IncidentReport[] = [];
+  public incidentReportMaxLength: number;
   public incidentFilterForm: FormGroup;
 
   public startDate: Date;
   public endDate: Date;
 
   public loadingOverlay: any;
+  public pageNumber: number = 1;
 
   constructor(
     public incidentReportService: IncidentReportService,
@@ -48,29 +51,48 @@ export class IncidentReportPage implements OnInit {
       northEastLatitude: [0, Validators.required],
       northEastLongitude: [0, Validators.required]
     });
-
-    this.list(this.incidentFilterForm.value);
   }
 
   ionViewWillEnter() {
     this.list(this.incidentFilterForm.value);
   }
 
+  loadData(event) {
+    setTimeout(() => {
+      this.addToInfScrollList();
+      event.target.complete();
+
+      if (this.infScrollincidentReports.length >= this.incidentReportMaxLength) {
+        event.target.disabled = true;
+      }
+    }, 500)
+  }
+
+  addToInfScrollList() {
+    this.incidentReports.slice((this.pageNumber - 1) * 25, (25 * this.pageNumber)).forEach(incident => {
+      this.infScrollincidentReports.push(incident);
+    });
+    this.pageNumber++;
+  }
+
   async list(filter: any) {
     this.incidentReports = null;
+    this.infScrollincidentReports = [];
+    this.pageNumber = 1;
 
     this.incidentReportService.list(filter).then(incidentReports => {
-      setTimeout(() => {
-        this.incidentReports = incidentReports.data;
+      this.incidentReports = incidentReports.data;
 
-        this.incidentReports.forEach(incidentReport => {
-          incidentReport.icon = this.incidentReportService.getIcon(
-            incidentReport.incidentCategory.name,
-            incidentReport.source,
-            incidentReport.riskLevel
-          );
-        });
-      }, 1000);
+      this.incidentReports.forEach(incidentReport => {
+        incidentReport.icon = this.incidentReportService.getIcon(
+          incidentReport.incidentCategory.name,
+          incidentReport.source,
+          incidentReport.riskLevel
+        );
+      });
+
+      this.incidentReportMaxLength = incidentReports.data.length;
+      this.addToInfScrollList();
     });
   }
 
