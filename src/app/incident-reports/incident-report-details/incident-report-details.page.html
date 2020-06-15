@@ -8,22 +8,26 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- user can't see:
-
-    address
-    completed by
-    start- and end date (only created date is shown)
-    division(s)
-    unique ID -->
-
 <ion-content *ngIf="incidentReport">
-  <agm-map *ngIf="renderMap" #map [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude">
-    <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
+  <agm-map
+    *ngIf="renderMap"
+    #map
+    [latitude]="incidentReport.latitude"
+    [longitude]="incidentReport.longitude"
+  >
+    <agm-marker
+      [latitude]="incidentReport.latitude"
+      [longitude]="incidentReport.longitude"
+    ></agm-marker>
   </agm-map>
 
   <ion-card-header>
-    <ion-card-subtitle *ngIf="incidentReport.source == 0">Internal</ion-card-subtitle>
-    <ion-card-subtitle *ngIf="incidentReport.source == 1">External</ion-card-subtitle>
+    <ion-card-subtitle *ngIf="incidentReport.source == 0"
+      >Internal</ion-card-subtitle
+    >
+    <ion-card-subtitle *ngIf="incidentReport.source == 1"
+      >External</ion-card-subtitle
+    >
     <ion-card-title>{{incidentReport.title}}</ion-card-title>
   </ion-card-header>
   <ion-card-content>
@@ -35,7 +39,9 @@
     </ion-card-header>
     <ion-card-content [ngSwitch]="incidentReport.riskLevel">
       <ion-badge *ngSwitchCase="1" class="risk-low">Low (1)</ion-badge>
-      <ion-badge *ngSwitchCase="2" class="risk-moderate">Moderate (2)</ion-badge>
+      <ion-badge *ngSwitchCase="2" class="risk-moderate"
+        >Moderate (2)</ion-badge
+      >
       <ion-badge *ngSwitchCase="3" class="risk-medium">Medium (3)</ion-badge>
       <ion-badge *ngSwitchCase="4" class="risk-high">High (4)</ion-badge>
       <ion-badge *ngSwitchCase="5" class="risk-extreme">Extreme (5)</ion-badge>
@@ -63,7 +69,7 @@
       <ion-card-subtitle>Source</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content *ngIf="incidentReport.source == 1">
-      <img width="200px" src="assets/img/riskline_logo.png">
+      <img width="200px" src="assets/img/riskline_logo.png" />
     </ion-card-content>
   </div>
 
@@ -71,8 +77,14 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-button color="secondary" expand="block" margin-bottom (click)="takePicture()">
-            Take photo</ion-button>
+          <ion-button
+            color="secondary"
+            expand="block"
+            margin-bottom
+            (click)="takePhotoAndUpload()"
+          >
+            Take photo</ion-button
+          >
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -119,11 +131,17 @@
 
   <ion-item *ngFor="let file of files">
     <ion-thumbnail slot="start" *ngIf="file">
-      <img src="{{ file.url }}">
+      <img src="{{ file.url }}" />
     </ion-thumbnail>
     <ion-label>
       {{file.name}}
     </ion-label>
+    <ion-icon
+      (click)="removePicture(file)"
+      name="trash"
+      color="warning"
+      item-end
+    ></ion-icon>
   </ion-item>
 
   <ion-card-content style="color: lightgray; font-size: small;">

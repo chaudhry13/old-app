@@ -1,33 +1,36 @@
-import { QuestionnaireHelperService } from './../../_services/questionnaire-helper.service';
-import { Component, OnInit, Input } from '@angular/core';
-import { Audit } from '../../_models/audit';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController, AlertController } from '@ionic/angular';
-import { AuditService } from 'src/app/_services/audit.service';
-import { CameraService } from 'src/app/_services/photo.service';
-import { MapService } from 'src/app/_services/maps.service';
-import { ToastService } from 'src/app/_services/toast.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ControlService } from 'src/app/_services/control.service';
-import { FileTransfer, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { TokenService } from 'src/app/_services/token.service';
-import { User } from 'src/app/_models/user';
-import { AccountService } from 'src/app/_services/account.service';
-import { Attachment } from 'src/app/_models/file';
-import { SettingsService } from 'src/app/_services/settings.service';
-import { StorageService } from 'src/app/_services/storage.service';
-import { AppConfigService } from 'src/app/_services/auth-config.service';
-import { FollowUpService } from 'src/app/_services/follow-up.service';
-import { FollowUp } from 'src/app/_models/follow-up';
-import { UserService } from 'src/app/_services/user.service';
-import { QuestionnaireService } from 'src/app/_services/questionnaire.service';
+import { QuestionnaireHelperService } from "./../../_services/questionnaire-helper.service";
+import { Component, OnInit, Input } from "@angular/core";
+import { Audit } from "../../_models/audit";
+import { OAuthService } from "angular-oauth2-oidc";
+import { Router, ActivatedRoute } from "@angular/router";
+import { LoadingController, AlertController } from "@ionic/angular";
+import { AuditService } from "src/app/_services/audit.service";
+import { CameraService } from "src/app/_services/photo.service";
+import { MapService } from "src/app/_services/maps.service";
+import { ToastService } from "src/app/_services/toast.service";
+import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { ControlService } from "src/app/_services/control.service";
+import {
+  FileTransfer,
+  FileTransferObject,
+} from "@ionic-native/file-transfer/ngx";
+import { TokenService } from "src/app/_services/token.service";
+import { User } from "src/app/_models/user";
+import { AccountService } from "src/app/_services/account.service";
+import { Attachment } from "src/app/_models/file";
+import { SettingsService } from "src/app/_services/settings.service";
+import { StorageService } from "src/app/_services/storage.service";
+import { AppConfigService } from "src/app/_services/auth-config.service";
+import { FollowUpService } from "src/app/_services/follow-up.service";
+import { FollowUp } from "src/app/_models/follow-up";
+import { UserService } from "src/app/_services/user.service";
+import { QuestionnaireService } from "src/app/_services/questionnaire.service";
 
 @Component({
-  selector: 'app-audit-complete',
-  styleUrls: ['audit-complete.page.scss'],
-  templateUrl: 'audit-complete.page.html'
+  selector: "app-audit-complete",
+  styleUrls: ["audit-complete.page.scss"],
+  templateUrl: "audit-complete.page.html",
 })
 export class AuditCompletePage implements OnInit {
   @Input()
@@ -73,17 +76,17 @@ export class AuditCompletePage implements OnInit {
     public tokenService: TokenService,
     public followUpService: FollowUpService,
     public userService: UserService,
-    public qhs: QuestionnaireHelperService) {
-
-    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    public qhs: QuestionnaireHelperService
+  ) {
+    this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
     this.auditForm = this.formBuilder.group({
-      id: ['', Validators.required],
-      other: [''],
-      remarks: [''],
+      id: ["", Validators.required],
+      other: [""],
+      remarks: [""],
       followUp: [false],
-      latitude: ['', Validators.required],
-      longitude: ['', Validators.required],
+      latitude: ["", Validators.required],
+      longitude: ["", Validators.required],
     });
   }
 
@@ -105,18 +108,21 @@ export class AuditCompletePage implements OnInit {
 
   // When leaving the view
   ionViewWillLeave() {
-    const listOfIFramesInView = document.getElementsByTagName('iframe');
+    const listOfIFramesInView = document.getElementsByTagName("iframe");
 
     // Need to pause iFrame video when leaving view or sends the app to background
     for (let index = 0; index < listOfIFramesInView.length; index++) {
       const iframe = listOfIFramesInView[index].contentWindow;
-      iframe.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      iframe.postMessage(
+        '{"event":"command","func":"pauseVideo","args":""}',
+        "*"
+      );
     }
   }
 
   getAudit() {
     this.auditService.get(this.id).then(
-      data => {
+      (data) => {
         this.audit = data;
         if (this.audit.longitude && this.audit.latitude) {
           this.showLocation = true;
@@ -124,26 +130,26 @@ export class AuditCompletePage implements OnInit {
 
         if (this.audit.followUpId) {
           this.audit.followUp = true;
-          this.followUpService.get(this.audit.followUpId).then(followUp => {
+          this.followUpService.get(this.audit.followUpId).then((followUp) => {
             this.followUp = followUp;
           });
         }
 
         if (this.audit.completedById) {
-          this.userService.get(this.audit.completedById).subscribe(user => {
+          this.userService.get(this.audit.completedById).subscribe((user) => {
             this.completedUser = user;
           });
         }
 
         this.listFiles();
-        this.controlService.get(this.audit.controlId).then(control => {
+        this.controlService.get(this.audit.controlId).then((control) => {
           this.audit.description = control.description;
         });
 
         this.getAuditQuestionnaires();
       },
-      error => {
-        this.toastService.show('An error occurred retrieving the audit..');
+      (error) => {
+        this.toastService.show("An error occurred retrieving the audit..");
       }
     );
   }
@@ -152,12 +158,17 @@ export class AuditCompletePage implements OnInit {
     if (this.audit.questionnaire) {
       this.hasQuestionnaires = true;
 
-      if (!this.questionnairesIsLoading && this.audit.questionnaireUserAnswers.length == 0) {
+      if (
+        !this.questionnairesIsLoading &&
+        this.audit.questionnaireUserAnswers.length == 0
+      ) {
         this.questionnairesIsLoading = true;
-        this.auditService.generateUserAnswers(this.audit.id).then(response => {
-          this.audit.questionnaireUserAnswers = response;
-          this.questionnairesIsLoading = false;
-        });
+        this.auditService
+          .generateUserAnswers(this.audit.id)
+          .then((response) => {
+            this.audit.questionnaireUserAnswers = response;
+            this.questionnairesIsLoading = false;
+          });
       }
     }
   }
@@ -178,89 +189,104 @@ export class AuditCompletePage implements OnInit {
       this.auditForm.controls.latitude.setValue(this.audit.latitude);
       this.auditForm.controls.longitude.setValue(this.audit.longitude);
     }
-    this.auditService.canFinishAudit(this.audit.id).then(canFinish => {
+    this.auditService.canFinishAudit(this.audit.id).then((canFinish) => {
       if (canFinish) {
-        this.auditService.complete(this.auditForm).then(
-          () => {
-            this.router.navigate(['/tabs/tab1/details/' + this.audit.controlId]).then(() => {
-              this.toastService.show('Audit completed successfully');
-            });
-          }).catch(
-            error => {
-              this.toastService.show('An error occurred completing the audit');
-            });
+        this.auditService
+          .complete(this.auditForm)
+          .then(() => {
+            this.router
+              .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+              .then(() => {
+                this.toastService.show("Audit completed successfully");
+              });
+          })
+          .catch((error) => {
+            this.toastService.show("An error occurred completing the audit");
+          });
       } else {
-        this.toastService.showWithDuration('All required questions needs answer before the audit can be completed!', 5000);
+        this.toastService.showWithDuration(
+          "All required questions needs answer before the audit can be completed!",
+          5000
+        );
       }
     });
   }
 
   takePicture() {
     if (this.photos.length === 50) {
-      this.toastService.show('You cannot add more than 50 photos');
+      this.toastService.show("You cannot add more than 50 photos");
     } else {
-      this.cameraService.camera().then(image => {
-        const uri = encodeURI(
-          this.appConfigService.getApiBaseUrl + '/api/storage' +
-            '/audit?organizationId=' + this.user.organization +
-            '&controlId=' + this.audit.controlId +
-            '&auditId=' + this.audit.id +
-            '&uid=' + this.user.id
-        );
+      this.cameraService
+        .camera()
+        .then((image) => {
+          const uri = encodeURI(
+            this.appConfigService.getApiBaseUrl +
+              "/api/storage" +
+              "/audit?organizationId=" +
+              this.user.organization +
+              "&controlId=" +
+              this.audit.controlId +
+              "&auditId=" +
+              this.audit.id +
+              "&uid=" +
+              this.user.id
+          );
 
-        const fileTransfer: FileTransferObject = this.fileTransfer.create();
-        const options = this.cameraService.options(image);
-        options.chunkedMode = false;
-        options.params = {};
+          const fileTransfer: FileTransferObject = this.fileTransfer.create();
+          const options = this.cameraService.options(image);
+          options.chunkedMode = false;
+          options.params = {};
 
-        this.progress();
+          this.progress();
 
-        fileTransfer
-          .upload(image, uri, options)
-          .then(result => {
-            this.toastService.show('Photo was uploaded successfully');
+          fileTransfer
+            .upload(image, uri, options)
+            .then((result) => {
+              this.toastService.show("Photo was uploaded successfully");
 
-            this.uploadAlert.dismiss();
-            this.listFiles();
-          })
-          .catch(error => {
-            this.toastService.show('An error occurred uploading the image');
-            this.uploadAlert.dismiss();
+              this.uploadAlert.dismiss();
+              this.listFiles();
+            })
+            .catch((error) => {
+              this.toastService.show("An error occurred uploading the image");
+              this.uploadAlert.dismiss();
+            });
+
+          fileTransfer.onProgress((progress) => {
+            this.uploadProgress = (progress.loaded / progress.total) * 100;
+            const percent = Math.round(this.uploadProgress);
+            this.uploadAlert.subHeader = percent.toString() + "% uploaded";
           });
-
-        fileTransfer.onProgress(progress => {
-          this.uploadProgress = (progress.loaded / progress.total) * 100;
-          const percent = Math.round(this.uploadProgress);
-          this.uploadAlert.subHeader = (percent.toString() + '% uploaded');
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.debug(error);
         });
-      }).then(result => {
-        console.log(result);
-      }).catch(error => {
-        console.debug(error);
-      });
     }
   }
 
   enableLocation() {
     if (this.audit.location) {
-      this.toastService.show('Getting your location...');
+      this.toastService.show("Getting your location...");
 
       this.geolocation
         .getCurrentPosition({
           enableHighAccuracy: true,
           timeout: 5000,
-          maximumAge: 0
+          maximumAge: 0,
         })
-        .then(position => {
+        .then((position) => {
           this.audit.latitude = position.coords.latitude;
           this.audit.longitude = position.coords.longitude;
 
           this.renderMapComplete = true;
 
-          this.toastService.show('Location found!');
+          this.toastService.show("Location found!");
         })
-        .catch(error => {
-          this.toastService.show('Your location could not be found!');
+        .catch((error) => {
+          this.toastService.show("Your location could not be found!");
           this.audit.location = false;
           this.audit.latitude = undefined;
           this.audit.longitude = undefined;
@@ -274,50 +300,33 @@ export class AuditCompletePage implements OnInit {
   }
 
   progress() {
-    this.alertCtrl.create({
-      header: 'Uploading..',
-      subHeader: this.uploadProgress.toString()
-    }).then(alert => {
-      this.uploadAlert = alert;
-      this.uploadAlert.present();
-    });
+    this.alertCtrl
+      .create({
+        header: "Uploading..",
+        subHeader: this.uploadProgress.toString(),
+      })
+      .then((alert) => {
+        this.uploadAlert = alert;
+        this.uploadAlert.present();
+      });
   }
 
   async listFiles() {
-    this.storageService.listAudit(this.audit.controlId, this.audit.id).then(files => {
-      this.files = files;
-    });
+    this.storageService
+      .listAudit(this.audit.controlId, this.audit.id)
+      .then((files) => {
+        this.files = files;
+      });
   }
 
   async removePicture(file: Attachment) {
-    const confirm = await this.deleteConfirmationAlert();
+    const confirm = await this.cameraService.deleteConfirmationAlert();
     if (confirm) {
-      this.storageService.deleteAudit(this.audit.controlId, this.audit.id, file.name).then(() => {
-        this.listFiles();
-      });
+      this.storageService
+        .deleteAudit(this.audit.controlId, this.audit.id, file.name)
+        .then(() => {
+          this.listFiles();
+        });
     }
-  }
-
-  async deleteConfirmationAlert(): Promise<boolean> {
-    let resolver: (confirm: boolean) => void;
-    const promise = new Promise<boolean>(resolve => {
-      resolver = resolve;
-    });
-    const alert = await this.alertCtrl.create({
-      header: 'Warning!',
-      message: 'Are you sure you want to delete this file?',
-      buttons: [
-        {
-          text: 'Delete',
-          handler: () => resolver(true)
-        },
-        {
-          text: 'Cancel',
-          handler: () => resolver(false)
-        }
-      ]
-    });
-    await alert.present();
-    return promise;
   }
 }

@@ -31,7 +31,9 @@ export class QuestionComponent implements OnInit {
   answerForm: FormGroup;
   hasComment = false;
   showComment = false;
-
+  // var url = "/questionnaire?organizationId=" + this.organizationId + "&questionnaireId="
+  // + this.questionnaireId + "&sentOutId=" + this.sentOutId + "&questionnaireUserAnswerId=
+  // + this.questionnaireUserAnswerId + "&questionAnswerId=" + this.questionAnswerId + "&fileName=";
   constructor(
     public formBuilder: FormBuilder,
     public validationService: ValidationService,
