@@ -9,19 +9,19 @@ declare var google: any;
 })
 export class LocationModalPage implements OnInit {
 
-  autocompleteItems: any;
+  autocompleteItems: any[];
   autocomplete: any;
   acService: any;
   placesService: any;
   query: string;
   showList: boolean;
 
-  constructor(public modalController: ModalController) { }
-
-  ngOnInit() {
+  constructor(public modalController: ModalController) {
     this.autocompleteItems = [];
     this.autocomplete = {};
   }
+
+  ngOnInit() { }
 
   ionViewWillEnter() {
     this.acService = new google.maps.places.AutocompleteService();
