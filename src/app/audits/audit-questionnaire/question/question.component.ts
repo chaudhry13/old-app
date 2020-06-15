@@ -1,17 +1,22 @@
-import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
-import { ValidationService } from '../../../_services/validation.service';
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Question, QuestionAnsweres, QuestionnaireUserAnswer, QuestionTypes } from 'src/app/_models/questionnaire';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IonTextarea, NavController } from '@ionic/angular';
-import { ToastService } from '../../../_services/toast.service';
+import { QuestionnaireHelperService } from "../../../_services/questionnaire-helper.service";
+import { ValidationService } from "../../../_services/validation.service";
+import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Question,
+  QuestionAnsweres,
+  QuestionnaireUserAnswer,
+  QuestionTypes,
+} from "src/app/_models/questionnaire";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { QuestionAnsweredService } from "src/app/_services/questionnaire.service";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { IonTextarea, NavController } from "@ionic/angular";
+import { ToastService } from "../../../_services/toast.service";
 
 @Component({
-  selector: 'question',
-  templateUrl: './question.component.html',
-  styleUrls: ['./question.component.scss']
+  selector: "question",
+  templateUrl: "./question.component.html",
+  styleUrls: ["./question.component.scss"],
 })
 export class QuestionComponent implements OnInit {
   @Input() question: Question;
@@ -19,7 +24,7 @@ export class QuestionComponent implements OnInit {
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
 
-  @ViewChild('comment', { static: false }) commentTextArea: IonTextarea;
+  @ViewChild("comment", { static: false }) commentTextArea: IonTextarea;
 
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;
@@ -33,22 +38,27 @@ export class QuestionComponent implements OnInit {
     public qhs: QuestionnaireHelperService,
     public questionAnsweredService: QuestionAnsweredService,
     private navCtrl: NavController,
-    public toastService: ToastService) {
+    public toastService: ToastService
+  ) {
     this.answerForm = this.formBuilder.group({
-      id: [''],
-      questionId: [''],
-      userAnswerId: [''],
-      text: [''],
+      id: [""],
+      questionId: [""],
+      userAnswerId: [""],
+      text: [""],
       slider: [0],
       numberAnswer: [0],
-      comment: [''],
+      comment: [""],
       na: [false],
-      answered: [false]
+      answered: [false],
+      locationAnswer: [],
     });
   }
 
   ngOnInit() {
-    this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
+    this.questionAnswer = this.qhs.findQuestionAnswer(
+      this.question.id,
+      this.questionnaireUserAnswer
+    );
 
     if (this.questionAnswer != null) {
       this.answerForm.controls.na.setValue(this.questionAnswer.na);
@@ -59,20 +69,32 @@ export class QuestionComponent implements OnInit {
     }
 
     this.answerForm.valueChanges
-      .pipe(
-        debounceTime(2000),
-        distinctUntilChanged(),
-      )
+      .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
-        this.hasComment = !this.qhs.isNullOrWhitespace(this.answerForm.controls.comment.value);
+        this.hasComment = !this.qhs.isNullOrWhitespace(
+          this.answerForm.controls.comment.value
+        );
 
-        if (this.validationService.isQuestionAnswerValid(this.question, this.answerForm).isValid) {
-          const answer = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
-          this.questionAnsweredService.update(answer).then(() => {
-            this.toastService.show('Answer saved!');
-          }).catch(() => {
-            this.toastService.show('Could not save answer!');
-          });
+        if (
+          this.validationService.isQuestionAnswerValid(
+            this.question,
+            this.answerForm
+          ).isValid
+        ) {
+          const answer = this.qhs.getQuestionAnswer(
+            this.questionAnswer,
+            this.question,
+            this.questionnaireUserAnswer,
+            this.answerForm
+          );
+          this.questionAnsweredService
+            .update(answer)
+            .then(() => {
+              this.toastService.show("Answer saved!");
+            })
+            .catch(() => {
+              this.toastService.show("Could not save answer!");
+            });
         }
       });
   }
@@ -80,12 +102,11 @@ export class QuestionComponent implements OnInit {
   toggleComment() {
     this.showComment = !this.showComment;
     if (this.showComment) {
-      setTimeout(() => { // Needs timeout to setFocus()
+      setTimeout(() => {
+        // Needs timeout to setFocus()
         console.log("should focus!");
         this.commentTextArea.setFocus().then();
       }, 200);
     }
   }
 }
-
-
