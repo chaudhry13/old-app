@@ -21,7 +21,7 @@ import { LoginComponent } from "./login/login.component";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
 import { ControlService } from "./_services/control.service";
-import { FormBuilder, FormsModule } from "@angular/forms";
+import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TokenInterceptor } from "./_interceptors/auth.interceptor";
 import { DivisionService } from "./_services/division.service";
 import { StorageService } from "./_services/storage.service";
@@ -73,6 +73,7 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     ApplicationPipesModule
   ],
   providers: [

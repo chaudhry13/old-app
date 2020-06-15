@@ -8,13 +8,13 @@
     </ion-buttons> -->
   </ion-toolbar>
   <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ionChange)="updateSearch()"
+    <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ngModelChange)="updateSearch()"
       (ionCancel)="dismiss()" placeholder="Start typing and select ...">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-list>
+  <ion-list *ngIf="showList">
     <ion-item *ngFor="let item of autocompleteItems" (click)="chooseItem(item)">
       <ion-icon name="pin" item-start></ion-icon>
       {{ item.description }}

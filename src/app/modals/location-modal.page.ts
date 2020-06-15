@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, NgZone } from '@angular/core';
+import { Component, Input, OnInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
 
 declare var google: any;
@@ -14,6 +14,7 @@ export class LocationModalPage implements OnInit {
   acService: any;
   placesService: any;
   query: string;
+  showList: boolean;
 
   constructor(public modalController: ModalController) { }
 
@@ -36,6 +37,7 @@ export class LocationModalPage implements OnInit {
   }
 
   updateSearch() {
+    this.showList = false;
     if (!this.query || this.query == '') {
       this.autocompleteItems = [];
       return;
@@ -52,6 +54,10 @@ export class LocationModalPage implements OnInit {
       }
       this.autocompleteItems = predictions;
     });
+
+    setTimeout(() => {
+      this.showList = true;
+    }, 100);
   }
 
 }
