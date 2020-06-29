@@ -273,6 +273,7 @@ export class QuestionAnsweres {
   question: Question;
   userAnswerId: string;
   locationAnswer: QuestionLocationAnswer;
+  userAnswer: QuestionnaireUserAnswer;
   optionAnswered: Array<QuestionOptionAnswered>;
 }
 
