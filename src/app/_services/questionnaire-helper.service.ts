@@ -20,7 +20,7 @@ export class QuestionnaireHelperService {
   constructor(
     private toastService: ToastService,
     private questionAnsweredService: QuestionAnsweredService
-  ) {}
+  ) { }
 
   public CheckOptionValue(
     questionAnswer: QuestionAnsweres,
@@ -39,9 +39,12 @@ export class QuestionnaireHelperService {
     questionId: string,
     questionnaireUserAnswer: QuestionnaireUserAnswer
   ): QuestionAnsweres {
-    return questionnaireUserAnswer.questionAnsweres.find(
+    var questionAnswer = questionnaireUserAnswer.questionAnsweres.find(
       (x) => x.questionId == questionId
     );
+    questionAnswer.userAnswer = questionnaireUserAnswer;
+
+    return questionAnswer;
   }
 
   public updateOptionAnswer(
@@ -168,4 +171,7 @@ export class QuestionnaireHelperService {
 
     return input.replace(/\s/g, "").length < 1;
   }
+
+  // var url = "/questionnaire?organizationId=" + this.organizationId + "&questionnaireId=" + this.questionnaireId + "&sentOutId=" + this.sentOutId + "&questionnaireUserAnswerId=" + this.questionnaireUserAnswerId + "&questionAnswerId=" + this.questionAnswerId + "&fileName=";
+  // this.fileConfig = { ...this.storageService.getConfig(url) };
 }

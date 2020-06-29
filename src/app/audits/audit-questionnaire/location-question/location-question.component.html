@@ -1,10 +1,6 @@
 <div [formGroup]="answerForm" class="ion-padding-start">
-  <ion-input
-    [attr.disabled]="isReadOnly"
-    formControlName="numberAnswer"
-    type="numeric"
-    min="{{ from }}"
-    max="{{ to }}"
-  >
-  </ion-input>
+  <button>Some button for test</button>
+  <agm-map *ngIf="renderMap" #map [latitude]="location.lat" [longitude]="location.lng">
+    <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
+  </agm-map>
 </div>

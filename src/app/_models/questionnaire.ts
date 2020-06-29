@@ -287,6 +287,13 @@ export class QuestionLocationAnswer {
   longitude?: number | null;
 }
 
+export class QuestionLocationAnswerCreate {
+  address: string;
+  countryId: number;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
 export class QuestionnaireSentoutToAuditCreate {
   questionnaireIds: Array<string>;
   controlId: string;
