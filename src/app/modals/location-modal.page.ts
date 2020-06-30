@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
+import { PlacesSearchService } from '../_services/places-search.service';
 
 declare var google: any;
 
@@ -14,9 +15,8 @@ export class LocationModalPage implements OnInit {
   acService: any;
   placesService: any;
   query: string;
-  showList: boolean;
 
-  constructor(public modalController: ModalController) {
+  constructor(public modalController: ModalController, public placesSearchService: PlacesSearchService) {
     this.autocompleteItems = [];
     this.autocomplete = {};
   }
@@ -37,26 +37,8 @@ export class LocationModalPage implements OnInit {
   }
 
   updateSearch() {
-    this.showList = false;
-    if (!this.query || this.query == '') {
-      this.autocompleteItems = [];
-      return;
-    }
-
-    let config = {
-      types: ['geocode'],
-      input: this.query
-    }
-
-    this.acService.getPlacePredictions(config, (predictions, status) => {
-      if (status != google.maps.places.PlacesServiceStatus.OK) {
-        return;
-      }
+    this.placesSearchService.getPlacesPredictions(this.query).then((predictions) => {
       this.autocompleteItems = predictions;
     });
-
-    setTimeout(() => {
-      this.showList = true;
-    }, 100);
   }
 }
