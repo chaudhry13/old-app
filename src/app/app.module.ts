@@ -74,7 +74,11 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ApplicationPipesModule
+    ApplicationPipesModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
+      libraries: ["places"]
+    }),
   ],
   providers: [
     AccountService,

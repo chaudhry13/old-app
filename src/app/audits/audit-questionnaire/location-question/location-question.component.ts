@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, Input } from "@angular/core";
 import { Location } from 'src/app/_models/location';
-import { AgmMap } from '@agm/core';
+import { AgmMap, AgmMarker } from "@agm/core";
 import { Question, QuestionnaireUserAnswer, QuestionAnsweres } from 'src/app/_models/questionnaire';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: "location-question",
   templateUrl: "location-question.component.html",
+  styleUrls: ["location-question.component.scss"],
 })
 export class LocationQuestionComponent implements OnInit {
   @Input() question: Question;

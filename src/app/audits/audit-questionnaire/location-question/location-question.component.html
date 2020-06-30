@@ -1,6 +1,6 @@
 <div [formGroup]="answerForm" class="ion-padding-start">
   <button>Some button for test</button>
   <agm-map *ngIf="renderMap" #map [latitude]="location.lat" [longitude]="location.lng">
-    <agm-marker [latitude]="location.lat" [longitude]="location.lng"></agm-marker>
+    <agm-marker [latitude]="location.lat" [longitude]="location.lng" [markerDraggable]="true"></agm-marker>
   </agm-map>
 </div>

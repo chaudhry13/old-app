@@ -14,6 +14,7 @@ import { IonicModule } from "@ionic/angular";
 import { ValidationService } from "src/app/_services/validation.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AppComponent } from "src/app/app.component";
+import { AgmCoreModule } from '@agm/core';
 
 describe("LocationQuestionComponent", () => {
   let component: LocationQuestionComponent;
@@ -34,6 +35,7 @@ describe("LocationQuestionComponent", () => {
         ReactiveFormsModule,
         IonicModule,
         RouterTestingModule,
+        AgmCoreModule
       ],
       providers: [{ provide: ValidationService, useValue: validationService }],
     }).compileComponents();

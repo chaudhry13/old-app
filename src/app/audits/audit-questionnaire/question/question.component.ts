@@ -106,7 +106,6 @@ export class QuestionComponent implements OnInit {
     if (this.showComment) {
       setTimeout(() => {
         // Needs timeout to setFocus()
-        console.log("should focus!");
         this.commentTextArea.setFocus().then();
       }, 200);
     }

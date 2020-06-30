@@ -16,6 +16,8 @@ import { QuestionAnsweredService } from 'src/app/_services/questionnaire.service
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from 'src/app/app.component';
 import { ToastService } from 'src/app/_services/toast.service';
+import { LocationQuestionComponent } from '../location-question/location-question.component';
+import { AgmCoreModule, AgmMap, AgmMarker } from '@agm/core';
 
 describe('QuestionComponent', () => {
     let component: QuestionComponent;
@@ -38,14 +40,16 @@ describe('QuestionComponent', () => {
                 RadioQuestionComponent,
                 CheckboxQuestionComponent,
                 NumberQuestionComponent,
-                ErrorMessageComponent
+                LocationQuestionComponent,
+                ErrorMessageComponent,
             ],
             imports: [
                 CommonModule,
                 FormsModule,
                 ReactiveFormsModule,
                 IonicModule,
-                RouterTestingModule
+                RouterTestingModule,
+                AgmCoreModule
             ],
             providers: [
                 { provide: ValidationService, useValue: validationService },

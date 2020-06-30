@@ -59,5 +59,4 @@ export class LocationModalPage implements OnInit {
       this.showList = true;
     }, 100);
   }
-
 }
