@@ -39,6 +39,8 @@ export class LocationModalPage implements OnInit {
   updateSearch() {
     this.placesSearchService.getPlacesPredictions(this.query).then((predictions) => {
       this.autocompleteItems = predictions;
-    });
+    }).catch((predictions => {
+      this.autocompleteItems = predictions;
+    }));
   }
 }

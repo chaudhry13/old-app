@@ -4,24 +4,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocationModalPage } from './location-modal.page';
-import {PlacesSearchService} from '../_services/places-search.service';
+import {PlacesSearchService} from './places-search.service';
+import {promptToSignup} from '@ionic/cli/lib/session';
 
 declare var google: any;
 
-describe('Location Modal', () => {
-    let locationModal: LocationModalPage;
+describe('Places Search Service', () => {
     let placesService: PlacesSearchService;
-    let modalController: ModalController;
-    describe('Location Model Behaviour', () => {
+    describe('Places Predictions', () => {
         beforeEach(async(() => {
-            modalController = jasmine.createSpyObj('ModalController', ['create']);
             placesService = jasmine.createSpyObj('PlacesSearchService', ['getPlacesPredictions']);
-            locationModal = new LocationModalPage(modalController, placesService);
 
             TestBed.configureTestingModule({
                 declarations: [
-
                 ],
                 imports: [
                     CommonModule,
@@ -35,8 +30,23 @@ describe('Location Modal', () => {
             }).compileComponents();
         }));
 
-        it('should initialize the modal', () => {
-            expect(locationModal).toBeTruthy();
+        it('should initialize the service', () => {
+            expect(placesService).toBeTruthy();
+        });
+
+        it('should reject getPlacePredictions on empty search string', (done) => {
+            const promise = placesService.getPlacesPredictions('');
+            promise.then(predictions => {
+                throw new Error('Should not resolve!');
+            }).catch(predictions => {
+                done();
+            });
+            expect(placesService.getPlacesPredictions).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call getPlacePredictions with non-empty search query', () => {
+            placesService.getPlacesPredictions('a');
+            expect(placesService.getPlacesPredictions).toHaveBeenCalledTimes(1);
         });
     });
 });

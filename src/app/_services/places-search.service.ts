@@ -13,7 +13,7 @@ export class PlacesSearchService {
     async getPlacesPredictions(query: string): Promise<any[]> {
         return new Promise((resolve, reject) => {
             if (!query || query == '' || query == "") {
-                resolve([]);
+                reject([]);
             } else {
                 let config = {
                     types: ['geocode'],
@@ -22,7 +22,7 @@ export class PlacesSearchService {
 
                 this.placesService.getPlacePredictions(config, (predictions, status) => {
                     if (status != google.maps.places.PlacesServiceStatus.OK) {
-                        resolve([]);
+                        reject([]);
                     }
                     resolve(predictions);
                 });
