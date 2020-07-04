@@ -1,11 +1,10 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LocationModalPage } from './location-modal.page';
-import {PlacesSearchService} from '../_services/places-search.service';
+import { PlacesSearchService } from '../_services/places-search.service';
 
 declare var google: any;
 
