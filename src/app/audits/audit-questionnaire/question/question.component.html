@@ -2,14 +2,12 @@
   <ion-grid class="ion-no-margin ion-no-padding">
     <ion-col>
       <ion-row>
-        <div>
-          <ion-label class="ion-text-wrap">
-            {{ question.title }}
-            <span style="color: red;" *ngIf="question.required">
-              *
-            </span>
-          </ion-label>
-        </div>
+        <ion-label class="ion-text-wrap ion-padding-top">
+          {{ question.title }}
+          <span style="color: red;" *ngIf="question.required">
+            *
+          </span>
+        </ion-label>
       </ion-row>
       <ion-row class="ion-justify-content-start ion-padding-top">
         <div [formGroup]="answerForm">
