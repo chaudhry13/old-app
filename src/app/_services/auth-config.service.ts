@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AppConfig } from '../_settings/auth.config';
-import { OAuthService, JwksValidationHandler, OAuthErrorEvent } from 'angular-oauth2-oidc';
+import { OAuthService, OAuthErrorEvent } from 'angular-oauth2-oidc';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
