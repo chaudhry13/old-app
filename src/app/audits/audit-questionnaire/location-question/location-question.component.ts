@@ -16,7 +16,7 @@ export class LocationQuestionComponent implements OnInit {
   @Input() questionAnswer: QuestionAnsweres;
   @Input() isReadOnly: boolean;
 
-  @ViewChild("map", { static: false }) myMap: AgmMap;
+  @ViewChild("map") myMap: AgmMap;
 
   location: Location;
   renderMap: boolean = true;

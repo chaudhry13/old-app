@@ -21,7 +21,7 @@ import { AgmMap, AgmMarker } from "@agm/core";
   styleUrls: ["./incident-report-details.page.scss"],
 })
 export class IncidentReportDetailsPage implements OnInit {
-  @ViewChild("map", { static: false }) myMap: AgmMap;
+  @ViewChild("map") myMap: AgmMap;
 
   private id: string;
   private source: any;

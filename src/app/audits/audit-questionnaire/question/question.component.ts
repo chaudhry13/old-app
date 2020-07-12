@@ -24,7 +24,7 @@ export class QuestionComponent implements OnInit {
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
 
-  @ViewChild("comment", { static: false }) commentTextArea: IonTextarea;
+  @ViewChild("comment") commentTextArea: IonTextarea;
 
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;
