@@ -56,6 +56,7 @@ import { DeeplinkService } from './_services/deeplink.service';
 import { FollowUpService } from './_services/follow-up.service';
 
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
+import { PlacesSearchService } from './_services/places-search.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -74,7 +75,11 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ApplicationPipesModule
+    ApplicationPipesModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
+      libraries: ["places"]
+    }),
   ],
   providers: [
     AccountService,
@@ -125,6 +130,7 @@ import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerS
     QuestionnaireService,
     QuestionnaireHelperService,
     ValidationService,
+    PlacesSearchService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

@@ -1,5 +1,5 @@
 import { ErrorMessageComponent } from './../../_shared/error-message/error-message.component';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,6 +13,8 @@ import { SliderQuestionComponent } from './slider-question/slider-question.compo
 import { RadioQuestionComponent } from './radio-question/radio-question.component';
 import { CheckboxQuestionComponent } from './checkbox-question/checkbox-question.component';
 import { NumberQuestionComponent } from './number-question/number-question.component';
+import { LocationQuestionComponent } from './location-question/location-question.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 const routes: Routes = [
@@ -23,12 +25,17 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
+      libraries: ["places"]
+    })
   ],
   declarations: [
     AuditQuestionnairePage,
@@ -39,6 +46,7 @@ const routes: Routes = [
     RadioQuestionComponent,
     CheckboxQuestionComponent,
     NumberQuestionComponent,
+    LocationQuestionComponent,
     ErrorMessageComponent
   ],
   exports: [QuestionGroupComponent, QuestionComponent]

@@ -62,4 +62,16 @@ export class StorageService extends GenericService {
   async deleteAudit(id: string, auditId: string, fileName: string): Promise<any> {
     return this.http.delete<any>(this.apiBase + "/audit?controlId=" + id + "&auditId=" + auditId + "&fileName=" + fileName).toPromise();
   }
+
+  async listQuestionnaire(questionnaireId: string, sentOutId: string, questionnaireUserAnswerId: string, questionAnswerId: string): Promise<Attachment[]> {
+    var url = "/questionnaire?questionnaireId=" + questionnaireId;
+    if (sentOutId) { url += "&sentOutId=" + sentOutId; }
+    if (questionnaireUserAnswerId) { url += "&questionnaireUserAnswerId=" + questionnaireUserAnswerId; }
+    if (questionAnswerId) { url += "&questionAnswerId=" + questionAnswerId; }
+    return this.http.get<Attachment[]>(this.apiBase + url).toPromise();
+  }
+  async deleteQuestionnaire(questionnaireId: string, sentOutId: string, questionnaireUserAnswerId: string, questionAnswerId: string, fileName: string): Promise<any> {
+    var url = "/questionnaire?questionnaireId=" + questionnaireId + "&sentOutId=" + sentOutId + "&questionnaireUserAnswerId=" + questionnaireUserAnswerId + "&questionAnswerId=" + questionAnswerId + "&fileName=" + fileName;
+    return this.http.delete<any>(this.apiBase + url).toPromise();
+  }
 }

@@ -11,11 +11,13 @@
 <ion-content *ngIf="audit">
   <ion-list>
     <ion-list-header>
-      Description
+      <ion-label>Description</ion-label>
     </ion-list-header>
     <div *ngIf="audit.description" class="ion-padding" [innerHtml]="audit.description | sanitizeHtml"></div>
-    <div *ngIf="!audit.description" class="ion-padding">No description</div>
-    <ion-list-header>Deadline</ion-list-header>
+    <div *ngIf="!audit.description" class="ion-padding"><i>No description</i></div>
+    <ion-list-header>
+      <ion-label>Deadline</ion-label>
+    </ion-list-header>
     <ion-item>
       <ion-label>{{ audit.date | date:'MMM dd, yyyy'}}</ion-label>
     </ion-item>
@@ -43,7 +45,9 @@
         </agm-map>
       </ion-item>
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
-        <ion-list-header>Questionnaires</ion-list-header>
+        <ion-list-header>
+          <ion-label>Questionnaires</ion-label>
+        </ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
           <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
             routerLinkActive="router-link-active">
@@ -59,20 +63,28 @@
 
     <!-- If audit is completed -->
     <div *ngIf="audit.completed">
-      <ion-list-header>Completed On</ion-list-header>
+      <ion-list-header>
+        <ion-label>Completed On</ion-label>
+      </ion-list-header>
       <ion-item>
         {{ audit.completedAt | date:'EEE, MMM dd, yyyy h:mm a' }}
       </ion-item>
       <div *ngIf="completedUser">
-        <ion-list-header>Completed By</ion-list-header>
+        <ion-list-header>
+          <ion-label>Completed By</ion-label>
+        </ion-list-header>
         <ion-item>{{ completedUser.name }}</ion-item>
       </div>
       <div *ngIf="audit.other">
-        <ion-list-header>Name</ion-list-header>
+        <ion-list-header>
+          <ion-label>Name</ion-label>
+        </ion-list-header>
         <ion-item>{{ audit.other }}</ion-item>
       </div>
       <div *ngIf="audit.followUp">
-        <ion-list-header>Remarks</ion-list-header>
+        <ion-list-header>
+          <ion-label>Remarks</ion-label>
+        </ion-list-header>
         <ion-item>
           <ion-textarea>
             {{ followUp.remarks }}
@@ -80,7 +92,9 @@
         </ion-item>
       </div>
       <div *ngIf="showLocation">
-        <ion-list-header>Location</ion-list-header>
+        <ion-list-header>
+          <ion-label>Location</ion-label>
+        </ion-list-header>
         <ion-item>
           <agm-map *ngIf="renderMap" [latitude]="audit.latitude" [longitude]="audit.longitude">
             <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
@@ -88,7 +102,9 @@
         </ion-item>
       </div>
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
-        <ion-list-header>Questionnaires</ion-list-header>
+        <ion-list-header>
+          <ion-label>Questionnaires</ion-label>
+        </ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
           <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
             routerLinkActive="router-link-active">
@@ -115,7 +131,7 @@
   </ion-grid>
 
   <ion-list-header *ngIf="files && files.length > 0">
-    Files
+    <ion-label>Files</ion-label>
   </ion-list-header>
   <ion-item *ngFor="let file of files; let id = index">
     <ion-thumbnail slot="start" *ngIf="file">

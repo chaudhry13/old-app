@@ -1,18 +1,23 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ModalController } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LocationModalPage } from './location-modal.page';
+import { PlacesSearchService } from '../_services/places-search.service';
 
-describe('ValidationService', () => {
+declare var google: any;
+
+describe('Location Modal', () => {
     let locationModal: LocationModalPage;
+    let placesService: PlacesSearchService;
     let modalController: ModalController;
-    describe("Validation of questions", () => {
+    describe('Location Model Behaviour', () => {
         beforeEach(async(() => {
             modalController = jasmine.createSpyObj('ModalController', ['create']);
-            locationModal = new LocationModalPage(modalController);
+            placesService = jasmine.createSpyObj('PlacesSearchService', ['getPlacesPredictions']);
+            locationModal = new LocationModalPage(modalController, placesService);
+
             TestBed.configureTestingModule({
                 declarations: [
 
@@ -25,7 +30,6 @@ describe('ValidationService', () => {
                     RouterTestingModule
                 ],
                 providers: [
-                    { provide: LocationModalPage, useValue: locationModal },
                 ],
             }).compileComponents();
         }));

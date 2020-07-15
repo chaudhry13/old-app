@@ -11,13 +11,13 @@
 <ion-content *ngIf="control">
   <ion-list>
     <ion-list-header>
-      Description
+      <ion-label>Description</ion-label>
     </ion-list-header>
     <div *ngIf="control.description" class="ion-padding" [innerHtml]="control.description | sanitizeHtml">
     </div>
-    <div *ngIf="!control.description" class="ion-padding">No description</div>
+    <div *ngIf="!control.description" class="ion-padding"><i>No description</i></div>
     <ion-list-header>
-      Responsible manager
+      <ion-label>Responsible manager</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-icon name="person" slot="start"></ion-icon>
@@ -28,7 +28,7 @@
 
     </ion-item>
     <ion-list-header>
-      Responsible employee
+      <ion-label>Responsible employee</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-icon name="person" slot="start"></ion-icon>
@@ -38,7 +38,7 @@
       </ion-label>
     </ion-item>
     <ion-list-header>
-      Start date
+      <ion-label>Start date</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-icon name="time" slot="start"></ion-icon>
@@ -47,7 +47,7 @@
       </ion-label>
     </ion-item>
     <ion-list-header>
-      Frequency
+      <ion-label>Frequency</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-icon name="refresh" slot="start"></ion-icon>
@@ -56,8 +56,8 @@
       </ion-label>
     </ion-item>
 
-    <ion-list-header>
-      Files
+    <ion-list-header *ngIf="files && files.length > 0">
+      <ion-label>Files</ion-label>
     </ion-list-header>
     <ion-item *ngFor="let file of files" (click)="downloadAndOpen(file)">
       <ion-icon name="document" slot="start"></ion-icon>
@@ -67,7 +67,7 @@
     </ion-item>
 
     <ion-list-header>
-      Upcoming Audits
+      <ion-label>Upcoming Audits</ion-label>
     </ion-list-header>
 
     <ion-item button *ngFor="let audit of upcomingAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
@@ -79,7 +79,7 @@
     </ion-item>
 
     <ion-list-header>
-      Overdue Audits
+      <ion-label>Overdue Audits</ion-label>
     </ion-list-header>
 
     <ion-item *ngFor="let audit of overdueAudits" button routerLink="/tabs/tab1/complete/{{audit.id}}"
@@ -87,11 +87,11 @@
       <ion-label>
         {{audit.date | date}}
       </ion-label>
-      <ion-icon class="icon" color="danger" class="ion-float-left" name="alert"></ion-icon>
+      <ion-icon class="icon" color="danger" class="ion-float-left" name="alert-circle"></ion-icon>
     </ion-item>
 
     <ion-list-header>
-      Completed Audits
+      <ion-label>Completed Audits</ion-label>
     </ion-list-header>
 
     <ion-item button *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"

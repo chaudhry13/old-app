@@ -2,18 +2,17 @@
   <ion-grid class="ion-no-margin ion-no-padding">
     <ion-col>
       <ion-row>
-        <div>
-          <ion-label class="ion-text-wrap">
-            {{ question.title }}
-            <span style="color: red;" *ngIf="question.required">
-              *
-            </span>
-          </ion-label>
-        </div>
+        <ion-label class="ion-text-wrap ion-padding-top">
+          {{ question.title }}
+          <span style="color: red;" *ngIf="question.required">
+            *
+          </span>
+        </ion-label>
       </ion-row>
       <ion-row class="ion-justify-content-start ion-padding-top">
         <div [formGroup]="answerForm">
-          <ion-checkbox [attr.disabled]="isReadOnly" formControlName="na" mode="md" [checked]="answerForm.controls['na'].value">
+          <ion-checkbox [attr.disabled]="isReadOnly" formControlName="na" mode="md"
+            [checked]="answerForm.controls['na'].value">
           </ion-checkbox>
         </div>
         <ion-label class="ion-text-wrap" style="font-size: small; text-overflow: clip; padding-left: 8px">
@@ -39,7 +38,7 @@
     </text-question>
 
     <!-- If Slider Question -->
-    <slider-question *ngIf="question.type == QuestionTypes['Slider']" [isReadOnly]="isReadOnly"  [question]="question"
+    <slider-question *ngIf="question.type == QuestionTypes['Slider']" [isReadOnly]="isReadOnly" [question]="question"
       [questionnaireUserAnswer]="questionnaireUserAnswer" [answerForm]="answerForm" [questionAnswer]="questionAnswer">
     </slider-question>
 
@@ -50,20 +49,21 @@
 
     <!-- If Checkbox Question -->
     <checkbox-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Checkbox'])"
-                       [isReadOnly]="isReadOnly"
-                       [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"
-                       [answerForm]="answerForm"
-                       [questionAnswer]="questionAnswer">
+      [isReadOnly]="isReadOnly" [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"
+      [answerForm]="answerForm" [questionAnswer]="questionAnswer">
     </checkbox-question>
 
     <!-- If Radio Button Question -->
     <radio-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Radio Button'])"
-                    [isReadOnly]="isReadOnly"
-                    [question]="question"
-                    [questionnaireUserAnswer]="questionnaireUserAnswer"
-                    [answerForm]="answerForm"
-                    [questionAnswer]="questionAnswer">
+      [isReadOnly]="isReadOnly" [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"
+      [answerForm]="answerForm" [questionAnswer]="questionAnswer">
     </radio-question>
+
+    <!-- If Location question -->
+    <location-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Location'])">
+      [isReadOnly]="isReadOnly" [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"
+      [answerForm]="answerForm" [questionAnswer]="questionAnswer">
+    </location-question>
   </form>
 
   <error-msg [displayError]="!validationService.isQuestionAnswerValid(question, answerForm).isValid"
@@ -74,8 +74,8 @@
       <ion-icon style="display: inline-block; color: #2c3752; font-size: small" slot="start" name="create"></ion-icon>
       Comment on this question
     </ion-label>
-    <ion-textarea #comment style="font-size: small" autoGrow="true" formControlName="comment" readonly="false" wrap="soft"
-      placeholder="Write your comment here..">
+    <ion-textarea #comment style="font-size: small" autoGrow="true" formControlName="comment" readonly="false"
+      wrap="soft" placeholder="Write your comment here..">
     </ion-textarea>
   </div>
 </div>

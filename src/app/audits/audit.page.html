@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary" class="ion-color ion-color-primary">
-    <ion-title class="title-ios hydrated">Audits</ion-title>
+    <ion-title>Audits</ion-title>
   </ion-toolbar>
 
   <form [formGroup]="controlFilterForm">
@@ -23,7 +23,7 @@
     <ion-item button *ngFor="let control of controls" routerLink="/tabs/tab1/details/{{control.id}}"
       routerDirection="forward" routerLinkActive="router-link-active">
       <ion-label> {{ control.title }}</ion-label>
-      <ion-icon color="danger" class="ion-float-right" *ngIf="control.exceeded" name="alert"></ion-icon>
+      <ion-icon color="danger" class="ion-float-right" *ngIf="control.exceeded" name="alert-circle"></ion-icon>
       <ion-icon color="success" class="ion-float-right" *ngIf="!control.exceeded" name="checkmark-circle">
       </ion-icon>
       <ion-icon color="warning" class="ion-float-right" *ngIf="control.followUp" name="help-circle"></ion-icon>
@@ -45,7 +45,7 @@
   </ion-list>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button routerLink="/tabs/tab1/qrscan" routerDirection="forward" routerLinkActive="router-link-active">
-      <ion-icon name="qr-scanner"></ion-icon>
+      <ion-icon name="qr-code"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>
