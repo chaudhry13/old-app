@@ -1,10 +1,7 @@
 import { QuestionnaireHelperService } from '../../../_services/questionnaire-helper.service';
 import { FormGroup } from '@angular/forms';
-import { Question, QuestionnaireUserAnswer, QuestionOption,
-  QuestionTypes, QuestionTextType, QuestionAnsweres} from '../../../_models/questionnaire';
+import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionAnsweres} from '../../../_models/questionnaire';
 import { Component, OnInit, Input } from '@angular/core';
-
-// TODO: Sort question options!
 
 @Component({
   selector: 'checkbox-question',

@@ -52,7 +52,7 @@ export class QuestionComponent implements OnInit {
       comment: [""],
       na: [false],
       answered: [false],
-      locationAnswer: [],
+      locationAnswer: [null],
     });
   }
 
@@ -73,6 +73,10 @@ export class QuestionComponent implements OnInit {
     this.answerForm.valueChanges
       .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
+        console.log("answerForm changed");
+        console.log("answerform location: " + this.answerForm.controls.locationAnswer.value?.longitude);
+        console.log("answerForm")
+        console.log(this.answerForm);
         this.hasComment = !this.qhs.isNullOrWhitespace(
           this.answerForm.controls.comment.value
         );
@@ -83,6 +87,7 @@ export class QuestionComponent implements OnInit {
             this.answerForm
           ).isValid
         ) {
+          console.log("is valid");
           const answer = this.qhs.getQuestionAnswer(
             this.questionAnswer,
             this.question,

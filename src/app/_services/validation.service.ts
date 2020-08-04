@@ -6,6 +6,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 @Injectable()
 export class ValidationService {
 
+  // TODO: GENERAL
+  // - The validation service should not be call as often. There is no need to. The code is not that readable
+
   constructor() { }
 
   isQuestionAnswerValid(question: Question, answerForm: FormGroup): QuestionValidation {
@@ -33,6 +36,8 @@ export class ValidationService {
       case QuestionTypes.Slider:
         return this.sliderValidation();
 
+      case QuestionTypes.Location:
+          return this.locationValidation();
       default:
         return { isValid: false, regExp: new RegExp(''), errorMsg: 'An error occured!' };
     }
@@ -114,6 +119,12 @@ export class ValidationService {
 
   // No validation here yet
   checkboxValidation() {
+    return { isValid: true, regExp: null, errorMsg: null };
+  }
+
+  // No validation here yet
+  locationValidation() {
+    console.log("validating location")
     return { isValid: true, regExp: null, errorMsg: null };
   }
 

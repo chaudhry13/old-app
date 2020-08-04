@@ -1,8 +1,8 @@
-<div [formGroup]="answerForm" class="ion-padding-start">
+<div *ngIf="answerForm" [formGroup]="answerForm" class="ion-padding-start">
   <!-- <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ngModelChange)="updateSearch()"
       (ionCancel)="dismiss()" placeholder="Start typing and select ...">
     </ion-searchbar> -->
-  <agm-map *ngIf="renderMap" #map [latitude]="location.lat" [longitude]="location.lng">
-    <agm-marker [latitude]="location.lat" [longitude]="location.lng" [markerDraggable]="true"></agm-marker>
+  <agm-map *ngIf="renderMap" #map [latitude]="location.lat" [longitude]="location.lng" [zoom]="18">
+    <agm-marker #mapMarker [latitude]="location.lat" [longitude]="location.lng" [markerDraggable]="true" (dragEnd)="newPosition(location.lng, location.lat, $event)"></agm-marker>
   </agm-map>
-</div>
+</div>  

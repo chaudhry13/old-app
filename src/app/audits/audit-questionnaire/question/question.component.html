@@ -60,7 +60,7 @@
     </radio-question>
 
     <!-- If Location question -->
-    <location-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Location'])">
+    <location-question *ngIf="question.possibleAnswers && (question.type == QuestionTypes['Location'])"
       [isReadOnly]="isReadOnly" [question]="question" [questionnaireUserAnswer]="questionnaireUserAnswer"
       [answerForm]="answerForm" [questionAnswer]="questionAnswer">
     </location-question>
