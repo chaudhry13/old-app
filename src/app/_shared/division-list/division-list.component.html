@@ -1,6 +1,7 @@
 <div class="group" *ngIf="selector">
     <division-item *ngFor="let division of divisions;trackBy: trackById" [readonly]="readonly" [division]="division"
-        (list)="listDivisions()" [isTopLevel]="true" [selector]="selector" (onSelect)="onSelected($event)">
+        (list)="listDivisions()" [isTopLevel]="true" [selector]="selector" [inputDivisions]="selectedDivisions"
+        (onSelect)="onSelected($event)">
     </division-item>
 </div>
 

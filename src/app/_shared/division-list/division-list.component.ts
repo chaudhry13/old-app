@@ -17,7 +17,7 @@ export class DivisionListComponent implements OnInit {
   @Input() public selector: boolean;
   @Input() public setDivisions: EventEmitter<string[]>;
   @Input() public addIndividual: boolean;
-  @Input() public selectedDivisions: string[];
+  @Input() public selectedDivisions: Division[];
   @Output() public selected = new EventEmitter<string[]>();
 
   public setDivisionsDown = new EventEmitter<string[]>();
@@ -40,19 +40,20 @@ export class DivisionListComponent implements OnInit {
       });
     }
 
-    setTimeout(() => {
-      console.log(this.selectedDivisions)
-      if (this.selectedDivisions || true) {
-        //sends the selected divisions down the tree
-        this.inputDivisions = <string[]>this.selectedDivisions;
+    // this.setDivisionsDown.emit();
 
-        //Sets the names which have been selected
-        this.namesSelected = this.namesFromIds(this.selectedDivisions);
+    // if (this.setDivisions) {
+    //   this.setDivisions.subscribe(divisions => {
+    //     //sends the selected divisions down the tree
+    //     this.inputDivisions = <string[]>divisions;
 
-        //Sets the children selected
-        this.childrenSelected = this.getSelectedTree(this.selectedDivisions, this.divisions);
-      }
-    }, 6000);
+    //     //Sets the names which have been selected
+    //     this.namesSelected = this.namesFromIds(divisions);
+
+    //     //Sets the children selected
+    //     this.childrenSelected = this.getSelectedTree(divisions, this.divisions);
+    //   });
+    // }
   }
 
   listDivisions() {
@@ -95,7 +96,6 @@ export class DivisionListComponent implements OnInit {
         result = result.concat(this.checkChild(ids, division.children));
       }
     });
-    console.log(result)
     return result;
   }
 

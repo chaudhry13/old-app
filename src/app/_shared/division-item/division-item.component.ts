@@ -32,14 +32,14 @@ export class DivisionItemComponent implements OnInit {
 
   ngOnInit() {
     this.checked = this.isParrentChecked;
-    this.setInputDivision(this.inputDivisions);
+    //this.setInputDivision(this.inputDivisions);
   }
 
   ngOnChanges() {
     this.checked = this.isParrentChecked;
 
     //If this Id is contained in the input divisions, then mark it.
-    this.setInputDivision(this.inputDivisions);
+    //this.setInputDivision(this.inputDivisions);
   }
 
   setInputDivision(divisions: string[]) {
