@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfilePage } from './profile.page';
+import { DivisionListComponent } from '../_shared/division-list/division-list.component';
+import { DivisionItemComponent } from '../_shared/division-item/division-item.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfilePage, DivisionListComponent, DivisionItemComponent]
 })
-export class ProfilePageModule {}
+export class ProfilePageModule { }

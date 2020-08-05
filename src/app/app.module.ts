@@ -57,6 +57,7 @@ import { FollowUpService } from './_services/follow-up.service';
 
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
+import { DivisionSelectorComponent } from './_shared/division-selector/division-selector.component';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],

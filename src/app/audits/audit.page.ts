@@ -5,8 +5,9 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Division } from "../_models/division";
 import { DivisionService } from "../_services/division.service";
-import { NavController } from '@ionic/angular';
+import { NavController, PopoverController, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { DivisionSelectorComponent } from '../_shared/division-selector/division-selector.component';
 
 @Component({
   selector: "app-audit-page",
@@ -19,7 +20,12 @@ export class AuditPage implements OnInit {
 
   public controlFilterForm: FormGroup;
 
-  constructor(public controlService: ControlService, public navigationService: NavController, public divisionService: DivisionService, public formBuilder: FormBuilder, private keyboard: Keyboard) {
+  constructor(public controlService: ControlService,
+    public navigationService: NavController,
+    public divisionService: DivisionService,
+    public formBuilder: FormBuilder,
+    private keyboard: Keyboard,
+    private modalController: ModalController) {
     this.controlFilterForm = this.formBuilder.group({
       divisionIds: [""],
       responsibility: [""],
@@ -58,5 +64,20 @@ export class AuditPage implements OnInit {
 
   navigate(id: string) {
     this.navigationService.navigateForward('audits/' + id);
+  }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: DivisionSelectorComponent,
+      cssClass: 'division-selector-modal',
+      componentProps: {
+        'form': this.controlFilterForm
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log("from dismiss")
+    console.log(data);
+    this.controlFilterForm.controls.divisionIds.setValue(data);
   }
 }
