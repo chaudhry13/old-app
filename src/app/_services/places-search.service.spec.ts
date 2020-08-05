@@ -31,21 +31,5 @@ describe('Places Search Service', () => {
         it('should initialize the service', () => {
             expect(placesService).toBeTruthy();
         });
-
-        // TODO: Restructure service for better testability
-        // it('should reject getPlacePredictions on empty search string', (done) => {
-        //     const promise = placesService.getPlacesPredictions('');
-        //     promise.then(predictions => {
-        //         throw new Error('Should not resolve!');
-        //     }).catch(predictions => {
-        //         done();
-        //     });
-        //     expect(placesService.getPlacesPredictions).toHaveBeenCalledTimes(1);
-        // });
-
-        // it('should call getPlacePredictions with non-empty search query', () => {
-        //     placesService.getPlacesPredictions('a');
-        //     expect(placesService.getPlacesPredictions).toHaveBeenCalledTimes(1);
-        // });
     });
 });

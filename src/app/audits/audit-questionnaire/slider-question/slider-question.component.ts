@@ -16,26 +16,32 @@ export class SliderQuestionComponent implements OnInit {
   @Input() questionAnswer: QuestionAnsweres;
   @Input() isReadOnly: boolean;
 
-  rangeValue: number;
+  public rangeValue: number;
 
   constructor(public qhs: QuestionnaireHelperService) { }
-
-  // TODO: Cleanup
   ngOnInit() {
     this.questionAnswer = this.qhs.findQuestionAnswer(this.question.id, this.questionnaireUserAnswer);
 
     if (this.questionAnswer != null) {
-      this.answerForm.controls.slider.setValue(this.questionAnswer.slider);
-      this.rangeValue = this.questionAnswer.slider;
+      this.setSliderValue();
     } else {
-      this.answerForm.controls.slider.setValue(this.question.sliderOptions.sliderFrom);
-      this.rangeValue = this.question.sliderOptions.sliderFrom;
+      this.setDefaultSliderValue();
     }
   }
 
-  valueChanged() {
+  private setDefaultSliderValue(): void {
+    this.answerForm.controls.slider.setValue(this.question.sliderOptions.sliderFrom);
+    this.rangeValue = this.question.sliderOptions.sliderFrom;
+  }
+
+  private setSliderValue(): void {
+    this.answerForm.controls.slider.setValue(this.questionAnswer.slider);
+    this.rangeValue = this.questionAnswer.slider;
+  }
+
+  public sliderValueChanged(): void {
     this.rangeValue = this.answerForm.controls.slider.value;
-    var answerEdit = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
+    const answerEdit = this.qhs.getQuestionAnswer(this.questionAnswer, this.question, this.questionnaireUserAnswer, this.answerForm);
     this.qhs.updateAnswer(answerEdit, this.questionAnswer, this.question);
   }
 

@@ -11,10 +11,10 @@ export class AppConfigService {
   appConfig: AppConfig = new AppConfig();
 
   // TODO: GENERAL
-  // - Find a solution to use environment.xxx instead of headcoded in the code.
+  // - Find a solution to use environment.xxx instead of hardcoded in the code.
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class seperate from Auth config
-  
+
   constructor(private storage: Storage, private oAuthService: OAuthService) { }
 
   public async loadAppConfig() {
