@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { DivisionService } from 'src/app/_services/division.service';
 import { Division } from 'src/app/_models/division';
 import { ToastService } from 'src/app/_services/toast.service';
@@ -8,14 +8,13 @@ import { ToastService } from 'src/app/_services/toast.service';
   templateUrl: './division-item.component.html',
   styleUrls: ['./division-item.component.scss']
 })
-export class DivisionItemComponent implements OnInit {
+export class DivisionItemComponent implements OnInit, OnChanges {
   @Input() division: Division;
   @Input() readonly: boolean;
   @Input() selector: boolean;
   @Input() isParrentChecked: boolean;
-  @Input() inputDivisions: string[] = [];
   @Input() isTopLevel?: boolean;
-
+  @Input() inputDivisions: string[] = [];
 
   @Output() onSelect = new EventEmitter<selectedItem>();
   @Output() list = new EventEmitter();
@@ -32,14 +31,14 @@ export class DivisionItemComponent implements OnInit {
 
   ngOnInit() {
     this.checked = this.isParrentChecked;
-    //this.setInputDivision(this.inputDivisions);
+    this.setInputDivision(this.inputDivisions);
   }
 
   ngOnChanges() {
     this.checked = this.isParrentChecked;
 
     //If this Id is contained in the input divisions, then mark it.
-    //this.setInputDivision(this.inputDivisions);
+    this.setInputDivision(this.inputDivisions);
   }
 
   setInputDivision(divisions: string[]) {
@@ -74,6 +73,7 @@ export class DivisionItemComponent implements OnInit {
       checked: this.checked,
       from: this.division.id
     };
+
     this.onSelect.emit(item);
   }
 
@@ -94,7 +94,6 @@ export class DivisionItemComponent implements OnInit {
     }
     this.onSelect.emit(item);
   }
-
 
   toggleCheck() {
     this.checked = !this.checked;

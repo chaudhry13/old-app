@@ -20,7 +20,7 @@
 </div>
 
 <div *ngIf="showChildren">
-    <div class="children" *ngFor="let child of division.children;trackBy: trackById">
+    <div class="children" *ngFor="let child of division.children">
         <division-item [isTopLevel]="false" [readonly]="readonly" [division]="child" (list)="list.emit()"
             [selector]="selector" [isParrentChecked]="checked" (onSelect)="childSelected($event)"
             [inputDivisions]="inputDivisions">

@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
-import { selectedItem } from '../division-item/division-item.component';
 import { PopoverController } from '@ionic/angular';
-import { DivisionSelectorComponent } from '../division-selector/division-selector.component';
+import { selectedItem } from '../division-item/division-item.component';
 
 @Component({
   selector: 'division-list',
@@ -11,13 +10,12 @@ import { DivisionSelectorComponent } from '../division-selector/division-selecto
   styleUrls: ['./division-list.component.scss']
 })
 export class DivisionListComponent implements OnInit {
-  @Input() public updateDivisions: EventEmitter<any>;
+  @Input() public updateDivisions: EventEmitter<Division[]>;
   @Input() public readonly: boolean;
   @Input() public userDivisions: Division[];
   @Input() public selector: boolean;
   @Input() public setDivisions: EventEmitter<string[]>;
-  @Input() public addIndividual: boolean;
-  @Input() public selectedDivisions: Division[];
+  @Input() public addIndividual: boolean = false;
   @Output() public selected = new EventEmitter<string[]>();
 
   public setDivisionsDown = new EventEmitter<string[]>();
@@ -40,20 +38,30 @@ export class DivisionListComponent implements OnInit {
       });
     }
 
-    // this.setDivisionsDown.emit();
+    if (this.setDivisions) {
+      this.setDivisions.subscribe(divisions => {
+        //sends the selected divisions down the tree
+        this.inputDivisions = <string[]>divisions;
 
-    // if (this.setDivisions) {
-    //   this.setDivisions.subscribe(divisions => {
-    //     //sends the selected divisions down the tree
-    //     this.inputDivisions = <string[]>divisions;
+        //Sets the names which have been selected
+        this.namesSelected = this.namesFromIds(divisions);
 
-    //     //Sets the names which have been selected
-    //     this.namesSelected = this.namesFromIds(divisions);
+        //Sets the children selected
+        this.childrenSelected = this.getSelectedTree(divisions, this.divisions);
+      });
+    }
+  }
 
-    //     //Sets the children selected
-    //     this.childrenSelected = this.getSelectedTree(divisions, this.divisions);
-    //   });
-    // }
+  onSelected(childItem: selectedItem) {
+    this.childrenSelected = this.childrenSelected.filter(x => x.from != childItem.from);
+
+    if (childItem.checked) {
+      this.childrenSelected.push(childItem);
+    }
+
+    let selectedDivisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
+    this.namesSelected = selectedDivisions.map(x => x.name)
+    this.selected.emit(selectedDivisions.map(x => x.id));
   }
 
   listDivisions() {
@@ -66,21 +74,6 @@ export class DivisionListComponent implements OnInit {
       });
     }
   }
-
-  onSelected(childItem: selectedItem) {
-    console.log("on select");
-    this.childrenSelected = this.childrenSelected.filter(x => x.from != childItem.from);
-
-    if (childItem.checked) {
-      this.childrenSelected.push(childItem);
-    }
-
-    let selectedDivisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
-    this.namesSelected = selectedDivisions.map(x => x.name)
-    this.selected.emit(selectedDivisions.map(x => x.id));
-  }
-
-  trackById = (item) => item.Id;
 
   namesFromIds(ids: string[]): string[] {
     return this.checkChild(ids, this.divisions);
@@ -130,5 +123,7 @@ export class DivisionListComponent implements OnInit {
 
     return result;
   }
+
+  trackById = (item) => item.Id;
 
 }

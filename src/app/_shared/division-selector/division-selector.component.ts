@@ -2,6 +2,8 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Division } from 'src/app/_models/division';
 import { ModalController } from '@ionic/angular';
 import { FormGroup } from '@angular/forms';
+import { DivisionSelectorModalPage } from 'src/app/modals/division-selector-modal/division-selector-modal.page';
+import { DivisionService } from 'src/app/_services/division.service';
 
 @Component({
   selector: 'division-selector',
@@ -9,32 +11,27 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./division-selector.component.scss']
 })
 export class DivisionSelectorComponent implements OnInit {
-  @Input() setDivisions: EventEmitter<string[]>;
-  @Input() userDivisions: Division[];
-  @Input() addIndividual: boolean = false;
-  @Input() updateDivisions: EventEmitter<Division[]>;
-  @Input() form: FormGroup;
-  @Output() selectionChanged = new EventEmitter<string[]>();
+  @Output() public changeInSelectedDivisions = new EventEmitter<string[]>();
 
-  public selectedDivisions: string[];
+  public selectedDivisionIds: string[] = [];
 
-  // TODO: Should know which divisions that are already selected
-
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController) { }
 
   ngOnInit() {
-    console.log("From selector:");
-    console.log(this.form)
-    console.log(this.form.controls.divisionIds.value);
-    this.selectedDivisions = this.form.controls.divisionIds.value;
   }
 
-  onDivisionChange(divisions) {
-    this.selectedDivisions = divisions;
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: DivisionSelectorModalPage,
+      cssClass: 'division-selector-modal',
+      componentProps: {
+        alreadysSelectedDivisionIds: this.selectedDivisionIds
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    this.selectedDivisionIds = data;
+    this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
   }
-
-  dismiss() {
-    this.modalController.dismiss(this.selectedDivisions);
-  }
-
 }

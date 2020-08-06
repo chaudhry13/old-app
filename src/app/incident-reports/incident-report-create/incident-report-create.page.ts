@@ -7,7 +7,7 @@ import { IncidentCategoryService } from 'src/app/_services/incident-category.ser
 import { IncidentCategory } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
 import { ModalController } from '@ionic/angular';
-import { LocationModalPage } from 'src/app/modals/location-modal.page';
+import { LocationModalPage } from 'src/app/modals/location-modal/location-modal.page';
 import { GeocodingService } from 'src/app/_services/geocoding.service';
 import { ToastController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';

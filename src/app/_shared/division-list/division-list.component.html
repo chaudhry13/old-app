@@ -1,13 +1,13 @@
 <div class="group" *ngIf="selector">
     <division-item *ngFor="let division of divisions;trackBy: trackById" [readonly]="readonly" [division]="division"
-        (list)="listDivisions()" [isTopLevel]="true" [selector]="selector" [inputDivisions]="selectedDivisions"
-        (onSelect)="onSelected($event)">
+        [selector]="selector" (list)="listDivisions()" [isTopLevel]="true" [isParrentChecked]="false"
+        (onSelect)="onSelected($event)" [inputDivisions]="inputDivisions">
     </division-item>
 </div>
 
 <!-- The non-selector -->
 <div *ngIf="!selector">
     <division-item *ngFor="let division of divisions;trackBy: trackById" [readonly]="readonly" [division]="division"
-        (list)="listDivisions()" [isTopLevel]="true" [selector]="selector">
+        (list)="listDivisions()" [isTopLevel]="true">
     </division-item>
 </div>

@@ -66,18 +66,9 @@ export class AuditPage implements OnInit {
     this.navigationService.navigateForward('audits/' + id);
   }
 
-  async presentModal() {
-    const modal = await this.modalController.create({
-      component: DivisionSelectorComponent,
-      cssClass: 'division-selector-modal',
-      componentProps: {
-        'form': this.controlFilterForm
-      }
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    console.log("from dismiss")
-    console.log(data);
-    this.controlFilterForm.controls.divisionIds.setValue(data);
+  divisionsChanged(data) {
+    if (data) {
+      this.controlFilterForm.get('divisionIds').setValue(data);
+    }
   }
 }

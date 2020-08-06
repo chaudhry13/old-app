@@ -38,7 +38,7 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { AgmCoreModule } from '@agm/core';
-import { LocationModalPage } from './modals/location-modal.page';
+import { LocationModalPage } from './modals/location-modal/location-modal.page';
 import { GeocodingService } from './_services/geocoding.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ToastService } from './_services/toast.service';
@@ -57,10 +57,19 @@ import { FollowUpService } from './_services/follow-up.service';
 
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
-import { DivisionSelectorComponent } from './_shared/division-selector/division-selector.component';
+import { DivisionSelectorModalPage } from './modals/division-selector-modal/division-selector-modal.page';
+import { DivisionItemComponent } from './_shared/division-item/division-item.component';
+import { DivisionListComponent } from './_shared/division-list/division-list.component';
 
 @NgModule({
-  declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
+  declarations: [
+    AppComponent,
+    CallbackComponent,
+    LoginComponent,
+    LocationModalPage,
+    DivisionSelectorModalPage,
+    DivisionItemComponent,
+    DivisionListComponent],
   entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
   imports: [
     BrowserModule,

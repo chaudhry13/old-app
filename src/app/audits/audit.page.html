@@ -14,7 +14,7 @@
       </division-selector> -->
       <!-- <ion-select formControlName="divisionIds" multiple="true" placeholder="All Divisions..">
       </ion-select> -->
-      <ion-item lines="none" (click)="presentModal()">Select Divisions..</ion-item>
+      <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
     </ion-toolbar>
   </form>
 </ion-header>
