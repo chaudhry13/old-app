@@ -37,7 +37,7 @@ export class ValidationService {
         return this.sliderValidation();
 
       case QuestionTypes.Location:
-          return this.locationValidation();
+        return this.locationValidation();
       default:
         return { isValid: false, regExp: new RegExp(''), errorMsg: 'An error occured!' };
     }
@@ -53,9 +53,11 @@ export class ValidationService {
     if (this.checkNumberRange(answerForm, question)) {
       return { isValid: true, regExp: null, errorMsg: null };
     } else {
-      return { isValid: false, regExp: null, errorMsg: 'Your response must be between '
-            + question.numberOptions.from + ' and '
-            + question.numberOptions.to };
+      return {
+        isValid: false, regExp: null, errorMsg: 'Your response must be between '
+          + question.numberOptions.from + ' and '
+          + question.numberOptions.to
+      };
     }
   }
 
@@ -73,9 +75,9 @@ export class ValidationService {
     }
 
     if ((!this.isNullOrWhitespace(answerForm.controls.text.value)
-        && regularExpType.regExp.test(answerForm.controls.text.value)
-        && answerForm.controls.text.valid)
-        || answerForm.controls.text.untouched) {
+      && regularExpType.regExp.test(answerForm.controls.text.value)
+      && answerForm.controls.text.valid)
+      || answerForm.controls.text.untouched) {
       regularExpType.isValid = true;
     }
 
@@ -124,13 +126,14 @@ export class ValidationService {
 
   // No validation here yet
   locationValidation() {
-    console.log("validating location")
+    // FIXME: CALLED TOO MUCH
+    //console.log("validating location")
     return { isValid: true, regExp: null, errorMsg: null };
   }
 
   private checkNumberRange(answerForm: FormGroup, question: Question) {
     return +answerForm.controls.numberAnswer.value >= question.numberOptions.from
-        && +answerForm.controls.numberAnswer.value <= question.numberOptions.to;
+      && +answerForm.controls.numberAnswer.value <= question.numberOptions.to;
   }
 }
 

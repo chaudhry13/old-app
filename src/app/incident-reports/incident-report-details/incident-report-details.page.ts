@@ -49,7 +49,7 @@ export class IncidentReportDetailsPage implements OnInit {
     private alertCtrl: AlertController
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
-    this.source = this.activatedRoute.snapshot.paramMap.get("source");
+    this.source = this.x$activatedRoute.snapshot.paramMap.get("source");
   }
 
   ngOnInit() {
@@ -84,7 +84,6 @@ export class IncidentReportDetailsPage implements OnInit {
   }
 
   async listFiles() {
-    console.log("listing files");
     this.storageService
       .listIncidentReport(this.incidentReport.id)
       .then((files) => {
