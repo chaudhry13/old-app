@@ -2,7 +2,8 @@
   <!-- <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ngModelChange)="updateSearch()"
       (ionCancel)="dismiss()" placeholder="Start typing and select ...">
     </ion-searchbar> -->
-  <agm-map *ngIf="renderMap" #map [latitude]="location.lat" [longitude]="location.lng" [zoom]="18">
-    <agm-marker #mapMarker [latitude]="location.lat" [longitude]="location.lng" [markerDraggable]="true" (dragEnd)="newPosition(location.lng, location.lat, $event)"></agm-marker>
+  <agm-map *ngIf="renderMap" #map [latitude]="latitude" [longitude]="latitude" [zoom]="18">
+    <agm-marker #mapMarker [latitude]="latitude" [longitude]="latitude" [markerDraggable]="true"
+      (dragEnd)="setNewPosition($event)"></agm-marker>
   </agm-map>
-</div>  
+</div>
