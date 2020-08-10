@@ -15,6 +15,7 @@ import { CheckboxQuestionComponent } from './checkbox-question/checkbox-question
 import { NumberQuestionComponent } from './number-question/number-question.component';
 import { LocationQuestionComponent } from './location-question/location-question.component';
 import { AgmCoreModule } from '@agm/core';
+import { LocationSearchbarComponent } from 'src/app/_shared/location-searchbar/location-searchbar.component';
 
 
 const routes: Routes = [
@@ -47,7 +48,8 @@ const routes: Routes = [
     CheckboxQuestionComponent,
     NumberQuestionComponent,
     LocationQuestionComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    LocationSearchbarComponent
   ],
   exports: [QuestionGroupComponent, QuestionComponent]
 })

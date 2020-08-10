@@ -73,8 +73,6 @@ export class QuestionComponent implements OnInit {
     this.answerForm.valueChanges
       .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
-        console.log("answerChanged: ")
-        console.log(this.answerForm.controls.locationAnswer.value);
         this.hasComment = !this.qhs.isNullOrWhitespace(
           this.answerForm.controls.comment.value
         );

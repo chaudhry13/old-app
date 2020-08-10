@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, NgZone } from "@angular/core";
-import { Location, GeocodingAddress } from 'src/app/_models/location';
+import { Location, GeocodingAddress, LocationViewModel } from 'src/app/_models/location';
 import { AgmMap, AgmMarker } from "@agm/core";
 import { Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionLocationAnswer, QuestionLocationAnswerCreate } from 'src/app/_models/questionnaire';
 import { FormGroup } from '@angular/forms';
@@ -7,6 +7,9 @@ import { GeocodingService } from 'src/app/_services/geocoding.service';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { CountryService } from 'src/app/_services/country.service';
 import { Country } from 'src/app/_models/country';
+import { ModalController, ToastController } from '@ionic/angular';
+import { LocationModalPage } from 'src/app/modals/location-modal.page';
+import { ToastService } from 'src/app/_services/toast.service';
 
 @Component({
   selector: "location-question",
@@ -28,6 +31,8 @@ export class LocationQuestionComponent implements OnInit {
   public longitude: number;
   public latitude: number;
 
+  public location: LocationViewModel;
+
   public countries: Country[];
 
   // TODO: GENERAL:
@@ -38,57 +43,84 @@ export class LocationQuestionComponent implements OnInit {
     public geocodingService: GeocodingService,
     public geolocation: Geolocation,
     public countryService: CountryService,
-    public ngZone: NgZone) {
+    public modalController: ModalController,
+    public toastService: ToastService) {
   }
 
   ngOnInit() {
-    this.countryService.list().subscribe(countries => {
+    this.listCountries().then(countries => {
       this.countries = countries;
-    });
 
-    if (this.questionAnswer != null) {
-      var location = new QuestionLocationAnswerCreate();
-      location.address = this.questionAnswer.locationAnswer?.address;
-      location.countryId = this.questionAnswer.locationAnswer?.country.id;
-      location.latitude = this.questionAnswer.locationAnswer?.latitude;
-      location.longitude = this.questionAnswer.locationAnswer?.longitude;
+      if (this.questionAnswer != null && this.questionAnswer.locationAnswer != null) {
+        console.log(this.questionAnswer);
+        this.setNewPosition(this.questionAnswer.locationAnswer.longitude, this.questionAnswer.locationAnswer.latitude);
 
-      this.latitude = this.questionAnswer.locationAnswer.latitude;
-      this.longitude = this.questionAnswer.locationAnswer.longitude;
-      console.log("from init: " + this.longitude + ", " + this.latitude);
-      this.answerForm.controls.locationAnswer.setValue(location);
-      this.renderMap = true;
-    } else {
-      this.getUserLocation();
-    }
+        var location = this.generateLocationAnswerObject();
+
+        this.answerForm.controls.locationAnswer.setValue(location);
+
+        this.renderMap = true;
+      } else {
+        this.getUserLocation();
+      }
+    })
+
 
   }
 
-  setNewPosition(longitude, latitude, coords) {
-    this.ngZone.run(() => {
-      this.geocodingService
-        .reverseGeocode(this.myMap.latitude, this.myMap.longitude)
-        .then(data => {
-          var model = this.geocodingService.geocodeResult(data.results);
+  private generateLocationAnswerObject() {
+    var location = new QuestionLocationAnswerCreate();
+    location.address = this.questionAnswer.locationAnswer?.address;
+    location.countryId = this.questionAnswer.locationAnswer?.country.id;
+    location.latitude = this.questionAnswer.locationAnswer?.latitude;
+    location.longitude = this.questionAnswer.locationAnswer?.longitude;
+    return location;
+  }
 
-          var location = {
-            address: model.street + " " + model.street_number,
-            countryId: this.getCountryid(model),
-            latitude: model.latitude,
-            longitude: model.longitude,
-          }
+  private setLocation(long: number, lat: number) {
+    this.longitude = long;
+    this.latitude = lat;
+  }
 
-          this.answerForm.controls.locationAnswer.setValue(location);
-          this.answerForm.controls.locationAnswer.markAsTouched();
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    });
+  private async listCountries() {
+    return this.countryService.list().toPromise();
+  }
+
+  onMarkerDragEnd(positionData) {
+    this.setNewPosition(positionData.coords.lng, positionData.coords.lat);
+  }
+
+  setNewPosition(long: number, lat: number) {
+    this.setLocation(long, lat);
+
+    this.geocodingService
+      .reverseGeocode(this.latitude, this.longitude)
+      .then(data => {
+        var model = this.geocodingService.geocodeResult(data.results);
+
+        var location = {
+          address: model.street + " " + model.street_number,
+          countryId: this.getCountryid(model),
+          latitude: this.latitude,
+          longitude: this.longitude,
+        }
+
+        this.populateLocationViewModel(model);
+
+        this.answerForm.controls.locationAnswer.setValue(location);
+        this.answerForm.controls.locationAnswer.markAsTouched();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  populateLocationViewModel(model: GeocodingAddress) {
+    this.location = new LocationViewModel(model);
   }
 
   private getCountryid(model: GeocodingAddress) {
-    return this.countries.find(c => c.code == model.country).id;
+    return this.countries.find(c => c.code == model.country)?.id;
   }
 
   getUserLocation() {
@@ -99,16 +131,31 @@ export class LocationQuestionComponent implements OnInit {
         maximumAge: 0,
       })
       .then((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-
+        this.setNewPosition(position.coords.longitude, position.coords.latitude);
         this.renderMap = true;
       })
       .catch((error) => {
-        this.latitude = 56.0956628;
-        this.longitude = 9.9716147;
-
+        this.setNewPosition(9.9716147, 56.0956628);
         this.renderMap = true;
       });
+  }
+
+  async showLocationModal() {
+    const modal = await this.modalController.create({
+      component: LocationModalPage
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data != null) {
+      this.geocodingService
+        .geocode(data)
+        .then(data => {
+          var model = this.geocodingService.geocodeResult(data.results);
+          this.setNewPosition(model.longitude, model.latitude);
+        })
+        .catch(error => {
+          this.toastService.show("Your location could not be found!");
+        });
+    }
   }
 }

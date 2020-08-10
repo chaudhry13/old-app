@@ -34,3 +34,19 @@ export class GeocodingAddress {
 	latitude: number;
 	longitude: number;
 }
+
+export class LocationViewModel {
+	address: string;
+	city: string;
+	country: string;
+	latitude: number;
+	longitude: number;
+
+	constructor(model: GeocodingAddress) {
+		this.address = model.street ? model.street + " " + model.street_number : "No Address Found"
+		this.city = model.city ? model.city : "No City Found"
+		this.country = model.country ? model.country : "No Country Found"
+		this.latitude = model.latitude;
+		this.longitude = model.longitude;
+	}
+}
