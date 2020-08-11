@@ -57,6 +57,7 @@ import { FollowUpService } from './_services/follow-up.service';
 
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
+import { LocationService } from './_services/location.service';
 
 @NgModule({
   declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
@@ -131,6 +132,7 @@ import { PlacesSearchService } from './_services/places-search.service';
     QuestionnaireHelperService,
     ValidationService,
     PlacesSearchService,
+    LocationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
