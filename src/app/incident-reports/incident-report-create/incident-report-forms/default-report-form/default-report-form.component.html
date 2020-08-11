@@ -1,0 +1,78 @@
+<form [formGroup]="incidentForm">
+    <ion-list>
+        <ion-toolbar>
+            <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
+                okText="Okay">
+                <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
+                </ion-select-option>
+            </ion-select>
+        </ion-toolbar>
+
+        <ion-item>
+            <ion-label placeholder>Incident Type</ion-label>
+            <ion-select formControlName="incidentTypeId" multiple="false" cancelText="Cancel" okText="Okay!">
+                <ion-select-option *ngFor="let incidentType of incidentTypes" value="{{ incidentType.id }}">
+                    {{ incidentType.name }}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="incidentCategory">
+            <ion-label placeholder>Incident Category</ion-label>
+            <ion-input text-right type="text" value="{{ incidentCategory.name || ''}}" readonly></ion-input>
+        </ion-item>
+    </ion-list>
+    <ion-list no-margin *ngIf="healthAndSafety">
+        <ion-item>
+            <ion-label fixed>Near miss</ion-label>
+            <ion-toggle formControlName="nearMiss"></ion-toggle>
+        </ion-item>
+    </ion-list>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-button expand="block" color="primary" (click)="showLocationModal()">Search address..</ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-list>
+        <ion-item>
+            <ion-label position="stacked">Date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="startDate">
+            </ion-datetime>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Description</ion-label>
+            <ion-textarea rows="3" formControlName="description"></ion-textarea>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Address</ion-label>
+            <ion-input type="text" value="" formControlName="address"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">City</ion-label>
+            <ion-input type="text" value="" formControlName="city"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Country</ion-label>
+            <ion-input type="text" value="" formControlName="countryId"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Latitude</ion-label>
+            <ion-input type="text" value="{{latitude}}" formControlName="latitude" readonly></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label position="stacked">Longitude</ion-label>
+            <ion-input type="text" value="{{longitude}}" formControlName="longitude" readonly></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" color="primary" type="submit" [disabled]="!incidentForm.valid" (click)="submitForm()">
+        Create</ion-button>
+</form>

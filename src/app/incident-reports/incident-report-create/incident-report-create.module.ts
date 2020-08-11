@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule } from '@agm/core';
 import { IncidentReportCreatePage } from './incident-report-create.page';
+import { DefaultReportFormComponent } from './incident-report-forms/default-report-form/default-report-form.component';
+import { InvestigationReportFormComponent } from './incident-report-forms/investigation-report-form/investigation-report-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +25,6 @@ const routes: Routes = [{
     FormsModule,
     ReactiveFormsModule],
   exports: [],
-  declarations: [IncidentReportCreatePage],
+  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent],
 })
 export class IncidentReportCreatePageModule { }
