@@ -4,6 +4,7 @@ import { GenericService } from "./generic.service";
 import { IncidentCategory } from "../_models/incident-category";
 import { FormGroup } from "@angular/forms";
 import { AppConfigService } from './auth-config.service';
+import { IncidentType } from '../_models/incident-type';
 
 @Injectable()
 export class IncidentCategoryService extends GenericService {
@@ -21,5 +22,25 @@ export class IncidentCategoryService extends GenericService {
 
   async update(filter: FormGroup): Promise<string> {
     return this.http.put<string>(this.apiBase, filter).toPromise();
+  }
+
+  public compareIncidentTypes(a: IncidentType, b: IncidentType): number {
+    if (a.name.includes("Other")) {
+      return 1;
+    } else if (b.name.includes("Other")) {
+      return -1;
+    }
+    return (a.name > b.name ? 1 : -1);
+  }
+
+  public listIncidentTypes(incidentCategories: IncidentCategory[]): IncidentType[] {
+    var incidentTypes: IncidentType[] = [];
+    incidentCategories.forEach(cat => incidentTypes = cat.incidentTypes.concat(incidentTypes));
+    incidentTypes.sort(this.compareIncidentTypes);
+    return incidentTypes;
+  }
+
+  public getIncidentCategoryFrom(incidentType: IncidentType, incidentCategories: IncidentCategory[]): IncidentCategory {
+    return incidentCategories.find(cat => cat.incidentTypes.includes(incidentType));
   }
 }
