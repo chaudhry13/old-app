@@ -9,5 +9,14 @@
 </ion-header>
 
 <ion-content>
-  <default-report-form [incidentForm]="incidentForm"></default-report-form>
+  <div [ngSwitch]="reportFormType">
+    <div *ngSwitchCase="incidentReportFormType.Investigation">
+      <investigation-report-form [incidentForm]="incidentForm" (submissionEvent)=onSubmission()>
+      </investigation-report-form>
+    </div>
+    <div *ngSwitchDefault>
+      <default-report-form [incidentForm]="incidentForm" (submissionEvent)=onSubmission()></default-report-form>
+    </div>
+  </div>
+
 </ion-content>

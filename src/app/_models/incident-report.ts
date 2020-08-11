@@ -46,3 +46,7 @@ export class IncidentReport {
 		this.files = new Array<Attachment>();
 	}
 }
+
+export enum IncidentReportFormType {
+	Investigation
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Division } from 'src/app/_models/division';
 import { Country } from 'src/app/_models/country';
@@ -20,8 +20,8 @@ import { GeocodingService } from 'src/app/_services/geocoding.service';
   styleUrls: ['./default-report-form.component.scss']
 })
 export class DefaultReportFormComponent implements OnInit {
-
   @Input() incidentForm: FormGroup;
+  @Output() submissionEvent = new EventEmitter();
 
   public divisions: Division[];
   public countries: Country[];
@@ -50,9 +50,7 @@ export class DefaultReportFormComponent implements OnInit {
 
   ngOnInit() {
     // List divisions
-    this.divisionService.list().then(divisions => {
-      this.divisions = divisions;
-    });
+
 
     // List countries
     this.countryService.list().subscribe(countries => {
@@ -60,7 +58,6 @@ export class DefaultReportFormComponent implements OnInit {
       this.onAddressToggleChange();
     });
 
-    // Subscribe on incidentType change
     this.onIncidentTypeChange();
 
     // List incident types
@@ -162,11 +159,7 @@ export class DefaultReportFormComponent implements OnInit {
   async submitForm() {
     if (this.incidentForm.valid) {
       this.incidentForm.controls["countryId"].setValue(this.country.id);
-      this.incidentReportService.insert(this.incidentForm.value).then(id => {
-        this.router.navigate(["/tabs/tab2/details/" + id + "/0"]).then(() => {
-          this.presentToast("New incident report created!");
-        });
-      });
+      this.submissionEvent.emit();
     }
   }
 
