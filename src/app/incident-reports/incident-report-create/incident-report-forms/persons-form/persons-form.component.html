@@ -1,0 +1,25 @@
+<form [formGroup]="personsForm" *ngIf="personsForm">
+    <div formArrayName="persons">
+        <div [formGroupName]="i" *ngFor="let item of personsForm.get('persons')['controls']; let i = index;"
+            class="ion-margin-top">
+            <ion-item-divider>
+                <ion-icon style="vertical-align:middle;" name="person-outline"></ion-icon>
+                <ion-label style="vertical-align:middle;" class="ion-padding-start">Person {{i + 1}}</ion-label>
+                <ion-icon color="danger" slot="end" class="ion-margin-end" *ngIf="i >= 1"
+                    (click)="removePersonAtIndex(i)" name="close-circle-outline"></ion-icon>
+            </ion-item-divider>
+            <ion-item>
+                <ion-label position="stacked">Name</ion-label>
+                <ion-input type="text" formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label position="stacked">Email</ion-label>
+                <ion-input type="email" formControlName="email"></ion-input>
+            </ion-item>
+        </div>
+    </div>
+</form>
+<ion-button class="ion-margin" expand="block" (click)="addPerson()" slot="end">
+    <ion-icon class="ion-padding-end" name="person-add-outline"></ion-icon>
+    <ion-label>Add person</ion-label>
+</ion-button>

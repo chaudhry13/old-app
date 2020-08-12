@@ -7,6 +7,7 @@ import { AgmCoreModule } from '@agm/core';
 import { IncidentReportCreatePage } from './incident-report-create.page';
 import { DefaultReportFormComponent } from './incident-report-forms/default-report-form/default-report-form.component';
 import { InvestigationReportFormComponent } from './incident-report-forms/investigation-report-form/investigation-report-form.component';
+import { PersonsFormComponent } from './incident-report-forms/persons-form/persons-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -25,6 +26,6 @@ const routes: Routes = [{
     FormsModule,
     ReactiveFormsModule],
   exports: [],
-  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent],
+  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent, PersonsFormComponent],
 })
 export class IncidentReportCreatePageModule { }

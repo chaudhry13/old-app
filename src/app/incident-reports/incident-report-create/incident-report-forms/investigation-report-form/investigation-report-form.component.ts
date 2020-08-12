@@ -15,6 +15,8 @@ import { ToastService } from 'src/app/_services/toast.service';
 import { Location } from '@angular/common';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationService } from 'src/app/_services/location.service';
+import { UserService } from 'src/app/_services/user.service';
+import { User } from 'src/app/_models/user';
 
 @Component({
   selector: 'investigation-report-form',
@@ -27,6 +29,7 @@ export class InvestigationReportFormComponent implements OnInit {
   @Output() submissionEvent = new EventEmitter();
 
   public divisions: Division[];
+  public users: User[];
   public countries: Country[];
   public incidentTypes: IncidentType[];
   public incidentCategories: IncidentCategory[];
@@ -35,12 +38,14 @@ export class InvestigationReportFormComponent implements OnInit {
   public currentIncidentType: IncidentType;
   public currentLocation: LocationViewModel;
   public currentCountry: Country;
+  public currentDate: string = new Date().toISOString();
 
   constructor(
     private divisionService: DivisionService,
     private countryService: CountryService,
     private incidentCategoryService: IncidentCategoryService,
-    public locationService: LocationService) { }
+    public locationService: LocationService,
+    private userService: UserService) { }
 
   ngOnInit() {
     this.getDataToPopulateForm();
@@ -60,6 +65,7 @@ export class InvestigationReportFormComponent implements OnInit {
   private listDivisions(): void {
     this.divisionService.list().then(divisions => {
       this.divisions = divisions;
+      this.listUsersFromUserDivisions(divisions);
     });
   }
 
@@ -67,9 +73,14 @@ export class InvestigationReportFormComponent implements OnInit {
     this.countryService.list().subscribe(countries => {
       this.countries = countries;
       this.locationService.getUserLocation().then(location => {
-        console.log(location)
         this.locationService.populateFormWithLocation(this.incidentForm, location);
       });
+    });
+  }
+
+  private listUsersFromUserDivisions(divisions: Division[]) {
+    this.userService.list(divisions.map(division => division.id), null).subscribe(users => {
+      this.users = users;
     });
   }
 
@@ -77,9 +88,16 @@ export class InvestigationReportFormComponent implements OnInit {
     this.incidentTypes = [];
     this.incidentCategoryService.list(true).then(data => {
       this.incidentCategories = data;
+
+      // TODO: Remove this at some point before production
+      this.addTestData();
+
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
+
+      console.log(this.incidentTypes);
     });
   }
+
 
   private subscribeToIncidentTypeChange() {
     this.incidentForm.controls["incidentTypeId"].valueChanges.subscribe(incidentTypeid => {
@@ -94,5 +112,21 @@ export class InvestigationReportFormComponent implements OnInit {
       console.log(location);
       this.locationService.populateFormWithLocation(this.incidentForm, location);
     })
+  }
+
+  private addTestData() {
+    var cat: IncidentCategory = {
+      id: 1337,
+      name: "Observation",
+      incidentTypes: []
+    };
+    var type: IncidentType = {
+      id: 1337,
+      name: "Intelligence Report",
+      incidentCategory: cat
+    };
+
+    cat.incidentTypes.push(type);
+    this.incidentCategories.push(cat);
   }
 }

@@ -42,11 +42,14 @@ export class IncidentReportCreatePage implements OnInit {
       city: [""],
       startDate: [new Date().toISOString(), Validators.required],
       endDate: [new Date().toISOString(), Validators.required],
+      createdDate: [new Date().toISOString(), Validators.required],
       latitude: ["", Validators.required],
       longitude: ["", Validators.required],
       incidentTypeId: [null, Validators.required],
       incidentCategoryId: [null, Validators.required],
       countryId: [""],
+      resultingActions: [""],
+      actions: [""]
     });
   }
 

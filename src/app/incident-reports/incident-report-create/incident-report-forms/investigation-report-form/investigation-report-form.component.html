@@ -1,15 +1,16 @@
 <form [formGroup]="incidentForm">
     <ion-list>
-        <ion-toolbar>
+        <ion-item>
+            <ion-label position="stacked">Divisions</ion-label>
             <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
                 okText="Okay">
                 <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
                 </ion-select-option>
             </ion-select>
-        </ion-toolbar>
+        </ion-item>
 
         <ion-item>
-            <ion-label placeholder>Incident Type</ion-label>
+            <ion-label position="stacked">Incident Type</ion-label>
             <ion-select formControlName="incidentTypeId" multiple="false" cancelText="Cancel" okText="Okay!">
                 <ion-select-option *ngFor="let incidentType of incidentTypes" value="{{ incidentType.id }}">
                     {{ incidentType.name }}
@@ -18,30 +19,39 @@
         </ion-item>
 
         <ion-item *ngIf="currentIncidentCategory">
-            <ion-label placeholder>Incident Category</ion-label>
-            <ion-input text-right type="text" value="{{ currentIncidentCategory.name || ''}}" readonly></ion-input>
+            <ion-label position="stacked">Incident Category</ion-label>
+            <ion-input type="text" value="{{ currentIncidentCategory.name || ''}}" readonly></ion-input>
         </ion-item>
     </ion-list>
-    <ion-grid>
-        <ion-row>
-            <ion-col>
-                <ion-button expand="block" color="primary" (click)="showLocationModal()">Search
-                    address..</ion-button>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-    <ion-list>
+
+    <ion-list *ngIf="currentDate">
+        <ion-list-header>
+            Date and time
+        </ion-list-header>
         <ion-item>
-            <ion-label position="stacked">Date</ion-label>
+            <ion-label position="stacked">Start date</ion-label>
             <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="startDate">
             </ion-datetime>
         </ion-item>
-
         <ion-item>
-            <ion-label position="stacked">Description</ion-label>
-            <ion-textarea rows="3" formControlName="description"></ion-textarea>
+            <ion-label position="stacked">End date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="endDate">
+            </ion-datetime>
         </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Created at</ion-label>
+            <ion-datetime displayFormat="MMM DD, h:mm A" pickerFormat="MMM DD, h:mm A" formControlName="createdDate">
+            </ion-datetime>
+        </ion-item>
+    </ion-list>
 
+    <ion-list class="ion-padding-top">
+        <ion-list-header>
+            Location
+        </ion-list-header>
+        <ion-item button lines="none" (click)="showLocationModal()">
+            <ion-text color="primary">Search for an address..</ion-text>
+        </ion-item>
         <ion-item>
             <ion-label position="stacked">Address</ion-label>
             <ion-input type="text" value="currentLocation.address" formControlName="address"></ion-input>
@@ -69,6 +79,61 @@
         </ion-item>
     </ion-list>
 
-    <ion-button expand="block" color="primary" type="submit" [disabled]="!incidentForm.valid" (click)="submitForm()">
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header>
+            Name of persons concerned
+        </ion-list-header>
+        <persons-form></persons-form>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-item>
+            <ion-label position="stacked">Select investigators</ion-label>
+            <ion-select multiple="true" cancelText="Cancel" okText="Okay!">
+                <ion-select-option *ngFor="let user of users" value="{{ user.id }}">
+                    {{ user.name }}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">HR Link</ion-label>
+            <ion-input type="url"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Investigation Support</ion-label>
+            <ion-input type="text"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header lines="none">
+            Incident Details
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="description"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header lines="none">
+            External Agency Actions
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="actions"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header lines="none">
+            Resulting Crane Currency Actions Taken
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="resultingActions"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-button class="ion-padding-top" expand="block" color="primary" type="submit" [disabled]="!incidentForm.valid"
+        (click)="submitForm()">
         Create</ion-button>
 </form>
