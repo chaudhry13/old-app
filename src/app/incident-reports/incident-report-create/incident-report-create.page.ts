@@ -48,13 +48,16 @@ export class IncidentReportCreatePage implements OnInit {
       incidentTypeId: [null, Validators.required],
       incidentCategoryId: [null, Validators.required],
       countryId: [""],
+      persons: [],
       resultingActions: [""],
       actions: [""]
     });
   }
 
   ngOnInit() {
-
+    this.incidentForm.valueChanges.subscribe(form => {
+      console.log(form);
+    })
   }
 
   onSubmission() {

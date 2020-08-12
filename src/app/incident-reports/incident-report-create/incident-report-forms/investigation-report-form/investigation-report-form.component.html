@@ -84,7 +84,7 @@
         <ion-list-header>
             Name of persons concerned
         </ion-list-header>
-        <persons-form></persons-form>
+        <persons-form (formChanges)="onPersonsFormChanges($event)"></persons-form>
     </ion-list>
 
     <ion-list class="ion-padding-top">

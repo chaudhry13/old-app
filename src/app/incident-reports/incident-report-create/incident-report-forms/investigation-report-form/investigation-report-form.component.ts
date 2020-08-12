@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormArray } from '@angular/forms';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
 import { CountryService } from 'src/app/_services/country.service';
@@ -34,6 +34,8 @@ export class InvestigationReportFormComponent implements OnInit {
   public incidentTypes: IncidentType[];
   public incidentCategories: IncidentCategory[];
 
+  public isIntelligenceReportSelected = false;
+
   public currentIncidentCategory: IncidentCategory;
   public currentIncidentType: IncidentType;
   public currentLocation: LocationViewModel;
@@ -54,6 +56,10 @@ export class InvestigationReportFormComponent implements OnInit {
 
   public submitForm() {
 
+  }
+
+  onPersonsFormChanges(persons: FormArray) {
+    this.incidentForm.get("persons").setValue(persons);
   }
 
   private getDataToPopulateForm() {
@@ -104,6 +110,7 @@ export class InvestigationReportFormComponent implements OnInit {
       var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
       this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
       this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
+      this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
     });
   }
 

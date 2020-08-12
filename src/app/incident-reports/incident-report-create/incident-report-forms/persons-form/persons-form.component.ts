@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { Person } from 'src/app/_models/persons';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 @Component({
   selector: 'persons-form',
@@ -8,6 +7,8 @@ import { Person } from 'src/app/_models/persons';
   styleUrls: ['./persons-form.component.scss']
 })
 export class PersonsFormComponent implements OnInit {
+
+  @Output() formChanges = new EventEmitter<FormArray>();
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -20,14 +21,14 @@ export class PersonsFormComponent implements OnInit {
     });
 
     this.personsForm.valueChanges.subscribe(form => {
-      console.log(form);
+      this.formChanges.emit(form);
     })
   }
 
   private createPerson(): FormGroup {
     return this.formBuilder.group({
-      name: '',
-      email: '',
+      name: ['', Validators.required],
+      email: ['', Validators.required],
     });
   }
 
