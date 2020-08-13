@@ -9,6 +9,7 @@ import { DefaultReportFormComponent } from './incident-report-forms/default-repo
 import { InvestigationReportFormComponent } from './incident-report-forms/investigation-report-form/investigation-report-form.component';
 import { PersonsFormComponent } from './incident-report-forms/persons-form/persons-form.component';
 import { LocationFormComponent } from './incident-report-forms/location-form/location-form.component';
+import { IntelligenceReportFormComponent } from './incident-report-forms/intelligence-report-form/intelligence-report-form.component';
 
 const routes: Routes = [{
   path: '',
@@ -27,6 +28,6 @@ const routes: Routes = [{
     FormsModule,
     ReactiveFormsModule],
   exports: [],
-  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent, PersonsFormComponent, LocationFormComponent],
+  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent, PersonsFormComponent, LocationFormComponent, IntelligenceReportFormComponent],
 })
 export class IncidentReportCreatePageModule { }
