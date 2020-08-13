@@ -38,11 +38,11 @@
 
   <div [ngSwitch]="reportFormType">
     <div *ngSwitchCase="incidentReportFormType.Investigation">
-      <investigation-report-form [incidentForm]="incidentForm" (submissionEvent)=onSubmission()>
+      <investigation-report-form [incidentForm]="incidentForm">
       </investigation-report-form>
     </div>
     <div *ngSwitchDefault>
-      <default-report-form [incidentForm]="incidentForm" (submissionEvent)=onSubmission()></default-report-form>
+      <default-report-form [incidentForm]="incidentForm"></default-report-form>
     </div>
   </div>
   <div class="ion-padding-bottom">

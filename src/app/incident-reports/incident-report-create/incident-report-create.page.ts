@@ -19,7 +19,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
-  public reportFormType: IncidentReportFormType = null//IncidentReportFormType.Investigation;
+  public reportFormType: IncidentReportFormType = IncidentReportFormType.Investigation;
   public incidentReportFormType: typeof IncidentReportFormType = IncidentReportFormType;
 
   public incidentTypes: IncidentType[];

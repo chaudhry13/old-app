@@ -13,9 +13,7 @@ import { UserService } from 'src/app/_services/user.service';
   styleUrls: ['./investigation-report-form.component.scss']
 })
 export class InvestigationReportFormComponent implements OnInit {
-
   @Input() incidentForm: FormGroup;
-  @Output() submissionEvent = new EventEmitter();
 
   public users: User[];
   public divisions: Division[];

@@ -8,7 +8,6 @@ import { FormGroup } from '@angular/forms';
 })
 export class DefaultReportFormComponent implements OnInit {
   @Input() incidentForm: FormGroup;
-  @Output() submissionEvent = new EventEmitter();
 
   public healthAndSafety: boolean;
 
