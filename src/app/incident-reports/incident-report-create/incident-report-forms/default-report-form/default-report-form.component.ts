@@ -156,13 +156,6 @@ export class DefaultReportFormComponent implements OnInit {
     }
   }
 
-  async submitForm() {
-    if (this.incidentForm.valid) {
-      this.incidentForm.controls["countryId"].setValue(this.country.id);
-      this.submissionEvent.emit();
-    }
-  }
-
   compareIncidentTypes(a: IncidentType, b: IncidentType) {
     if (a.name.includes("Other")) {
       return 1;

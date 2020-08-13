@@ -63,7 +63,7 @@ export class IncidentReportCreatePage implements OnInit {
       })
   }
 
-  onSubmission() {
+  public submitForm() {
     if (this.incidentForm.valid) {
       this.incidentReportService.insert(this.incidentForm.value).then(id => {
         this.router.navigate(["/tabs/tab2/details/" + id + "/0"]).then(() => {
@@ -71,5 +71,9 @@ export class IncidentReportCreatePage implements OnInit {
         });
       });
     }
+  }
+
+  public onSubmission() {
+    this.submitForm();
   }
 }

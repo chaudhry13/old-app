@@ -18,5 +18,10 @@
       <default-report-form [incidentForm]="incidentForm" (submissionEvent)=onSubmission()></default-report-form>
     </div>
   </div>
+  <div class="ion-padding-bottom">
+    <ion-button class="ion-padding-top ion-padding-bottom" expand="block" color="primary" type="submit"
+      [disabled]="!incidentForm.valid" (click)="submitForm()">
+      Create</ion-button>
+  </div>
 
 </ion-content>

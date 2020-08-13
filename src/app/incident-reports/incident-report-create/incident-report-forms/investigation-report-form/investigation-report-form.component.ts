@@ -17,6 +17,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationService } from 'src/app/_services/location.service';
 import { UserService } from 'src/app/_services/user.service';
 import { User } from 'src/app/_models/user';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'investigation-report-form',
@@ -52,10 +53,6 @@ export class InvestigationReportFormComponent implements OnInit {
   ngOnInit() {
     this.getDataToPopulateForm();
     this.subscribeToIncidentTypeChange();
-  }
-
-  public submitForm() {
-
   }
 
   onPersonsFormChanges(persons: FormArray) {
@@ -105,10 +102,12 @@ export class InvestigationReportFormComponent implements OnInit {
 
   private subscribeToIncidentTypeChange() {
     this.incidentForm.controls["incidentTypeId"].valueChanges.subscribe(incidentTypeid => {
-      var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
-      this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
-      this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
-      this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
+      if (incidentTypeid) {
+        var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
+        this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
+        this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
+        this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
+      }
     });
   }
 
