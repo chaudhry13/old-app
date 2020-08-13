@@ -20,40 +20,8 @@
         </ion-item>
     </ion-list>
 
-    <ion-list class="ion-padding-top">
-        <ion-list-header>
-            Location
-        </ion-list-header>
-        <ion-item button lines="none" (click)="showLocationModal()">
-            <ion-text color="primary">Search for an address..</ion-text>
-        </ion-item>
-        <ion-item>
-            <ion-label position="stacked">Address</ion-label>
-            <ion-input type="text" value="currentLocation.address" formControlName="address"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">City</ion-label>
-            <ion-input type="text" value="currentLocation.city" formControlName="city"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Country</ion-label>
-            <ion-input type="text" value="currentLocation.country" formControlName="countryId"></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Latitude</ion-label>
-            <ion-input type="text" value="currentLocation.latitude" formControlName="latitude" readonly></ion-input>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Longitude</ion-label>
-            <ion-input type="text" value="currentLocation.longitude" formControlName="longitude" readonly>
-            </ion-input>
-        </ion-item>
-    </ion-list>
-
+    <location-form [buttonType]="'ion-item'" [searchable]="true" [mainForm]="incidentForm">
+    </location-form>
 
     <ion-list class="ion-padding-top">
         <ion-list-header>

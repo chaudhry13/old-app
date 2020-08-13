@@ -6,14 +6,7 @@ import { DivisionService } from 'src/app/_services/division.service';
 import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
 import { IncidentCategory } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
-import { ModalController } from '@ionic/angular';
-import { LocationModalPage } from 'src/app/modals/location-modal.page';
-import { GeocodingService } from 'src/app/_services/geocoding.service';
-import { ToastController } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IncidentReportService } from 'src/app/_services/incident-report.service';
-import { CountryService } from 'src/app/_services/country.service';
-import { Country } from 'src/app/_models/country';
 import { ToastService } from 'src/app/_services/toast.service';
 import { IncidentReportFormType } from 'src/app/_models/incident-report';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -26,7 +19,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
-  public reportFormType: IncidentReportFormType = null;
+  public reportFormType: IncidentReportFormType = null//IncidentReportFormType.Investigation;
   public incidentReportFormType: typeof IncidentReportFormType = IncidentReportFormType;
 
   public incidentTypes: IncidentType[];
