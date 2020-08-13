@@ -16,6 +16,7 @@ import { CountryService } from 'src/app/_services/country.service';
 import { Country } from 'src/app/_models/country';
 import { ToastService } from 'src/app/_services/toast.service';
 import { IncidentReportFormType } from 'src/app/_models/incident-report';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-incident-report-create',
@@ -55,9 +56,11 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   ngOnInit() {
-    this.incidentForm.valueChanges.subscribe(form => {
-      console.log(form);
-    })
+    this.incidentForm.valueChanges
+      .pipe(debounceTime(1000), distinctUntilChanged())
+      .subscribe(form => {
+        console.log(form);
+      })
   }
 
   onSubmission() {
