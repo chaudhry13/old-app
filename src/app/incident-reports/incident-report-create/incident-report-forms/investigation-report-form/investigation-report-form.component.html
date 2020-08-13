@@ -1,29 +1,4 @@
 <form [formGroup]="incidentForm">
-    <ion-list>
-        <ion-item>
-            <ion-label position="stacked">Divisions</ion-label>
-            <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
-                okText="Okay">
-                <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
-                </ion-select-option>
-            </ion-select>
-        </ion-item>
-
-        <ion-item>
-            <ion-label position="stacked">Incident Type</ion-label>
-            <ion-select formControlName="incidentTypeId" multiple="false" cancelText="Cancel" okText="Okay!">
-                <ion-select-option *ngFor="let incidentType of incidentTypes" value="{{ incidentType.id }}">
-                    {{ incidentType.name }}
-                </ion-select-option>
-            </ion-select>
-        </ion-item>
-
-        <ion-item *ngIf="currentIncidentCategory">
-            <ion-label position="stacked">Incident Category</ion-label>
-            <ion-input type="text" value="{{ currentIncidentCategory.name || ''}}" readonly></ion-input>
-        </ion-item>
-    </ion-list>
-
     <ion-list *ngIf="currentDate">
         <ion-list-header>
             Date and time

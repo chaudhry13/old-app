@@ -1,27 +1,4 @@
 <form [formGroup]="incidentForm">
-    <ion-list>
-        <ion-toolbar>
-            <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
-                okText="Okay">
-                <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
-                </ion-select-option>
-            </ion-select>
-        </ion-toolbar>
-
-        <ion-item>
-            <ion-label placeholder>Incident Type</ion-label>
-            <ion-select formControlName="incidentTypeId" multiple="false" cancelText="Cancel" okText="Okay!">
-                <ion-select-option *ngFor="let incidentType of incidentTypes" value="{{ incidentType.id }}">
-                    {{ incidentType.name }}
-                </ion-select-option>
-            </ion-select>
-        </ion-item>
-
-        <ion-item *ngIf="incidentCategory">
-            <ion-label placeholder>Incident Category</ion-label>
-            <ion-input text-right type="text" value="{{ incidentCategory.name || ''}}" readonly></ion-input>
-        </ion-item>
-    </ion-list>
     <ion-list no-margin *ngIf="healthAndSafety">
         <ion-item>
             <ion-label fixed>Near miss</ion-label>

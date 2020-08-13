@@ -26,14 +26,25 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
-  public reportFormType: IncidentReportFormType = IncidentReportFormType.Investigation;
+  public reportFormType: IncidentReportFormType = null;
   public incidentReportFormType: typeof IncidentReportFormType = IncidentReportFormType;
+
+  public incidentTypes: IncidentType[];
+  public incidentCategories: IncidentCategory[];
+
+  public isIntelligenceReportSelected = false;
+
+  public divisions: Division[];
+  public currentIncidentCategory: IncidentCategory;
+  public currentIncidentType: IncidentType;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private incidentReportService: IncidentReportService,
-    private toastService: ToastService) {
+    private toastService: ToastService,
+    private incidentCategoryService: IncidentCategoryService,
+    private divisionService: DivisionService) {
     this.incidentForm = this.formBuilder.group({
       description: ["", Validators.required],
       other: [""],
@@ -56,24 +67,88 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   ngOnInit() {
+    this.getDataToPopulateForm();
+    this.subscribeToIncidentReportChanges();
+    this.subscribeToIncidentTypeChanges();
+  }
+
+  private getDataToPopulateForm() {
+    this.listDivisions();
+    this.listIncidentTypesAndCategories();
+  }
+
+  private subscribeToIncidentReportChanges() {
     this.incidentForm.valueChanges
       .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe(form => {
         console.log(form);
-      })
+      });
   }
 
   public submitForm() {
     if (this.incidentForm.valid) {
-      this.incidentReportService.insert(this.incidentForm.value).then(id => {
-        this.router.navigate(["/tabs/tab2/details/" + id + "/0"]).then(() => {
-          this.toastService.show("New incident report created!");
-        });
-      });
+      this.insertIncidentReport();
     }
+  }
+
+  private insertIncidentReport() {
+    this.incidentReportService.insert(this.incidentForm.value).then(id => {
+      this.navigateToNewReport(id);
+    });
+  }
+
+  private navigateToNewReport(id: string) {
+    this.router.navigate(["/tabs/tab2/details/" + id + "/0"]).then(() => {
+      this.toastService.show("New incident report created!");
+    });
+  }
+
+  private listDivisions(): void {
+    this.divisionService.list().then(divisions => {
+      this.divisions = divisions;
+    });
+  }
+
+  private subscribeToIncidentTypeChanges() {
+    this.incidentForm.controls["incidentTypeId"].valueChanges.subscribe(incidentTypeid => {
+      if (incidentTypeid) {
+        var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
+        this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
+        this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
+        this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
+      }
+    });
+  }
+
+  private listIncidentTypesAndCategories(): void {
+    this.incidentTypes = [];
+    this.incidentCategoryService.list(true).then(data => {
+      this.incidentCategories = data;
+
+      // TODO: Remove this at some point before production
+      this.addTestData();
+
+      this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
+    });
   }
 
   public onSubmission() {
     this.submitForm();
+  }
+
+  private addTestData() {
+    var cat: IncidentCategory = {
+      id: 1337,
+      name: "Observation",
+      incidentTypes: []
+    };
+    var type: IncidentType = {
+      id: 1337,
+      name: "Intelligence Report",
+      incidentCategory: cat
+    };
+
+    cat.incidentTypes.push(type);
+    this.incidentCategories.push(cat);
   }
 }
