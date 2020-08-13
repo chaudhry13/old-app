@@ -99,8 +99,6 @@ export class InvestigationReportFormComponent implements OnInit {
       this.addTestData();
 
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
-
-      console.log(this.incidentTypes);
     });
   }
 
@@ -116,7 +114,6 @@ export class InvestigationReportFormComponent implements OnInit {
 
   public showLocationModal() {
     this.locationService.showLocationModal().then(location => {
-      console.log(location);
       this.locationService.populateFormWithLocation(this.incidentForm, location);
     })
   }

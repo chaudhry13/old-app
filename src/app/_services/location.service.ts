@@ -48,7 +48,6 @@ export class LocationService {
         .then((position) => {
           this.toastService.show("Location found!")
           var location = this.getLocationFromLongLat(position.coords.latitude, position.coords.longitude);
-          console.log(location);
           resolve(location);
         })
         .catch((error) => {
@@ -76,7 +75,6 @@ export class LocationService {
           .then(data => {
             var model = this.geocodeService.geocodeResult(data.results);
             location = new LocationViewModel(model);
-            console.log(location);
             resolve(location);
           })
           .catch(error => {
