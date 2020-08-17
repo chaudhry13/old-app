@@ -3,6 +3,7 @@ import { LocationService } from 'src/app/_services/location.service';
 import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
 import { CountryService } from 'src/app/_services/country.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { LocationViewModel } from 'src/app/_models/location';
 
 @Component({
   selector: 'location-form',
@@ -16,6 +17,7 @@ export class LocationFormComponent implements OnInit {
   @Input() mainForm: FormGroup;
 
   locationForm: FormGroup;
+  public currentLocation: LocationViewModel;
 
   constructor(
     private locationService: LocationService,
@@ -36,12 +38,14 @@ export class LocationFormComponent implements OnInit {
 
   public showLocationModal() {
     this.locationService.showLocationModal().then(location => {
+      this.setCurrentLocation(location);
       this.locationService.populateFormWithLocation(this.locationForm, location);
     })
   }
 
   private handleUserLocation(): void {
     this.locationService.getUserLocation().then(location => {
+      this.setCurrentLocation(location);
       this.locationService.populateFormWithLocation(this.locationForm, location);
     });
   }
@@ -56,5 +60,9 @@ export class LocationFormComponent implements OnInit {
 
   private patchLocationValues(location: FormGroup) {
     this.mainForm.patchValue(location);
+  }
+
+  private setCurrentLocation(location: LocationViewModel) {
+    this.currentLocation = location;
   }
 }
