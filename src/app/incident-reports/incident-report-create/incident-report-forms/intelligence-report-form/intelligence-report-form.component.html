@@ -1,1 +1,50 @@
-<p>intelligence-report-form works!</p>
+<form [formGroup]="incidentForm">
+    <ion-list *ngIf="currentDate">
+        <ion-list-header>
+            Date and time
+        </ion-list-header>
+        <ion-item>
+            <ion-label position="stacked">Start date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="startDate">
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">End date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="endDate">
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Created at</ion-label>
+            <ion-datetime displayFormat="MMM DD, h:mm A" pickerFormat="MMM DD, h:mm A" formControlName="createdDate">
+            </ion-datetime>
+        </ion-item>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header lines="none">
+            Incident Details
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="description"
+                placeholder="Click here to enter text. This field should include number of persons involved, vehicle details etc.">
+            </ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <location-form [buttonType]="'ion-item'" [searchable]="true" [mainForm]="incidentForm">
+    </location-form>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header>
+            Persons
+        </ion-list-header>
+        <persons-form [isDetailed]="true" (formChanges)="onPersonsFormChanges($event)"></persons-form>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header>
+            Vehicles
+        </ion-list-header>
+        <vehicle-form (formChanges)="onVehicleFormChanges($event)"></vehicle-form>
+    </ion-list>
+</form>

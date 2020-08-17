@@ -54,6 +54,7 @@ export class IncidentReportCreatePage implements OnInit {
       incidentCategoryId: [null, Validators.required],
       countryId: [""],
       persons: [],
+      vehicles: [],
       resultingActions: [""],
       actions: [""]
     });
@@ -109,6 +110,11 @@ export class IncidentReportCreatePage implements OnInit {
         this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
         this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
         this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
+        if (this.isIntelligenceReportSelected) {
+          this.reportFormType = this.incidentReportFormType.Intelligence;
+        } else {
+          this.reportFormType = this.incidentReportFormType.Investigation;
+        }
       }
     });
   }
@@ -122,6 +128,7 @@ export class IncidentReportCreatePage implements OnInit {
       this.addTestData();
 
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
+      this.incidentForm.get("incidentTypeId").setValue("1337")
     });
   }
 

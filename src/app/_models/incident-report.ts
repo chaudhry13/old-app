@@ -48,5 +48,49 @@ export class IncidentReport {
 }
 
 export enum IncidentReportFormType {
-	Investigation
+	Investigation,
+	Intelligence
+}
+
+export enum VehicleMakes {
+	AlfaRomeo = 1, Audi, BMW, Chevrolet, Chrysler, Citroen, Dacia, Daihatsu, DS, Fiat, Ford, Honda, Hyundai, Jaguar, Jeep, Kia, Lancia, LandRover, Lexus, Mazda, Mercedes, MGRover, Mini, Mitsubishi, Nissan, Opel, Peugeot, Porsche, Renault, Saab, Sachsenring, Seat, Skoda, Smart, Subaru, Suzuki, Toyota, Volvo, VW, Sonstige, Unknown = 998, Other = 999
+}
+export enum VehicleModels {
+	Sedan = 5, SUV = 10, Hatchback = 15, Pickup = 20, CargoVan = 25, RV = 30, Truck = 35, Wagon = 40, Convertible = 45, Coupe = 50, Supercar = 60, Unknown = 998, Other = 999
+}
+export enum VehicleColor {
+	White = 5, Black = 10, Red = 15, Blue = 20, Green = 25, Yellow = 30, Grey = 35, Other = 999
+}
+
+export class IncidentReportVehicles {
+	Id: string;
+	IncidentReportId: string;
+	VRM: string;
+	Make: VehicleMakes;
+	MakeOther: string;
+	Model: VehicleModels;
+	ModelOther: string;
+	Color: VehicleColor;
+	ColorOther: string;
+	Description: string;
+}
+
+export enum Genders {
+	"Male",
+	"Female"
+}
+export enum Build {
+	"Slim",
+	"Proportionate",
+	"Overweight"
+}
+export class PersonIntelligenceReport {
+	firstName: string;
+	lastName: string;
+	gender: Genders;
+	approxAge: number;
+	height: number;
+	build: Build;
+	identifyingfeatures: string;
+	clothes: string;
 }

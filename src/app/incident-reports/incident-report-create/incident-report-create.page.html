@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="content">
   <form [formGroup]="incidentForm">
     <ion-list>
       <ion-item>
@@ -40,6 +40,9 @@
     <div *ngSwitchCase="incidentReportFormType.Investigation">
       <investigation-report-form [incidentForm]="incidentForm">
       </investigation-report-form>
+    </div>
+    <div *ngSwitchCase="incidentReportFormType.Intelligence">
+      <intelligence-report-form [incidentForm]="incidentForm"></intelligence-report-form>
     </div>
     <div *ngSwitchDefault>
       <default-report-form [incidentForm]="incidentForm"></default-report-form>
