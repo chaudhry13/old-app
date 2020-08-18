@@ -35,10 +35,10 @@ export class PersonsFormComponent implements OnInit {
   private createPerson(): FormGroup {
     return this.formBuilder.group({
       name: [{ value: '', disabled: false }],
-      email: [{ value: '', disabled: this.isDetailed }],
+      email: [{ value: '', disabled: this.isDetailed }, Validators.email],
       gender: [{ value: null, disabled: !this.isDetailed }],
-      approxAge: [{ value: '', disabled: !this.isDetailed }],
-      height: [{ value: '', disabled: !this.isDetailed }],
+      approxAge: [{ value: '', disabled: !this.isDetailed }, [Validators.min(0), Validators.max(150)]],
+      height: [{ value: '', disabled: !this.isDetailed }, [Validators.min(0), Validators.max(300)]],
       build: [{ value: null, disabled: !this.isDetailed }],
       identifyingfeatures: [{ value: '', disabled: !this.isDetailed }],
       clothes: [{ value: '', disabled: !this.isDetailed }],
@@ -51,11 +51,6 @@ export class PersonsFormComponent implements OnInit {
     this.personsShown.forEach(p => p.shown = false);
     this.personsShown.push({ index: this.persons.length - 1, shown: true });
     this.formChanges.emit(this.persons);
-    this.scrollToBeginning();
-  }
-
-  private scrollToBeginning() {
-    this.elRef.nativeElement.closest(".content").scrollToPoint(0, 1000, 1); // 1000 is a magic number..
   }
 
   removePersonAtIndex(index: number) {
