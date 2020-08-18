@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, EventEmitter } from "@angular/core";
 import { ControlService } from "../_services/control.service";
 import { Control } from "../_models/control";
 import { FormBuilder, FormGroup } from "@angular/forms";
@@ -19,6 +19,7 @@ export class AuditPage implements OnInit {
   divisions: Division[];
 
   public controlFilterForm: FormGroup;
+  public setDivisions = new EventEmitter<string[]>();
 
   constructor(public controlService: ControlService,
     public navigationService: NavController,
@@ -46,6 +47,16 @@ export class AuditPage implements OnInit {
       this.divisions = divisions;
     });
 
+    this.subscribeToControlFormChanges();
+  }
+
+  divisionsChanged(data) {
+    if (data) {
+      this.controlFilterForm.get('divisionIds').setValue(data);
+    }
+  }
+
+  private subscribeToControlFormChanges() {
     this.controlFilterForm.valueChanges
       .pipe(
         debounceTime(250),
@@ -57,18 +68,16 @@ export class AuditPage implements OnInit {
   }
 
   list() {
-    this.controlService.list(this.controlFilterForm.value).then(controls => {
-      this.controls = controls;
-    });
+    if (this.controlFilterForm.valid) {
+      console.log(this.controlFilterForm.value);
+      this.controlService.list(this.controlFilterForm.value).then(controls => {
+        this.controls = controls;
+      });
+    }
   }
 
   navigate(id: string) {
     this.navigationService.navigateForward('audits/' + id);
   }
 
-  divisionsChanged(data) {
-    if (data) {
-      this.controlFilterForm.get('divisionIds').setValue(data);
-    }
-  }
 }

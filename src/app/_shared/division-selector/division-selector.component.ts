@@ -26,12 +26,16 @@ export class DivisionSelectorComponent implements OnInit {
       component: DivisionSelectorModalPage,
       cssClass: 'division-selector-modal',
       componentProps: {
-        alreadysSelectedDivisionIds: this.selectedDivisionIds
+        selectedDivisionIds: this.selectedDivisionIds
       }
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     this.selectedDivisionIds = data;
-    this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
+    if (data) {
+      this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
+    } else {
+      this.changeInSelectedDivisions.emit([]);
+    }
   }
 }

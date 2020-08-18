@@ -14,16 +14,22 @@ export class DivisionListComponent implements OnInit {
   @Input() public readonly: boolean;
   @Input() public userDivisions: Division[];
   @Input() public selector: boolean;
-  @Input() public setDivisions: EventEmitter<string[]>;
+  @Input() public setDivisions: EventEmitter<Division[]>;
   @Input() public addIndividual: boolean = false;
+
+  //If this is true, it will return just the top-level divisions selected. If false, it will return all divisions selected
+  @Input() public onlyTopLevel: boolean = true;
+
   @Output() public selected = new EventEmitter<string[]>();
+  @Output() public selectedFull = new EventEmitter<Division[]>();
 
   public setDivisionsDown = new EventEmitter<string[]>();
   public divisions: Division[];
   public childrenSelected: selectedItem[] = [];
   public namesSelected: string[] = [];
   public showMenu: boolean = false;
-  public inputDivisions: string[] = [];
+  public inputDivisions: Division[];
+  public tempInputDivisions: Division[];
 
   constructor(private divisionService: DivisionService, public popoverController: PopoverController) { }
 
@@ -40,55 +46,111 @@ export class DivisionListComponent implements OnInit {
 
     if (this.setDivisions) {
       this.setDivisions.subscribe(divisions => {
-        //sends the selected divisions down the tree
-        this.inputDivisions = <string[]>divisions;
+        if (!this.divisions && !this.userDivisions) {
+          //No divisions has been given or loaded.
+          //Saves the input divisions to a different variable
+          this.tempInputDivisions = divisions;
+        }
+        else {
+          //sends the selected divisions down the tree
+          var selected: Division[];
+          if (typeof divisions[0] == "string") {
+            selected = this.buildDivisionTreeFromIds(divisions);
+          }
+          else {
+            selected = <Division[]>divisions;
+          }
 
-        //Sets the names which have been selected
-        this.namesSelected = this.namesFromIds(divisions);
+          this.inputDivisions = selected;
 
-        //Sets the children selected
-        this.childrenSelected = this.getSelectedTree(divisions, this.divisions);
+          //Sets the individual divisions
+          this.divisions = this.divisions.concat(selected.filter(d => d.individualDivision));
+
+          //Sets the names which have been selected
+          this.namesSelected = selected.map(x => x.name);//this.namesFromIds(divisions);
+
+          //Sets the children selected
+          this.childrenSelected = this.getSelectedTree(selected, this.divisions);
+        }
       });
     }
   }
 
   onSelected(childItem: selectedItem) {
+    //Adding or removeing the child which has been clicked on
     this.childrenSelected = this.childrenSelected.filter(x => x.from != childItem.from);
-
     if (childItem.checked) {
       this.childrenSelected.push(childItem);
     }
 
-    let selectedDivisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
-    this.namesSelected = selectedDivisions.map(x => x.name)
+    //Takes the divisions selected
+    var selectedTopLevelDivisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
+    let selectedDivisions: Division[] = this.onlyTopLevel ? selectedTopLevelDivisions : [].concat(...selectedTopLevelDivisions.map(division => this.getAllChildren(division)));
+
+    //Only print the top-level names
+    this.namesSelected = selectedTopLevelDivisions.map(x => x.name);
+
+    //Emit the selected divisions
     this.selected.emit(selectedDivisions.map(x => x.id));
+    this.selectedFull.emit(selectedDivisions);
+  }
+
+  clearAll() {
+    this.inputDivisions = [];
+    this.childrenSelected = [];
+    this.namesSelected = [];
+    this.selected.emit([]);
+    this.selectedFull.emit([]);
+  }
+
+  getAllChildren(division: Division): Division[] {
+    var result: Division[] = [division];
+    if (division.children) {
+      division.children.forEach(child => {
+        result = result.concat(this.getAllChildren(child));
+      });
+    }
+    return result;
   }
 
   listDivisions() {
     if (this.userDivisions) {
       this.divisions = this.userDivisions;
       this.setDivisions.emit(this.inputDivisions);
+      if (this.tempInputDivisions) {
+        this.setDivisions.emit(this.tempInputDivisions);
+        this.tempInputDivisions = undefined;
+      }
     } else {
       this.divisionService.list().then(divisions => {
         this.divisions = divisions;
+
+        if (this.tempInputDivisions) {
+          this.setDivisions.emit(this.tempInputDivisions);
+          this.tempInputDivisions = undefined;
+        }
       });
     }
   }
 
-  namesFromIds(ids: string[]): string[] {
-    return this.checkChild(ids, this.divisions);
+  buildDivisionTreeFromIds(divisions: string[]): Division[] {
+    return this.buildDivisionTreeFromIdsHelper(divisions, this.divisions)
   }
 
-  checkChild(ids: string[], divisions: Division[]): string[] {
-    var result: string[] = [];
-    divisions.forEach(division => {
-      if (ids.some(id => division.id == id)) {
-        result.push(division.name);
+  buildDivisionTreeFromIdsHelper(divisions: string[], possible: Division[]): Division[] {
+    var result: Division[] = [];
+
+    possible.forEach(div => {
+      if (divisions.includes(div.id)) {
+        result.push(div);
       }
-      if (this.hasChild(division)) {
-        result = result.concat(this.checkChild(ids, division.children));
+      else {
+        if (div.children) {
+          result = result.concat(this.buildDivisionTreeFromIdsHelper(divisions, div.children));
+        }
       }
     });
+
     return result;
   }
 
@@ -96,12 +158,12 @@ export class DivisionListComponent implements OnInit {
     return division.children && division.children.length > 0;
   }
 
-  getSelectedTree(ids: string[], divisions: Division[]): selectedItem[] {
+  getSelectedTree(divs: Division[], divisions: Division[]): selectedItem[] {
     var result: selectedItem[] = [];
 
     divisions.forEach(division => {
       //If this division is selected
-      if (ids.some(id => division.id == id)) {
+      if (divs.some(div => division.id == div.id)) {
         result.push({
           selected: [division],
           checked: true,
@@ -109,7 +171,7 @@ export class DivisionListComponent implements OnInit {
         });
       }
       else if (this.hasChild(division)) {
-        var selected = this.getSelectedTree(ids, division.children);
+        var selected = this.getSelectedTree(divs, division.children);
         //If a child has been selected
         if (selected.some(s => s.selected.length > 0)) {
           result.push({

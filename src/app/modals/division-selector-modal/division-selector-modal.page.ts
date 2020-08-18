@@ -8,23 +8,35 @@ import { Division } from 'src/app/_models/division';
   styleUrls: ['./division-selector-modal.page.scss']
 })
 export class DivisionSelectorModalPage implements OnInit {
-  @Input() setDivisions: EventEmitter<string[]>;
   @Input() userDivisions: Division[];
   @Input() addIndividual: boolean = false;
   @Input() updateDivisions: EventEmitter<Division[]>;
-  @Input() alreadysSelectedDivisionIds: string[];
+  @Input() onlyTopLevel: boolean = false;
   @Output() selectionChanged = new EventEmitter<string[]>();
+  @Output() selectionChangedFull = new EventEmitter<Division[]>();
 
-  public selectedDivisionIds: string[];
+  @Input() selectedDivisionIds: string[];
+  public setDivisions: EventEmitter<string[]>;
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController) {
+    this.setDivisions = new EventEmitter<string[]>();
+  }
 
   ngOnInit() {
+
+  }
+
+  ionViewDidEnter() {
+    this.setDivisions.emit(this.selectedDivisionIds);
   }
 
   onDivisionChange(divisions) {
     this.selectionChanged.emit(divisions);
     this.selectedDivisionIds = divisions;
+  }
+
+  onDivisionChangeFull(divisions) {
+    this.selectionChangedFull.emit(divisions);
   }
 
   dismiss() {
