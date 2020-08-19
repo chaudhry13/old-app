@@ -8,7 +8,7 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { CountryService } from 'src/app/_services/country.service';
 import { Country } from 'src/app/_models/country';
 import { ModalController, ToastController } from '@ionic/angular';
-import { LocationModalPage } from 'src/app/modals/location-modal.page';
+import { LocationModalPage } from 'src/app/modals/location-modal/location-modal.page';
 import { ToastService } from 'src/app/_services/toast.service';
 
 @Component({
