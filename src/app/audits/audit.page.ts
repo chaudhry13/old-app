@@ -69,7 +69,6 @@ export class AuditPage implements OnInit {
 
   list() {
     if (this.controlFilterForm.valid) {
-      console.log(this.controlFilterForm.value);
       this.controlService.list(this.controlFilterForm.value).then(controls => {
         this.controls = controls;
       });

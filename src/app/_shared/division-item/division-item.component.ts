@@ -26,7 +26,6 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    console.log("init " + this.division.name);
     this.checked = this.isParrentChecked;
     this.setInputDivision(this.inputDivisions);
     if (this.checked) {
@@ -36,7 +35,7 @@ export class DivisionItemComponent implements OnInit, OnChanges {
       if (shouldShow) {
         this.showChildren = true;
       }
-    })
+    });
   }
 
   ngOnChanges() {
@@ -50,14 +49,12 @@ export class DivisionItemComponent implements OnInit, OnChanges {
       }
       if (division.children) {
         division.children.forEach(child => {
-          console.log("cjhecking: " + child.name);
           resolve(this.hasCheckedChild(child));
         });
       } else {
         resolve(false);
       }
     });
-
   }
 
   setInputDivision(divisions: Division[]) {
