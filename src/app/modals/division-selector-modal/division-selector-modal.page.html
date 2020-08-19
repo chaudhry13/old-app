@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar color="primary" class="ion-color ion-color-primary">
+        <ion-title class="title-ios hydrated">Select Divisions</ion-title>
+
+        <ion-buttons slot="end">
+            <ion-button (click)="dismiss()">Close</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div style="padding: 1rem;">
+        <division-list [readonly]="true" [addIndividual]="addIndividual" [selector]="true"
+            (selected)="onDivisionChange($event)" (selectedFull)="onDivisionChangeFull($event)"
+            [setDivisions]="setDivisions" [userDivisions]="userDivisions" [updateDivisions]="updateDivisions"
+            style="width: 100%;" [onlyTopLevel]="onlyTopLevel">
+        </division-list>
+    </div>
+</ion-content>

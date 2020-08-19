@@ -1,0 +1,23 @@
+
+.name {
+    cursor: pointer;
+}
+
+.name:hover {
+    background-color: lightgray;
+}
+
+
+.drop-down-item {
+    padding: 0.5rem;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.drop-down-item:hover {
+    background-color: lightgray;
+}
+
+.children{
+    margin-left: 1.5rem;
+}

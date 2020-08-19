@@ -83,7 +83,6 @@ export class QuestionComponent implements OnInit {
             this.answerForm
           ).isValid
         ) {
-          console.log("is valid");
           const answer = this.qhs.getQuestionAnswer(
             this.questionAnswer,
             this.question,

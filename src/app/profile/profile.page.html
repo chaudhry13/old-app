@@ -32,7 +32,7 @@
     <ion-list-header>
       <ion-label>Divisions ({{divisions.length}})</ion-label>
     </ion-list-header>
-    <div></div>
-    <ion-item *ngFor="let division of divisions">{{ division.name }}</ion-item>
+    <!-- <ion-item *ngFor="let division of divisions">{{ division.name }}</ion-item> -->
+    <division-list style="padding-left: 2rem;" [readonly]="true" [selector]="false"></division-list>
   </ion-list>
 </ion-content>

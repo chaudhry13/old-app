@@ -84,7 +84,6 @@ export class IncidentReportDetailsPage implements OnInit {
   }
 
   async listFiles() {
-    console.log("listing files");
     this.storageService
       .listIncidentReport(this.incidentReport.id)
       .then((files) => {
