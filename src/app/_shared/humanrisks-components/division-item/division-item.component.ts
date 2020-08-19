@@ -28,6 +28,13 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.checked = this.isParrentChecked;
     this.setInputDivision(this.inputDivisions);
+
+    this.showDivisionsWithCheckedChildren();
+  }
+
+  private showDivisionsWithCheckedChildren() {
+    if (!this.selector) return;
+
     if (this.checked) {
       this.showChildren = true;
     }

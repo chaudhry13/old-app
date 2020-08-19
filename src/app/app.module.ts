@@ -58,8 +58,7 @@ import { FollowUpService } from './_services/follow-up.service';
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
 import { DivisionSelectorModalPage } from './modals/division-selector-modal/division-selector-modal.page';
-import { DivisionItemComponent } from './_shared/division-item/division-item.component';
-import { DivisionListComponent } from './_shared/division-list/division-list.component';
+import { HumanrisksComponentsModule } from './_shared/humanrisks-components/humanrisks-components.module';
 
 @NgModule({
   declarations: [
@@ -67,9 +66,7 @@ import { DivisionListComponent } from './_shared/division-list/division-list.com
     CallbackComponent,
     LoginComponent,
     LocationModalPage,
-    DivisionSelectorModalPage,
-    DivisionItemComponent,
-    DivisionListComponent],
+    DivisionSelectorModalPage],
   entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
   imports: [
     BrowserModule,
@@ -90,6 +87,7 @@ import { DivisionListComponent } from './_shared/division-list/division-list.com
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
       libraries: ["places"]
     }),
+    HumanrisksComponentsModule
   ],
   providers: [
     AccountService,

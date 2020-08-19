@@ -4,10 +4,10 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuditPage } from "./audit.page";
-import { DivisionSelectorComponent } from '../_shared/division-selector/division-selector.component';
+import { HumanrisksComponentsModule } from '../_shared/humanrisks-components/humanrisks-components.module';
 
 @NgModule({
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild([{ path: "", component: AuditPage }])],
-  declarations: [AuditPage, DivisionSelectorComponent]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild([{ path: "", component: AuditPage }]), HumanrisksComponentsModule],
+  declarations: [AuditPage]
 })
 export class AuditPageModule { }

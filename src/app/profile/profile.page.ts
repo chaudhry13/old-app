@@ -34,8 +34,8 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    this.oAuthService.logOut(true);
     localStorage.clear();
+    this.oAuthService.logOut(false);
     setTimeout(() => {
       this.router.navigate(["/login"]);
     }, 1000);

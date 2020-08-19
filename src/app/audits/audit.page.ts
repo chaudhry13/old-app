@@ -7,7 +7,6 @@ import { Division } from "../_models/division";
 import { DivisionService } from "../_services/division.service";
 import { NavController, PopoverController, ModalController } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { DivisionSelectorComponent } from '../_shared/division-selector/division-selector.component';
 
 @Component({
   selector: "app-audit-page",
@@ -25,8 +24,7 @@ export class AuditPage implements OnInit {
     public navigationService: NavController,
     public divisionService: DivisionService,
     public formBuilder: FormBuilder,
-    private keyboard: Keyboard,
-    private modalController: ModalController) {
+    private keyboard: Keyboard) {
     this.controlFilterForm = this.formBuilder.group({
       divisionIds: [""],
       responsibility: [""],

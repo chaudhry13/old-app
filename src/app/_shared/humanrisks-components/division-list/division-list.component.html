@@ -6,7 +6,7 @@
 </div>
 
 <!-- The non-selector -->
-<div *ngIf="!selector && inputDivisions">
+<div *ngIf="!selector">
     <division-item *ngFor="let division of divisions;trackBy: trackById" [readonly]="readonly" [division]="division"
         (list)="listDivisions()">
     </division-item>
