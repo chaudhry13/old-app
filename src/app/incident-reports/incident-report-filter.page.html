@@ -12,7 +12,7 @@
   <form [formGroup]="filterForm">
     <ion-item>
       <ion-label>Divisions</ion-label>
-      <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
+      <division-selector [textSize]="3" (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
     </ion-item>
     <ion-list>
       <ion-item>

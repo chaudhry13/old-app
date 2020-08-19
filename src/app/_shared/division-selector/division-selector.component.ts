@@ -1,9 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Division } from 'src/app/_models/division';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { FormGroup } from '@angular/forms';
 import { DivisionSelectorModalPage } from 'src/app/modals/division-selector-modal/division-selector-modal.page';
-import { DivisionService } from 'src/app/_services/division.service';
 
 @Component({
   selector: 'division-selector',
@@ -11,6 +8,7 @@ import { DivisionService } from 'src/app/_services/division.service';
   styleUrls: ['./division-selector.component.scss']
 })
 export class DivisionSelectorComponent implements OnInit {
+  @Input() public textSize: number = 0;
   @Output() public changeInSelectedDivisions = new EventEmitter<string[]>();
 
   public selectedDivisionIds: string[] = [];
@@ -51,14 +49,16 @@ export class DivisionSelectorComponent implements OnInit {
     var stringResult = "";
     for (let index = 0; index < divisionNames.length; index++) {
       const divisionName = divisionNames[index];
-      if (index < 3) {
+
+      if (index < this.textSize || this.textSize == 0) {
         stringResult += divisionName;
-        if (index != (divisionNames.length - 1)) {
-          stringResult += ", "
-        }
       } else {
         stringResult += "..."
         return stringResult;
+      }
+
+      if ((index != (divisionNames.length - 1) && index < this.textSize - 1) || ((index != (divisionNames.length - 1) && this.textSize == 0))) {
+        stringResult += ", "
       }
     }
 
