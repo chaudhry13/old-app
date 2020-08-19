@@ -2,7 +2,7 @@
   <ion-grid class="ion-no-margin ion-no-padding">
     <ion-col>
       <ion-row>
-        <ion-label class="ion-text-wrap ion-padding-top">
+        <ion-label class="ion-text-wrap ion-padding-top question-header">
           {{ question.title }}
           <span style="color: red;" *ngIf="question.required">
             *
@@ -19,11 +19,12 @@
           N/A
         </ion-label>
         <div>
-          <ion-icon *ngIf="hasComment" (click)="toggleComment()" slot="end" name="chatbubbles" class="ion-padding-start"
-            style="color: #ffce00;"></ion-icon>
+          <ion-icon *ngIf="hasComment" (click)="toggleComment()" slot="end" name="chatbubbles"
+            class="ion-padding-start clickable-icon" style="color: #ffce00;"></ion-icon>
           <ion-icon *ngIf="!hasComment" (click)="toggleComment()" slot="end" name="chatbubbles"
-            class="ion-padding-start">
+            class="ion-padding-start clickable-icon">
           </ion-icon>
+          <ion-icon (click)="takePhotoAndUpload()" slot="end" class="clickable-icon" name="camera"></ion-icon>
         </div>
       </ion-row>
     </ion-col>
@@ -78,4 +79,13 @@
       wrap="soft" placeholder="Write your comment here..">
     </ion-textarea>
   </div>
+  <ion-item *ngFor="let file of files">
+    <ion-thumbnail slot="start" *ngIf="file">
+      <img src="{{ file.url }}" />
+    </ion-thumbnail>
+    <ion-label>
+      {{file.name}}
+    </ion-label>
+    <ion-icon (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
+  </ion-item>
 </div>
