@@ -17,14 +17,18 @@ export class DivisionSelectorModalPage implements OnInit {
 
   @Input() selectedDivisionIds: string[];
   public setDivisions: EventEmitter<string[]>;
+  public selectedNamesEmitter = new EventEmitter<string[]>();
   public divisionsSelected: Division[];
+  public selectedDivisionNames: string[] = [];
 
   constructor(private modalController: ModalController) {
     this.setDivisions = new EventEmitter<string[]>();
   }
 
   ngOnInit() {
-
+    this.selectedNamesEmitter.subscribe(divisionNames => {
+      this.selectedDivisionNames = divisionNames;
+    });
   }
 
   ionViewDidEnter() {
@@ -42,7 +46,7 @@ export class DivisionSelectorModalPage implements OnInit {
   }
 
   dismiss() {
-    this.modalController.dismiss([this.selectedDivisionIds, this.divisionsSelected]);
+    this.modalController.dismiss([this.selectedDivisionIds, this.selectedDivisionNames]);
   }
 
 }

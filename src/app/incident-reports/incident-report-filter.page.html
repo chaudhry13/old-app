@@ -10,12 +10,11 @@
 
 <ion-content>
   <form [formGroup]="filterForm">
+    <ion-item>
+      <ion-label>Divisions</ion-label>
+      <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
+    </ion-item>
     <ion-list>
-      <ion-item>
-        <ion-label>Divisions</ion-label>
-        <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
-      </ion-item>
-
       <ion-item>
         <ion-label>Internal</ion-label>
         <ion-toggle slot="end" formControlName="internal" name="internal" checked></ion-toggle>

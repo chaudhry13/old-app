@@ -12,8 +12,8 @@
     <div style="padding: 1rem;">
         <division-list [readonly]="true" [addIndividual]="addIndividual" [selector]="true"
             (selected)="onDivisionChange($event)" (selectedFull)="onDivisionChangeFull($event)"
-            [setDivisions]="setDivisions" [userDivisions]="userDivisions" [updateDivisions]="updateDivisions"
-            style="width: 100%;" [onlyTopLevel]="onlyTopLevel">
+            [setDivisions]="setDivisions" [userDivisions]="userDivisions" [selectedNamesEmitter]="selectedNamesEmitter"
+            [updateDivisions]="updateDivisions" style="width: 100%;" [onlyTopLevel]="onlyTopLevel">
         </division-list>
     </div>
 </ion-content>

@@ -16,6 +16,7 @@ export class DivisionListComponent implements OnInit {
   @Input() public selector: boolean;
   @Input() public setDivisions: EventEmitter<Division[]>;
   @Input() public addIndividual: boolean = false;
+  @Input() public selectedNamesEmitter: EventEmitter<string[]>;
 
   //If this is true, it will return just the top-level divisions selected. If false, it will return all divisions selected
   @Input() public onlyTopLevel: boolean = true;
@@ -68,7 +69,7 @@ export class DivisionListComponent implements OnInit {
 
           //Sets the names which have been selected
           this.namesSelected = selected.map(x => x.name);//this.namesFromIds(divisions);
-          console.log(this.namesSelected);
+
 
           //Sets the children selected
           this.childrenSelected = this.getSelectedTree(selected, this.divisions);
@@ -94,6 +95,7 @@ export class DivisionListComponent implements OnInit {
     //Emit the selected divisions
     this.selected.emit(selectedDivisions.map(x => x.id));
     this.selectedFull.emit(selectedDivisions);
+    this.selectedNamesEmitter.emit(this.namesSelected);
   }
 
   clearAll() {
