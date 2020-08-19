@@ -14,9 +14,12 @@ export class DivisionSelectorComponent implements OnInit {
   @Output() public changeInSelectedDivisions = new EventEmitter<string[]>();
 
   public selectedDivisionIds: string[] = [];
+  public selectedDivisions: Division[] = [];
+  public selectedDivisionsText: string = "Select divisions...";
 
   constructor(
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private divisionService: DivisionService) { }
 
   ngOnInit() {
   }
@@ -31,7 +34,8 @@ export class DivisionSelectorComponent implements OnInit {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    this.selectedDivisionIds = data;
+    this.selectedDivisionIds = data[0];
+    this.selectedDivisions = data[1];
     if (data) {
       this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
     } else {

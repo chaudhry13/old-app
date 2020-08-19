@@ -17,6 +17,7 @@ export class DivisionSelectorModalPage implements OnInit {
 
   @Input() selectedDivisionIds: string[];
   public setDivisions: EventEmitter<string[]>;
+  public divisionsSelected: Division[];
 
   constructor(private modalController: ModalController) {
     this.setDivisions = new EventEmitter<string[]>();
@@ -37,10 +38,11 @@ export class DivisionSelectorModalPage implements OnInit {
 
   onDivisionChangeFull(divisions) {
     this.selectionChangedFull.emit(divisions);
+    this.divisionsSelected = divisions;
   }
 
   dismiss() {
-    this.modalController.dismiss(this.selectedDivisionIds);
+    this.modalController.dismiss([this.selectedDivisionIds, this.divisionsSelected]);
   }
 
 }

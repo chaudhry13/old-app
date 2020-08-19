@@ -68,6 +68,7 @@ export class DivisionListComponent implements OnInit {
 
           //Sets the names which have been selected
           this.namesSelected = selected.map(x => x.name);//this.namesFromIds(divisions);
+          console.log(this.namesSelected);
 
           //Sets the children selected
           this.childrenSelected = this.getSelectedTree(selected, this.divisions);
