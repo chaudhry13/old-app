@@ -13,11 +13,7 @@
     <ion-list>
       <ion-item>
         <ion-label>Divisions</ion-label>
-        <ion-select formControlName="divisionIds" multiple="true" placeholder="All Divisions.." cancelText="Close"
-          okText="Okay" interface="alert">
-          <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
-          </ion-select-option>
-        </ion-select>
+        <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
       </ion-item>
 
       <ion-item>

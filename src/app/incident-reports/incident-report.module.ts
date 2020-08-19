@@ -5,10 +5,11 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IncidentReportPage } from "./incident-report.page";
 import { IncidentReportFilterPage } from "./incident-report-filter.page";
+import { DivisionSelectorComponent } from '../_shared/division-selector/division-selector.component';
 
 @NgModule({
 	imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule.forChild([{ path: "", component: IncidentReportPage }])],
-	declarations: [IncidentReportPage, IncidentReportFilterPage],
+	declarations: [IncidentReportPage, IncidentReportFilterPage, DivisionSelectorComponent],
 	entryComponents: [IncidentReportFilterPage]
 })
 export class IncidentReportPageModule { }
