@@ -10,10 +10,6 @@
     </ion-toolbar>
 
     <ion-toolbar>
-      <!-- <division-selector (selectionChanged)="onDivisionChange($event)" [addIndividual]="true">
-      </division-selector> -->
-      <!-- <ion-select formControlName="divisionIds" multiple="true" placeholder="All Divisions..">
-      </ion-select> -->
       <division-selector (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
     </ion-toolbar>
   </form>
