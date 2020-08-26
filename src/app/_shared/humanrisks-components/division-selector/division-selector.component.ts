@@ -35,6 +35,7 @@ export class DivisionSelectorComponent implements OnInit {
     const { data } = await modal.onWillDismiss();
     this.selectedDivisionIds = data[0];
     this.selectedDivisionNames = data[1];
+    console.log(data);
     if (data[1] && data[1].length > 0) {
       this.selectedDivisionsText = this.stringifyDivisionNames(data[1]);
     } else {
@@ -55,7 +56,7 @@ export class DivisionSelectorComponent implements OnInit {
       if (index < this.textSize || this.textSize == 0) {
         stringResult += divisionName;
       } else {
-        stringResult += "..."
+        stringResult += " (and " + (divisionNames.length-this.textSize) + " more...)" 
         return stringResult;
       }
 

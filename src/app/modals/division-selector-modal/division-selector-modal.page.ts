@@ -20,6 +20,7 @@ export class DivisionSelectorModalPage implements OnInit {
   public selectedNamesEmitter = new EventEmitter<string[]>();
   public divisionsSelected: Division[];
   public selectedDivisionNames: string[] = [];
+  public clearSelectionEvent = new EventEmitter<any>();
 
   constructor(private modalController: ModalController) {
     this.setDivisions = new EventEmitter<string[]>();
@@ -43,6 +44,11 @@ export class DivisionSelectorModalPage implements OnInit {
   onDivisionChangeFull(divisions) {
     this.selectionChangedFull.emit(divisions);
     this.divisionsSelected = divisions;
+  }
+
+  clearSelection() {
+    console.log("Clear!");
+    this.clearSelectionEvent.emit();
   }
 
   dismiss() {

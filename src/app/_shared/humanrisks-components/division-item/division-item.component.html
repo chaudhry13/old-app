@@ -20,7 +20,7 @@
 <div *ngIf="showChildren">
     <div class="children" *ngFor="let child of division.children">
         <division-item [readonly]="readonly" [division]="child" (list)="list.emit()" [selector]="selector"
-            [isParrentChecked]="checked" (onSelect)="childSelected($event)" [inputDivisions]="inputDivisions" [addIndividual]="addIndividual" [parentChildrenSelected]="parentChildrenSelected">
+            [isParrentChecked]="checked" (onSelect)="childSelected($event)" [inputDivisions]="inputDivisions" [clearChildren]="clearChildren" [addIndividual]="addIndividual" [parentChildrenSelected]="parentChildrenSelected">
         </division-item>
     </div>
 </div>
