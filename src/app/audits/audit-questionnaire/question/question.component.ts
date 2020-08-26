@@ -18,6 +18,8 @@ import { Attachment } from "src/app/_models/file";
 import { UserService } from 'src/app/_services/user.service';
 import { TokenService } from 'src/app/_services/token.service';
 import { AccountService } from 'src/app/_services/account.service';
+import { SettingsService } from 'src/app/_services/settings.service';
+import { AppConfigService } from 'src/app/_services/auth-config.service';
 
 @Component({
   selector: "question",
@@ -49,7 +51,7 @@ export class QuestionComponent implements OnInit {
     public toastService: ToastService,
     public cameraService: CameraService,
     public storageService: StorageService,
-    public accountService: AccountService
+    public appConfigService: AppConfigService
   ) {
     this.answerForm = this.formBuilder.group({
       id: [""],
@@ -145,9 +147,7 @@ export class QuestionComponent implements OnInit {
   }
 
   private getUserOrgId() {
-    this.accountService.get().then(user => {
-      return user.organization;
-    });
+    return this.appConfigService.organizationId;
   }
 
   private async listQuestionFiles() {
