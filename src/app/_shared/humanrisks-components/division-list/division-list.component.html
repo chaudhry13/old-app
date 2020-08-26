@@ -1,7 +1,7 @@
 <div *ngIf="selector && inputDivisions">
     <division-item *ngFor="let division of divisions;trackBy: trackById" [readonly]="readonly" [division]="division"
         [selector]="selector" (list)="listDivisions()" [isParrentChecked]="false" (onSelect)="onSelected($event)"
-        [inputDivisions]="inputDivisions">
+        [inputDivisions]="inputDivisions" [parentChildrenSelected]="childrenSelected" [addIndividual]="addIndividual">
     </division-item>
 </div>
 

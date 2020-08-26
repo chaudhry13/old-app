@@ -9,6 +9,7 @@ import { DivisionSelectorModalPage } from 'src/app/modals/division-selector-moda
 })
 export class DivisionSelectorComponent implements OnInit {
   @Input() public textSize: number = 0;
+  @Input() public addIndividual: boolean = false;
   @Output() public changeInSelectedDivisions = new EventEmitter<string[]>();
 
   public selectedDivisionIds: string[] = [];
@@ -26,7 +27,8 @@ export class DivisionSelectorComponent implements OnInit {
       component: DivisionSelectorModalPage,
       cssClass: 'division-selector-modal',
       componentProps: {
-        selectedDivisionIds: this.selectedDivisionIds
+        selectedDivisionIds: this.selectedDivisionIds,
+        addIndividual: this.addIndividual
       }
     });
     await modal.present();

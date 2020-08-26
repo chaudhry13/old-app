@@ -11,6 +11,8 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   @Input() readonly: boolean;
   @Input() selector: boolean;
   @Input() isParrentChecked: boolean;
+  @Input() addIndividual: boolean;
+  @Input() parentChildrenSelected: selectedItem[] = [];
   @Input() inputDivisions: Division[];
 
   @Output() onSelect = new EventEmitter<selectedItem>();
@@ -26,27 +28,44 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    this.checked = this.isParrentChecked;
+     //this.checked = this.isParrentChecked;
+     if (!this.addIndividual) { this.checked = this.isParrentChecked; }
+     else {
+       this.checked = this.setSelected(this.parentChildrenSelected);
+     }
     this.setInputDivision(this.inputDivisions);
 
     this.showDivisionsWithCheckedChildren();
   }
 
-  private showDivisionsWithCheckedChildren() {
-    if (!this.selector) return;
-
-    if (this.checked) {
-      this.showChildren = true;
+  ngOnChanges(changes) {
+    if (changes.isParrentChecked) {
+      if (!this.addIndividual) { this.checked = this.isParrentChecked; }
+      else if (!this.isParrentChecked) { this.checked = false; }
     }
-    this.hasCheckedChild(this.division).then(shouldShow => {
-      if (shouldShow) {
-        this.showChildren = true;
-      }
-    });
+
+    this.setInputDivision(this.inputDivisions);
+
+    this.showDivisionsWithCheckedChildren();
   }
 
-  ngOnChanges() {
-    this.checked = this.isParrentChecked;
+  setSelected(selected: selectedItem[]): boolean {
+    var chosenDivisions: Division[] = [].concat(...selected.map(s => s.selected));
+    return this.setSelectedHelper(this.division, chosenDivisions);
+  }
+
+  setSelectedHelper(division: Division, checkDivisions: Division[]): boolean {
+    if (checkDivisions.some(c => c.id == division.id)) {
+      return true;
+    }
+    else {
+      if (division.children && division.children.length > 0) {
+        return division.children.some(child => this.setSelectedHelper(child, checkDivisions));
+      }
+      else {
+        return false;
+      }
+    }
   }
 
   async hasCheckedChild(division: Division): Promise<boolean> {
@@ -60,6 +79,19 @@ export class DivisionItemComponent implements OnInit, OnChanges {
         });
       } else {
         resolve(false);
+      }
+    });
+  }
+
+  private showDivisionsWithCheckedChildren() {
+    if (!this.selector) return;
+
+    if (this.checked) {
+      this.showChildren = true;
+    }
+    this.hasCheckedChild(this.division).then(shouldShow => {
+      if (shouldShow) {
+        this.showChildren = true;
       }
     });
   }
@@ -86,20 +118,22 @@ export class DivisionItemComponent implements OnInit, OnChanges {
     }
   }
 
-  onChange(check) {
-    //If a change has been made in the check, then return the result
-    let item: selectedItem = {
+  getItem(): selectedItem {
+    return {
       selected: [this.division],
       checked: this.checked,
       from: this.division.id
     };
+  }
 
-    this.onSelect.emit(item);
+  onChange(check) {
+    //If a change has been made in the check, then return the result
+    this.onSelect.emit(this.getItem());
   }
 
   //A child has been selected.
   childSelected(childItem: selectedItem) {
-    this.checked = false;
+    this.checked = this.addIndividual;
 
     //If a child has been selected then remove the child:
     this.childrenSelected = this.childrenSelected.filter(x => x.from != childItem.from);
@@ -107,6 +141,12 @@ export class DivisionItemComponent implements OnInit, OnChanges {
     //If the child is checked. Then add the child again:
     if (childItem.checked) {
       this.childrenSelected.push(childItem);
+    }
+    if (childItem.checked && this.addIndividual) {
+      this.childrenSelected = this.childrenSelected.filter(x => x.from != this.division.id);
+    }
+    else if (!childItem.checked && this.addIndividual && !this.setSelected(this.parentChildrenSelected)) {
+      this.childrenSelected.push(this.getItem());
     }
 
     //Removes duplicates (don't know why there are duplicates, but they are there);

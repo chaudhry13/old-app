@@ -178,6 +178,13 @@ export class IncidentReportCreatePage implements OnInit {
     }
   }
 
+  divisionsChanged(data) {
+    if (data) {
+      console.log(data);
+      this.incidentForm.get('divisionIds').setValue(data);
+    }
+  }
+
   async submitForm() {
     if (this.incidentForm.valid) {
       this.incidentForm.controls["countryId"].setValue(this.country.id);
