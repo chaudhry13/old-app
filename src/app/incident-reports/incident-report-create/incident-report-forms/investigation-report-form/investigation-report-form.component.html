@@ -32,8 +32,8 @@
 
     <ion-list class="ion-padding-top">
         <ion-item>
-            <ion-label position="stacked">Select investigators</ion-label>
-            <ion-select multiple="true" cancelText="Cancel" okText="Okay!">
+            <ion-label position="stacked">Investigator(s)</ion-label>
+            <ion-select multiple="true" cancelText="Cancel" okText="Okay!" formControlName="incidentReportUsers">
                 <ion-select-option *ngFor="let user of users" value="{{ user.id }}">
                     {{ user.name }}
                 </ion-select-option>
@@ -41,11 +41,11 @@
         </ion-item>
         <ion-item>
             <ion-label position="stacked">HR Support Link</ion-label>
-            <ion-input type="url"></ion-input>
+            <ion-input type="url" formControlName="customField1"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label position="stacked">Investigation Support</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" formControlName="customField2"></ion-input>
         </ion-item>
     </ion-list>
 
@@ -63,7 +63,7 @@
             External Agency Actions
         </ion-list-header>
         <ion-item>
-            <ion-textarea rows="5" formControlName="actions"></ion-textarea>
+            <ion-textarea rows="5" formControlName="customField3"></ion-textarea>
         </ion-item>
     </ion-list>
 
@@ -72,7 +72,7 @@
             Resulting Crane Currency Actions Taken
         </ion-list-header>
         <ion-item>
-            <ion-textarea rows="5" formControlName="resultingActions"></ion-textarea>
+            <ion-textarea rows="5" formControlName="customField4"></ion-textarea>
         </ion-item>
     </ion-list>
 </form>

@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
 import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
-import { IncidentCategory } from 'src/app/_models/incident-category';
+import { IncidentCategory, IncidentCategoryMappingTable } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
 import { ModalController } from '@ionic/angular';
 import { LocationModalPage } from 'src/app/modals/location-modal/location-modal.page';
@@ -29,6 +29,7 @@ export class IncidentReportCreatePage implements OnInit {
 
   public incidentTypes: IncidentType[];
   public incidentCategories: IncidentCategory[];
+  public mappingsTable: IncidentCategoryMappingTable;
 
   public isIntelligenceReportSelected = false;
 
@@ -60,15 +61,28 @@ export class IncidentReportCreatePage implements OnInit {
       countryId: [""],
       persons: [],
       vehicles: [],
-      resultingActions: [""],
-      actions: [""]
+      incidentReportUsers: [[]], // Ids
+			customField1: [],
+			customField2: [],
+			customField3: [],
+			customField4: [],
+			customField5: [],
+			customField6: [],
+			customField7: []
     });
   }
 
   ngOnInit() {
     this.getDataToPopulateForm();
     this.subscribeToIncidentReportChanges();
-    this.subscribeToIncidentTypeChanges();
+    this.subscribeToTypeChanges();
+
+    this.incidentCategoryService.getMappings().then(mappings => {
+      this.mappingsTable = mappings;
+      let defaultId = mappings.mappings.find(m => m.default == true);
+      this.incidentForm.controls.incidentCategoryId.setValue(defaultId.incidentCategoryId);
+      console.log(mappings);
+    });
   }
 
   private getDataToPopulateForm() {
@@ -108,7 +122,7 @@ export class IncidentReportCreatePage implements OnInit {
     });
   }
 
-  private subscribeToIncidentTypeChanges() {
+  private subscribeToTypeChanges() {
     this.incidentForm.controls["incidentTypeId"].valueChanges.subscribe(incidentTypeid => {
       if (incidentTypeid) {
         var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
