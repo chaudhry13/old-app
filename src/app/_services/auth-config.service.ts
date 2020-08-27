@@ -76,6 +76,18 @@ export class AppConfigService {
     return this.appConfig.logoutUrl;
   }
 
+  public get organizationId(): string {
+    if (this.oAuthService.hasValidAccessToken()) {
+      var token = this.oAuthService.getAccessToken();
+      const tokens: Array<any> = token.split(".");
+      const decoded = this.decodeB64(tokens[1]);
+      const tokenPayload: any = JSON.parse(decoded);
+      return tokenPayload.organization;
+    } else {
+      return null;
+    }
+  }
+
   public setAppConfig(tokenPayload: any) {
     // Save auth config
     this.storage.set("api_url", tokenPayload.apiurl);
@@ -92,7 +104,13 @@ export class AppConfigService {
     this.oAuthService.setStorage(localStorage);
     this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
     this.oAuthService.loadDiscoveryDocument();
-    this.oAuthService.events.subscribe(e => (e instanceof OAuthErrorEvent ? console.error(e.reason) : console.warn(e)));
+    this.oAuthService.events.subscribe(e => {
+      if (!environment.production) {
+        if (e instanceof OAuthErrorEvent) {
+          console.error(e.reason)
+        }
+      }
+    });
   }
 
   private decodeB64(payload: string) {

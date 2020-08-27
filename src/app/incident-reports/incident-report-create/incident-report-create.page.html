@@ -11,14 +11,9 @@
 <ion-content class="content">
   <form [formGroup]="incidentForm">
     <ion-list>
-      <ion-item>
-        <ion-label position="stacked">Divisions</ion-label>
-        <ion-select formControlName="divisionIds" multiple="true" placeholder="Divisions.." cancelText="Close"
-          okText="Okay">
-          <ion-select-option *ngFor="let division of divisions" value="{{ division.id }}">{{ division.name }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
+      <ion-toolbar>
+      <division-selector [textSize]="3" [addIndividual]="true" (changeInSelectedDivisions)="divisionsChanged($event)"></division-selector>
+      </ion-toolbar>
 
       <ion-item>
         <ion-label position="stacked">Incident Type</ion-label>

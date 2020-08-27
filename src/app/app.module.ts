@@ -38,7 +38,7 @@ import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 
 import { AgmCoreModule } from '@agm/core';
-import { LocationModalPage } from './modals/location-modal.page';
+import { LocationModalPage } from './modals/location-modal/location-modal.page';
 import { GeocodingService } from './_services/geocoding.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ToastService } from './_services/toast.service';
@@ -58,9 +58,16 @@ import { FollowUpService } from './_services/follow-up.service';
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
 import { LocationService } from './_services/location.service';
+import { DivisionSelectorModalPage } from './modals/division-selector-modal/division-selector-modal.page';
+import { HumanrisksComponentsModule } from './_shared/humanrisks-components/humanrisks-components.module';
 
 @NgModule({
-  declarations: [AppComponent, CallbackComponent, LoginComponent, LocationModalPage],
+  declarations: [
+    AppComponent,
+    CallbackComponent,
+    LoginComponent,
+    LocationModalPage,
+    DivisionSelectorModalPage],
   entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
   imports: [
     BrowserModule,
@@ -81,6 +88,7 @@ import { LocationService } from './_services/location.service';
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
       libraries: ["places"]
     }),
+    HumanrisksComponentsModule
   ],
   providers: [
     AccountService,

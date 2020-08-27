@@ -3,10 +3,9 @@ import { Component, OnInit, Input } from "@angular/core";
 import { Audit } from "../../_models/audit";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Router, ActivatedRoute } from "@angular/router";
-import { LoadingController, AlertController } from "@ionic/angular";
+import { AlertController } from "@ionic/angular";
 import { AuditService } from "src/app/_services/audit.service";
 import { CameraService } from "src/app/_services/photo.service";
-import { MapService } from "src/app/_services/maps.service";
 import { ToastService } from "src/app/_services/toast.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -17,15 +16,12 @@ import {
 } from "@ionic-native/file-transfer/ngx";
 import { TokenService } from "src/app/_services/token.service";
 import { User } from "src/app/_models/user";
-import { AccountService } from "src/app/_services/account.service";
 import { Attachment } from "src/app/_models/file";
-import { SettingsService } from "src/app/_services/settings.service";
 import { StorageService } from "src/app/_services/storage.service";
 import { AppConfigService } from "src/app/_services/auth-config.service";
 import { FollowUpService } from "src/app/_services/follow-up.service";
 import { FollowUp } from "src/app/_models/follow-up";
 import { UserService } from "src/app/_services/user.service";
-import { QuestionnaireService } from "src/app/_services/questionnaire.service";
 
 @Component({
   selector: "app-audit-complete",
@@ -148,7 +144,7 @@ export class AuditCompletePage implements OnInit {
 
         this.getAuditQuestionnaires();
       },
-      (error) => {
+      () => {
         this.toastService.show("An error occurred retrieving the audit..");
       }
     );
@@ -200,7 +196,7 @@ export class AuditCompletePage implements OnInit {
                 this.toastService.show("Audit completed successfully");
               });
           })
-          .catch((error) => {
+          .catch(() => {
             this.toastService.show("An error occurred completing the audit");
           });
       } else {
@@ -241,13 +237,13 @@ export class AuditCompletePage implements OnInit {
 
           fileTransfer
             .upload(image, uri, options)
-            .then((result) => {
+            .then(() => {
               this.toastService.show("Photo was uploaded successfully");
 
               this.uploadAlert.dismiss();
               this.listFiles();
             })
-            .catch((error) => {
+            .catch(() => {
               this.toastService.show("An error occurred uploading the image");
               this.uploadAlert.dismiss();
             });
@@ -285,7 +281,7 @@ export class AuditCompletePage implements OnInit {
 
           this.toastService.show("Location found!");
         })
-        .catch((error) => {
+        .catch(() => {
           this.toastService.show("Your location could not be found!");
           this.audit.location = false;
           this.audit.latitude = undefined;

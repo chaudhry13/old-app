@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, NgZone, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NavParams, ModalController } from '@ionic/angular';
-import { PlacesSearchService } from '../_services/places-search.service';
+import { PlacesSearchService } from '../../_services/places-search.service';
 
 declare var google: any;
 

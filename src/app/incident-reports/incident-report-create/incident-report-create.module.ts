@@ -11,6 +11,7 @@ import { PersonsFormComponent } from './incident-report-forms/persons-form/perso
 import { LocationFormComponent } from './incident-report-forms/location-form/location-form.component';
 import { IntelligenceReportFormComponent } from './incident-report-forms/intelligence-report-form/intelligence-report-form.component';
 import { VehicleFormComponent } from './incident-report-forms/vehicle-form/vehicle-form.component';
+import { HumanrisksComponentsModule } from 'src/app/_shared/humanrisks-components/humanrisks-components.module';
 
 const routes: Routes = [{
   path: '',
@@ -27,7 +28,8 @@ const routes: Routes = [{
     }),
     RouterModule.forChild(routes),
     FormsModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    HumanrisksComponentsModule],
   exports: [],
   declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent, PersonsFormComponent, LocationFormComponent, IntelligenceReportFormComponent, VehicleFormComponent],
 })

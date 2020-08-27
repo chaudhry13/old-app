@@ -6,6 +6,11 @@ import { DivisionService } from 'src/app/_services/division.service';
 import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
 import { IncidentCategory } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
+import { ModalController } from '@ionic/angular';
+import { LocationModalPage } from 'src/app/modals/location-modal/location-modal.page';
+import { GeocodingService } from 'src/app/_services/geocoding.service';
+import { ToastController } from '@ionic/angular';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IncidentReportService } from 'src/app/_services/incident-report.service';
 import { ToastService } from 'src/app/_services/toast.service';
 import { IncidentReportFormType } from 'src/app/_models/incident-report';
@@ -134,6 +139,13 @@ export class IncidentReportCreatePage implements OnInit {
 
   public onSubmission() {
     this.submitForm();
+  }
+
+  divisionsChanged(data) {
+    if (data) {
+      console.log(data);
+      this.incidentForm.get('divisionIds').setValue(data);
+    }
   }
 
   private addTestData() {

@@ -4,7 +4,7 @@ import { GeocodingService } from './geocoding.service';
 import { ToastService } from './toast.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ModalController } from '@ionic/angular';
-import { LocationModalPage } from '../modals/location-modal.page';
+import { LocationModalPage } from '../modals/location-modal/location-modal.page';
 import { FormGroup } from '@angular/forms';
 import { CountryService } from './country.service';
 import { rejects } from 'assert';

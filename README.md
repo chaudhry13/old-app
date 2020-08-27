@@ -9,6 +9,7 @@ Make sure you have installed nodejs version 10 or higher.
 Install the Ionic CLI and ionic angular packages:
 ```bash
 npm install -g @ionic/cli
+npm install -g cordova
 npm install @ionic/angular@latest --save
 ```
 

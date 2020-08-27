@@ -88,7 +88,7 @@ export class CameraService {
               .then((result) => {
                 this.toastService.show("Photo was uploaded successfully");
                 this.uploadAlert.dismiss();
-                console.log(result);
+                console.debug(result);
                 return resolve(true);
               })
               .catch((error) => {

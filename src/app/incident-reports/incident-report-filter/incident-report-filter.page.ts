@@ -61,6 +61,11 @@ export class IncidentReportFilterPage implements OnInit {
     this.filterForm.controls.endDate.setValue(endDate);
   }
 
+  divisionsChanged(data) {
+    if (data) {
+      this.filterForm.get('divisionIds').setValue(data);
+    }
+  }
 
   dismiss() {
     this.modal.dismiss(this.filterForm);

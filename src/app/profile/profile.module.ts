@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfilePage } from './profile.page';
+import { HumanrisksComponentsModule } from '../_shared/humanrisks-components/humanrisks-components.module';
 
 const routes: Routes = [
   {
@@ -19,8 +20,9 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    HumanrisksComponentsModule
   ],
   declarations: [ProfilePage]
 })
-export class ProfilePageModule {}
+export class ProfilePageModule { }

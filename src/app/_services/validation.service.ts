@@ -126,6 +126,8 @@ export class ValidationService {
 
   // No validation here yet
   locationValidation() {
+    // FIXME: CALLED TOO MUCH
+    //console.log("validating location")
     return { isValid: true, regExp: null, errorMsg: null };
   }
 

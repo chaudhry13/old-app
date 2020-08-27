@@ -12,6 +12,14 @@ import { QuestionAnsweredService } from "src/app/_services/questionnaire.service
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { IonTextarea, NavController } from "@ionic/angular";
 import { ToastService } from "../../../_services/toast.service";
+import { CameraService } from 'src/app/_services/photo.service';
+import { StorageService } from 'src/app/_services/storage.service';
+import { Attachment } from "src/app/_models/file";
+import { UserService } from 'src/app/_services/user.service';
+import { TokenService } from 'src/app/_services/token.service';
+import { AccountService } from 'src/app/_services/account.service';
+import { SettingsService } from 'src/app/_services/settings.service';
+import { AppConfigService } from 'src/app/_services/auth-config.service';
 
 @Component({
   selector: "question",
@@ -31,16 +39,19 @@ export class QuestionComponent implements OnInit {
   answerForm: FormGroup;
   hasComment = false;
   showComment = false;
-  // var url = "/questionnaire?organizationId=" + this.organizationId + "&questionnaireId="
-  // + this.questionnaireId + "&sentOutId=" + this.sentOutId + "&questionnaireUserAnswerId=
-  // + this.questionnaireUserAnswerId + "&questionAnswerId=" + this.questionAnswerId + "&fileName=";
+  public files: Attachment[];
+  public photos: any[] = [];
+
   constructor(
     public formBuilder: FormBuilder,
     public validationService: ValidationService,
     public qhs: QuestionnaireHelperService,
     public questionAnsweredService: QuestionAnsweredService,
     private navCtrl: NavController,
-    public toastService: ToastService
+    public toastService: ToastService,
+    public cameraService: CameraService,
+    public storageService: StorageService,
+    public appConfigService: AppConfigService
   ) {
     this.answerForm = this.formBuilder.group({
       id: [""],
@@ -83,7 +94,6 @@ export class QuestionComponent implements OnInit {
             this.answerForm
           ).isValid
         ) {
-          console.log("is valid");
           const answer = this.qhs.getQuestionAnswer(
             this.questionAnswer,
             this.question,
@@ -100,6 +110,8 @@ export class QuestionComponent implements OnInit {
             });
         }
       });
+
+    this.listQuestionFiles();
   }
 
   toggleComment() {
@@ -109,6 +121,57 @@ export class QuestionComponent implements OnInit {
         // Needs timeout to setFocus()
         this.commentTextArea.setFocus().then();
       }, 200);
+    }
+  }
+
+  public takePhotoAndUpload() {
+    var questionFilesStorageUrl = this.getQuestionFilesStorageUrl();
+
+    this.cameraService
+      .takePhotoAndUpload(
+        questionFilesStorageUrl,
+        this.photos.length
+      )
+      .then((result) => {
+        if (result) this.listQuestionFiles();
+      })
+      .catch(() => {
+        // This is taken care of in takePhotoAndUpload()
+      });
+  }
+
+  private getQuestionFilesStorageUrl() {
+    return "/questionnaire?organizationId=" + this.getUserOrgId() + "&questionnaireId="
+      + this.question.questionnaireId + "&sentOutId=" + this.questionnaireUserAnswer.questionnaireSentOutId + "&questionnaireUserAnswerId="
+      + this.questionnaireUserAnswer.id + "&questionAnswerId=" + this.questionAnswer.id + "&fileName=" + this.photos.length;
+  }
+
+  private getUserOrgId() {
+    return this.appConfigService.organizationId;
+  }
+
+  private async listQuestionFiles() {
+    this.storageService
+      .listQuestionnaire(this.question.questionnaireId,
+        this.questionnaireUserAnswer.questionnaireSentOutId,
+        this.questionnaireUserAnswer.id,
+        this.questionAnswer.id)
+      .then((files) => {
+        this.files = files;
+      });
+  }
+
+  public async removePicture(file: Attachment) {
+    const confirm = await this.cameraService.deleteConfirmationAlert();
+    if (confirm) {
+      this.storageService
+        .deleteQuestionnaire(this.question.questionnaireId,
+          this.questionnaireUserAnswer.questionnaireSentOutId,
+          this.questionnaireUserAnswer.id,
+          this.questionAnswer.id, file.name)
+        .then(() => {
+          this.listQuestionFiles();
+        });
     }
   }
 }
