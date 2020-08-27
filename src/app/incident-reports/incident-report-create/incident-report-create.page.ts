@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
 import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
 import { IncidentCategory, IncidentCategoryMappingTable } from 'src/app/_models/incident-category';
 import { IncidentType } from 'src/app/_models/incident-type';
-import { ModalController } from '@ionic/angular';
-import { LocationModalPage } from 'src/app/modals/location-modal/location-modal.page';
-import { GeocodingService } from 'src/app/_services/geocoding.service';
-import { ToastController } from '@ionic/angular';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IncidentReportService } from 'src/app/_services/incident-report.service';
 import { ToastService } from 'src/app/_services/toast.service';
 import { IncidentReportFormType } from 'src/app/_models/incident-report';
@@ -24,18 +19,15 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
-  public reportFormType: IncidentReportFormType = IncidentReportFormType.Investigation;
-  public incidentReportFormType: typeof IncidentReportFormType = IncidentReportFormType;
+  public formType: string = "Default";
 
   public incidentTypes: IncidentType[];
   public incidentCategories: IncidentCategory[];
   public mappingsTable: IncidentCategoryMappingTable;
 
-  public isIntelligenceReportSelected = false;
-
   public divisions: Division[];
   public currentIncidentCategory: IncidentCategory;
-  public currentIncidentType: IncidentType;
+  public currentIncidentTypes: IncidentType[];
 
   constructor(
     private router: Router,
@@ -75,19 +67,12 @@ export class IncidentReportCreatePage implements OnInit {
   ngOnInit() {
     this.getDataToPopulateForm();
     this.subscribeToIncidentReportChanges();
-    this.subscribeToTypeChanges();
-
-    this.incidentCategoryService.getMappings().then(mappings => {
-      this.mappingsTable = mappings;
-      let defaultId = mappings.mappings.find(m => m.default == true);
-      this.incidentForm.controls.incidentCategoryId.setValue(defaultId.incidentCategoryId);
-      console.log(mappings);
-    });
   }
 
   private getDataToPopulateForm() {
     this.listDivisions();
     this.listIncidentTypesAndCategories();
+    this.listCategoryMappings();
   }
 
   private subscribeToIncidentReportChanges() {
@@ -122,18 +107,21 @@ export class IncidentReportCreatePage implements OnInit {
     });
   }
 
-  private subscribeToTypeChanges() {
-    this.incidentForm.controls["incidentTypeId"].valueChanges.subscribe(incidentTypeid => {
-      if (incidentTypeid) {
-        var incidentType: IncidentType = this.incidentTypes.find(i => i.id == incidentTypeid);
-        this.currentIncidentCategory = this.incidentCategoryService.getIncidentCategoryFrom(incidentType, this.incidentCategories);
-        this.incidentForm.controls["incidentCategoryId"].setValue(this.currentIncidentCategory.id);
-        this.isIntelligenceReportSelected = incidentType.name == "Intelligence Report";
-        if (this.isIntelligenceReportSelected) {
-          this.reportFormType = this.incidentReportFormType.Intelligence;
-        } else {
-          this.reportFormType = this.incidentReportFormType.Investigation;
-        }
+  private listCategoryMappings() {
+    this.incidentCategoryService.getMappings().then(mappingsTable => {
+      this.mappingsTable = mappingsTable;
+
+      this.subscribeToCategoryChanges();
+    });
+  }
+
+  private subscribeToCategoryChanges() {
+    this.incidentForm.controls["incidentCategoryId"].valueChanges.subscribe(categoryId => {
+      if (categoryId) {
+        this.currentIncidentCategory = this.incidentCategories.find(i => i.id == categoryId);
+        this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
+        this.formType = this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.currentIncidentCategory.id).form;
+        console.log(this.formType);
       }
     });
   }
@@ -142,12 +130,7 @@ export class IncidentReportCreatePage implements OnInit {
     this.incidentTypes = [];
     this.incidentCategoryService.list(true).then(data => {
       this.incidentCategories = data;
-
-      // TODO: Remove this at some point before production
-      this.addTestData();
-
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
-      this.incidentForm.get("incidentTypeId").setValue("1337")
     });
   }
 
@@ -159,21 +142,5 @@ export class IncidentReportCreatePage implements OnInit {
     if (data) {
       this.incidentForm.get('divisionIds').setValue(data);
     }
-  }
-
-  private addTestData() {
-    var cat: IncidentCategory = {
-      id: 1337,
-      name: "Observation",
-      incidentTypes: []
-    };
-    var type: IncidentType = {
-      id: 1337,
-      name: "Intelligence Report",
-      incidentCategory: cat
-    };
-
-    cat.incidentTypes.push(type);
-    this.incidentCategories.push(cat);
   }
 }
