@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Division } from 'src/app/_models/division';
 import { DivisionService } from 'src/app/_services/division.service';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, IonMenuToggle } from '@ionic/angular';
 import { selectedItem } from '../division-item/division-item.component';
 
 @Component({
@@ -17,6 +17,7 @@ export class DivisionListComponent implements OnInit {
   @Input() public setDivisions: EventEmitter<Division[]>;
   @Input() public addIndividual: boolean = false;
   @Input() public selectedNamesEmitter: EventEmitter<string[]>;
+  @Input() public clearSelectionEvent: EventEmitter<any>;
 
   //If this is true, it will return just the top-level divisions selected. If false, it will return all divisions selected
   @Input() public onlyTopLevel: boolean = true;
@@ -25,6 +26,7 @@ export class DivisionListComponent implements OnInit {
   @Output() public selectedFull = new EventEmitter<Division[]>();
 
   public setDivisionsDown = new EventEmitter<string[]>();
+  public clearChildren = new EventEmitter<any>();
   public divisions: Division[];
   public childrenSelected: selectedItem[] = [];
   public namesSelected: string[] = [];
@@ -44,6 +46,11 @@ export class DivisionListComponent implements OnInit {
         this.listDivisions();
       });
     }
+
+    this.clearSelectionEvent.subscribe(() => {
+      console.log("Clearing!");
+      this.clearAll();
+    });
 
     if (this.setDivisions) {
       this.setDivisions.subscribe(divisions => {
@@ -70,6 +77,7 @@ export class DivisionListComponent implements OnInit {
           //Sets the names which have been selected
           this.namesSelected = selected.map(x => x.name);//this.namesFromIds(divisions);
 
+          this.selectedNamesEmitter.emit(this.namesSelected);
 
           //Sets the children selected
           this.childrenSelected = this.getSelectedTree(selected, this.divisions);
@@ -95,6 +103,7 @@ export class DivisionListComponent implements OnInit {
     //Emit the selected divisions
     this.selected.emit(selectedDivisions.map(x => x.id));
     this.selectedFull.emit(selectedDivisions);
+    console.log(selectedDivisions);
     this.selectedNamesEmitter.emit(this.namesSelected);
   }
 
@@ -104,6 +113,8 @@ export class DivisionListComponent implements OnInit {
     this.namesSelected = [];
     this.selected.emit([]);
     this.selectedFull.emit([]);
+    this.selectedNamesEmitter.emit(this.namesSelected);
+    this.clearChildren.emit();
   }
 
   getAllChildren(division: Division): Division[] {

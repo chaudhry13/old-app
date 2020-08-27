@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule } from '@agm/core';
 import { IncidentReportCreatePage } from './incident-report-create.page';
+import { HumanrisksComponentsModule } from 'src/app/_shared/humanrisks-components/humanrisks-components.module';
 
 const routes: Routes = [{
   path: '',
@@ -21,7 +22,8 @@ const routes: Routes = [{
     }),
     RouterModule.forChild(routes),
     FormsModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    HumanrisksComponentsModule],
   exports: [],
   declarations: [IncidentReportCreatePage],
 })
