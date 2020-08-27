@@ -143,7 +143,6 @@ export class IncidentReportCreatePage implements OnInit {
 
   divisionsChanged(data) {
     if (data) {
-      console.log(data);
       this.incidentForm.get('divisionIds').setValue(data);
     }
   }

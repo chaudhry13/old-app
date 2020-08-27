@@ -67,7 +67,6 @@ export class VehicleFormComponent implements OnInit {
     this.vehicles = this.vehiclesForm.get('vehicles') as FormArray;
     this.vehicles.removeAt(index);
     this.vehiclesShown.splice(index, 1);
-    console.log(this.vehiclesShown);
   }
 
   toggleShowOfIndex(index: number) {
@@ -83,7 +82,6 @@ export class VehicleFormComponent implements OnInit {
   }
 
   onVehicleModelSelection(selection) {
-    console.log(selection.detail.value);
     if (selection.detail.value == 999) {
       this.showModelOther = true;
     } else {
