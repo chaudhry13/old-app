@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { GenericService } from "./generic.service";
-import { IncidentCategory } from "../_models/incident-category";
+import { IncidentCategory, IncidentCategoryMappingTable } from "../_models/incident-category";
 import { FormGroup } from "@angular/forms";
 import { AppConfigService } from './auth-config.service';
 import { IncidentType } from '../_models/incident-type';
@@ -22,6 +22,10 @@ export class IncidentCategoryService extends GenericService {
 
   async update(filter: FormGroup): Promise<string> {
     return this.http.put<string>(this.apiBase, filter).toPromise();
+  }
+
+  async getMappings(): Promise<IncidentCategoryMappingTable> {
+    return this.http.get<IncidentCategoryMappingTable>(this.apiBase + "/Mapping").toPromise();
   }
 
   public compareIncidentTypes(a: IncidentType, b: IncidentType): number {
