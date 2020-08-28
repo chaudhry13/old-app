@@ -22,7 +22,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list *ngIf="notifications">
+  <ion-list *ngIf="readNotifications && unreadNotifications && notifications">
     <ion-item-sliding *ngFor="let notification of notifications">
       <ion-item button (click)="notificationClicked(notification.entityId)">
         <ion-label>

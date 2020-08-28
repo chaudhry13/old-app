@@ -23,13 +23,12 @@ export class NotificationPage implements OnInit {
 
   ngOnInit() {
     this.listNotifications();
-
-    this.notifications = this.unreadNotifications;
   }
 
   listNotifications() {
     this.notificationService.list(false).then(unreadNotifications => {
       this.unreadNotifications = unreadNotifications;
+      this.notifications = this.unreadNotifications;
     });
 
     this.notificationService.list(true).then(readNotifications => {
