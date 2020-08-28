@@ -27,7 +27,7 @@ export class InvestigationReportFormComponent implements OnInit {
     this.getDataToPopulateForm();
   }
 
-  public onPersonsFormChanges(persons: FormArray) {
+  public onPersonsFormChanges(persons) {
     this.incidentForm.get("persons").setValue(persons);
   }
 

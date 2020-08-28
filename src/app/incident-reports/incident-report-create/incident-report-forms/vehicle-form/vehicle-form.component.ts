@@ -35,7 +35,7 @@ export class VehicleFormComponent implements OnInit {
     });
 
     this.vehiclesForm.valueChanges.subscribe(() => {
-      this.formChanges.emit(this.vehicles);
+      this.formChanges.emit(this.vehicles.value);
     })
   }
 

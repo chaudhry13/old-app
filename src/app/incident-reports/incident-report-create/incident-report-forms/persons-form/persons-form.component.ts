@@ -25,8 +25,8 @@ export class PersonsFormComponent implements OnInit {
       persons: this.formBuilder.array([])
     });
 
-    this.personsForm.valueChanges.subscribe(form => {
-      this.formChanges.emit(this.persons);
+    this.personsForm.valueChanges.subscribe(() => {
+      this.formChanges.emit(this.persons.value);
     })
   }
 

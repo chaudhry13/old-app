@@ -17,11 +17,11 @@ export class IntelligenceReportFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  public onPersonsFormChanges(persons: FormArray) {
+  public onPersonsFormChanges(persons) {
     this.incidentForm.get("persons").setValue(persons);
   }
 
-  public onVehicleFormChanges(vehicles: FormArray) {
+  public onVehicleFormChanges(vehicles) {
     this.incidentForm.get("vehicles").setValue(vehicles);
   }
 
