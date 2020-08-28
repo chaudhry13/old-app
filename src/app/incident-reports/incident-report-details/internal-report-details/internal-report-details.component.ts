@@ -5,9 +5,9 @@ import { Attachment } from 'src/app/_models/file';
 import { StorageService } from 'src/app/_services/storage.service';
 
 @Component({
-  selector: 'internal-details',
-  templateUrl: './internal-details.component.html',
-  styleUrls: ['./internal-details.component.scss']
+  selector: 'internal-report-details',
+  templateUrl: './internal-report-details.component.html',
+  styleUrls: ['./internal-report-details.component.scss']
 })
 export class InternalReportDetailsComponent implements OnInit {
   @Input() incidentReport: IncidentReport;

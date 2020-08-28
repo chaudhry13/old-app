@@ -54,20 +54,21 @@ export class IncidentReportCreatePage implements OnInit {
       persons: [],
       vehicles: [],
       incidentReportUsers: [[]], // Ids
-			customField1: [],
-			customField2: [],
-			customField3: [],
-			customField4: [],
-			customField5: [],
-			customField6: [],
-			customField7: []
+      customField1: [],
+      customField2: [],
+      customField3: [],
+      customField4: [],
+      customField5: [],
+      customField6: [],
+      customField7: []
     });
   }
 
   ngOnInit() {
-    this.formType ="crane-incident";
+    // TODO: Remove in production!!
+    this.formType = "crane-incident";
     this.getDataToPopulateForm();
-    this.subscribeToIncidentReportChanges();
+    // Use this when testing -> this.subscribeToIncidentReportChanges();
   }
 
   private getDataToPopulateForm() {

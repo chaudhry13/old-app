@@ -2,18 +2,14 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { IncidentReport } from "src/app/_models/incident-report";
 import { IncidentReportService } from "src/app/_services/incident-report.service";
-import { StorageService } from "src/app/_services/storage.service";
-import { Attachment } from "src/app/_models/file";
-import { ToastService } from "src/app/_services/toast.service";
 import { CameraService } from "src/app/_services/photo.service";
-import { AppConfigService } from "src/app/_services/auth-config.service";
 import {
-  FileTransferObject,
   FileTransfer,
 } from "@ionic-native/file-transfer/ngx";
 import { User } from "src/app/_models/user";
-import { AlertController } from "@ionic/angular";
-import { AgmMap, AgmMarker } from "@agm/core";
+import { AgmMap } from "@agm/core";
+import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
+import { IncidentCategoryMappingTable } from 'src/app/_models/incident-category';
 
 @Component({
   selector: "app-incident-report-details",
@@ -27,35 +23,49 @@ export class IncidentReportDetailsPage implements OnInit {
   private source: any;
 
   public incidentReport: IncidentReport;
-
-  user: User;
-
-  renderMap: boolean = false;
+  public user: User;
+  public renderMap: boolean = false;
+  public mappingsTable: IncidentCategoryMappingTable;
+  public formType: string = "Default";
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,
-    private storageService: StorageService,
-    private toastService: ToastService,
     public cameraService: CameraService,
-    private appConfigService: AppConfigService,
     public fileTransfer: FileTransfer,
-    private alertCtrl: AlertController
-  ) {
+    public incidentCategoryService: IncidentCategoryService) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.source = this.activatedRoute.snapshot.paramMap.get("source");
   }
 
   ngOnInit() {
     this.renderMap = false;
-    this.incidentReportService
-      .get(this.id, this.source)
-      .then((incidentReport) => {
-        this.incidentReport = incidentReport;
-      });
+    this.getIncidentReport();
   }
 
   ionViewDidEnter() {
     this.renderMap = true;
+  }
+
+  private getIncidentReport() {
+    this.incidentReportService
+      .get(this.id, this.source)
+      .then((incidentReport) => {
+        this.incidentReport = incidentReport;
+        this.listCategoryMappings();
+      });
+  }
+
+  private listCategoryMappings() {
+    this.incidentCategoryService.getMappings().then(mappingsTable => {
+      this.mappingsTable = mappingsTable;
+      this.formType = this.getFormType(mappingsTable);
+      this.formType = "crane-incident";
+      console.log(this.formType);
+    });
+  }
+
+  private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
+    return this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.incidentReport.incidentCategory.id).form;
   }
 }

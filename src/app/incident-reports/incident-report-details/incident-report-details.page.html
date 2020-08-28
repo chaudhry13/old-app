@@ -13,7 +13,13 @@
     <agm-marker [latitude]="incidentReport.latitude" [longitude]="incidentReport.longitude"></agm-marker>
   </agm-map>
 
-  <default-report-details [incidentReport]="incidentReport"></default-report-details>
+  <ng-container [ngSwitch]="formType">
+    <investigation-report-details [incidentReport]="incidentReport" *ngSwitchCase="'crane-incident'">
+    </investigation-report-details>
+    <intelligence-report-details [incidentReport]="incidentReport" *ngSwitchCase="'Observation'">
+    </intelligence-report-details>
+    <default-report-details *ngSwitchDefault [incidentReport]="incidentReport"></default-report-details>
+  </ng-container>
 
   <ion-card-content style="color: lightgray; font-size: small;">
     {{ incidentReport.id }}

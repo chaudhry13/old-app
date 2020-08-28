@@ -9,12 +9,13 @@ import { User } from './user';
 export class IncidentReport {
 	id: string;
 	title: string;
+	titleWithoutDate: string;
 	description?: string | null;
 	other?: string | null;
 	logo: string;
-	created: string;
-	startDate: string;
+	startDate: Date;
 	endDate: string;
+	created: Date;
 	source: number;
 	address: string;
 	city: string;
@@ -27,7 +28,7 @@ export class IncidentReport {
 	personsInjured: number;
 	files: Attachment[];
 	divisions: Division[];
-	user: User;
+	user: User; //Reported By
 
 	incidentType: IncidentType;
 	incidentCategory: IncidentCategory;
@@ -39,6 +40,17 @@ export class IncidentReport {
 	injuryTypes: InjuryType[];
 	injuryParts: InjuryPart[];
 	involvedPersons: InvolvedPerson[];
+
+	persons: IncidentReportPersons[];
+	vehicles: IncidentReportVehicles[];
+	incidentReportUsers: User[];
+	customField1: string;
+	customField2: string;
+	customField3: string;
+	customField4: string;
+	customField5: string;
+	customField6: string;
+	customField7: string;
 
 	icon: string;
 
@@ -84,6 +96,20 @@ export enum Build {
 	"Proportionate",
 	"Overweight"
 }
+
+export class IncidentReportPersons {
+	name: string;
+	email: string;
+	gender: Genders;
+	approxAge: number;
+	height: number;
+	build: Build;
+	identifyingFeatures: string;
+	apparel: string;
+	id: string;
+	incidentReportId: string;
+}
+
 export class PersonIntelligenceReport {
 	firstName: string;
 	lastName: string;
