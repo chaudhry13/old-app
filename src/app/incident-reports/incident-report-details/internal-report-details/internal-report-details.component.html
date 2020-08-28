@@ -9,14 +9,7 @@
 <ion-card-content>
     {{incidentReport.description}}
 </ion-card-content>
-<ion-grid>
-    <ion-row>
-        <ion-col>
-            <ion-button color="secondary" expand="block" margin-bottom (click)="takePhotoAndUpload()">
-                Take photo</ion-button>
-        </ion-col>
-    </ion-row>
-</ion-grid>
+<take-photo-button [incidentReport]="incidentReport" (uploadSuccededEvent)="onFileUpload()"></take-photo-button>
 <ion-card-header>
     <ion-card-subtitle>Reported By</ion-card-subtitle>
 </ion-card-header>
@@ -42,12 +35,4 @@
     <ion-card-subtitle>Files</ion-card-subtitle>
 </ion-card-header>
 
-<ion-item *ngFor="let file of files">
-    <ion-thumbnail slot="start" *ngIf="file">
-        <img src="{{ file.url }}" />
-    </ion-thumbnail>
-    <ion-label>
-        {{file.name}}
-    </ion-label>
-    <ion-icon (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
-</ion-item>
+<incident-report-photos [incidentReport]="incidentReport" [updateFiles]="updateFilesList"></incident-report-photos>

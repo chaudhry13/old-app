@@ -14,6 +14,8 @@ import { InternalReportDetailsComponent } from './internal-report-details/intern
 import { DefaultReportDetailsComponent } from './default-report-details/default-report-details.component';
 import { InvestigationReportDetailsComponent } from './investigation-report-details/investigation-report-details.component';
 import { IntelligenceReportDetailsComponent } from './intelligence-report-details/intelligence-report-details.component';
+import { IncidentReportPhotosComponent } from './incident-report-photos/incident-report-photos.component';
+import { TakePhotoButtonComponent } from './take-photo-button/take-photo-button.component';
 
 const routes: Routes = [
   {
@@ -34,6 +36,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ApplicationPipesModule
   ],
-  declarations: [IncidentReportDetailsPage, LocationDetailsComponent, ExternalReportDetailsComponent, InternalReportDetailsComponent, DefaultReportDetailsComponent, InvestigationReportDetailsComponent, IntelligenceReportDetailsComponent]
+  declarations: [IncidentReportDetailsPage, LocationDetailsComponent, ExternalReportDetailsComponent, InternalReportDetailsComponent, DefaultReportDetailsComponent, InvestigationReportDetailsComponent, IntelligenceReportDetailsComponent, IncidentReportPhotosComponent, TakePhotoButtonComponent]
 })
 export class IncidentReportDetailsPageModule { }
