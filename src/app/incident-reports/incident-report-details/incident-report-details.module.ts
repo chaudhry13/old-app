@@ -8,6 +8,10 @@ import { IonicModule } from '@ionic/angular';
 import { IncidentReportDetailsPage } from './incident-report-details.page';
 import { AgmMap, AgmCoreModule } from '@agm/core';
 import { ApplicationPipesModule } from 'src/app/_settings/application-pipes.module';
+import { LocationDetailsComponent } from './location-details/location-details.component';
+import { ExternalReportDetailsComponent } from './external-report-details/external-report-details.component';
+import { InternalReportDetailsComponent } from './internal-report-details/internal-details.component';
+import { DefaultReportDetailsComponent } from './default-report-details/default-report-details.component';
 
 const routes: Routes = [
   {
@@ -28,6 +32,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ApplicationPipesModule
   ],
-  declarations: [IncidentReportDetailsPage]
+  declarations: [IncidentReportDetailsPage, LocationDetailsComponent, ExternalReportDetailsComponent, InternalReportDetailsComponent, DefaultReportDetailsComponent]
 })
 export class IncidentReportDetailsPageModule { }

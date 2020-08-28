@@ -13,8 +13,7 @@ export class PersonsFormComponent implements OnInit {
   @Input() isDetailed: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private elRef: ElementRef) { }
+    private formBuilder: FormBuilder) { }
 
   personsForm: FormGroup;
   persons: FormArray;

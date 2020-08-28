@@ -27,12 +27,6 @@ export class IncidentReportDetailsPage implements OnInit {
   private source: any;
 
   public incidentReport: IncidentReport;
-  public files: Attachment[];
-
-  public photos: any = [];
-
-  uploadProgress: number = 0;
-  uploadAlert: HTMLIonAlertElement;
 
   user: User;
 
@@ -58,47 +52,10 @@ export class IncidentReportDetailsPage implements OnInit {
       .get(this.id, this.source)
       .then((incidentReport) => {
         this.incidentReport = incidentReport;
-
-        if (incidentReport.source == 0) {
-          this.listFiles();
-        }
       });
   }
 
   ionViewDidEnter() {
     this.renderMap = true;
-  }
-
-  takePhotoAndUpload() {
-    this.cameraService
-      .takePhotoAndUpload(
-        "/incident-report?incidentReportId=" + this.incidentReport.id,
-        this.photos.length
-      )
-      .then((result) => {
-        if (result) this.listFiles();
-      })
-      .catch(() => {
-        // This is taken care of in takePhotoAndUpload()
-      });
-  }
-
-  async listFiles() {
-    this.storageService
-      .listIncidentReport(this.incidentReport.id)
-      .then((files) => {
-        this.files = files;
-      });
-  }
-
-  async removePicture(file: Attachment) {
-    const confirm = await this.cameraService.deleteConfirmationAlert();
-    if (confirm) {
-      this.storageService
-        .deleteIncidentReport(this.incidentReport.id, file.name)
-        .then(() => {
-          this.listFiles();
-        });
-    }
   }
 }

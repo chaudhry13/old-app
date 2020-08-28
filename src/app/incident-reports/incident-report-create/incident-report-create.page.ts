@@ -65,6 +65,7 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   ngOnInit() {
+    this.formType ="crane-incident";
     this.getDataToPopulateForm();
     this.subscribeToIncidentReportChanges();
   }
@@ -122,6 +123,7 @@ export class IncidentReportCreatePage implements OnInit {
         this.currentIncidentCategory = this.incidentCategories.find(i => i.id == categoryId);
         this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
         this.formType = this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.currentIncidentCategory.id).form;
+        this.formType = "crane-incident";
         console.log(this.formType);
       }
     });

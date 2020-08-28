@@ -1,0 +1,4 @@
+<external-report-details [incidentReport]="incidentReport" *ngIf="incidentReport.source == 1">
+</external-report-details>
+
+<internal-details [incidentReport]="incidentReport" *ngIf="incidentReport.source == 0"></internal-details>
