@@ -5,7 +5,7 @@
             <ion-item-divider>
                 <ion-icon style="vertical-align:middle;" name="person-outline"></ion-icon>
                 <ion-label style="vertical-align:middle;" class="ion-padding-start">Person {{i + 1}}</ion-label>
-                <ion-icon color="danger" slot="end" class="ion-margin-end" *ngIf="i >= 1"
+                <ion-icon color="danger" slot="end" class="ion-margin-end"
                     (click)="removePersonAtIndex(i)" name="close-circle-outline"></ion-icon>
             </ion-item-divider>
             <ion-item>
@@ -27,7 +27,7 @@
             <ion-item-divider>
                 <ion-icon style="vertical-align:middle;" name="person-outline"></ion-icon>
                 <ion-label style="vertical-align:middle;" class="ion-padding-start">Person {{i + 1}}</ion-label>
-                <ion-icon color="danger" class="ion-margin-start" *ngIf="i >= 1" (click)="removePersonAtIndex(i)"
+                <ion-icon color="danger" class="ion-margin-start" (click)="removePersonAtIndex(i)"
                     name="close-circle-outline"></ion-icon>
                 <ion-icon (click)="toggleShowOfIndex(i)" class="ion-margin-end" *ngIf="personsShown[i].shown" slot="end"
                     name="chevron-down">

@@ -23,7 +23,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item *ngIf="currentIncidentTypes && currentIncidentTypes.length > 0">
         <ion-label position="stacked">Incident Type</ion-label>
         <ion-select formControlName="incidentTypeId" multiple="false" cancelText="Cancel" okText="Okay!">
           <ion-select-option *ngFor="let incidentType of currentIncidentTypes" value="{{ incidentType.id }}">

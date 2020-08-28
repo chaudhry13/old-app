@@ -5,7 +5,7 @@
             <ion-item-divider>
                 <ion-icon style="vertical-align:middle;" name="car-outline"></ion-icon>
                 <ion-label style="vertical-align:middle;" class="ion-padding-start">Vehicle {{i + 1}}</ion-label>
-                <ion-icon color="danger" class="ion-margin-start" *ngIf="i >= 1" (click)="removeVehicleAtIndex(i)"
+                <ion-icon color="danger" class="ion-margin-start" (click)="removeVehicleAtIndex(i)"
                     name="close-circle-outline"></ion-icon>
                 <ion-icon (click)="toggleShowOfIndex(i)" class="ion-margin-end" *ngIf="vehiclesShown[i].shown"
                     slot="end" name="chevron-down">

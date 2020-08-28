@@ -25,8 +25,6 @@ export class PersonsFormComponent implements OnInit {
       persons: this.formBuilder.array([])
     });
 
-    this.addPerson();
-
     this.personsForm.valueChanges.subscribe(form => {
       this.formChanges.emit(this.persons);
     })
@@ -54,7 +52,6 @@ export class PersonsFormComponent implements OnInit {
   }
 
   removePersonAtIndex(index: number) {
-    if (index <= 0) return;
     this.persons = this.personsForm.get('persons') as FormArray;
     this.persons.removeAt(index);
     this.personsShown.splice(index, 1);

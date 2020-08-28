@@ -34,8 +34,6 @@ export class VehicleFormComponent implements OnInit {
       vehicles: this.formBuilder.array([])
     });
 
-    this.addVehicle();
-
     this.vehiclesForm.valueChanges.subscribe(() => {
       this.formChanges.emit(this.vehicles);
     })
@@ -63,7 +61,6 @@ export class VehicleFormComponent implements OnInit {
   }
 
   removeVehicleAtIndex(index: number) {
-    if (index <= 0) return;
     this.vehicles = this.vehiclesForm.get('vehicles') as FormArray;
     this.vehicles.removeAt(index);
     this.vehiclesShown.splice(index, 1);
