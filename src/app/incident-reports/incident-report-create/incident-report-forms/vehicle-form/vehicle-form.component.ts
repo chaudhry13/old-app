@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { VehicleColor, VehicleMakes, VehicleModels } from 'src/app/_models/incident-report';
+import { VehicleColor, VehicleMakes, VehicleModels, VehiclesViewModel } from 'src/app/_models/incident-report';
 
 @Component({
   selector: 'vehicle-form',
@@ -94,9 +94,4 @@ export class VehicleFormComponent implements OnInit {
     }
   }
 
-}
-
-export class VehiclesViewModel {
-  index: number;
-  shown: boolean = true;
 }

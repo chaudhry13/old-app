@@ -75,16 +75,16 @@ export enum VehicleColor {
 }
 
 export class IncidentReportVehicles {
-	Id: string;
-	IncidentReportId: string;
-	VRM: string;
-	Make: VehicleMakes;
-	MakeOther: string;
-	Model: VehicleModels;
-	ModelOther: string;
-	Color: VehicleColor;
-	ColorOther: string;
-	Description: string;
+	id: string;
+	incidentReportId: string;
+	vrm: string;
+	make: VehicleMakes;
+	makeOther: string;
+	model: VehicleModels;
+	modelOther: string;
+	color: VehicleColor;
+	colorOther: string;
+	description: string;
 }
 
 export enum Genders {
@@ -119,4 +119,14 @@ export class PersonIntelligenceReport {
 	build: Build;
 	identifyingfeatures: string;
 	clothes: string;
+}
+
+export class PersonsViewModel {
+	index: number;
+	shown: boolean = true;
+}
+
+export class VehiclesViewModel {
+	index: number;
+	shown: boolean = true;
 }

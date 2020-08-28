@@ -5,8 +5,8 @@
             <ion-item-divider>
                 <ion-icon style="vertical-align:middle;" name="person-outline"></ion-icon>
                 <ion-label style="vertical-align:middle;" class="ion-padding-start">Person {{i + 1}}</ion-label>
-                <ion-icon color="danger" slot="end" class="ion-margin-end"
-                    (click)="removePersonAtIndex(i)" name="close-circle-outline"></ion-icon>
+                <ion-icon color="danger" slot="end" class="ion-margin-end" (click)="removePersonAtIndex(i)"
+                    name="close-circle-outline"></ion-icon>
             </ion-item-divider>
             <ion-item>
                 <ion-label position="stacked">Name</ion-label>
@@ -102,7 +102,7 @@
                         Identifying features
                     </ion-list-header>
                     <ion-item>
-                        <ion-textarea rows="3" formControlName="identifyingfeatures"
+                        <ion-textarea rows="3" formControlName="identifyingFeatures"
                             placeholder="Tattoos/scars/facial hair etc.">
                         </ion-textarea>
                     </ion-item>
@@ -112,7 +112,7 @@
                         Clothes / Footwear
                     </ion-list-header>
                     <ion-item>
-                        <ion-textarea rows="3" formControlName="clothes" placeholder="Clothes, footwear etc.">
+                        <ion-textarea rows="3" formControlName="apparel" placeholder="Clothes, footwear etc.">
                         </ion-textarea>
                     </ion-item>
                 </ion-list>

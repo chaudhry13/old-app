@@ -65,8 +65,6 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   ngOnInit() {
-    // TODO: Remove in production!!
-    this.formType = "crane-incident";
     this.getDataToPopulateForm();
     // Use this when testing -> this.subscribeToIncidentReportChanges();
   }
@@ -124,7 +122,7 @@ export class IncidentReportCreatePage implements OnInit {
         this.currentIncidentCategory = this.incidentCategories.find(i => i.id == categoryId);
         this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
         this.formType = this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.currentIncidentCategory.id).form;
-        this.formType = "crane-incident";
+        this.formType = "Observation";
         console.log(this.formType);
       }
     });

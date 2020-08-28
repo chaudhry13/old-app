@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { IonContent } from '@ionic/angular';
+import { PersonsViewModel } from 'src/app/_models/incident-report';
 
 @Component({
   selector: 'persons-form',
@@ -37,8 +38,8 @@ export class PersonsFormComponent implements OnInit {
       approxAge: [{ value: '', disabled: !this.isDetailed }, [Validators.min(0), Validators.max(150)]],
       height: [{ value: '', disabled: !this.isDetailed }, [Validators.min(0), Validators.max(300)]],
       build: [{ value: null, disabled: !this.isDetailed }],
-      identifyingfeatures: [{ value: '', disabled: !this.isDetailed }],
-      clothes: [{ value: '', disabled: !this.isDetailed }],
+      identifyingFeatures: [{ value: '', disabled: !this.isDetailed }],
+      apparel: [{ value: '', disabled: !this.isDetailed }],
     });
   }
 
@@ -59,10 +60,4 @@ export class PersonsFormComponent implements OnInit {
   toggleShowOfIndex(index: number) {
     this.personsShown[index].shown = !this.personsShown[index].shown;
   }
-
-}
-
-export class PersonsViewModel {
-  index: number;
-  shown: boolean = true;
 }

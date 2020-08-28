@@ -59,13 +59,12 @@ export class IncidentReportDetailsPage implements OnInit {
   private listCategoryMappings() {
     this.incidentCategoryService.getMappings().then(mappingsTable => {
       this.mappingsTable = mappingsTable;
+      console.log(mappingsTable);
       this.formType = this.getFormType(mappingsTable);
-      this.formType = "crane-incident";
-      console.log(this.formType);
     });
   }
 
   private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
-    return this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.incidentReport.incidentCategory.id).form;
+    return mappingsTable.mappings.find(m => m.incidentCategoryId == this.incidentReport.incidentCategory.id).form;
   }
 }
