@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter } from '@angular/core';
 import { IncidentReport } from 'src/app/_models/incident-report';
 
 @Component({
@@ -8,10 +8,15 @@ import { IncidentReport } from 'src/app/_models/incident-report';
 })
 export class InvestigationReportDetailsComponent implements OnInit {
   @Input() incidentReport: IncidentReport;
+  public updateFilesList = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onFileUpload() {
+    this.updateFilesList.emit();
   }
 
 }

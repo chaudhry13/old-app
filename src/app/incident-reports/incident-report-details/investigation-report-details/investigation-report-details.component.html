@@ -24,6 +24,7 @@
     <ion-card-content>
         {{ incidentReport.created | date:'EEE, MMM dd, yyyy h:mm a' }}
     </ion-card-content>
+    <take-photo-button [incidentReport]="incidentReport" (uploadSuccededEvent)="onFileUpload()"></take-photo-button>
     <ion-card-header>
         <ion-card-subtitle>Divisions</ion-card-subtitle>
     </ion-card-header>
@@ -101,4 +102,5 @@
     <ion-card-content>
         <ion-textarea class="ion-no-padding" readonly value="{{incidentReport.customField4}}"></ion-textarea>
     </ion-card-content>
+    <incident-report-photos [incidentReport]="incidentReport" [updateFiles]></incident-report-photos>
 </ng-container>
