@@ -35,10 +35,6 @@ export class LocationQuestionComponent implements OnInit {
 
   public countries: Country[];
 
-  // TODO: GENERAL:
-  // - Implement places api to search for addresses and relocate the pin to get the address (2-way with addresses)
-  // - If no question answer exists yet, we should use the users current location (default one, if the dont allow it)
-
   constructor(
     public geocodingService: GeocodingService,
     public geolocation: Geolocation,
@@ -52,7 +48,6 @@ export class LocationQuestionComponent implements OnInit {
       this.countries = countries;
 
       if (this.questionAnswer != null && this.questionAnswer.locationAnswer != null) {
-        console.log(this.questionAnswer);
         this.setNewPosition(this.questionAnswer.locationAnswer.longitude, this.questionAnswer.locationAnswer.latitude);
 
         var location = this.generateLocationAnswerObject();

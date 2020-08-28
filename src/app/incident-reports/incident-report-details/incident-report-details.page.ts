@@ -2,18 +2,14 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { IncidentReport } from "src/app/_models/incident-report";
 import { IncidentReportService } from "src/app/_services/incident-report.service";
-import { StorageService } from "src/app/_services/storage.service";
-import { Attachment } from "src/app/_models/file";
-import { ToastService } from "src/app/_services/toast.service";
 import { CameraService } from "src/app/_services/photo.service";
-import { AppConfigService } from "src/app/_services/auth-config.service";
 import {
-  FileTransferObject,
   FileTransfer,
 } from "@ionic-native/file-transfer/ngx";
 import { User } from "src/app/_models/user";
-import { AlertController } from "@ionic/angular";
-import { AgmMap, AgmMarker } from "@agm/core";
+import { AgmMap } from "@agm/core";
+import { IncidentCategoryService } from 'src/app/_services/incident-category.service';
+import { IncidentCategoryMappingTable } from 'src/app/_models/incident-category';
 
 @Component({
   selector: "app-incident-report-details",
@@ -27,78 +23,48 @@ export class IncidentReportDetailsPage implements OnInit {
   private source: any;
 
   public incidentReport: IncidentReport;
-  public files: Attachment[];
-
-  public photos: any = [];
-
-  uploadProgress: number = 0;
-  uploadAlert: HTMLIonAlertElement;
-
-  user: User;
-
-  renderMap: boolean = false;
+  public user: User;
+  public renderMap: boolean = false;
+  public mappingsTable: IncidentCategoryMappingTable;
+  public formType: string = "Default";
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,
-    private storageService: StorageService,
-    private toastService: ToastService,
     public cameraService: CameraService,
-    private appConfigService: AppConfigService,
     public fileTransfer: FileTransfer,
-    private alertCtrl: AlertController
-  ) {
+    public incidentCategoryService: IncidentCategoryService) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.source = this.activatedRoute.snapshot.paramMap.get("source");
   }
 
   ngOnInit() {
     this.renderMap = false;
-    this.incidentReportService
-      .get(this.id, this.source)
-      .then((incidentReport) => {
-        this.incidentReport = incidentReport;
-
-        if (incidentReport.source == 0) {
-          this.listFiles();
-        }
-      });
+    this.getIncidentReport();
   }
 
   ionViewDidEnter() {
     this.renderMap = true;
   }
 
-  takePhotoAndUpload() {
-    this.cameraService
-      .takePhotoAndUpload(
-        "/incident-report?incidentReportId=" + this.incidentReport.id,
-        this.photos.length
-      )
-      .then((result) => {
-        if (result) this.listFiles();
-      })
-      .catch(() => {
-        // This is taken care of in takePhotoAndUpload()
+  private getIncidentReport() {
+    this.incidentReportService
+      .get(this.id, this.source)
+      .then((incidentReport) => {
+        this.incidentReport = incidentReport;
+        this.listCategoryMappings();
       });
   }
 
-  async listFiles() {
-    this.storageService
-      .listIncidentReport(this.incidentReport.id)
-      .then((files) => {
-        this.files = files;
-      });
+  private listCategoryMappings() {
+    this.incidentCategoryService.getMappings().then(mappingsTable => {
+      this.mappingsTable = mappingsTable;
+      console.log(mappingsTable);
+      this.formType = this.getFormType(mappingsTable);
+    });
   }
 
-  async removePicture(file: Attachment) {
-    const confirm = await this.cameraService.deleteConfirmationAlert();
-    if (confirm) {
-      this.storageService
-        .deleteIncidentReport(this.incidentReport.id, file.name)
-        .then(() => {
-          this.listFiles();
-        });
-    }
+  private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
+    return mappingsTable.mappings.find(m => m.incidentCategoryId == this.incidentReport.incidentCategory.id).form;
   }
 }

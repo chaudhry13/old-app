@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Division } from "../_models/division";
-import { DivisionService } from "../_services/division.service";
-import { Country } from '../_models/country';
-import { IncidentCategory } from '../_models/incident-category';
-import { IncidentType } from '../_models/incident-type';
-import { IncidentCategoryService } from '../_services/incident-category.service';
+import { Division } from "../../_models/division";
+import { DivisionService } from "../../_services/division.service";
+import { Country } from '../../_models/country';
+import { IncidentCategory } from '../../_models/incident-category';
+import { IncidentType } from '../../_models/incident-type';
+import { IncidentCategoryService } from '../../_services/incident-category.service';
 
 @Component({
   selector: "app-incident-report-filter-page",

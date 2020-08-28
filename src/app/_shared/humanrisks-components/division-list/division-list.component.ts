@@ -48,7 +48,6 @@ export class DivisionListComponent implements OnInit {
     }
 
     this.clearSelectionEvent.subscribe(() => {
-      console.log("Clearing!");
       this.clearAll();
     });
 
@@ -103,7 +102,6 @@ export class DivisionListComponent implements OnInit {
     //Emit the selected divisions
     this.selected.emit(selectedDivisions.map(x => x.id));
     this.selectedFull.emit(selectedDivisions);
-    console.log(selectedDivisions);
     this.selectedNamesEmitter.emit(this.namesSelected);
   }
 

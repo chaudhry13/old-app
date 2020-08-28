@@ -57,6 +57,7 @@ import { FollowUpService } from './_services/follow-up.service';
 
 import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
 import { PlacesSearchService } from './_services/places-search.service';
+import { LocationService } from './_services/location.service';
 import { DivisionSelectorModalPage } from './modals/division-selector-modal/division-selector-modal.page';
 import { HumanrisksComponentsModule } from './_shared/humanrisks-components/humanrisks-components.module';
 
@@ -139,6 +140,7 @@ import { HumanrisksComponentsModule } from './_shared/humanrisks-components/huma
     QuestionnaireHelperService,
     ValidationService,
     PlacesSearchService,
+    LocationService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

@@ -1,0 +1,78 @@
+<form [formGroup]="incidentForm">
+    <ion-list *ngIf="currentDate">
+        <ion-list-header>
+            Date and time
+        </ion-list-header>
+        <ion-item>
+            <ion-label position="stacked">Start date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="startDate">
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">End date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="DD MMM YYYY" formControlName="endDate">
+            </ion-datetime>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Created at</ion-label>
+            <ion-datetime displayFormat="MMM DD, h:mm A" pickerFormat="MMM DD, h:mm A" formControlName="createdDate">
+            </ion-datetime>
+        </ion-item>
+    </ion-list>
+
+    <location-form [buttonType]="'ion-item'" [searchable]="true" [mainForm]="incidentForm">
+    </location-form>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header>
+            Name of persons concerned
+        </ion-list-header>
+        <persons-form (formChanges)="onPersonsFormChanges($event)"></persons-form>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-item>
+            <ion-label position="stacked">Investigator(s)</ion-label>
+            <ion-select multiple="true" cancelText="Cancel" okText="Okay!" formControlName="incidentReportUsers">
+                <ion-select-option *ngFor="let user of users" value="{{ user.id }}">
+                    {{ user.name }}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">HR Support Link</ion-label>
+            <ion-input type="url" formControlName="customField1"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="stacked">Investigation Support</ion-label>
+            <ion-input type="text" formControlName="customField2"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-list class="ion-padding-top">
+        <ion-list-header lines="none">
+            Incident Details
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="description"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header lines="none">
+            External Agency Actions
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="customField3"></ion-textarea>
+        </ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header lines="none">
+            Resulting Crane Currency Actions Taken
+        </ion-list-header>
+        <ion-item>
+            <ion-textarea rows="5" formControlName="customField4"></ion-textarea>
+        </ion-item>
+    </ion-list>
+</form>

@@ -47,7 +47,6 @@ export class DivisionSelectorModalPage implements OnInit {
   }
 
   clearSelection() {
-    console.log("Clear!");
     this.clearSelectionEvent.emit();
   }
 

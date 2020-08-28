@@ -4,7 +4,7 @@ import { IncidentReport } from "../_models/incident-report";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { distinctUntilChanged, debounceTime } from "rxjs/operators";
 import { LoadingController, ModalController } from "@ionic/angular";
-import { IncidentReportFilterPage } from "./incident-report-filter.page";
+import { IncidentReportFilterPage } from "./incident-report-filter/incident-report-filter.page";
 
 @Component({
   selector: "app-incident-report-page",

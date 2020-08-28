@@ -5,6 +5,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AgmCoreModule } from '@agm/core';
 import { IncidentReportCreatePage } from './incident-report-create.page';
+import { DefaultReportFormComponent } from './incident-report-forms/default-report-form/default-report-form.component';
+import { InvestigationReportFormComponent } from './incident-report-forms/investigation-report-form/investigation-report-form.component';
+import { PersonsFormComponent } from './incident-report-forms/persons-form/persons-form.component';
+import { LocationFormComponent } from './incident-report-forms/location-form/location-form.component';
+import { IntelligenceReportFormComponent } from './incident-report-forms/intelligence-report-form/intelligence-report-form.component';
+import { VehicleFormComponent } from './incident-report-forms/vehicle-form/vehicle-form.component';
 import { HumanrisksComponentsModule } from 'src/app/_shared/humanrisks-components/humanrisks-components.module';
 
 const routes: Routes = [{
@@ -25,6 +31,6 @@ const routes: Routes = [{
     ReactiveFormsModule,
     HumanrisksComponentsModule],
   exports: [],
-  declarations: [IncidentReportCreatePage],
+  declarations: [IncidentReportCreatePage, DefaultReportFormComponent, InvestigationReportFormComponent, PersonsFormComponent, LocationFormComponent, IntelligenceReportFormComponent, VehicleFormComponent],
 })
 export class IncidentReportCreatePageModule { }
