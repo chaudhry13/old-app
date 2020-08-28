@@ -19,7 +19,6 @@ export class AppConfigService {
 
   public async loadAppConfig() {
     if (!environment.production) {
-      console.log("not prod");
       this.appConfig.apiUrl = "https://localhost:5000"
       this.appConfig.issuer = "https://localhost:5001";
       this.appConfig.redirectUri = "http://localhost:8100/callback";

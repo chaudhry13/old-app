@@ -14,7 +14,6 @@ export class LocationSearchbarComponent implements OnInit {
   constructor(public placesSearchService: PlacesSearchService) { }
 
   ngOnInit() {
-    console.log(this.query)
   }
 
   updateSearch() {

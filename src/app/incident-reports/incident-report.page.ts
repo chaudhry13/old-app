@@ -28,19 +28,13 @@ export class IncidentReportPage implements OnInit {
     public loadingController: LoadingController,
     private formBuilder: FormBuilder,
     public modalController: ModalController
-  ) { }
-
-  ngOnInit() {
-    this.startDate = new Date();
-    this.endDate = new Date();
-    this.startDate.setMonth(this.startDate.getMonth() - 1);
-    this.endDate.setMonth(this.endDate.getMonth() + 1);
-
+  ) {
     this.incidentFilterForm = this.formBuilder.group({
-      startDate: [this.startDate.toJSON()],
-      endDate: [this.endDate.toJSON()],
+      startDate: [new Date().toJSON()],
+      endDate: [new Date().toJSON()],
       incidentCategoryIds: [""],
       incidentTypeIds: [""],
+      description: [null],
       riskLevels: [""],
       divisionIds: [""],
       countryIds: [""],
@@ -49,8 +43,45 @@ export class IncidentReportPage implements OnInit {
       southWestLatitude: [0, Validators.required],
       southWestLongitude: [0, Validators.required],
       northEastLatitude: [0, Validators.required],
-      northEastLongitude: [0, Validators.required]
+      northEastLongitude: [0, Validators.required],
+
+      apparel: [null],
+      approxAgeMax: [null],
+      approxAgeMin: [null],
+      build: [null],
+      gender: [null],
+      heightMax: [null],
+      heightMin: [null],
+      identifyingfeatures: [null],
+      incidentName: [null],
+      obervationName: [null],
+      email: [],
+
+      vehicleDescription: [null],
+      color: [null],
+      colorOther: [null],
+      make: [null],
+      makeOther: [null],
+      model: [null],
+      modelOther: [null],
+      vrm: [null],
+
+      users: [[]],
+      customField1: [null],
+      customField2: [null],
+      customField3: [null],
+      customField4: [null],
+      customField5: [null],
+      customField6: [null],
+      customField7: [null],
     });
+  }
+
+  ngOnInit() {
+    this.startDate = new Date();
+    this.endDate = new Date();
+    this.startDate.setMonth(this.startDate.getMonth() - 1);
+    this.endDate.setMonth(this.endDate.getMonth() + 1);
   }
 
   ionViewWillEnter() {
@@ -100,7 +131,7 @@ export class IncidentReportPage implements OnInit {
     const modal = await this.modalController.create({
       component: IncidentReportFilterPage,
       componentProps: {
-        'form': this.incidentFilterForm
+        'filterForm': this.incidentFilterForm
       }
     });
 

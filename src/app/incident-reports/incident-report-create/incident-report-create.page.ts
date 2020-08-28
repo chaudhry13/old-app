@@ -90,7 +90,6 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   private insertIncidentReport() {
-    console.log(this.incidentForm.value);
     this.incidentReportService.insert(this.incidentForm.value).then(id => {
       this.navigateToNewReport(id);
     });

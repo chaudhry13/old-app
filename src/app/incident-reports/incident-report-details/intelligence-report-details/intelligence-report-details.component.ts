@@ -34,8 +34,6 @@ export class IntelligenceReportDetailsComponent implements OnInit {
       this.vehiclesShown.push({ index: i, shown: false });
       i++;
     });
-
-    console.log(this.incidentReport.vehicles);
   }
 
   toggleShowOfIndex(index: number, listType: string) {

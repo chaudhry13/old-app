@@ -39,7 +39,6 @@ export class ObservationFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.vehicleMakes);
     this.ageRangeForm.get("ageRange").setValue(this.defaultAgeRangeValue);
     this.ageRangeForm.valueChanges.subscribe(() => {
       this.incidentReportFilter.get("approxAgeMin").setValue(this.ageRangeForm.get("ageRange").value.lower);
@@ -60,7 +59,6 @@ export class ObservationFilterComponent implements OnInit {
     });
     this.incidentReportFilter.controls.make.valueChanges.subscribe(value => {
       this.showMakeOther = value.some(make => make == 999);
-      console.log(this.showMakeOther);
     });
   }
 

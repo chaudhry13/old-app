@@ -59,7 +59,6 @@ export class IncidentReportDetailsPage implements OnInit {
   private listCategoryMappings() {
     this.incidentCategoryService.getMappings().then(mappingsTable => {
       this.mappingsTable = mappingsTable;
-      console.log(mappingsTable);
       this.formType = this.getFormType(mappingsTable);
     });
   }

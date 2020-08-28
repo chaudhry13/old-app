@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Division } from "../../_models/division";
 import { DivisionService } from "../../_services/division.service";
 import { Country } from '../../_models/country';
-import { IncidentCategory } from '../../_models/incident-category';
+import { IncidentCategory, IncidentCategoryMappingTable } from '../../_models/incident-category';
 import { IncidentType } from '../../_models/incident-type';
 import { IncidentCategoryService } from '../../_services/incident-category.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -21,57 +21,13 @@ export class IncidentReportFilterPage implements OnInit {
   countries: Country[];
   incidentCategories: IncidentCategory[];
   incidentTypes: IncidentType[];
+  mappingTable: IncidentCategoryMappingTable;
+  filters: string[] = [];
 
   constructor(private modal: ModalController,
     public incidentCategoryService: IncidentCategoryService,
     public divisionService: DivisionService,
     public formBuilder: FormBuilder) {
-    this.filterForm = this.formBuilder.group({
-      startDate: [new Date().toJSON()],
-      endDate: [new Date().toJSON()],
-      incidentCategoryIds: [""],
-      incidentTypeIds: [""],
-      description: [null],
-      riskLevels: [""],
-      divisionIds: [""],
-      countryIds: [""],
-      internal: [true],
-      external: [true],
-      southWestLatitude: [0, Validators.required],
-      southWestLongitude: [0, Validators.required],
-      northEastLatitude: [0, Validators.required],
-      northEastLongitude: [0, Validators.required],
-
-      apparel: [null],
-      approxAgeMax: [null],
-      approxAgeMin: [null],
-      build: [null],
-      gender: [null],
-      heightMax: [null],
-      heightMin: [null],
-      identifyingfeatures: [null],
-      incidentName: [null],
-      obervationName: [null],
-      email: [],
-
-      vehicleDescription: [null],
-      color: [null],
-      colorOther: [null],
-      make: [null],
-      makeOther: [null],
-      model: [null],
-      modelOther: [null],
-      vrm: [null],
-
-      users: [[]],
-      customField1: [null],
-      customField2: [null],
-      customField3: [null],
-      customField4: [null],
-      customField5: [null],
-      customField6: [null],
-      customField7: [null],
-    });
   }
 
   ngOnInit() {
@@ -80,11 +36,18 @@ export class IncidentReportFilterPage implements OnInit {
 
     this.setStartEndDate();
 
-    this.filterForm.valueChanges
-      .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe((form) => {
-        console.log(form);
-      })
+    this.incidentCategoryService.getMappings().then(mappings => {
+      this.mappingTable = mappings;
+    });
+
+    this.filterForm.controls.incidentCategoryIds.valueChanges.subscribe(value => {
+      let ids = <number[]>value;
+      this.filters = this.mappingTable.mappings.filter(m => ids.some(id => id == m.incidentCategoryId)).map(m => m.form);
+    });
+  }
+
+  ionViewDidLoad() {
+    this.filterForm.patchValue(this.filterForm.value);
   }
 
   private listDivisions() {

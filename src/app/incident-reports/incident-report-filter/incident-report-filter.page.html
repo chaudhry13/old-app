@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="filterForm">
   <form [formGroup]="filterForm">
     <ion-item lines="full">
       <ion-label>Divisions</ion-label>
@@ -40,7 +40,7 @@
       <ion-item>
         <ion-label>Incident Categories</ion-label>
         <ion-select class="filter-selector" formControlName="incidentCategoryIds" multiple="true"
-          placeholder="All incident categories.." cancelText="Close" okText="Okay" interface="alert">
+          placeholder="Incident categories.." cancelText="Close" okText="Okay" interface="alert">
           <ion-select-option *ngFor="let incidentCategory of incidentCategories" value="{{ incidentCategory.id }}">
             {{ incidentCategory.name }}</ion-select-option>
         </ion-select>
@@ -49,13 +49,14 @@
       <ion-item>
         <ion-label>Incident Types</ion-label>
         <ion-select class="filter-selector" formControlName="incidentTypeIds" multiple="true"
-          placeholder="All incident types.." cancelText="Close" okText="Okay" interface="alert">
+          placeholder="Incident types.." cancelText="Close" okText="Okay" interface="alert">
           <ion-select-option *ngFor="let incidentType of incidentTypes" value="{{ incidentType.id }}">
             {{ incidentType.name }}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
   </form>
-  <investigation-filter [incidentFilterForm]="filterForm"></investigation-filter>
-  <observation-filter [incidentReportFilter]="filterForm"></observation-filter>
+  <investigation-filter *ngIf="filters.includes('crane-incident')" [incidentFilterForm]="filterForm">
+  </investigation-filter>
+  <observation-filter *ngIf="filters.includes('Observation')" [incidentReportFilter]="filterForm"></observation-filter>
 </ion-content>
