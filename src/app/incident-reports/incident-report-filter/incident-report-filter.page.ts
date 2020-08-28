@@ -7,6 +7,7 @@ import { Country } from '../../_models/country';
 import { IncidentCategory } from '../../_models/incident-category';
 import { IncidentType } from '../../_models/incident-type';
 import { IncidentCategoryService } from '../../_services/incident-category.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: "app-incident-report-filter-page",
@@ -78,6 +79,12 @@ export class IncidentReportFilterPage implements OnInit {
     this.listCategories();
 
     this.setStartEndDate();
+
+    this.filterForm.valueChanges
+      .pipe(debounceTime(1000), distinctUntilChanged())
+      .subscribe((form) => {
+        console.log(form);
+      })
   }
 
   private listDivisions() {
@@ -90,7 +97,6 @@ export class IncidentReportFilterPage implements OnInit {
     this.incidentCategoryService.list(true).then(categories => {
       this.incidentCategories = categories;
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(categories);
-      console.log(this.incidentTypes);
     });
   }
 
