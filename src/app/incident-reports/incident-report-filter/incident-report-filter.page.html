@@ -36,7 +36,14 @@
         <ion-label>End Date</ion-label>
         <ion-datetime formControlName="endDate" placeholder="Select Date" slot="end"></ion-datetime>
       </ion-item>
-
+      <ion-item>
+        <ion-label>Countries</ion-label>
+        <ion-select class="filter-selector" formControlName="countryIds" multiple="true" placeholder="Countries.."
+          cancelText="Close" okText="Okay" interface="alert">
+          <ion-select-option *ngFor="let country of countries" value="{{ country.id }}">
+            {{ country.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
       <ion-item>
         <ion-label>Incident Categories</ion-label>
         <ion-select class="filter-selector" formControlName="incidentCategoryIds" multiple="true"

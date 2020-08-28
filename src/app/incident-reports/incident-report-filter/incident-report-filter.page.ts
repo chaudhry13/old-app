@@ -8,6 +8,7 @@ import { IncidentCategory, IncidentCategoryMappingTable } from '../../_models/in
 import { IncidentType } from '../../_models/incident-type';
 import { IncidentCategoryService } from '../../_services/incident-category.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { CountryService } from 'src/app/_services/country.service';
 
 @Component({
   selector: "app-incident-report-filter-page",
@@ -27,12 +28,14 @@ export class IncidentReportFilterPage implements OnInit {
   constructor(private modal: ModalController,
     public incidentCategoryService: IncidentCategoryService,
     public divisionService: DivisionService,
-    public formBuilder: FormBuilder) {
+    public formBuilder: FormBuilder,
+    private countryService: CountryService) {
   }
 
   ngOnInit() {
     this.listDivisions();
     this.listCategories();
+    this.listCountries();
 
     this.setStartEndDate();
 
@@ -60,6 +63,12 @@ export class IncidentReportFilterPage implements OnInit {
     this.incidentCategoryService.list(true).then(categories => {
       this.incidentCategories = categories;
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(categories);
+    });
+  }
+
+  private listCountries() {
+    this.countryService.list().subscribe(countries => {
+      this.countries = countries;
     });
   }
 
