@@ -118,12 +118,11 @@ export class IncidentReportCreatePage implements OnInit {
 
   private subscribeToCategoryChanges() {
     this.incidentForm.controls["incidentCategoryId"].valueChanges.subscribe(categoryId => {
+      this.currentIncidentTypes = [];
       if (categoryId) {
         this.currentIncidentCategory = this.incidentCategories.find(i => i.id == categoryId);
         this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
         this.formType = this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.currentIncidentCategory.id).form;
-        this.formType = "Observation";
-        console.log(this.formType);
       }
     });
   }
