@@ -14,7 +14,7 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   @Input() addIndividual: boolean;
   @Input() parentChildrenSelected: selectedItem[] = [];
   @Input() inputDivisions: Division[];
-  @Input() clearChildren: EventEmitter<any>;
+  @Input() clearChildren?: EventEmitter<any>;
 
   @Output() onSelect = new EventEmitter<selectedItem>();
   @Output() list = new EventEmitter();
@@ -29,16 +29,18 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-     //this.checked = this.isParrentChecked;
-     if (!this.addIndividual) { this.checked = this.isParrentChecked; }
-     else {
-       this.checked = this.setSelected(this.parentChildrenSelected);
-     }
+    //this.checked = this.isParrentChecked;
+    if (!this.addIndividual) { this.checked = this.isParrentChecked; }
+    else {
+      this.checked = this.setSelected(this.parentChildrenSelected);
+    }
 
-    this.clearChildren.subscribe(() => {
-      this.checked = false;
-    });
-    
+    if (this.clearChildren) {
+      this.clearChildren.subscribe(() => {
+        this.checked = false;
+      });
+    }
+
     this.setInputDivision(this.inputDivisions);
 
     this.showDivisionsWithCheckedChildren();
@@ -47,9 +49,9 @@ export class DivisionItemComponent implements OnInit, OnChanges {
   ngOnChanges(changes) {
     if (changes.isParrentChecked) {
       if (!this.addIndividual) { this.checked = this.isParrentChecked; }
-     else {
-       this.checked = this.setSelected(this.parentChildrenSelected);
-     }
+      else {
+        this.checked = this.setSelected(this.parentChildrenSelected);
+      }
     }
 
     this.setInputDivision(this.inputDivisions);

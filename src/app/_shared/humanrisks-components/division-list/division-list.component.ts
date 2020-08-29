@@ -17,7 +17,7 @@ export class DivisionListComponent implements OnInit {
   @Input() public setDivisions: EventEmitter<Division[]>;
   @Input() public addIndividual: boolean = false;
   @Input() public selectedNamesEmitter: EventEmitter<string[]>;
-  @Input() public clearSelectionEvent: EventEmitter<any>;
+  @Input() public clearSelectionEvent?: EventEmitter<any>;
 
   //If this is true, it will return just the top-level divisions selected. If false, it will return all divisions selected
   @Input() public onlyTopLevel: boolean = true;
@@ -47,9 +47,11 @@ export class DivisionListComponent implements OnInit {
       });
     }
 
-    this.clearSelectionEvent.subscribe(() => {
-      this.clearAll();
-    });
+    if (this.clearSelectionEvent) {
+      this.clearSelectionEvent.subscribe(() => {
+        this.clearAll();
+      });
+    }
 
     if (this.setDivisions) {
       this.setDivisions.subscribe(divisions => {
