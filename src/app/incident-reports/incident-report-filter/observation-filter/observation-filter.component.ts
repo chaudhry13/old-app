@@ -24,8 +24,8 @@ export class ObservationFilterComponent implements OnInit {
 
   public ageRangeForm: FormGroup;
   public heightRangeForm: FormGroup;
-  public defaultAgeRangeValue = { lower: 10, upper: 60 };
-  public defaultHeightRangeValue = { lower: 120, upper: 200 };
+  public defaultAgeRangeValue = { lower: 0, upper: 120 };
+  public defaultHeightRangeValue = { lower: 0, upper: 300 };
   public showFilters: boolean = false;
 
   constructor(formBuilder: FormBuilder) {

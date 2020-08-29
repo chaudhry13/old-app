@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="filterForm">
+<ion-content *ngIf="filterForm && filters">
   <form [formGroup]="filterForm">
     <ion-item lines="full">
       <ion-label>Divisions</ion-label>

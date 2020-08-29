@@ -131,7 +131,7 @@ export class IncidentReportPage implements OnInit {
     const modal = await this.modalController.create({
       component: IncidentReportFilterPage,
       componentProps: {
-        'filterForm': this.incidentFilterForm
+        'form': this.incidentFilterForm
       }
     });
 

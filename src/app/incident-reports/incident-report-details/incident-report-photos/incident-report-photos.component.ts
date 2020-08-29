@@ -22,6 +22,7 @@ export class IncidentReportPhotosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.listFiles();
     this.updateFiles.subscribe(() => {
       this.listFiles();
     });

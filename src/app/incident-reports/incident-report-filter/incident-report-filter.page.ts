@@ -9,6 +9,7 @@ import { IncidentType } from '../../_models/incident-type';
 import { IncidentCategoryService } from '../../_services/incident-category.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CountryService } from 'src/app/_services/country.service';
+import { resolve } from 'dns';
 
 @Component({
   selector: "app-incident-report-filter-page",
@@ -16,7 +17,9 @@ import { CountryService } from 'src/app/_services/country.service';
   styleUrls: ["incident-report-filter.page.scss"]
 })
 export class IncidentReportFilterPage implements OnInit {
-  @Input() filterForm: FormGroup;
+  @Input() form: FormGroup;
+
+  filterForm: FormGroup;
 
   divisions: Division[];
   countries: Country[];
@@ -33,43 +36,56 @@ export class IncidentReportFilterPage implements OnInit {
   }
 
   ngOnInit() {
-    this.listDivisions();
-    this.listCategories();
-    this.listCountries();
-
-    this.setStartEndDate();
-
-    this.incidentCategoryService.getMappings().then(mappings => {
-      this.mappingTable = mappings;
+    this.listViewData().then(() => {
+      this.filterForm = this.form;
+      this.setFilters(this.filterForm.get("incidentCategoryIds").value);
+      this.setStartEndDate();
+      this.subscribeToCategoryChanges();
     });
 
-    this.filterForm.controls.incidentCategoryIds.valueChanges.subscribe(value => {
-      let ids = <number[]>value;
+  }
+
+  private subscribeToCategoryChanges() {
+    this.filterForm.controls.incidentCategoryIds.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(value => {
+        this.setFilters(value);
+      });
+  }
+
+  private setFilters(categoryIds: any[]) {
+    if (categoryIds) {
+      let ids = <number[]>categoryIds;
       this.filters = this.mappingTable.mappings.filter(m => ids.some(id => id == m.incidentCategoryId)).map(m => m.form);
-    });
+    }
+  }
+
+  private async setMappings(): Promise<IncidentCategoryMappingTable> {
+    return this.incidentCategoryService.getMappings();
   }
 
   ionViewDidLoad() {
     this.filterForm.patchValue(this.filterForm.value);
   }
 
-  private listDivisions() {
-    this.divisionService.list().then(divisions => {
-      this.divisions = divisions;
-    });
+  private async listViewData(): Promise<any> {
+    this.mappingTable = await this.setMappings();
+    this.divisions = await this.listDivisions();
+    this.incidentCategories = await this.listCategories();
+    this.countries = await this.listCountries();
+    this.incidentTypes = this.incidentCategoryService.listIncidentTypes(this.incidentCategories);
   }
 
-  private listCategories() {
-    this.incidentCategoryService.list(true).then(categories => {
-      this.incidentCategories = categories;
-      this.incidentTypes = this.incidentCategoryService.listIncidentTypes(categories);
-    });
+  private async listDivisions(): Promise<Division[]> {
+    return this.divisionService.list();
   }
 
-  private listCountries() {
-    this.countryService.list().subscribe(countries => {
-      this.countries = countries;
-    });
+  private async listCategories(): Promise<IncidentCategory[]> {
+    return this.incidentCategoryService.list(true);
+  }
+
+  private async listCountries(): Promise<Country[]> {
+    return this.countryService.list().toPromise();
   }
 
   private setStartEndDate() {

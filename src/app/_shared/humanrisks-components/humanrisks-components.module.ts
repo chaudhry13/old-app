@@ -18,8 +18,8 @@ import { AgmCoreModule } from '@agm/core';
   declarations: [DivisionItemComponent, DivisionListComponent, DivisionSelectorComponent],
   imports: [
     CommonModule,
-    IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicModule,
+    IonicStorageModule,
     FormsModule,
     ReactiveFormsModule,
     ApplicationPipesModule,
