@@ -1,7 +1,6 @@
 {
   "name": "humanrisks-app",
   "integrations": {
-    "cordova": {},
     "capacitor": {}
   },
   "type": "angular"
