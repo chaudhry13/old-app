@@ -1,5 +1,5 @@
-import { ValidationService } from './_services/validation.service';
-import { QuestionnaireHelperService } from './_services/questionnaire-helper.service';
+import { ValidationService } from "@app/services/validation.service";
+import { QuestionnaireHelperService } from "@app/services/questionnaire-helper.service";
 import { NgModule, APP_INITIALIZER } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
@@ -7,68 +7,60 @@ import { RouteReuseStrategy } from "@angular/router";
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { Camera } from '@ionic-native/camera/ngx';
+import { Camera } from "@ionic-native/camera/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { CallbackComponent } from "./_account/callback.component";
-import { AuthGuard } from "./_guards/auth.guard";
-import { TokenService } from "./_services/token.service";
+import { CallbackComponent } from "@app/authentication/callback/callback.component";
+import { AuthGuard } from "@app/guards/auth.guard";
+import { TokenService } from "@app/services/token.service";
 
 import { OAuthModule } from "angular-oauth2-oidc";
-import { LoginComponent } from "./login/login.component";
+import { LoginComponent } from "@app/authentication/login/login.component";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
-import { ControlService } from "./_services/control.service";
+import { ControlService } from "./features/audits/services/control.service";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { TokenInterceptor } from "./_interceptors/auth.interceptor";
-import { DivisionService } from "./_services/division.service";
-import { StorageService } from "./_services/storage.service";
-import { AuditService } from "./_services/audit.service";
-import { UserService } from "./_services/user.service";
-import { NotificationService } from "./_services/notification.service";
-import { IncidentReportService } from "./_services/incident-report.service";
-import { CountryService } from './_services/country.service';
-import { IncidentCategoryService } from './_services/incident-category.service';
+import { TokenInterceptor } from "@app/interceptors/auth.interceptor";
+import { DivisionService } from "@app/services/division.service";
+import { StorageService } from "@app/services/storage.service";
+import { UserService } from "@app/services/user.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
+import { CountryService } from "@app/services/country.service";
+import { IncidentCategoryService } from "@app/services/incident-category.service";
 
-import { File } from '@ionic-native/file/ngx';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
-import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
+import { File } from "@ionic-native/file/ngx";
+import { FileOpener } from "@ionic-native/file-opener/ngx";
+import { FileTransfer } from "@ionic-native/file-transfer/ngx";
+import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 
-import { AgmCoreModule } from '@agm/core';
-import { LocationModalPage } from './modals/location-modal/location-modal.page';
-import { GeocodingService } from './_services/geocoding.service';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { ToastService } from './_services/toast.service';
-import { MapService } from './_services/maps.service';
-import { CameraService } from './_services/photo.service';
-import { AccountService } from './_services/account.service';
-import { SettingsService } from './_services/settings.service';
+import { AgmCoreModule } from "@agm/core";
+import { GeocodingService } from "@app/services/geocoding.service";
+import { Geolocation } from "@ionic-native/geolocation/ngx";
+import { ToastService } from "@app/services/toast.service";
+import { MapService } from "@app/services/maps.service";
+import { CameraService } from "@app/services/photo.service";
+import { AccountService } from "@app/services/account.service";
+import { SettingsService } from "@app/services/settings.service";
 
-import { IonicStorageModule } from '@ionic/storage';
-import { AppConfigService } from './_services/auth-config.service';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { ApplicationPipesModule } from './_settings/application-pipes.module';
-import { QRScanner } from '@ionic-native/qr-scanner/ngx';
-import { DeeplinkService } from './_services/deeplink.service';
-import { FollowUpService } from './_services/follow-up.service';
+import { IonicStorageModule } from "@ionic/storage";
+import { AppConfigService } from "@app/services/auth-config.service";
+import { Keyboard } from "@ionic-native/keyboard/ngx";
+import { QRScanner } from "@ionic-native/qr-scanner/ngx";
+import { DeeplinkService } from "@app/services/deeplink.service";
+import { FollowUpService } from "@app/services/follow-up.service";
 
-import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from './_services/questionnaire.service';
-import { PlacesSearchService } from './_services/places-search.service';
-import { LocationService } from './_services/location.service';
-import { DivisionSelectorModalPage } from './modals/division-selector-modal/division-selector-modal.page';
-import { HumanrisksComponentsModule } from './_shared/humanrisks-components/humanrisks-components.module';
+import { QuestionnaireService, QuestionAnsweredService, QuestionnaireUserAnswerService } from "@app/services/questionnaire.service";
+import { PlacesSearchService } from "@app/services/places-search.service";
+import { LocationService } from "@app/services/location.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     CallbackComponent,
-    LoginComponent,
-    LocationModalPage,
-    DivisionSelectorModalPage],
-  entryComponents: [CallbackComponent, LoginComponent, LocationModalPage],
+    LoginComponent],
+  entryComponents: [CallbackComponent, LoginComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -83,12 +75,10 @@ import { HumanrisksComponentsModule } from './_shared/humanrisks-components/huma
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ApplicationPipesModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
       libraries: ["places"]
-    }),
-    HumanrisksComponentsModule
+    })
   ],
   providers: [
     AccountService,
@@ -123,7 +113,6 @@ import { HumanrisksComponentsModule } from './_shared/humanrisks-components/huma
     StorageService,
     SettingsService,
     CountryService,
-    AuditService,
     GeocodingService,
     Geolocation,
     ToastService,
@@ -132,7 +121,6 @@ import { HumanrisksComponentsModule } from './_shared/humanrisks-components/huma
     IncidentCategoryService,
     UserService,
     IncidentReportService,
-    NotificationService,
     QuestionAnsweredService,
     QuestionnaireUserAnswerService,
     QRScanner,

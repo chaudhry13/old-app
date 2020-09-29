@@ -15,7 +15,17 @@
       "es2018",
       "dom"
     ],
-    "paths": {}
+    "paths": {
+      "@app/*": [
+        "src/app/core/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@env": [
+        "src/environments/environment"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

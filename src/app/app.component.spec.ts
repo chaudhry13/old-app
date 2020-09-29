@@ -6,7 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
-import { AppConfigService } from './_services/auth-config.service';
+import { AppConfigService } from './core/services/auth-config.service';
 
 describe('AppComponent', () => {
 
