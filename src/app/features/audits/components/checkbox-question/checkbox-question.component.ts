@@ -1,6 +1,11 @@
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { FormGroup } from "@angular/forms";
-import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionAnsweres} from "../../models/questionnaire";
+import {
+  Question,
+  QuestionnaireUserAnswer,
+  QuestionOption,
+  QuestionAnsweres,
+} from "../../models/questionnaire";
 import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
@@ -17,9 +22,7 @@ export class CheckboxQuestionComponent implements OnInit {
 
   questionOptions: QuestionOption[];
 
-  constructor(
-    public qhs: QuestionnaireHelperService
-  ) { }
+  constructor(public qhs: QuestionnaireHelperService) {}
 
   ngOnInit() {
     this.questionOptions = this.question.possibleAnswers;
@@ -29,10 +32,10 @@ export class CheckboxQuestionComponent implements OnInit {
   optionPressed(option: QuestionOption) {
     this.qhs.updateOptionAnswer(
       this.questionAnswer,
-      option, this.question,
+      option,
+      this.question,
       this.questionnaireUserAnswer,
       this.answerForm
     );
   }
-
 }

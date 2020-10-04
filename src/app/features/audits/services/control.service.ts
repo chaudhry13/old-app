@@ -17,7 +17,9 @@ export class ControlService extends GenericService {
   }
 
   async list(filter: FormGroup): Promise<Control[]> {
-    return this.http.post<Control[]>(this.apiBase + "/list/", filter).toPromise();
+    return this.http
+      .post<Control[]>(this.apiBase + "/list/", filter)
+      .toPromise();
   }
 
   async insert(control: FormGroup): Promise<string> {
@@ -37,10 +39,14 @@ export class ControlService extends GenericService {
   }
 
   async resume(id: string, date: string): Promise<boolean> {
-    return this.http.get<boolean>(this.apiBase + "/pause/" + id + "?resumeDate=" + date).toPromise();
+    return this.http
+      .get<boolean>(this.apiBase + "/pause/" + id + "?resumeDate=" + date)
+      .toPromise();
   }
 
   async frequency(control: FormGroup): Promise<boolean> {
-    return this.http.post<boolean>(this.apiBase + "/frequency", control).toPromise();
+    return this.http
+      .post<boolean>(this.apiBase + "/frequency", control)
+      .toPromise();
   }
 }

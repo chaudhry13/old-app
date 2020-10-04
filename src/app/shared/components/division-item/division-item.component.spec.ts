@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DivisionItemComponent } from './division-item.component';
+import { DivisionItemComponent } from "./division-item.component";
 
-describe('DivisionItemComponent', () => {
+describe("DivisionItemComponent", () => {
   let component: DivisionItemComponent;
   let fixture: ComponentFixture<DivisionItemComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DivisionItemComponent ]
-    })
-    .compileComponents();
+      declarations: [DivisionItemComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DivisionItemComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

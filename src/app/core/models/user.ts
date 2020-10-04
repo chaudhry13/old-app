@@ -6,32 +6,32 @@ import { Treatment } from "./treatment";
 import { Control } from "../../features/audits/models/control";
 
 export class User {
-	id: string;
-	email: string;
-	name: string;
-	organization: string;
-	role: string;
-	phone: string;
-	advancedConsequence: boolean;
+  id: string;
+  email: string;
+  name: string;
+  organization: string;
+  role: string;
+  phone: string;
+  advancedConsequence: boolean;
 
-	riskAssessmentsArea: boolean;
-	incidentsArea: boolean;
-	healthSafetyArea: boolean;
-	auditsArea: boolean;
+  riskAssessmentsArea: boolean;
+  incidentsArea: boolean;
+  healthSafetyArea: boolean;
+  auditsArea: boolean;
 
-	riskline: boolean;
-	controlrisks: boolean;
+  riskline: boolean;
+  controlrisks: boolean;
 
-	currency: string;
-	shortname: string;
-	divisions: Division[];
+  currency: string;
+  shortname: string;
+  divisions: Division[];
 
-	termsaccepted: boolean;
-	external: boolean;
+  termsaccepted: boolean;
+  external: boolean;
 }
 
 export class UserList {
-	id: string;
-	email: string;
-	name: string;
+  id: string;
+  email: string;
+  name: string;
 }

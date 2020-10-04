@@ -12,14 +12,14 @@ import { QuestionAnsweredService } from "../../services/questionnaire.service";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { IonTextarea, NavController } from "@ionic/angular";
 import { ToastService } from "@app/services/toast.service";
-import { CameraService } from '@app/services/photo.service';
-import { StorageService } from '@app/services/storage.service';
+import { CameraService } from "@app/services/photo.service";
+import { StorageService } from "@app/services/storage.service";
 import { Attachment } from "@app/models/file";
-import { UserService } from '@app/services/user.service';
-import { TokenService } from '@app/services/token.service';
-import { AccountService } from '@app/services/account.service';
-import { SettingsService } from '@app/settings/settings.service';
-import { AppConfigService } from '@app/services/auth-config.service';
+import { UserService } from "@app/services/user.service";
+import { TokenService } from "@app/services/token.service";
+import { AccountService } from "@app/services/account.service";
+import { SettingsService } from "@app/settings/settings.service";
+import { AppConfigService } from "@app/services/auth-config.service";
 
 @Component({
   selector: "question",
@@ -128,10 +128,7 @@ export class QuestionComponent implements OnInit {
     var questionFilesStorageUrl = this.getQuestionFilesStorageUrl();
 
     this.cameraService
-      .takePhotoAndUpload(
-        questionFilesStorageUrl,
-        this.photos.length
-      )
+      .takePhotoAndUpload(questionFilesStorageUrl, this.photos.length)
       .then((result) => {
         if (result) this.listQuestionFiles();
       })
@@ -141,9 +138,20 @@ export class QuestionComponent implements OnInit {
   }
 
   private getQuestionFilesStorageUrl() {
-    return "/questionnaire?organizationId=" + this.getUserOrgId() + "&questionnaireId="
-      + this.question.questionnaireId + "&sentOutId=" + this.questionnaireUserAnswer.questionnaireSentOutId + "&questionnaireUserAnswerId="
-      + this.questionnaireUserAnswer.id + "&questionAnswerId=" + this.questionAnswer.id + "&fileName=" + this.photos.length;
+    return (
+      "/questionnaire?organizationId=" +
+      this.getUserOrgId() +
+      "&questionnaireId=" +
+      this.question.questionnaireId +
+      "&sentOutId=" +
+      this.questionnaireUserAnswer.questionnaireSentOutId +
+      "&questionnaireUserAnswerId=" +
+      this.questionnaireUserAnswer.id +
+      "&questionAnswerId=" +
+      this.questionAnswer.id +
+      "&fileName=" +
+      this.photos.length
+    );
   }
 
   private getUserOrgId() {
@@ -152,10 +160,12 @@ export class QuestionComponent implements OnInit {
 
   private async listQuestionFiles() {
     this.storageService
-      .listQuestionnaire(this.question.questionnaireId,
+      .listQuestionnaire(
+        this.question.questionnaireId,
         this.questionnaireUserAnswer.questionnaireSentOutId,
         this.questionnaireUserAnswer.id,
-        this.questionAnswer.id)
+        this.questionAnswer.id
+      )
       .then((files) => {
         this.files = files;
       });
@@ -165,10 +175,13 @@ export class QuestionComponent implements OnInit {
     const confirm = await this.cameraService.deleteConfirmationAlert();
     if (confirm) {
       this.storageService
-        .deleteQuestionnaire(this.question.questionnaireId,
+        .deleteQuestionnaire(
+          this.question.questionnaireId,
           this.questionnaireUserAnswer.questionnaireSentOutId,
           this.questionnaireUserAnswer.id,
-          this.questionAnswer.id, file.name)
+          this.questionAnswer.id,
+          file.name
+        )
         .then(() => {
           this.listQuestionFiles();
         });

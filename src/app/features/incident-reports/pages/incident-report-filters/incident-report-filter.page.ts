@@ -3,17 +3,20 @@ import { ModalController } from "@ionic/angular";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Division } from "@app/models/division";
 import { DivisionService } from "@app/services/division.service";
-import { Country } from '@shared/models/country';
-import { IncidentCategory, IncidentCategoryMappingTable } from '../../models/incident-category';
-import { IncidentType } from '../../models/incident-type';
-import { IncidentCategoryService } from '../../services/incident-category.service';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { CountryService } from '@shared/services/country.service';
+import { Country } from "@shared/models/country";
+import {
+  IncidentCategory,
+  IncidentCategoryMappingTable,
+} from "../../models/incident-category";
+import { IncidentType } from "../../models/incident-type";
+import { IncidentCategoryService } from "../../services/incident-category.service";
+import { distinctUntilChanged } from "rxjs/operators";
+import { CountryService } from "@shared/services/country.service";
 
 @Component({
   selector: "app-incident-report-filter-page",
   templateUrl: "incident-report-filter.page.html",
-  styleUrls: ["incident-report-filter.page.scss"]
+  styleUrls: ["incident-report-filter.page.scss"],
 })
 export class IncidentReportFilterPage implements OnInit {
   @Input() form: FormGroup;
@@ -27,12 +30,13 @@ export class IncidentReportFilterPage implements OnInit {
   mappingTable: IncidentCategoryMappingTable;
   filters: string[] = [];
 
-  constructor(private modal: ModalController,
+  constructor(
+    private modal: ModalController,
     public incidentCategoryService: IncidentCategoryService,
     public divisionService: DivisionService,
     public formBuilder: FormBuilder,
-    private countryService: CountryService) {
-  }
+    private countryService: CountryService
+  ) {}
 
   ngOnInit() {
     this.listViewData().then(() => {
@@ -41,13 +45,12 @@ export class IncidentReportFilterPage implements OnInit {
       this.setStartEndDate();
       this.subscribeToCategoryChanges();
     });
-
   }
 
   private subscribeToCategoryChanges() {
     this.filterForm.controls.incidentCategoryIds.valueChanges
       .pipe(distinctUntilChanged())
-      .subscribe(value => {
+      .subscribe((value) => {
         this.setFilters(value);
       });
   }
@@ -55,7 +58,9 @@ export class IncidentReportFilterPage implements OnInit {
   private setFilters(categoryIds: any[]) {
     if (categoryIds) {
       let ids = <number[]>categoryIds;
-      this.filters = this.mappingTable.mappings.filter(m => ids.some(id => id == m.incidentCategoryId)).map(m => m.form);
+      this.filters = this.mappingTable.mappings
+        .filter((m) => ids.some((id) => id == m.incidentCategoryId))
+        .map((m) => m.form);
     }
   }
 
@@ -72,7 +77,9 @@ export class IncidentReportFilterPage implements OnInit {
     this.divisions = await this.listDivisions();
     this.incidentCategories = await this.listCategories();
     this.countries = await this.listCountries();
-    this.incidentTypes = this.incidentCategoryService.listIncidentTypes(this.incidentCategories);
+    this.incidentTypes = this.incidentCategoryService.listIncidentTypes(
+      this.incidentCategories
+    );
   }
 
   private async listDivisions(): Promise<Division[]> {
@@ -97,7 +104,7 @@ export class IncidentReportFilterPage implements OnInit {
 
   divisionsChanged(data) {
     if (data) {
-      this.filterForm.get('divisionIds').setValue(data);
+      this.filterForm.get("divisionIds").setValue(data);
     }
   }
 

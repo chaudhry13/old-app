@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DivisionSelectorModalPage } from './division-selector-modal.page';
+import { DivisionSelectorModalPage } from "./division-selector-modal.page";
 
-describe('DivisionSelectorModalComponent', () => {
+describe("DivisionSelectorModalComponent", () => {
   let component: DivisionSelectorModalPage;
   let fixture: ComponentFixture<DivisionSelectorModalPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DivisionSelectorModalPage]
-    })
-      .compileComponents();
+      declarations: [DivisionSelectorModalPage],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DivisionSelectorModalComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,11 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Question, QuestionnaireUserAnswer, QuestionTypes, QuestionTextType, QuestionAnsweres } from '../../models/questionnaire';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit, Input } from "@angular/core";
+import {
+  Question,
+  QuestionnaireUserAnswer,
+  QuestionTypes,
+  QuestionTextType,
+  QuestionAnsweres,
+} from "../../models/questionnaire";
+import { FormGroup } from "@angular/forms";
 
 @Component({
-  selector: 'text-question',
-  templateUrl: './text-question.component.html',
-  styleUrls: ['./text-question.component.scss'],
+  selector: "text-question",
+  templateUrl: "./text-question.component.html",
+  styleUrls: ["./text-question.component.scss"],
 })
 export class TextQuestionComponent implements OnInit {
   @Input() question: Question;
@@ -16,7 +22,7 @@ export class TextQuestionComponent implements OnInit {
 
   textTypeToString = QuestionTextType;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     if (this.questionAnswer != null) {

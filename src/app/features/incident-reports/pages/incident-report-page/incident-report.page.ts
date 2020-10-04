@@ -9,7 +9,7 @@ import { IncidentReportFilterPage } from "../incident-report-filters/incident-re
 @Component({
   selector: "app-incident-report-page",
   templateUrl: "incident-report.page.html",
-  styleUrls: ["incident-report.page.scss"]
+  styleUrls: ["incident-report.page.scss"],
 })
 export class IncidentReportPage implements OnInit {
   public incidentReports: IncidentReport[] = [];
@@ -93,16 +93,20 @@ export class IncidentReportPage implements OnInit {
       this.addToInfScrollList();
       event.target.complete();
 
-      if (this.infScrollincidentReports.length >= this.incidentReportMaxLength) {
+      if (
+        this.infScrollincidentReports.length >= this.incidentReportMaxLength
+      ) {
         event.target.disabled = true;
       }
-    }, 500)
+    }, 500);
   }
 
   addToInfScrollList() {
-    this.incidentReports.slice((this.pageNumber - 1) * 25, (25 * this.pageNumber)).forEach(incident => {
-      this.infScrollincidentReports.push(incident);
-    });
+    this.incidentReports
+      .slice((this.pageNumber - 1) * 25, 25 * this.pageNumber)
+      .forEach((incident) => {
+        this.infScrollincidentReports.push(incident);
+      });
     this.pageNumber++;
   }
 
@@ -111,10 +115,10 @@ export class IncidentReportPage implements OnInit {
     this.infScrollincidentReports = [];
     this.pageNumber = 1;
 
-    this.incidentReportService.list(filter).then(incidentReports => {
+    this.incidentReportService.list(filter).then((incidentReports) => {
       this.incidentReports = incidentReports.data;
 
-      this.incidentReports.forEach(incidentReport => {
+      this.incidentReports.forEach((incidentReport) => {
         incidentReport.icon = this.incidentReportService.getIcon(
           incidentReport.incidentCategory.name,
           incidentReport.source,
@@ -131,11 +135,11 @@ export class IncidentReportPage implements OnInit {
     const modal = await this.modalController.create({
       component: IncidentReportFilterPage,
       componentProps: {
-        'form': this.incidentFilterForm
-      }
+        form: this.incidentFilterForm,
+      },
     });
 
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       this.incidentFilterForm = data.data;
       this.list(data.data.value);
     });
@@ -144,6 +148,6 @@ export class IncidentReportPage implements OnInit {
   }
 
   setFallbackIcon(incidentReport) {
-    incidentReport.icon = '/assets/img/incident-reports/other_i.png';
+    incidentReport.icon = "/assets/img/incident-reports/other_i.png";
   }
 }

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { AppConfig } from '../settings/auth.config';
-import { OAuthService, OAuthErrorEvent } from 'angular-oauth2-oidc';
-import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
-import { environment } from '../../../environments/environment';
+import { Injectable } from "@angular/core";
+import { Storage } from "@ionic/storage";
+import { AppConfig } from "../settings/auth.config";
+import { OAuthService, OAuthErrorEvent } from "angular-oauth2-oidc";
+import { JwksValidationHandler } from "angular-oauth2-oidc-jwks";
+import { environment } from "../../../environments/environment";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AppConfigService {
   appConfig: AppConfig = new AppConfig();
@@ -15,7 +15,7 @@ export class AppConfigService {
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class seperate from Auth config
 
-  constructor(private storage: Storage, private oAuthService: OAuthService) { }
+  constructor(private storage: Storage, private oAuthService: OAuthService) {}
 
   public async loadAppConfig() {
     // if (!environment.production) {
@@ -40,10 +40,11 @@ export class AppConfigService {
       this.getApiBaseUrl;
     } else {
       // Default auth configuration
-      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/"
+      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/";
       this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
       this.appConfig.redirectUri = "http://localhost:8100/callback";
-      this.appConfig.logoutUrl = "https://humanrisks-core-auth.azurewebsites.net/account/logout";
+      this.appConfig.logoutUrl =
+        "https://humanrisks-core-auth.azurewebsites.net/account/logout";
       this.appConfig.clientId = "ionic";
       this.appConfig.oidc = false;
       this.appConfig.scope = "api";
@@ -90,7 +91,7 @@ export class AppConfigService {
   public setAppConfig(tokenPayload: any) {
     // Save auth config
     this.storage.set("api_url", tokenPayload.apiurl);
-    this.storage.set("client_id", tokenPayload.client_id)
+    this.storage.set("client_id", tokenPayload.client_id);
     this.storage.set("iss", tokenPayload.iss);
     this.storage.set("scope", tokenPayload.scope);
     this.storage.set("logout_url", tokenPayload.iss + "/account/logout");
@@ -103,10 +104,10 @@ export class AppConfigService {
     this.oAuthService.setStorage(localStorage);
     this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
     this.oAuthService.loadDiscoveryDocument();
-    this.oAuthService.events.subscribe(e => {
+    this.oAuthService.events.subscribe((e) => {
       if (!environment.production) {
         if (e instanceof OAuthErrorEvent) {
-          console.error(e.reason)
+          console.error(e.reason);
         }
       }
     });

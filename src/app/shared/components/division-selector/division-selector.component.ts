@@ -1,11 +1,11 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { DivisionSelectorModalPage } from 'src/app/shared/components/division-selector-modal/division-selector-modal.page';
+import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+import { DivisionSelectorModalPage } from "src/app/shared/components/division-selector-modal/division-selector-modal.page";
 
 @Component({
-  selector: 'division-selector',
-  templateUrl: './division-selector.component.html',
-  styleUrls: ['./division-selector.component.scss']
+  selector: "division-selector",
+  templateUrl: "./division-selector.component.html",
+  styleUrls: ["./division-selector.component.scss"],
 })
 export class DivisionSelectorComponent implements OnInit {
   @Input() public textSize: number = 0;
@@ -16,20 +16,18 @@ export class DivisionSelectorComponent implements OnInit {
   public selectedDivisionNames: string[] = [];
   public selectedDivisionsText: string = "Select divisions...";
 
-  constructor(
-    private modalController: ModalController) { }
+  constructor(private modalController: ModalController) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: DivisionSelectorModalPage,
-      cssClass: 'division-selector-modal',
+      cssClass: "division-selector-modal",
       componentProps: {
         selectedDivisionIds: this.selectedDivisionIds,
-        addIndividual: this.addIndividual
-      }
+        addIndividual: this.addIndividual,
+      },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
@@ -55,12 +53,16 @@ export class DivisionSelectorComponent implements OnInit {
       if (index < this.textSize || this.textSize == 0) {
         stringResult += divisionName;
       } else {
-        stringResult += " (and " + (divisionNames.length - this.textSize) + " more...)"
+        stringResult +=
+          " (and " + (divisionNames.length - this.textSize) + " more...)";
         return stringResult;
       }
 
-      if ((index != (divisionNames.length - 1) && index < this.textSize - 1) || ((index != (divisionNames.length - 1) && this.textSize == 0))) {
-        stringResult += ", "
+      if (
+        (index != divisionNames.length - 1 && index < this.textSize - 1) ||
+        (index != divisionNames.length - 1 && this.textSize == 0)
+      ) {
+        stringResult += ", ";
       }
     }
 

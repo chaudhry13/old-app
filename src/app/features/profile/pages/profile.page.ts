@@ -10,16 +10,18 @@ import { Division } from "@app/models/division";
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.page.html",
-  styleUrls: ["./profile.page.scss"]
+  styleUrls: ["./profile.page.scss"],
 })
 export class ProfilePage implements OnInit {
   divisions: Division[] = [];
   user: User = new User();
-  constructor(public userService: UserService,
-              public divisionService: DivisionService,
-              public accountService: AccountService,
-              public oAuthService: OAuthService,
-              private router: Router) { }
+  constructor(
+    public userService: UserService,
+    public divisionService: DivisionService,
+    public accountService: AccountService,
+    public oAuthService: OAuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.listProfileInfo();
@@ -29,10 +31,10 @@ export class ProfilePage implements OnInit {
     this.listProfileInfo();
   }
   private listProfileInfo() {
-    this.divisionService.list().then(data => {
+    this.divisionService.list().then((data) => {
       this.divisions = data;
     });
-    this.accountService.get().then(user => {
+    this.accountService.get().then((user) => {
       this.user = user;
     });
   }

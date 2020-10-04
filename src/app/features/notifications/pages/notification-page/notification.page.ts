@@ -8,7 +8,7 @@ import { ToastService } from "@app/services/toast.service";
 @Component({
   selector: "app-notification-page",
   templateUrl: "notification.page.html",
-  styleUrls: ["notification.page.scss"]
+  styleUrls: ["notification.page.scss"],
 })
 export class NotificationPage implements OnInit {
   notifications: Notification[];
@@ -18,19 +18,23 @@ export class NotificationPage implements OnInit {
 
   read = false;
 
-  constructor(public notificationService: NotificationService, public router: Router, public toastService: ToastService) { }
+  constructor(
+    public notificationService: NotificationService,
+    public router: Router,
+    public toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.listNotifications();
   }
 
   listNotifications() {
-    this.notificationService.list(false).then(unreadNotifications => {
+    this.notificationService.list(false).then((unreadNotifications) => {
       this.unreadNotifications = unreadNotifications;
       this.notifications = this.unreadNotifications;
     });
 
-    this.notificationService.list(true).then(readNotifications => {
+    this.notificationService.list(true).then((readNotifications) => {
       this.readNotifications = readNotifications;
     });
   }
@@ -75,8 +79,11 @@ export class NotificationPage implements OnInit {
 
   notificationClicked(notificationId) {
     // FIXME: If we change the way we handle notifications, then this needs change.
-    this.router.navigate(["tabs/tab1/complete/" + notificationId]).then().catch(error => {
-      this.toastService.show("No audit found!");
-    });
+    this.router
+      .navigate(["tabs/tab1/complete/" + notificationId])
+      .then()
+      .catch((error) => {
+        this.toastService.show("No audit found!");
+      });
   }
 }

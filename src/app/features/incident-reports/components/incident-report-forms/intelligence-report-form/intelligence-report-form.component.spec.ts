@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { IntelligenceReportFormComponent } from './intelligence-report-form.component';
+import { IntelligenceReportFormComponent } from "./intelligence-report-form.component";
 
-describe('IntelligenceReportFormComponent', () => {
+describe("IntelligenceReportFormComponent", () => {
   let component: IntelligenceReportFormComponent;
   let fixture: ComponentFixture<IntelligenceReportFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IntelligenceReportFormComponent ]
-    })
-    .compileComponents();
+      declarations: [IntelligenceReportFormComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('IntelligenceReportFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

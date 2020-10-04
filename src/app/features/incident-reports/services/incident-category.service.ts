@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { GenericService } from "@app/services/generic.service";
-import { IncidentCategory, IncidentCategoryMappingTable } from "../models/incident-category";
+import {
+  IncidentCategory,
+  IncidentCategoryMappingTable,
+} from "../models/incident-category";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from '@app/services/auth-config.service';
-import { IncidentType } from '../models/incident-type';
+import { AppConfigService } from "@app/services/auth-config.service";
+import { IncidentType } from "../models/incident-type";
 
 @Injectable()
 export class IncidentCategoryService extends GenericService {
@@ -17,7 +20,11 @@ export class IncidentCategoryService extends GenericService {
   }
 
   async list(incidentTypes: boolean): Promise<IncidentCategory[]> {
-    return this.http.get<IncidentCategory[]>(this.apiBase + "/list?includeIncidentTypes=" + incidentTypes).toPromise();
+    return this.http
+      .get<IncidentCategory[]>(
+        this.apiBase + "/list?includeIncidentTypes=" + incidentTypes
+      )
+      .toPromise();
   }
 
   async update(filter: FormGroup): Promise<string> {
@@ -25,7 +32,9 @@ export class IncidentCategoryService extends GenericService {
   }
 
   async getMappings(): Promise<IncidentCategoryMappingTable> {
-    return this.http.get<IncidentCategoryMappingTable>(this.apiBase + "/Mapping").toPromise();
+    return this.http
+      .get<IncidentCategoryMappingTable>(this.apiBase + "/Mapping")
+      .toPromise();
   }
 
   public compareIncidentTypes(a: IncidentType, b: IncidentType): number {
@@ -34,17 +43,26 @@ export class IncidentCategoryService extends GenericService {
     } else if (b.name.includes("Other")) {
       return -1;
     }
-    return (a.name > b.name ? 1 : -1);
+    return a.name > b.name ? 1 : -1;
   }
 
-  public listIncidentTypes(incidentCategories: IncidentCategory[]): IncidentType[] {
+  public listIncidentTypes(
+    incidentCategories: IncidentCategory[]
+  ): IncidentType[] {
     var incidentTypes: IncidentType[] = [];
-    incidentCategories.forEach(cat => incidentTypes = cat.incidentTypes.concat(incidentTypes));
+    incidentCategories.forEach(
+      (cat) => (incidentTypes = cat.incidentTypes.concat(incidentTypes))
+    );
     incidentTypes.sort(this.compareIncidentTypes);
     return incidentTypes;
   }
 
-  public getIncidentCategoryFrom(incidentType: IncidentType, incidentCategories: IncidentCategory[]): IncidentCategory {
-    return incidentCategories.find(cat => cat.incidentTypes.includes(incidentType));
+  public getIncidentCategoryFrom(
+    incidentType: IncidentType,
+    incidentCategories: IncidentCategory[]
+  ): IncidentCategory {
+    return incidentCategories.find((cat) =>
+      cat.incidentTypes.includes(incidentType)
+    );
   }
 }

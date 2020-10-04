@@ -1,14 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionOption } from '../../models/questionnaire';
-import { FormGroup } from '@angular/forms';
-import { QuestionnaireHelperService } from '../../services/questionnaire-helper.service';
+import { Component, OnInit, Input } from "@angular/core";
+import {
+  QuestionTextType,
+  Question,
+  QuestionnaireUserAnswer,
+  QuestionAnsweres,
+  QuestionOption,
+} from "../../models/questionnaire";
+import { FormGroup } from "@angular/forms";
+import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 
 // TODO: Sort question options!
 
 @Component({
-  selector: 'radio-question',
-  templateUrl: './radio-question.component.html',
-  styleUrls: ['./radio-question.component.scss'],
+  selector: "radio-question",
+  templateUrl: "./radio-question.component.html",
+  styleUrls: ["./radio-question.component.scss"],
 })
 export class RadioQuestionComponent implements OnInit {
   @Input() question: Question;
@@ -19,16 +25,14 @@ export class RadioQuestionComponent implements OnInit {
 
   questionOptions: QuestionOption[];
 
-  message = '';
-  pattern = '';
+  message = "";
+  pattern = "";
 
   Type: QuestionTextType;
   saving: boolean;
   saved: boolean;
 
-  constructor(
-    public qhs: QuestionnaireHelperService
-  ) { }
+  constructor(public qhs: QuestionnaireHelperService) {}
 
   ngOnInit() {
     this.questionOptions = this.question.possibleAnswers;
@@ -38,7 +42,8 @@ export class RadioQuestionComponent implements OnInit {
   optionPressed(option: QuestionOption) {
     this.qhs.updateOptionAnswer(
       this.questionAnswer,
-      option, this.question,
+      option,
+      this.question,
       this.questionnaireUserAnswer,
       this.answerForm
     );

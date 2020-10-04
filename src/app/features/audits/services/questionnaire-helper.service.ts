@@ -20,7 +20,7 @@ export class QuestionnaireHelperService {
   constructor(
     private toastService: ToastService,
     private questionAnsweredService: QuestionAnsweredService
-  ) { }
+  ) {}
 
   public CheckOptionValue(
     questionAnswer: QuestionAnsweres,

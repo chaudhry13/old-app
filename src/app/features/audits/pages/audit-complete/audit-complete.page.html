@@ -13,8 +13,14 @@
     <ion-list-header>
       <ion-label>Description</ion-label>
     </ion-list-header>
-    <div *ngIf="audit.description" class="ion-padding" [innerHtml]="audit.description | sanitizeHtml"></div>
-    <div *ngIf="!audit.description" class="ion-padding"><i>No description</i></div>
+    <div
+      *ngIf="audit.description"
+      class="ion-padding"
+      [innerHtml]="audit.description | sanitizeHtml"
+    ></div>
+    <div *ngIf="!audit.description" class="ion-padding">
+      <i>No description</i>
+    </div>
     <ion-list-header>
       <ion-label>Deadline</ion-label>
     </ion-list-header>
@@ -28,20 +34,37 @@
         <ion-toggle [(ngModel)]="audit.followUp"></ion-toggle>
       </ion-item>
       <ion-item>
-        <ion-textarea [disabled]="!audit.followUp" placeholder="Enter remarks here.." [(ngModel)]="audit.remarks"
-          rows="7">
+        <ion-textarea
+          [disabled]="!audit.followUp"
+          placeholder="Enter remarks here.."
+          [(ngModel)]="audit.remarks"
+          rows="7"
+        >
         </ion-textarea>
       </ion-item>
       <ion-item>
-        <ion-input placeholder="Enter name.." [(ngModel)]="audit.other"></ion-input>
+        <ion-input
+          placeholder="Enter name.."
+          [(ngModel)]="audit.other"
+        ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label> Location</ion-label>
-        <ion-toggle [(ngModel)]="audit.location" (ionChange)="enableLocation()"></ion-toggle>
+        <ion-toggle
+          [(ngModel)]="audit.location"
+          (ionChange)="enableLocation()"
+        ></ion-toggle>
       </ion-item>
       <ion-item *ngIf="audit.location" class="ion-padding-top">
-        <agm-map *ngIf="renderMapComplete" [latitude]="audit.latitude" [longitude]="audit.longitude">
-          <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
+        <agm-map
+          *ngIf="renderMapComplete"
+          [latitude]="audit.latitude"
+          [longitude]="audit.longitude"
+        >
+          <agm-marker
+            [latitude]="audit.latitude"
+            [longitude]="audit.longitude"
+          ></agm-marker>
         </agm-map>
       </ion-item>
       <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
@@ -49,13 +72,21 @@
           <ion-label>Questionnaires</ion-label>
         </ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
-            routerLinkActive="router-link-active">
+          <ion-item
+            button
+            routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}"
+            routerDirection="forward"
+            routerLinkActive="router-link-active"
+          >
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
-            ({{ userAnswer.questionsAnswered }} / {{ userAnswer.numberOfQuestions }})
-            <ion-icon class="ion-padding-start" name="help-circle-outline"></ion-icon>
+            ({{ userAnswer.questionsAnswered }} / {{
+            userAnswer.numberOfQuestions }})
+            <ion-icon
+              class="ion-padding-start"
+              name="help-circle-outline"
+            ></ion-icon>
           </ion-item>
         </div>
       </div>
@@ -86,9 +117,7 @@
           <ion-label>Remarks</ion-label>
         </ion-list-header>
         <ion-item>
-          <ion-textarea>
-            {{ followUp.remarks }}
-          </ion-textarea>
+          <ion-textarea> {{ followUp.remarks }} </ion-textarea>
         </ion-item>
       </div>
       <div *ngIf="showLocation">
@@ -96,8 +125,15 @@
           <ion-label>Location</ion-label>
         </ion-list-header>
         <ion-item>
-          <agm-map *ngIf="renderMap" [latitude]="audit.latitude" [longitude]="audit.longitude">
-            <agm-marker [latitude]="audit.latitude" [longitude]="audit.longitude"></agm-marker>
+          <agm-map
+            *ngIf="renderMap"
+            [latitude]="audit.latitude"
+            [longitude]="audit.longitude"
+          >
+            <agm-marker
+              [latitude]="audit.latitude"
+              [longitude]="audit.longitude"
+            ></agm-marker>
           </agm-map>
         </ion-item>
       </div>
@@ -106,12 +142,17 @@
           <ion-label>Questionnaires</ion-label>
         </ion-list-header>
         <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
-          <ion-item button routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}" routerDirection="forward"
-            routerLinkActive="router-link-active">
+          <ion-item
+            button
+            routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}"
+            routerDirection="forward"
+            routerLinkActive="router-link-active"
+          >
             <ion-label class="ion-text-wrap">
               {{ userAnswer.questionnaireTitle }}
             </ion-label>
-            ({{ userAnswer.questionsAnswered }} / {{ userAnswer.numberOfQuestions }})
+            ({{ userAnswer.questionsAnswered }} / {{
+            userAnswer.numberOfQuestions }})
             <ion-icon name="help-circle-outline"></ion-icon>
           </ion-item>
         </div>
@@ -122,9 +163,19 @@
   <ion-grid *ngIf="!audit.completed">
     <ion-row>
       <ion-col>
-        <ion-button color="secondary" expand="block" class="ion-margin-bottom" (click)="takePicture()">Take photo
+        <ion-button
+          color="secondary"
+          expand="block"
+          class="ion-margin-bottom"
+          (click)="takePicture()"
+          >Take photo
         </ion-button>
-        <ion-button class="ion-margin-top" color="primary" expand="block" (click)="completeAudit()">Complete Audit
+        <ion-button
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="completeAudit()"
+          >Complete Audit
         </ion-button>
       </ion-col>
     </ion-row>
@@ -135,12 +186,15 @@
   </ion-list-header>
   <ion-item *ngFor="let file of files; let id = index">
     <ion-thumbnail slot="start" *ngIf="file">
-      <img src="{{ file.url }}">
+      <img src="{{ file.url }}" />
     </ion-thumbnail>
-    <ion-label>
-      {{ file.name }}
-    </ion-label>
-    <ion-icon *ngIf="!audit.completed" (click)="removePicture(file)" name="trash" color="warning" item-end></ion-icon>
+    <ion-label> {{ file.name }} </ion-label>
+    <ion-icon
+      *ngIf="!audit.completed"
+      (click)="removePicture(file)"
+      name="trash"
+      color="warning"
+      item-end
+    ></ion-icon>
   </ion-item>
-
 </ion-content>

@@ -1,155 +1,240 @@
 <ion-card>
-    <ion-item (click)="toggleShowFilters()" lines="none">
-        <ion-label>
-            Observation Report Filters
-        </ion-label>
-        <ion-icon *ngIf="!showFilters" name="caret-forward-outline" slot="end"></ion-icon>
-        <ion-icon *ngIf="showFilters" name="caret-down-outline" slot="end"></ion-icon>
-    </ion-item>
-    <form *ngIf="incidentReportFilter && showFilters" [formGroup]="incidentReportFilter">
-        <ion-card-header color="primary">Person(s)</ion-card-header>
-        <ion-list>
-            <ion-list-header>
-                Name
-            </ion-list-header>
-            <ion-item>
-                <ion-input type="text" formControlName="incidentName" placeholder="Filter by name"></ion-input>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label>Gender</ion-label>
-                <ion-select class="filter-selector" formControlName="gender" multiple="true" placeholder="Gender(s)"
-                    cancelText="Close" okText="Okay" interface="alert">
-                    <ion-select-option *ngFor="let gender of genders; let i = index" value="{{ i }}">
-                        {{ gender.name }}</ion-select-option>
-                </ion-select>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-list-header>
-                Approx. age
-            </ion-list-header>
+  <ion-item (click)="toggleShowFilters()" lines="none">
+    <ion-label> Observation Report Filters </ion-label>
+    <ion-icon
+      *ngIf="!showFilters"
+      name="caret-forward-outline"
+      slot="end"
+    ></ion-icon>
+    <ion-icon
+      *ngIf="showFilters"
+      name="caret-down-outline"
+      slot="end"
+    ></ion-icon>
+  </ion-item>
+  <form
+    *ngIf="incidentReportFilter && showFilters"
+    [formGroup]="incidentReportFilter"
+  >
+    <ion-card-header color="primary">Person(s)</ion-card-header>
+    <ion-list>
+      <ion-list-header> Name </ion-list-header>
+      <ion-item>
+        <ion-input
+          type="text"
+          formControlName="incidentName"
+          placeholder="Filter by name"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>Gender</ion-label>
+        <ion-select
+          class="filter-selector"
+          formControlName="gender"
+          multiple="true"
+          placeholder="Gender(s)"
+          cancelText="Close"
+          okText="Okay"
+          interface="alert"
+        >
+          <ion-select-option
+            *ngFor="let gender of genders; let i = index"
+            value="{{ i }}"
+          >
+            {{ gender.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header> Approx. age </ion-list-header>
 
-            <form [formGroup]="ageRangeForm">
-                <ion-range formControlName="ageRange" min="0" max="150" dual-knobs pin color="dark">
-                    <ion-icon slot="start" size="small" name="people-outline"></ion-icon>
-                </ion-range>
-            </form>
-        </ion-list>
-        <ion-list>
-            <ion-item>
-                <ion-label>Build</ion-label>
-                <ion-select class="filter-selector" formControlName="build" multiple="true" placeholder="Build(s)"
-                    cancelText="Close" okText="Okay" interface="alert">
-                    <ion-select-option *ngFor="let build of builds; let i = index" value="{{ i }}">
-                        {{ build.name }}</ion-select-option>
-                </ion-select>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-list-header>
-                Height
-            </ion-list-header>
-            <form [formGroup]="heightRangeForm">
-                <ion-range formControlName="heightRange" min="0" max="300" dual-knobs pin color="dark">
-                    <ion-icon slot="start" size="small" name="people-outline"></ion-icon>
-                </ion-range>
-            </form>
-        </ion-list>
-        <ion-list class="ion-padding-top">
-            <ion-list-header lines="none">
-                Identifying features
-            </ion-list-header>
-            <ion-item>
-                <ion-textarea formControlName="identifyingfeatures" placeholder="Filter by Identifying features etc.">
-                </ion-textarea>
-            </ion-item>
-        </ion-list>
-        <ion-list class="ion-padding-top ion-padding-bottom">
-            <ion-list-header lines="none">
-                Clothes / Footwear
-            </ion-list-header>
-            <ion-item>
-                <ion-textarea formControlName="apparel" placeholder="Filter by Clothes, footwear etc.">
-                </ion-textarea>
-            </ion-item>
-        </ion-list>
-        <ion-card-header color="primary">Vehicle(s)</ion-card-header>
+      <form [formGroup]="ageRangeForm">
+        <ion-range
+          formControlName="ageRange"
+          min="0"
+          max="150"
+          dual-knobs
+          pin
+          color="dark"
+        >
+          <ion-icon slot="start" size="small" name="people-outline"></ion-icon>
+        </ion-range>
+      </form>
+    </ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>Build</ion-label>
+        <ion-select
+          class="filter-selector"
+          formControlName="build"
+          multiple="true"
+          placeholder="Build(s)"
+          cancelText="Close"
+          okText="Okay"
+          interface="alert"
+        >
+          <ion-select-option
+            *ngFor="let build of builds; let i = index"
+            value="{{ i }}"
+          >
+            {{ build.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header> Height </ion-list-header>
+      <form [formGroup]="heightRangeForm">
+        <ion-range
+          formControlName="heightRange"
+          min="0"
+          max="300"
+          dual-knobs
+          pin
+          color="dark"
+        >
+          <ion-icon slot="start" size="small" name="people-outline"></ion-icon>
+        </ion-range>
+      </form>
+    </ion-list>
+    <ion-list class="ion-padding-top">
+      <ion-list-header lines="none"> Identifying features </ion-list-header>
+      <ion-item>
+        <ion-textarea
+          formControlName="identifyingfeatures"
+          placeholder="Filter by Identifying features etc."
+        >
+        </ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-list class="ion-padding-top ion-padding-bottom">
+      <ion-list-header lines="none"> Clothes / Footwear </ion-list-header>
+      <ion-item>
+        <ion-textarea
+          formControlName="apparel"
+          placeholder="Filter by Clothes, footwear etc."
+        >
+        </ion-textarea>
+      </ion-item>
+    </ion-list>
+    <ion-card-header color="primary">Vehicle(s)</ion-card-header>
 
-        <ion-list lines="full">
-            <ion-list-header>
-                VRM
-            </ion-list-header>
-            <ion-item>
-                <ion-input placeholder="Filter on VRM" type="text" formControlName="vrm">
-                </ion-input>
-            </ion-item>
-        </ion-list>
-        <ion-list lines="full">
-            <ion-list-header>
-                Vehicle Description
-            </ion-list-header>
-            <ion-item>
-                <ion-input placeholder="Filter on vehicle description" type="text" formControlName="vehicleDescription">
-                </ion-input>
-            </ion-item>
-        </ion-list>
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Make</ion-label>
-            </ion-list-header>
-            <ion-item>
-                <ion-select class="filter-selector" formControlName="make" multiple="true"
-                    placeholder="Filter on vehicle make" cancelText="Close" okText="Okay">
-                    <ion-select-option *ngFor="let make of vehicleMakes" value="{{ make.index }}">
-                        {{ make.name }}
-                    </ion-select-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="showMakeOther">
-                <ion-label position="stacked">Other Make</ion-label>
-                <ion-input placeholder="Filter on other make.." formControlName="makeOther">
-                </ion-input>
-            </ion-item>
-        </ion-list>
+    <ion-list lines="full">
+      <ion-list-header> VRM </ion-list-header>
+      <ion-item>
+        <ion-input
+          placeholder="Filter on VRM"
+          type="text"
+          formControlName="vrm"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list lines="full">
+      <ion-list-header> Vehicle Description </ion-list-header>
+      <ion-item>
+        <ion-input
+          placeholder="Filter on vehicle description"
+          type="text"
+          formControlName="vehicleDescription"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Make</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-select
+          class="filter-selector"
+          formControlName="make"
+          multiple="true"
+          placeholder="Filter on vehicle make"
+          cancelText="Close"
+          okText="Okay"
+        >
+          <ion-select-option
+            *ngFor="let make of vehicleMakes"
+            value="{{ make.index }}"
+          >
+            {{ make.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showMakeOther">
+        <ion-label position="stacked">Other Make</ion-label>
+        <ion-input
+          placeholder="Filter on other make.."
+          formControlName="makeOther"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
 
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Model</ion-label>
-            </ion-list-header>
-            <ion-item>
-                <ion-select class="filter-selector" formControlName="model" multiple="true"
-                    placeholder="Filter on vehicle model" cancelText="Close" okText="Okay">
-                    <ion-select-option *ngFor="let model of vehicleModels" value="{{ model.index }}">
-                        {{ model.name }}
-                    </ion-select-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="showModelOther">
-                <ion-label position="stacked">Other Model</ion-label>
-                <ion-input placeholder="Filter on other model.." formControlName="modelOther">
-                </ion-input>
-            </ion-item>
-        </ion-list>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Model</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-select
+          class="filter-selector"
+          formControlName="model"
+          multiple="true"
+          placeholder="Filter on vehicle model"
+          cancelText="Close"
+          okText="Okay"
+        >
+          <ion-select-option
+            *ngFor="let model of vehicleModels"
+            value="{{ model.index }}"
+          >
+            {{ model.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showModelOther">
+        <ion-label position="stacked">Other Model</ion-label>
+        <ion-input
+          placeholder="Filter on other model.."
+          formControlName="modelOther"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
 
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Color</ion-label>
-            </ion-list-header>
-            <ion-item>
-                <ion-select class="filter-selector" formControlName="color" multiple="true"
-                    placeholder="Choose vehicle color" cancelText="Close" okText="Okay">
-                    <ion-select-option *ngFor="let color of vehicleColors" value="{{ color.index }}">
-                        {{ color.name }}
-                    </ion-select-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="showColorOther">
-                <ion-label position="stacked">Other Color</ion-label>
-                <ion-input placeholder="Filter on other color.." formControlName="colorOther">
-                </ion-input>
-            </ion-item>
-        </ion-list>
-    </form>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Color</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-select
+          class="filter-selector"
+          formControlName="color"
+          multiple="true"
+          placeholder="Choose vehicle color"
+          cancelText="Close"
+          okText="Okay"
+        >
+          <ion-select-option
+            *ngFor="let color of vehicleColors"
+            value="{{ color.index }}"
+          >
+            {{ color.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="showColorOther">
+        <ion-label position="stacked">Other Color</ion-label>
+        <ion-input
+          placeholder="Filter on other color.."
+          formControlName="colorOther"
+        >
+        </ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
 </ion-card>

@@ -16,19 +16,27 @@ export class AuditService extends GenericService {
   }
 
   async overdue(id: string, divisions: string[]): Promise<Audit[]> {
-    return this.http.post<Audit[]>(this.apiBase + "/overdue?id=" + id, divisions).toPromise();
+    return this.http
+      .post<Audit[]>(this.apiBase + "/overdue?id=" + id, divisions)
+      .toPromise();
   }
 
   async upcoming(id: string): Promise<Audit[]> {
-    return this.http.get<Audit[]>(this.apiBase + "/upcoming?id=" + id).toPromise();
+    return this.http
+      .get<Audit[]>(this.apiBase + "/upcoming?id=" + id)
+      .toPromise();
   }
 
   async complete(audit: FormGroup): Promise<boolean> {
-    return this.http.post<boolean>(this.apiBase + "/complete", audit.value).toPromise();
+    return this.http
+      .post<boolean>(this.apiBase + "/complete", audit.value)
+      .toPromise();
   }
 
   async completed(id: string): Promise<Audit[]> {
-    return this.http.get<Audit[]>(this.apiBase + "/completed?id=" + id).toPromise();
+    return this.http
+      .get<Audit[]>(this.apiBase + "/completed?id=" + id)
+      .toPromise();
   }
 
   async list(id: string): Promise<Audit[]> {
@@ -36,7 +44,11 @@ export class AuditService extends GenericService {
   }
 
   async forecast(frequency: string, date: string): Promise<string[]> {
-    return this.http.get<string[]>(this.apiBase + "/forecast?frequency=" + frequency + "&date=" + date).toPromise();
+    return this.http
+      .get<string[]>(
+        this.apiBase + "/forecast?frequency=" + frequency + "&date=" + date
+      )
+      .toPromise();
   }
 
   async insert(audit: FormGroup): Promise<string> {
@@ -52,10 +64,19 @@ export class AuditService extends GenericService {
   }
 
   async canFinishAudit(id: string): Promise<boolean> {
-    return this.http.get<boolean>(this.apiBase + "/CanFinishAudit/" + id).toPromise();
+    return this.http
+      .get<boolean>(this.apiBase + "/CanFinishAudit/" + id)
+      .toPromise();
   }
 
-  async generateUserAnswers(auditId: string): Promise<QuestionnaireUserAnswerAudit[]> {
-    return this.http.post<QuestionnaireUserAnswerAudit[]>(this.apiBase + "/InsertUserAnswers?id=" + auditId, null).toPromise();
+  async generateUserAnswers(
+    auditId: string
+  ): Promise<QuestionnaireUserAnswerAudit[]> {
+    return this.http
+      .post<QuestionnaireUserAnswerAudit[]>(
+        this.apiBase + "/InsertUserAnswers?id=" + auditId,
+        null
+      )
+      .toPromise();
   }
 }

@@ -9,33 +9,32 @@ import { PlacesSearchService } from "../../../core/services/places-search.servic
 declare var google: any;
 
 describe("Location Modal", () => {
-    let locationModal: LocationModalPage;
-    let placesService: PlacesSearchService;
-    let modalController: ModalController;
-    describe("Location Model Behaviour", () => {
-        beforeEach(async(() => {
-            modalController = jasmine.createSpyObj("ModalController", ["create"]);
-            placesService = jasmine.createSpyObj("PlacesSearchService", ["getPlacesPredictions"]);
-            locationModal = new LocationModalPage(modalController, placesService);
+  let locationModal: LocationModalPage;
+  let placesService: PlacesSearchService;
+  let modalController: ModalController;
+  describe("Location Model Behaviour", () => {
+    beforeEach(async(() => {
+      modalController = jasmine.createSpyObj("ModalController", ["create"]);
+      placesService = jasmine.createSpyObj("PlacesSearchService", [
+        "getPlacesPredictions",
+      ]);
+      locationModal = new LocationModalPage(modalController, placesService);
 
-            TestBed.configureTestingModule({
-                declarations: [
+      TestBed.configureTestingModule({
+        declarations: [],
+        imports: [
+          CommonModule,
+          FormsModule,
+          ReactiveFormsModule,
+          IonicModule,
+          RouterTestingModule,
+        ],
+        providers: [],
+      }).compileComponents();
+    }));
 
-                ],
-                imports: [
-                    CommonModule,
-                    FormsModule,
-                    ReactiveFormsModule,
-                    IonicModule,
-                    RouterTestingModule
-                ],
-                providers: [
-                ],
-            }).compileComponents();
-        }));
-
-        it("should initialize the modal", () => {
-            expect(locationModal).toBeTruthy();
-        });
+    it("should initialize the modal", () => {
+      expect(locationModal).toBeTruthy();
     });
+  });
 });

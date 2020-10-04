@@ -5,20 +5,26 @@ import { CallbackComponent } from "@app/authentication/callback/callback.compone
 import { LoginComponent } from "@app/authentication/login/login.component";
 
 const routes: Routes = [
-  { path: "", canActivate: [AuthGuard], loadChildren: "./features/tabs/tabs.module#TabsPageModule" },
+  {
+    path: "",
+    canActivate: [AuthGuard],
+    loadChildren: "./features/tabs/tabs.module#TabsPageModule",
+  },
   { path: "login", component: LoginComponent },
   { path: "callback", component: CallbackComponent },
-  { path: "**", redirectTo: "" }
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({
   imports: [
-      RouterModule.forRoot(routes, {
-        preloadingStrategy: PreloadAllModules,
-        enableTracing: false,
-        initialNavigation: true,
-        useHash: false,
-        onSameUrlNavigation: "reload" })],
-  exports: [RouterModule]
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: PreloadAllModules,
+      enableTracing: false,
+      initialNavigation: true,
+      useHash: false,
+      onSameUrlNavigation: "reload",
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

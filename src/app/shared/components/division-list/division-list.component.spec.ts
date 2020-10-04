@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DivisionListComponent } from './division-list.component';
+import { DivisionListComponent } from "./division-list.component";
 
-describe('DivisionListComponent', () => {
+describe("DivisionListComponent", () => {
   let component: DivisionListComponent;
   let fixture: ComponentFixture<DivisionListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DivisionListComponent ]
-    })
-    .compileComponents();
+      declarations: [DivisionListComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DivisionListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

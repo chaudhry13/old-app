@@ -1,11 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { QuestionnaireUserAnswer, Question, QuestionAnsweres, QuestionAnsweredEdit } from '../../models/questionnaire';
+import { Component, OnInit, Input } from "@angular/core";
+import { FormGroup, Validators } from "@angular/forms";
+import {
+  QuestionnaireUserAnswer,
+  Question,
+  QuestionAnsweres,
+  QuestionAnsweredEdit,
+} from "../../models/questionnaire";
 
 @Component({
-  selector: 'number-question',
-  templateUrl: './number-question.component.html',
-  styleUrls: ['./number-question.component.scss'],
+  selector: "number-question",
+  templateUrl: "./number-question.component.html",
+  styleUrls: ["./number-question.component.scss"],
 })
 export class NumberQuestionComponent implements OnInit {
   @Input() question: Question;
@@ -17,11 +22,13 @@ export class NumberQuestionComponent implements OnInit {
   from: string;
   to: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     if (this.questionAnswer != null) {
-      this.answerForm.controls.numberAnswer.setValue(this.questionAnswer.numberAnswer);
+      this.answerForm.controls.numberAnswer.setValue(
+        this.questionAnswer.numberAnswer
+      );
     }
 
     this.from = this.question.numberOptions.from.toString();

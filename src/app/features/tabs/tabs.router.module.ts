@@ -12,53 +12,56 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/audits/audit.module#AuditModule"
-          }
-        ]
+            loadChildren: "src/app/features/audits/audit.module#AuditModule",
+          },
+        ],
       },
       {
         path: "tab2",
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/incident-reports/incident-report.module#IncidentReportPageModule"
-          }
-        ]
+            loadChildren:
+              "src/app/features/incident-reports/incident-report.module#IncidentReportPageModule",
+          },
+        ],
       },
       {
         path: "tab3",
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/notifications/notification.module#NotificationPageModule"
-          }
-        ]
+            loadChildren:
+              "src/app/features/notifications/notification.module#NotificationPageModule",
+          },
+        ],
       },
       {
         path: "tab4",
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/profile/profile.module#ProfilePageModule"
-          }
-        ]
+            loadChildren:
+              "src/app/features/profile/profile.module#ProfilePageModule",
+          },
+        ],
       },
       {
         path: "",
         redirectTo: "/tabs/tab1",
-        pathMatch: "full"
-      }
-    ]
+        pathMatch: "full",
+      },
+    ],
   },
   {
     path: "",
     redirectTo: "/tabs/tab1",
-    pathMatch: "full"
-  }
+    pathMatch: "full",
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TabsPageRoutingModule { }
+export class TabsPageRoutingModule {}

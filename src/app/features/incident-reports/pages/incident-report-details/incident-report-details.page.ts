@@ -3,13 +3,11 @@ import { ActivatedRoute } from "@angular/router";
 import { IncidentReport } from "../../models/incident-report";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { CameraService } from "@app/services/photo.service";
-import {
-  FileTransfer,
-} from "@ionic-native/file-transfer/ngx";
+import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { User } from "@app/models/user";
 import { AgmMap } from "@agm/core";
-import { IncidentCategoryService } from '../../services/incident-category.service';
-import { IncidentCategoryMappingTable } from '../../models/incident-category';
+import { IncidentCategoryService } from "../../services/incident-category.service";
+import { IncidentCategoryMappingTable } from "../../models/incident-category";
 
 @Component({
   selector: "app-incident-report-details",
@@ -33,7 +31,8 @@ export class IncidentReportDetailsPage implements OnInit {
     public incidentReportService: IncidentReportService,
     public cameraService: CameraService,
     public fileTransfer: FileTransfer,
-    public incidentCategoryService: IncidentCategoryService) {
+    public incidentCategoryService: IncidentCategoryService
+  ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.source = this.activatedRoute.snapshot.paramMap.get("source");
   }
@@ -57,13 +56,15 @@ export class IncidentReportDetailsPage implements OnInit {
   }
 
   private listCategoryMappings() {
-    this.incidentCategoryService.getMappings().then(mappingsTable => {
+    this.incidentCategoryService.getMappings().then((mappingsTable) => {
       this.mappingsTable = mappingsTable;
       this.formType = this.getFormType(mappingsTable);
     });
   }
 
   private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
-    return mappingsTable.mappings.find(m => m.incidentCategoryId == this.incidentReport.incidentCategory.id).form;
+    return mappingsTable.mappings.find(
+      (m) => m.incidentCategoryId == this.incidentReport.incidentCategory.id
+    ).form;
   }
 }

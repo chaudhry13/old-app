@@ -9,5 +9,5 @@ export class Comment {
 
 export enum CommentType {
   RiskAssessment,
-  IncidentReport
+  IncidentReport,
 }

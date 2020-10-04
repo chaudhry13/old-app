@@ -15,5 +15,5 @@ export const authConfigDefault: AppConfig = {
   clientId: "ionic",
   oidc: false,
   scope: "api",
-  apiUrl: "https://humanrisks-core-api.azurewebsites.net"
+  apiUrl: "https://humanrisks-core-api.azurewebsites.net",
 };

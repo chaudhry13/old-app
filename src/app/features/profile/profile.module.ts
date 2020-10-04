@@ -7,14 +7,14 @@ import { IonicModule } from "@ionic/angular";
 
 import { ProfilePage } from "./pages/profile.page";
 import { SharedModule } from "@shared/shared.module";
-import {UserService} from '@app/services/user.service';
-import {DivisionService} from '@app/services/division.service';
+import { UserService } from "@app/services/user.service";
+import { DivisionService } from "@app/services/division.service";
 
 const routes: Routes = [
   {
     path: "",
-    component: ProfilePage
-  }
+    component: ProfilePage,
+  },
 ];
 
 @NgModule({
@@ -23,8 +23,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    SharedModule
+    SharedModule,
   ],
   declarations: [ProfilePage],
 })
-export class ProfilePageModule { }
+export class ProfilePageModule {}

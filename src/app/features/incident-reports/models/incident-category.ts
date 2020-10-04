@@ -7,11 +7,11 @@ export class IncidentCategory {
 }
 
 export class IncidentCategoryMappingTable {
-	mappings: IncidentCategoryMapping[];
+  mappings: IncidentCategoryMapping[];
 }
 
 export class IncidentCategoryMapping {
-	incidentCategoryId: number;
-	form: string;
-	default: boolean;
+  incidentCategoryId: number;
+  form: string;
+  default: boolean;
 }

@@ -16,12 +16,17 @@ export class FollowUpService extends GenericService {
     return this.http.get<FollowUp>(this.apiBase + "/" + id).toPromise();
   }
 
-  async list(divisionIds: string[], search: string, type: string, completed: boolean): Promise<FollowUp[]> {
+  async list(
+    divisionIds: string[],
+    search: string,
+    type: string,
+    completed: boolean
+  ): Promise<FollowUp[]> {
     const filter = {
       divisionIds,
       search,
       type,
-      completed
+      completed,
     };
 
     return this.http.post<any>(this.apiBase + "/list/", filter).toPromise();
@@ -36,14 +41,14 @@ export class FollowUpService extends GenericService {
       "https://app.humanrisks.com/followup/export",
       {
         followUpIds,
-        organizationId
+        organizationId,
       },
       { responseType: "blob" }
     );
   }
 
   downloadHistory(followUpIds: string[], organizationId: string) {
-    this.csv(followUpIds, organizationId).subscribe(blob => {
+    this.csv(followUpIds, organizationId).subscribe((blob) => {
       const csv = new Blob([blob], { type: "text/csv" });
 
       if (window.navigator && window.navigator.msSaveOrOpenBlob) {
@@ -58,7 +63,13 @@ export class FollowUpService extends GenericService {
       link.download = "follow-up-history.csv";
 
       // this is necessary as link.click() does not work on the latest firefox
-      link.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
+      link.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        })
+      );
 
       setTimeout(() => {
         // For Firefox it is necessary to delay revoking the ObjectURL

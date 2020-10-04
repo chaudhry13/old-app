@@ -21,7 +21,7 @@ export class UserService extends GenericService {
   list(divisions: string[], search: string): Observable<User[]> {
     const filter = {
       divisions,
-      search
+      search,
     };
 
     return this.http.post<User[]>(this.apiBase + "/list", filter);
@@ -36,6 +36,10 @@ export class UserService extends GenericService {
   }
 
   async migrate(id: string, migrateId: string): Promise<boolean> {
-    return this.http.get<boolean>(this.apiBase + "/migrate?id=" + id + "&migrateId=" + migrateId).toPromise();
+    return this.http
+      .get<boolean>(
+        this.apiBase + "/migrate?id=" + id + "&migrateId=" + migrateId
+      )
+      .toPromise();
   }
 }

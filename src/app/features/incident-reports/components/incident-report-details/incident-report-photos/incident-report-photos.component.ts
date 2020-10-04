@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, EventEmitter } from '@angular/core';
-import { IncidentReport } from 'src/app/features/incident-reports/models/incident-report';
-import { StorageService } from 'src/app/core/services/storage.service';
-import { CameraService } from 'src/app/core/services/photo.service';
-import { Attachment } from 'src/app/core/models/file';
+import { Component, OnInit, Input, EventEmitter } from "@angular/core";
+import { IncidentReport } from "src/app/features/incident-reports/models/incident-report";
+import { StorageService } from "src/app/core/services/storage.service";
+import { CameraService } from "src/app/core/services/photo.service";
+import { Attachment } from "src/app/core/models/file";
 
 @Component({
-  selector: 'incident-report-photos',
-  templateUrl: './incident-report-photos.component.html',
-  styleUrls: ['./incident-report-photos.component.scss']
+  selector: "incident-report-photos",
+  templateUrl: "./incident-report-photos.component.html",
+  styleUrls: ["./incident-report-photos.component.scss"],
 })
 export class IncidentReportPhotosComponent implements OnInit {
   @Input() incidentReport: IncidentReport;
@@ -19,7 +19,7 @@ export class IncidentReportPhotosComponent implements OnInit {
   constructor(
     private storageService: StorageService,
     private cameraService: CameraService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.listFiles();
@@ -46,5 +46,4 @@ export class IncidentReportPhotosComponent implements OnInit {
         });
     }
   }
-
 }

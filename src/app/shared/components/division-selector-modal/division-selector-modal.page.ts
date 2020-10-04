@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { DivisionService } from 'src/app/core/services/division.service';
-import { Division } from 'src/app/core/models/division';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+import { DivisionService } from "src/app/core/services/division.service";
+import { Division } from "src/app/core/models/division";
 
 @Component({
-  templateUrl: './division-selector-modal.page.html',
-  styleUrls: ['./division-selector-modal.page.scss']
+  templateUrl: "./division-selector-modal.page.html",
+  styleUrls: ["./division-selector-modal.page.scss"],
 })
 export class DivisionSelectorModalPage implements OnInit {
   @Input() userDivisions: Division[];
@@ -27,7 +27,7 @@ export class DivisionSelectorModalPage implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedNamesEmitter.subscribe(divisionNames => {
+    this.selectedNamesEmitter.subscribe((divisionNames) => {
       this.selectedDivisionNames = divisionNames;
     });
   }
@@ -51,7 +51,9 @@ export class DivisionSelectorModalPage implements OnInit {
   }
 
   dismiss() {
-    this.modalController.dismiss([this.selectedDivisionIds, this.selectedDivisionNames]);
+    this.modalController.dismiss([
+      this.selectedDivisionIds,
+      this.selectedDivisionNames,
+    ]);
   }
-
 }

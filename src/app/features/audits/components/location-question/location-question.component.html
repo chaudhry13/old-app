@@ -1,9 +1,26 @@
 <div *ngIf="answerForm" [formGroup]="answerForm">
-  <ion-button class="ion-margin-bottom" expand="block" color="primary" (click)="showLocationModal()">Search address..
+  <ion-button
+    class="ion-margin-bottom"
+    expand="block"
+    color="primary"
+    (click)="showLocationModal()"
+    >Search address..
   </ion-button>
-  <agm-map *ngIf="renderMap" #map [latitude]="latitude" [longitude]="longitude" [zoom]="18" [disableDefaultUI]="true">
-    <agm-marker #mapMarker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-      (dragEnd)="onMarkerDragEnd($event)"></agm-marker>
+  <agm-map
+    *ngIf="renderMap"
+    #map
+    [latitude]="latitude"
+    [longitude]="longitude"
+    [zoom]="18"
+    [disableDefaultUI]="true"
+  >
+    <agm-marker
+      #mapMarker
+      [latitude]="latitude"
+      [longitude]="longitude"
+      [markerDraggable]="true"
+      (dragEnd)="onMarkerDragEnd($event)"
+    ></agm-marker>
   </agm-map>
   <ion-grid *ngIf="location">
     <ion-row class="ion-align-items-center">
@@ -30,13 +47,17 @@
       <ion-col>
         <ion-item lines="none">
           <ion-label color="primary" position="stacked">Latitude</ion-label>
-          <ion-label position="stacked" readonly>{{ location.latitude }}</ion-label>
+          <ion-label position="stacked" readonly>{{
+            location.latitude
+          }}</ion-label>
         </ion-item>
       </ion-col>
       <ion-col offset-4>
         <ion-item lines="none">
           <ion-label color="primary" position="stacked">Longitude</ion-label>
-          <ion-label position="stacked" readonly>{{ location.longitude }}</ion-label>
+          <ion-label position="stacked" readonly>{{
+            location.longitude
+          }}</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>

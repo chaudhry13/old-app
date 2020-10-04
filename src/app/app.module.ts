@@ -31,15 +31,12 @@ import { AccountService } from "@app/services/account.service";
 import { IonicStorageModule } from "@ionic/storage";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
-import {UserService} from "@app/services/user.service";
-import {TokenService} from "@app/services/token.service";
-import {StorageService} from "@app/services/storage.service";
+import { UserService } from "@app/services/user.service";
+import { TokenService } from "@app/services/token.service";
+import { StorageService } from "@app/services/storage.service";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CallbackComponent,
-    LoginComponent],
+  declarations: [AppComponent, CallbackComponent, LoginComponent],
   entryComponents: [CallbackComponent, LoginComponent],
   imports: [
     BrowserModule,
@@ -48,13 +45,13 @@ import {StorageService} from "@app/services/storage.service";
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: [
-            "https://test1api.humanrisks.com/",
+          "https://test1api.humanrisks.com/",
           "https://humanrisks-core-api.azurewebsites.net",
-            "https://app1api.humanrisks.com",
-            "https://localhost:5000"
+          "https://app1api.humanrisks.com",
+          "https://localhost:5000",
         ],
-        sendAccessToken: true
-      }
+        sendAccessToken: true,
+      },
     }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
@@ -62,8 +59,8 @@ import {StorageService} from "@app/services/storage.service";
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"]
-    })
+      libraries: ["places"],
+    }),
   ],
   providers: [
     AccountService,
@@ -76,7 +73,7 @@ import {StorageService} from "@app/services/storage.service";
           // Make sure to return a promise!
           return appConfigService.loadAppConfig();
         };
-      }
+      },
     },
     File,
     FileOpener,
@@ -93,8 +90,8 @@ import {StorageService} from "@app/services/storage.service";
     TokenService,
     StorageService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

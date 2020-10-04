@@ -1,13 +1,16 @@
 import { Injectable } from "@angular/core";
 import { User } from "../models/user";
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from "./auth-config.service";
 import { Storage } from "@ionic/storage";
 
 @Injectable()
 export class TokenService {
   user: User;
 
-  constructor(private storage: Storage, private appConfigService: AppConfigService) { }
+  constructor(
+    private storage: Storage,
+    private appConfigService: AppConfigService
+  ) {}
 
   public readToken(token: string) {
     const tokens: Array<any> = token.split(".");
@@ -21,19 +24,28 @@ export class TokenService {
     this.user.name = tokenPayload.given_name;
     this.user.role = tokenPayload.role;
     this.user.organization = tokenPayload.organization;
-    this.user.riskline = tokenPayload.riskline.toLowerCase() == "true" ? true : false;
-    this.user.controlrisks = tokenPayload.controlrisks.toLowerCase() == "true" ? true : false;
-    this.user.advancedConsequence = tokenPayload.advancedconsequence.toLowerCase() == "true" ? true : false;
+    this.user.riskline =
+      tokenPayload.riskline.toLowerCase() == "true" ? true : false;
+    this.user.controlrisks =
+      tokenPayload.controlrisks.toLowerCase() == "true" ? true : false;
+    this.user.advancedConsequence =
+      tokenPayload.advancedconsequence.toLowerCase() == "true" ? true : false;
     this.user.currency = tokenPayload.currency;
     this.user.shortname = tokenPayload.shortname;
-    this.user.termsaccepted = tokenPayload.termsaccepted.toLowerCase() == "true" ? true : false;
-    this.user.external = tokenPayload.external.toLowerCase() == "true" ? true : false;
+    this.user.termsaccepted =
+      tokenPayload.termsaccepted.toLowerCase() == "true" ? true : false;
+    this.user.external =
+      tokenPayload.external.toLowerCase() == "true" ? true : false;
 
     // Areas
-    this.user.auditsArea = tokenPayload.auditsarea.toLowerCase() == "true" ? true : false;
-    this.user.riskAssessmentsArea = tokenPayload.riskassessmentsarea.toLowerCase() == "true" ? true : false;
-    this.user.incidentsArea = tokenPayload.incidentsarea.toLowerCase() == "true" ? true : false;
-    this.user.healthSafetyArea = tokenPayload.healthsafetyarea.toLowerCase() == "true" ? true : false;
+    this.user.auditsArea =
+      tokenPayload.auditsarea.toLowerCase() == "true" ? true : false;
+    this.user.riskAssessmentsArea =
+      tokenPayload.riskassessmentsarea.toLowerCase() == "true" ? true : false;
+    this.user.incidentsArea =
+      tokenPayload.incidentsarea.toLowerCase() == "true" ? true : false;
+    this.user.healthSafetyArea =
+      tokenPayload.healthsafetyarea.toLowerCase() == "true" ? true : false;
 
     this.appConfigService.setAppConfig(tokenPayload);
   }

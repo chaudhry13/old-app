@@ -1,7 +1,7 @@
-import { IncidentCategory } from './incident-category';
+import { IncidentCategory } from "./incident-category";
 
 export class IncidentType {
-    id: number;
-    name: string;
-    incidentCategory: IncidentCategory;
+  id: number;
+  name: string;
+  incidentCategory: IncidentCategory;
 }

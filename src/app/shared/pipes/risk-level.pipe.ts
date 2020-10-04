@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 /*
  * Converts to a risk or residual level from a number
-*/
+ */
 @Pipe({
-    name: "risklevel"
+  name: "risklevel",
 })
 export class RiskLevelPipe implements PipeTransform {
   transform(value: number) {

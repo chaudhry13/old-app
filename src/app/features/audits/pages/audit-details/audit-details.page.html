@@ -13,9 +13,14 @@
     <ion-list-header>
       <ion-label>Description</ion-label>
     </ion-list-header>
-    <div *ngIf="control.description" class="ion-padding" [innerHtml]="control.description | sanitizeHtml">
+    <div
+      *ngIf="control.description"
+      class="ion-padding"
+      [innerHtml]="control.description | sanitizeHtml"
+    ></div>
+    <div *ngIf="!control.description" class="ion-padding">
+      <i>No description</i>
     </div>
-    <div *ngIf="!control.description" class="ion-padding"><i>No description</i></div>
     <ion-list-header>
       <ion-label>Responsible manager</ion-label>
     </ion-list-header>
@@ -25,7 +30,6 @@
         <h2>{{ control.responsible.name }}</h2>
         <p>{{ control.responsible.email }}</p>
       </ion-label>
-
     </ion-item>
     <ion-list-header>
       <ion-label>Responsible employee</ion-label>
@@ -42,18 +46,14 @@
     </ion-list-header>
     <ion-item>
       <ion-icon name="time" slot="start"></ion-icon>
-      <ion-label>
-        {{ control.startDate | date:'MMM dd, yyyy'}}
-      </ion-label>
+      <ion-label> {{ control.startDate | date:'MMM dd, yyyy'}} </ion-label>
     </ion-item>
     <ion-list-header>
       <ion-label>Frequency</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-icon name="refresh" slot="start"></ion-icon>
-      <ion-label class="ion-text-wrap">
-        {{ frequency }}
-      </ion-label>
+      <ion-label class="ion-text-wrap"> {{ frequency }} </ion-label>
     </ion-item>
 
     <ion-list-header *ngIf="files && files.length > 0">
@@ -61,47 +61,79 @@
     </ion-list-header>
     <ion-item *ngFor="let file of files" (click)="downloadAndOpen(file)">
       <ion-icon name="document" slot="start"></ion-icon>
-      <ion-label>
-        {{file.name}}
-      </ion-label>
+      <ion-label> {{file.name}} </ion-label>
     </ion-item>
 
     <ion-list-header>
       <ion-label>Upcoming Audits</ion-label>
     </ion-list-header>
 
-    <ion-item button *ngFor="let audit of upcomingAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
-      routerDirection="forward" routerLinkActive="router-link-active">
-      <ion-label>
-        {{audit.date | date}}
-      </ion-label>
-      <ion-icon class="ion-float-left" name="checkmark-circle-outline"></ion-icon>
+    <ion-item
+      button
+      *ngFor="let audit of upcomingAudits"
+      routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward"
+      routerLinkActive="router-link-active"
+    >
+      <ion-label> {{audit.date | date}} </ion-label>
+      <ion-icon
+        class="ion-float-left"
+        name="checkmark-circle-outline"
+      ></ion-icon>
     </ion-item>
 
     <ion-list-header>
       <ion-label>Overdue Audits</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let audit of overdueAudits" button routerLink="/tabs/tab1/complete/{{audit.id}}"
-      routerDirection="forward" routerLinkActive="router-link-active">
-      <ion-label>
-        {{audit.date | date}}
-      </ion-label>
-      <ion-icon class="icon" color="danger" class="ion-float-left" name="alert-circle"></ion-icon>
+    <ion-item
+      *ngFor="let audit of overdueAudits"
+      button
+      routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward"
+      routerLinkActive="router-link-active"
+    >
+      <ion-label> {{audit.date | date}} </ion-label>
+      <ion-icon
+        class="icon"
+        color="danger"
+        class="ion-float-left"
+        name="alert-circle"
+      ></ion-icon>
     </ion-item>
 
     <ion-list-header>
       <ion-label>Completed Audits</ion-label>
     </ion-list-header>
 
-    <ion-item button *ngFor="let audit of completedAudits" routerLink="/tabs/tab1/complete/{{audit.id}}"
-      routerDirection="forward" routerLinkActive="router-link-active">
+    <ion-item
+      button
+      *ngFor="let audit of completedAudits"
+      routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward"
+      routerLinkActive="router-link-active"
+    >
       <ion-label> {{audit.date | date}}</ion-label>
-      <ion-icon color="success" class="ion-float-left" *ngIf="!audit.late" name="checkmark-circle">
+      <ion-icon
+        color="success"
+        class="ion-float-left"
+        *ngIf="!audit.late"
+        name="checkmark-circle"
+      >
       </ion-icon>
-      <ion-icon color="danger" class="ion-float-left" *ngIf="audit.late" name="alert">
+      <ion-icon
+        color="danger"
+        class="ion-float-left"
+        *ngIf="audit.late"
+        name="alert"
+      >
       </ion-icon>
-      <ion-icon color="warning" class="ion-float-left" *ngIf="audit.followUpId" name="help-circle"></ion-icon>
+      <ion-icon
+        color="warning"
+        class="ion-float-left"
+        *ngIf="audit.followUpId"
+        name="help-circle"
+      ></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

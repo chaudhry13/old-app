@@ -4,11 +4,11 @@ import { OAuthService } from "angular-oauth2-oidc";
 import { AlertController, NavController } from "@ionic/angular";
 import { TokenService } from "../../services/token.service";
 import { Storage } from "@ionic/storage";
-import { AppConfigService } from '../../services/auth-config.service';
+import { AppConfigService } from "../../services/auth-config.service";
 
 @Component({
   selector: "callback",
-  templateUrl: "callback.component.html"
+  templateUrl: "callback.component.html",
 })
 export class CallbackComponent implements OnInit {
   constructor(
@@ -18,7 +18,7 @@ export class CallbackComponent implements OnInit {
     public tokenService: TokenService,
     private appConfigService: AppConfigService,
     private navController: NavController
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.oAuthService.tryLogin();

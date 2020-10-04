@@ -1,13 +1,21 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { IncidentReport, PersonsViewModel, Genders, Build, VehiclesViewModel, VehicleMakes, VehicleModels, VehicleColor } from 'src/app/features/incident-reports/models/incident-report';
+import { Component, OnInit, Input } from "@angular/core";
+import {
+  IncidentReport,
+  PersonsViewModel,
+  Genders,
+  Build,
+  VehiclesViewModel,
+  VehicleMakes,
+  VehicleModels,
+  VehicleColor,
+} from "src/app/features/incident-reports/models/incident-report";
 
 @Component({
-  selector: 'intelligence-report-details',
-  templateUrl: './intelligence-report-details.component.html',
-  styleUrls: ['./intelligence-report-details.component.scss']
+  selector: "intelligence-report-details",
+  templateUrl: "./intelligence-report-details.component.html",
+  styleUrls: ["./intelligence-report-details.component.scss"],
 })
 export class IntelligenceReportDetailsComponent implements OnInit {
-
   @Input() incidentReport: IncidentReport;
 
   public personsShown: PersonsViewModel[] = [];
@@ -20,16 +28,16 @@ export class IntelligenceReportDetailsComponent implements OnInit {
   public vehicleModel = VehicleModels;
   public vehicleColor = VehicleColor;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    this.incidentReport.persons.forEach(person => {
+    this.incidentReport.persons.forEach((person) => {
       var i = 0;
       this.personsShown.push({ index: i, shown: false });
       i++;
     });
 
-    this.incidentReport.vehicles.forEach(vehicle => {
+    this.incidentReport.vehicles.forEach((vehicle) => {
       var i = 0;
       this.vehiclesShown.push({ index: i, shown: false });
       i++;
@@ -42,5 +50,4 @@ export class IntelligenceReportDetailsComponent implements OnInit {
     else if (listType == "vehicle")
       this.vehiclesShown[index].shown = !this.vehiclesShown[index].shown;
   }
-
 }

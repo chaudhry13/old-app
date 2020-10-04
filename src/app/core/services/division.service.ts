@@ -15,13 +15,17 @@ export class DivisionService extends GenericService {
 
   private subject = new Subject<any>();
 
-  constructor(private http: HttpClient, private oauthService: OAuthService, appConfigService: AppConfigService) {
+  constructor(
+    private http: HttpClient,
+    private oauthService: OAuthService,
+    appConfigService: AppConfigService
+  ) {
     super("/divisions", appConfigService);
 
     this.selected$ = this.subject.asObservable();
   }
 
-  set(divisions: Division[]) { }
+  set(divisions: Division[]) {}
 
   selected(data) {
     this.divisions = data;
@@ -41,7 +45,7 @@ export class DivisionService extends GenericService {
 
     return this.http
       .post<boolean>(this.apiBase, "", {
-        params: parameters
+        params: parameters,
       })
       .toPromise();
   }

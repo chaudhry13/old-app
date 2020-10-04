@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DefaultReportFormComponent } from './default-report-form.component';
+import { DefaultReportFormComponent } from "./default-report-form.component";
 
-describe('DefaultReportFormComponent', () => {
+describe("DefaultReportFormComponent", () => {
   let component: DefaultReportFormComponent;
   let fixture: ComponentFixture<DefaultReportFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DefaultReportFormComponent ]
-    })
-    .compileComponents();
+      declarations: [DefaultReportFormComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DefaultReportFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

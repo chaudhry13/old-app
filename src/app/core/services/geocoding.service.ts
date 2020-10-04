@@ -9,20 +9,23 @@ export class GeocodingService {
   public base: string = "https://maps.googleapis.com/maps/api/geocode/json";
   public key: string = "&key=AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   reverseGeocode(latitude: number, longitude: number): Promise<GoogleResult> {
     return this.http
-      .get<GoogleResult>(this.base + `?latlng=${latitude},${longitude}` + this.key, {
-        headers: new HttpHeaders().set("Accept", "application/json")
-      })
+      .get<GoogleResult>(
+        this.base + `?latlng=${latitude},${longitude}` + this.key,
+        {
+          headers: new HttpHeaders().set("Accept", "application/json"),
+        }
+      )
       .toPromise();
   }
 
   geocode(address: string) {
     return this.http
       .get<GoogleResult>(this.base + "?address=" + address + this.key, {
-        headers: new HttpHeaders().set("Accept", "application/json")
+        headers: new HttpHeaders().set("Accept", "application/json"),
       })
       .toPromise();
   }

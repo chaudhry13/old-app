@@ -1,17 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { LocationService } from '@app/services/location.service';
-import { FormGroup, FormBuilder, Validators, Form } from '@angular/forms';
-import { CountryService } from '@shared/services/country.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { LocationViewModel } from '@app/models/location';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { LocationService } from "@app/services/location.service";
+import { FormGroup, FormBuilder, Validators, Form } from "@angular/forms";
+import { CountryService } from "@shared/services/country.service";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { LocationViewModel } from "@app/models/location";
 
 @Component({
-  selector: 'location-form',
-  templateUrl: './location-form.component.html',
-  styleUrls: ['./location-form.component.scss']
+  selector: "location-form",
+  templateUrl: "./location-form.component.html",
+  styleUrls: ["./location-form.component.scss"],
 })
 export class LocationFormComponent implements OnInit {
-
   @Input() searchable: boolean = false;
   @Input() buttonType: string = "button";
   @Input() mainForm: FormGroup;
@@ -21,7 +20,8 @@ export class LocationFormComponent implements OnInit {
 
   constructor(
     private locationService: LocationService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.locationForm = this.formBuilder.group({
@@ -29,7 +29,7 @@ export class LocationFormComponent implements OnInit {
       city: [""],
       latitude: ["", Validators.required],
       longitude: ["", Validators.required],
-      countryId: [""]
+      countryId: [""],
     });
 
     this.handleUserLocation();
@@ -37,23 +37,29 @@ export class LocationFormComponent implements OnInit {
   }
 
   public showLocationModal() {
-    this.locationService.showLocationModal().then(location => {
+    this.locationService.showLocationModal().then((location) => {
       this.setCurrentLocation(location);
-      this.locationService.populateFormWithLocation(this.locationForm, location);
-    })
+      this.locationService.populateFormWithLocation(
+        this.locationForm,
+        location
+      );
+    });
   }
 
   private handleUserLocation(): void {
-    this.locationService.getUserLocation().then(location => {
+    this.locationService.getUserLocation().then((location) => {
       this.setCurrentLocation(location);
-      this.locationService.populateFormWithLocation(this.locationForm, location);
+      this.locationService.populateFormWithLocation(
+        this.locationForm,
+        location
+      );
     });
   }
 
   private subscribeToFormChanges() {
     this.locationForm.valueChanges
       .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe(location => {
+      .subscribe((location) => {
         this.patchLocationValues(location);
       });
   }

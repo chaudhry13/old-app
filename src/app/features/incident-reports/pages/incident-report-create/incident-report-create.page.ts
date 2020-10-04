@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Division } from '@app/models/division';
-import { DivisionService } from '@app/services/division.service';
-import { IncidentCategoryService } from '../../services/incident-category.service';
-import { IncidentCategory, IncidentCategoryMappingTable } from '../../models/incident-category';
-import { IncidentType } from '../../models/incident-type';
-import { IncidentReportService } from '@shared/services/incident-report.service';
-import { ToastService } from '@app/services/toast.service';
-import { IncidentReportFormType } from '../../models/incident-report';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Division } from "@app/models/division";
+import { DivisionService } from "@app/services/division.service";
+import { IncidentCategoryService } from "../../services/incident-category.service";
+import {
+  IncidentCategory,
+  IncidentCategoryMappingTable,
+} from "../../models/incident-category";
+import { IncidentType } from "../../models/incident-type";
+import { IncidentReportService } from "@shared/services/incident-report.service";
+import { ToastService } from "@app/services/toast.service";
+import { IncidentReportFormType } from "../../models/incident-report";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 
 @Component({
-  selector: 'app-incident-report-create',
-  templateUrl: 'incident-report-create.page.html',
-  styleUrls: ['./incident-report-create.page.scss']
+  selector: "app-incident-report-create",
+  templateUrl: "incident-report-create.page.html",
+  styleUrls: ["./incident-report-create.page.scss"],
 })
-
 export class IncidentReportCreatePage implements OnInit {
   public incidentForm: FormGroup;
   public formType: string = "Default";
@@ -35,7 +37,8 @@ export class IncidentReportCreatePage implements OnInit {
     private incidentReportService: IncidentReportService,
     private toastService: ToastService,
     private incidentCategoryService: IncidentCategoryService,
-    private divisionService: DivisionService) {
+    private divisionService: DivisionService
+  ) {
     this.incidentForm = this.formBuilder.group({
       description: ["", Validators.required],
       other: [""],
@@ -60,7 +63,7 @@ export class IncidentReportCreatePage implements OnInit {
       customField4: [],
       customField5: [],
       customField6: [],
-      customField7: []
+      customField7: [],
     });
   }
 
@@ -78,7 +81,7 @@ export class IncidentReportCreatePage implements OnInit {
   private subscribeToIncidentReportChanges() {
     this.incidentForm.valueChanges
       .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe(form => {
+      .subscribe((form) => {
         console.log(form);
       });
   }
@@ -90,7 +93,7 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   private insertIncidentReport() {
-    this.incidentReportService.insert(this.incidentForm.value).then(id => {
+    this.incidentReportService.insert(this.incidentForm.value).then((id) => {
       this.navigateToNewReport(id);
     });
   }
@@ -102,13 +105,13 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   private listDivisions(): void {
-    this.divisionService.list().then(divisions => {
+    this.divisionService.list().then((divisions) => {
       this.divisions = divisions;
     });
   }
 
   private listCategoryMappings() {
-    this.incidentCategoryService.getMappings().then(mappingsTable => {
+    this.incidentCategoryService.getMappings().then((mappingsTable) => {
       this.mappingsTable = mappingsTable;
 
       this.subscribeToCategoryChanges();
@@ -116,19 +119,25 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   private subscribeToCategoryChanges() {
-    this.incidentForm.controls["incidentCategoryId"].valueChanges.subscribe(categoryId => {
-      this.currentIncidentTypes = [];
-      if (categoryId) {
-        this.currentIncidentCategory = this.incidentCategories.find(i => i.id == categoryId);
-        this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
-        this.formType = this.mappingsTable.mappings.find(m => m.incidentCategoryId == this.currentIncidentCategory.id).form;
+    this.incidentForm.controls["incidentCategoryId"].valueChanges.subscribe(
+      (categoryId) => {
+        this.currentIncidentTypes = [];
+        if (categoryId) {
+          this.currentIncidentCategory = this.incidentCategories.find(
+            (i) => i.id == categoryId
+          );
+          this.currentIncidentTypes = this.currentIncidentCategory.incidentTypes;
+          this.formType = this.mappingsTable.mappings.find(
+            (m) => m.incidentCategoryId == this.currentIncidentCategory.id
+          ).form;
+        }
       }
-    });
+    );
   }
 
   private listIncidentTypesAndCategories(): void {
     this.incidentTypes = [];
-    this.incidentCategoryService.list(true).then(data => {
+    this.incidentCategoryService.list(true).then((data) => {
       this.incidentCategories = data;
       this.incidentTypes = this.incidentCategoryService.listIncidentTypes(data);
     });
@@ -140,7 +149,7 @@ export class IncidentReportCreatePage implements OnInit {
 
   divisionsChanged(data) {
     if (data) {
-      this.incidentForm.get('divisionIds').setValue(data);
+      this.incidentForm.get("divisionIds").setValue(data);
     }
   }
 }

@@ -1,35 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 declare var google: any;
 
 @Injectable()
 export class PlacesSearchService {
-    placesService: any;
+  placesService: any;
 
-    constructor() {
-        this.placesService = new google.maps.places.AutocompleteService();
-    }
+  constructor() {
+    this.placesService = new google.maps.places.AutocompleteService();
+  }
 
-    async getPlacesPredictions(query: string): Promise<any[]> {
-        return new Promise((resolve, reject) => {
-            if (!query || query == '' || query == "") {
-                reject([]);
-            } else {
-                let config = {
-                    types: ['geocode'],
-                    input: query
-                }
+  async getPlacesPredictions(query: string): Promise<any[]> {
+    return new Promise((resolve, reject) => {
+      if (!query || query == "" || query == "") {
+        reject([]);
+      } else {
+        let config = {
+          types: ["geocode"],
+          input: query,
+        };
 
-                this.placesService.getPlacePredictions(config, (predictions, status) => {
-                    if (status != google.maps.places.PlacesServiceStatus.OK) {
-                        reject([]);
-                    }
-                    resolve(predictions);
-                });
+        this.placesService.getPlacePredictions(
+          config,
+          (predictions, status) => {
+            if (status != google.maps.places.PlacesServiceStatus.OK) {
+              reject([]);
             }
-        });
-    }
-
-
-
+            resolve(predictions);
+          }
+        );
+      }
+    });
+  }
 }

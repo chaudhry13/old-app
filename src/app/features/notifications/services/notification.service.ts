@@ -17,7 +17,7 @@ export class NotificationService extends GenericService {
 
     return this.http
       .get<Notification[]>(this.apiBase + "/list", {
-        params: parameters
+        params: parameters,
       })
       .toPromise();
   }

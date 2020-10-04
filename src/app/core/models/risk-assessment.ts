@@ -55,25 +55,25 @@ export class RiskAssessmentListFilter {
     pageNumber: number
   ) {
     if (divisions != undefined) {
-      divisions.forEach(division => {
+      divisions.forEach((division) => {
         this.divisions.push(division);
       });
     }
 
     if (assets != undefined) {
-      assets.forEach(asset => {
+      assets.forEach((asset) => {
         this.assetIds.push(asset);
       });
     }
 
     if (countries != undefined) {
-      countries.forEach(country => {
+      countries.forEach((country) => {
         this.countryIds.push(country);
       });
     }
 
     if (siteCategories != undefined) {
-      siteCategories.forEach(siteCategory => {
+      siteCategories.forEach((siteCategory) => {
         this.siteCategories.push(siteCategory);
       });
     }

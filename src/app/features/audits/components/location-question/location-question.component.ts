@@ -1,15 +1,25 @@
 import { Component, OnInit, ViewChild, Input, NgZone } from "@angular/core";
-import { Location, GeocodingAddress, LocationViewModel } from '@app/models/location';
+import {
+  Location,
+  GeocodingAddress,
+  LocationViewModel,
+} from "@app/models/location";
 import { AgmMap, AgmMarker } from "@agm/core";
-import { Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionLocationAnswer, QuestionLocationAnswerCreate } from '../../models/questionnaire';
-import { FormGroup } from '@angular/forms';
-import { GeocodingService } from '@app/services/geocoding.service';
+import {
+  Question,
+  QuestionnaireUserAnswer,
+  QuestionAnsweres,
+  QuestionLocationAnswer,
+  QuestionLocationAnswerCreate,
+} from "../../models/questionnaire";
+import { FormGroup } from "@angular/forms";
+import { GeocodingService } from "@app/services/geocoding.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { CountryService } from '@shared/services/country.service';
-import { Country } from '@shared/models/country';
-import { ModalController, ToastController } from '@ionic/angular';
-import { LocationModalPage } from '@shared/components/location-modal/location-modal.page';
-import { ToastService } from '@app/services/toast.service';
+import { CountryService } from "@shared/services/country.service";
+import { Country } from "@shared/models/country";
+import { ModalController, ToastController } from "@ionic/angular";
+import { LocationModalPage } from "@shared/components/location-modal/location-modal.page";
+import { ToastService } from "@app/services/toast.service";
 
 @Component({
   selector: "location-question",
@@ -40,15 +50,21 @@ export class LocationQuestionComponent implements OnInit {
     public geolocation: Geolocation,
     public countryService: CountryService,
     public modalController: ModalController,
-    public toastService: ToastService) {
-  }
+    public toastService: ToastService
+  ) {}
 
   ngOnInit() {
-    this.listCountries().then(countries => {
+    this.listCountries().then((countries) => {
       this.countries = countries;
 
-      if (this.questionAnswer != null && this.questionAnswer.locationAnswer != null) {
-        this.setNewPosition(this.questionAnswer.locationAnswer.longitude, this.questionAnswer.locationAnswer.latitude);
+      if (
+        this.questionAnswer != null &&
+        this.questionAnswer.locationAnswer != null
+      ) {
+        this.setNewPosition(
+          this.questionAnswer.locationAnswer.longitude,
+          this.questionAnswer.locationAnswer.latitude
+        );
 
         var location = this.generateLocationAnswerObject();
 
@@ -58,9 +74,7 @@ export class LocationQuestionComponent implements OnInit {
       } else {
         this.getUserLocation();
       }
-    })
-
-
+    });
   }
 
   private generateLocationAnswerObject() {
@@ -90,7 +104,7 @@ export class LocationQuestionComponent implements OnInit {
 
     this.geocodingService
       .reverseGeocode(this.latitude, this.longitude)
-      .then(data => {
+      .then((data) => {
         var model = this.geocodingService.geocodeResult(data.results);
 
         var location = {
@@ -98,14 +112,14 @@ export class LocationQuestionComponent implements OnInit {
           countryId: this.getCountryid(model),
           latitude: this.latitude,
           longitude: this.longitude,
-        }
+        };
 
         this.populateLocationViewModel(model);
 
         this.answerForm.controls.locationAnswer.setValue(location);
         this.answerForm.controls.locationAnswer.markAsTouched();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -115,7 +129,7 @@ export class LocationQuestionComponent implements OnInit {
   }
 
   private getCountryid(model: GeocodingAddress) {
-    return this.countries.find(c => c.code == model.country)?.id;
+    return this.countries.find((c) => c.code == model.country)?.id;
   }
 
   getUserLocation() {
@@ -126,7 +140,10 @@ export class LocationQuestionComponent implements OnInit {
         maximumAge: 0,
       })
       .then((position) => {
-        this.setNewPosition(position.coords.longitude, position.coords.latitude);
+        this.setNewPosition(
+          position.coords.longitude,
+          position.coords.latitude
+        );
         this.renderMap = true;
       })
       .catch((error) => {
@@ -137,18 +154,18 @@ export class LocationQuestionComponent implements OnInit {
 
   async showLocationModal() {
     const modal = await this.modalController.create({
-      component: LocationModalPage
+      component: LocationModalPage,
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     if (data != null) {
       this.geocodingService
         .geocode(data)
-        .then(data => {
+        .then((data) => {
           var model = this.geocodingService.geocodeResult(data.results);
           this.setNewPosition(model.longitude, model.latitude);
         })
-        .catch(error => {
+        .catch((error) => {
           this.toastService.show("Your location could not be found!");
         });
     }

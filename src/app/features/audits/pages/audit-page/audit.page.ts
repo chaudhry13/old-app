@@ -5,13 +5,17 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Division } from "@app/models/division";
 import { DivisionService } from "@app/services/division.service";
-import { NavController, PopoverController, ModalController } from '@ionic/angular';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
+import {
+  NavController,
+  PopoverController,
+  ModalController,
+} from "@ionic/angular";
+import { Keyboard } from "@ionic-native/keyboard/ngx";
 
 @Component({
   selector: "app-audit-page",
   templateUrl: "audit.page.html",
-  styleUrls: ["audit.page.scss"]
+  styleUrls: ["audit.page.scss"],
 })
 export class AuditPage implements OnInit {
   controls: Control[];
@@ -20,16 +24,18 @@ export class AuditPage implements OnInit {
   public controlFilterForm: FormGroup;
   public setDivisions = new EventEmitter<string[]>();
 
-  constructor(public controlService: ControlService,
+  constructor(
+    public controlService: ControlService,
     public navigationService: NavController,
     public divisionService: DivisionService,
     public formBuilder: FormBuilder,
-    private keyboard: Keyboard) {
+    private keyboard: Keyboard
+  ) {
     this.controlFilterForm = this.formBuilder.group({
       divisionIds: [""],
       responsibility: [""],
       active: [null],
-      search: [""]
+      search: [""],
     });
     this.list();
   }
@@ -41,7 +47,7 @@ export class AuditPage implements OnInit {
   ngOnInit() {
     this.list();
 
-    this.divisionService.list().then(divisions => {
+    this.divisionService.list().then((divisions) => {
       this.divisions = divisions;
     });
 
@@ -50,16 +56,13 @@ export class AuditPage implements OnInit {
 
   divisionsChanged(data) {
     if (data) {
-      this.controlFilterForm.get('divisionIds').setValue(data);
+      this.controlFilterForm.get("divisionIds").setValue(data);
     }
   }
 
   private subscribeToControlFormChanges() {
     this.controlFilterForm.valueChanges
-      .pipe(
-        debounceTime(250),
-        distinctUntilChanged()
-      )
+      .pipe(debounceTime(250), distinctUntilChanged())
       .subscribe(() => {
         this.list();
       });
@@ -67,14 +70,15 @@ export class AuditPage implements OnInit {
 
   list() {
     if (this.controlFilterForm.valid) {
-      this.controlService.list(this.controlFilterForm.value).then(controls => {
-        this.controls = controls;
-      });
+      this.controlService
+        .list(this.controlFilterForm.value)
+        .then((controls) => {
+          this.controls = controls;
+        });
     }
   }
 
   navigate(id: string) {
-    this.navigationService.navigateForward('audits/' + id);
+    this.navigationService.navigateForward("audits/" + id);
   }
-
 }

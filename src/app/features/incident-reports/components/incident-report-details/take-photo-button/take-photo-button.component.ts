@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IncidentReport } from 'src/app/features/incident-reports/models/incident-report';
-import { CameraService } from 'src/app/core/services/photo.service';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { IncidentReport } from "src/app/features/incident-reports/models/incident-report";
+import { CameraService } from "src/app/core/services/photo.service";
 
 @Component({
-  selector: 'take-photo-button',
-  templateUrl: './take-photo-button.component.html',
-  styleUrls: ['./take-photo-button.component.scss']
+  selector: "take-photo-button",
+  templateUrl: "./take-photo-button.component.html",
+  styleUrls: ["./take-photo-button.component.scss"],
 })
 export class TakePhotoButtonComponent implements OnInit {
   @Input() incidentReport: IncidentReport;
@@ -13,12 +13,9 @@ export class TakePhotoButtonComponent implements OnInit {
 
   public photos: any[] = [];
 
-  constructor(
-    private cameraService: CameraService
-  ) { }
+  constructor(private cameraService: CameraService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   takePhotoAndUpload() {
     this.cameraService
@@ -33,5 +30,4 @@ export class TakePhotoButtonComponent implements OnInit {
         // This is taken care of in takePhotoAndUpload()
       });
   }
-
 }

@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LocationSearchbarComponent } from './location-searchbar.component';
+import { LocationSearchbarComponent } from "./location-searchbar.component";
 
-describe('LocationSearchbarComponent', () => {
+describe("LocationSearchbarComponent", () => {
   let component: LocationSearchbarComponent;
   let fixture: ComponentFixture<LocationSearchbarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LocationSearchbarComponent ]
-    })
-    .compileComponents();
+      declarations: [LocationSearchbarComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('LocationSearchbarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

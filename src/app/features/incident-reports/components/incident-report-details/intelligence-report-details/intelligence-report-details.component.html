@@ -1,158 +1,181 @@
 <ng-container *ngIf="incidentReport">
-    <internal-report-details [incidentReport]="incidentReport"></internal-report-details>
-    <ion-card-header>
-        <ion-card-subtitle>Incident Details</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-        <ion-textarea class="ion-no-padding" readonly value="{{incidentReport.description}}"></ion-textarea>
-    </ion-card-content>
-    <ion-list>
-        <div *ngFor="let person of incidentReport.persons; let i = index">
-            <ion-item-divider>
-                <ion-icon style="vertical-align:middle;" name="person-outline"></ion-icon>
-                <ion-label style="vertical-align:middle;" class="ion-padding-start">Person {{i + 1}}</ion-label>
-                <ion-icon (click)="toggleShowOfIndex(i, 'person')" class="ion-margin-end" *ngIf="personsShown[i].shown"
-                    slot="end" name="chevron-down">
-                </ion-icon>
-                <ion-icon (click)="toggleShowOfIndex(i, 'person')" class="ion-margin-end" *ngIf="!personsShown[i].shown"
-                    slot="end" name="chevron-forward">
-                </ion-icon>
-            </ion-item-divider>
-            <div *ngIf="personsShown[i].shown">
-                <ion-list>
-                    <ion-list-header>
-                        Name
-                    </ion-list-header>
-                    <ion-item>
-                        {{person.name}}
-                    </ion-item>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Gender</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{personGender[person.gender]}}</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        Approx. age
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{person.approxAge}}</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Build</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{personBuild[person.build]}}</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Height</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{person.height + " cm"}}</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-list class="ion-padding-top">
-                    <ion-list-header lines="none">
-                        Identifying features
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-textarea readonly>
-                            {{person.identifyingFeatures}}
-                        </ion-textarea>
-                    </ion-item>
-                </ion-list>
-                <ion-list class="ion-padding-top">
-                    <ion-list-header lines="none">
-                        Clothes / Footwear
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-textarea readonly>
-                            {{person.apparel}}
-                        </ion-textarea>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </div>
-    </ion-list>
+  <internal-report-details
+    [incidentReport]="incidentReport"
+  ></internal-report-details>
+  <ion-card-header>
+    <ion-card-subtitle>Incident Details</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-textarea
+      class="ion-no-padding"
+      readonly
+      value="{{ incidentReport.description }}"
+    ></ion-textarea>
+  </ion-card-content>
+  <ion-list>
+    <div *ngFor="let person of incidentReport.persons; let i = index">
+      <ion-item-divider>
+        <ion-icon
+          style="vertical-align: middle"
+          name="person-outline"
+        ></ion-icon>
+        <ion-label style="vertical-align: middle" class="ion-padding-start"
+          >Person {{ i + 1 }}</ion-label
+        >
+        <ion-icon
+          (click)="toggleShowOfIndex(i, 'person')"
+          class="ion-margin-end"
+          *ngIf="personsShown[i].shown"
+          slot="end"
+          name="chevron-down"
+        >
+        </ion-icon>
+        <ion-icon
+          (click)="toggleShowOfIndex(i, 'person')"
+          class="ion-margin-end"
+          *ngIf="!personsShown[i].shown"
+          slot="end"
+          name="chevron-forward"
+        >
+        </ion-icon>
+      </ion-item-divider>
+      <div *ngIf="personsShown[i].shown">
+        <ion-list>
+          <ion-list-header> Name </ion-list-header>
+          <ion-item>
+            {{ person.name }}
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Gender</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ personGender[person.gender] }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-list-header> Approx. age </ion-list-header>
+          <ion-item>
+            <ion-label>{{ person.approxAge }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Build</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ personBuild[person.build] }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Height</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ person.height + " cm" }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list class="ion-padding-top">
+          <ion-list-header lines="none"> Identifying features </ion-list-header>
+          <ion-item>
+            <ion-textarea readonly>
+              {{ person.identifyingFeatures }}
+            </ion-textarea>
+          </ion-item>
+        </ion-list>
+        <ion-list class="ion-padding-top">
+          <ion-list-header lines="none"> Clothes / Footwear </ion-list-header>
+          <ion-item>
+            <ion-textarea readonly>
+              {{ person.apparel }}
+            </ion-textarea>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </ion-list>
 
-    <ion-list>
-        <div *ngFor="let vehicle of incidentReport.vehicles; let i = index">
-            <ion-item-divider>
-                <ion-icon style="vertical-align:middle;" name="car-outline"></ion-icon>
-                <ion-label style="vertical-align:middle;" class="ion-padding-start">Vehicle {{i + 1}}</ion-label>
-                <ion-icon (click)="toggleShowOfIndex(i, 'vehicle')" class="ion-margin-end"
-                    *ngIf="vehiclesShown[i].shown" slot="end" name="chevron-down">
-                </ion-icon>
-                <ion-icon (click)="toggleShowOfIndex(i, 'vehicle')" class="ion-margin-end"
-                    *ngIf="!vehiclesShown[i].shown" slot="end" name="chevron-forward">
-                </ion-icon>
-            </ion-item-divider>
-            <div *ngIf="vehiclesShown[i].shown">
-                <ion-list>
-                    <ion-list-header>
-                        VRM
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{vehicle.vrm}}</ion-label>
-                    </ion-item>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Make</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{vehicleMake[vehicle.make]}}</ion-label>
-                    </ion-item>
-                    <ng-container *ngIf="vehicle.make == 999">
-                        <ion-list-header>
-                            <ion-label>Make Other</ion-label>
-                        </ion-list-header>
-                        <ion-item>
-                            <ion-label>{{vehicle.makeOther}}</ion-label>
-                        </ion-item>
-                    </ng-container>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Model</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{vehicleModel[vehicle.model]}}</ion-label>
-                    </ion-item>
-                    <ng-container *ngIf="vehicle.model == 999">
-                        <ion-list-header>
-                            <ion-label>Model Other</ion-label>
-                        </ion-list-header>
-                        <ion-item>
-                            <ion-label>{{vehicle.modelOther}}</ion-label>
-                        </ion-item>
-                    </ng-container>
-                </ion-list>
-                <ion-list>
-                    <ion-list-header>
-                        <ion-label>Color</ion-label>
-                    </ion-list-header>
-                    <ion-item>
-                        <ion-label>{{vehicleColor[vehicle.color]}}</ion-label>
-                    </ion-item>
-                    <ng-container *ngIf="vehicle.color == 999">
-                        <ion-list-header>
-                            <ion-label>Color Other</ion-label>
-                        </ion-list-header>
-                        <ion-item>
-                            <ion-label>{{vehicle.colorOther}}</ion-label>
-                        </ion-item>
-                    </ng-container>
-                </ion-list>
-            </div>
-        </div>
-    </ion-list>
+  <ion-list>
+    <div *ngFor="let vehicle of incidentReport.vehicles; let i = index">
+      <ion-item-divider>
+        <ion-icon style="vertical-align: middle" name="car-outline"></ion-icon>
+        <ion-label style="vertical-align: middle" class="ion-padding-start"
+          >Vehicle {{ i + 1 }}</ion-label
+        >
+        <ion-icon
+          (click)="toggleShowOfIndex(i, 'vehicle')"
+          class="ion-margin-end"
+          *ngIf="vehiclesShown[i].shown"
+          slot="end"
+          name="chevron-down"
+        >
+        </ion-icon>
+        <ion-icon
+          (click)="toggleShowOfIndex(i, 'vehicle')"
+          class="ion-margin-end"
+          *ngIf="!vehiclesShown[i].shown"
+          slot="end"
+          name="chevron-forward"
+        >
+        </ion-icon>
+      </ion-item-divider>
+      <div *ngIf="vehiclesShown[i].shown">
+        <ion-list>
+          <ion-list-header> VRM </ion-list-header>
+          <ion-item>
+            <ion-label>{{ vehicle.vrm }}</ion-label>
+          </ion-item>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Make</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ vehicleMake[vehicle.make] }}</ion-label>
+          </ion-item>
+          <ng-container *ngIf="vehicle.make == 999">
+            <ion-list-header>
+              <ion-label>Make Other</ion-label>
+            </ion-list-header>
+            <ion-item>
+              <ion-label>{{ vehicle.makeOther }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Model</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ vehicleModel[vehicle.model] }}</ion-label>
+          </ion-item>
+          <ng-container *ngIf="vehicle.model == 999">
+            <ion-list-header>
+              <ion-label>Model Other</ion-label>
+            </ion-list-header>
+            <ion-item>
+              <ion-label>{{ vehicle.modelOther }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Color</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>{{ vehicleColor[vehicle.color] }}</ion-label>
+          </ion-item>
+          <ng-container *ngIf="vehicle.color == 999">
+            <ion-list-header>
+              <ion-label>Color Other</ion-label>
+            </ion-list-header>
+            <ion-item>
+              <ion-label>{{ vehicle.colorOther }}</ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </div>
+    </div>
+  </ion-list>
 </ng-container>
