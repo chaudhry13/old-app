@@ -1,5 +1,5 @@
 import { Attachment } from "./file";
-import { QuestionAnsweredStatus } from './questionnaire';
+import { QuestionAnsweredStatus } from "./questionnaire";
 
 export class Audit {
   id: string;

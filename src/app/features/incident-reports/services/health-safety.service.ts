@@ -1,9 +1,9 @@
-import { GenericService } from "./generic.service";
+import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { InjuryPart, InjuryType, InjuryLocation, InvolvedPerson } from "../models/health-safety";
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from '@app/services/auth-config.service';
 
 @Injectable()
 export class HealthSafetyService extends GenericService {

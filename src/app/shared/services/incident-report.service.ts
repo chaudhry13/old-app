@@ -1,10 +1,10 @@
-import { GenericService } from "./generic.service";
+import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { IncidentReport } from "../models/incident-report";
+import { IncidentReport } from "../../features/incident-reports/models/incident-report";
 import { FormGroup } from "@angular/forms";
-import { PaginationResult, Pagination } from "../models/pagination";
-import { AppConfigService } from './auth-config.service';
+import { PaginationResult, Pagination } from "../../features/incident-reports/models/pagination";
+import { AppConfigService } from '@app/services/auth-config.service';
 
 @Injectable()
 export class IncidentReportService extends GenericService {

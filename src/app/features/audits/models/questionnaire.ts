@@ -1,7 +1,7 @@
-import { UserList } from "./user";
-import { Division } from "./division";
+import { UserList } from "@app/models/user";
+import { Division } from "@app/models/division";
 import { Audit } from "./audit";
-import { Country } from "./country";
+import { Country } from "@shared/models/country";
 
 export class QuestionnaireDetails {
   id: string;

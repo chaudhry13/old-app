@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
-import { GenericService } from "./generic.service";
+import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
-import { Comment, CommentType } from "../models/comment";
+import { Comment, CommentType } from "@app/models/comment";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from '@app/services/auth-config.service';
 
 @Injectable()
 export class CommentService extends GenericService {

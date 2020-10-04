@@ -1,5 +1,5 @@
-import { QuestionTextOptions } from '../models/questionnaire';
-import { QuestionTypes, Question, QuestionTextType } from 'src/app/core/models/questionnaire';
+import { QuestionTextOptions } from '@app/models/questionnaire';
+import { QuestionTypes, Question, QuestionTextType } from '@app/models/questionnaire';
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 

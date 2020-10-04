@@ -1,7 +1,7 @@
-import { User } from "./user";
+import { User } from "@app/models/user";
 import { Audit } from "./audit";
-import { Attachment } from "./file";
-import { Division } from "./division";
+import { Attachment } from "@app/models/file";
+import { Division } from "@app/models/division";
 
 export class Control {
   id: string;
