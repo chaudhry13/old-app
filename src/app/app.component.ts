@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { AppConfigService } from './core/services/auth-config.service';
+import { AppConfigService } from "./core/services/auth-config.service";
 
 @Component({
   selector: "app-root",
@@ -20,10 +20,11 @@ export class AppComponent {
 
   initialize() {
     this.platform.ready().then(() => {
-      this.statusBar.styleLightContent()
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
-      this.appConfigService.loadAppConfig();
-      this.appConfigService.configureImplicitFlowAuthentication();
+      this.appConfigService.loadAppConfig().then(() => {
+        this.appConfigService.configureImplicitFlowAuthentication();
+      });
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { QuestionGroupDetails, QuestionnaireUserAnswer } from '@app/models/questionnaire';
+import { QuestionGroupDetails, QuestionnaireUserAnswer } from '../../models/questionnaire';
 
 @Component({
   selector: 'question-group',

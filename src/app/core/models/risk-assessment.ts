@@ -1,6 +1,6 @@
 import { Division } from "./division";
 import { Asset } from "./asset";
-import { Country } from "./country";
+import { Country } from "@shared/models/country";
 import { User, UserList } from "./user";
 import { SiteCategory } from "./sitecategory";
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Question, QuestionnaireUserAnswer, QuestionTypes, QuestionTextType, QuestionAnsweres } from '@app/models/questionnaire';
+import { Question, QuestionnaireUserAnswer, QuestionTypes, QuestionTextType, QuestionAnsweres } from '../../models/questionnaire';
 import { FormGroup } from '@angular/forms';
 
 @Component({

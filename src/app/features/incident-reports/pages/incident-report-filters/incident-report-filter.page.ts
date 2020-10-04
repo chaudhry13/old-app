@@ -3,12 +3,12 @@ import { ModalController } from "@ionic/angular";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Division } from "@app/models/division";
 import { DivisionService } from "@app/services/division.service";
-import { Country } from '@app/models/country';
-import { IncidentCategory, IncidentCategoryMappingTable } from '@app/models/incident-category';
-import { IncidentType } from '@app/models/incident-type';
-import { IncidentCategoryService } from '@app/services/incident-category.service';
+import { Country } from '@shared/models/country';
+import { IncidentCategory, IncidentCategoryMappingTable } from '../../models/incident-category';
+import { IncidentType } from '../../models/incident-type';
+import { IncidentCategoryService } from '../../services/incident-category.service';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { CountryService } from '@app/services/country.service';
+import { CountryService } from '@shared/services/country.service';
 
 @Component({
   selector: "app-incident-report-filter-page",

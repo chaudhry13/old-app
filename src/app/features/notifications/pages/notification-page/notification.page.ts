@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { NotificationService } from "../../services/notification.service";
-import { Notification } from "@app/models/notification";
+import { Notification } from "../../models/notification";
 import { Router } from "@angular/router";
 import { AuditService } from "../../../audits/services/audit.service";
 import { ToastService } from "@app/services/toast.service";

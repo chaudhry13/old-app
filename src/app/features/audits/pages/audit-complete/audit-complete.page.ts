@@ -1,6 +1,6 @@
-import { QuestionnaireHelperService } from "@app/services/questionnaire-helper.service";
+import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { Component, OnInit, Input } from "@angular/core";
-import { Audit } from "@app/models/audit";
+import { Audit } from "../../models/audit";
 import { OAuthService } from "angular-oauth2-oidc";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertController } from "@ionic/angular";
@@ -19,8 +19,8 @@ import { User } from "@app/models/user";
 import { Attachment } from "@app/models/file";
 import { StorageService } from "@app/services/storage.service";
 import { AppConfigService } from "@app/services/auth-config.service";
-import { FollowUpService } from "@app/services/follow-up.service";
-import { FollowUp } from "@app/models/follow-up";
+import { FollowUpService } from "../../services/follow-up.service";
+import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
 
 @Component({

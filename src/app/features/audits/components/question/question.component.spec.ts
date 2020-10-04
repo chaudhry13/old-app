@@ -10,9 +10,9 @@ import { RadioQuestionComponent } from '../radio-question/radio-question.compone
 import { CheckboxQuestionComponent } from '../checkbox-question/checkbox-question.component';
 import { NumberQuestionComponent } from '../number-question/number-question.component';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
-import { ValidationService } from '@app/services/validation.service';
-import { QuestionnaireHelperService } from '@app/services/questionnaire-helper.service';
-import { QuestionAnsweredService } from '@app/services/questionnaire.service';
+import { ValidationService } from '../../services/validation.service';
+import { QuestionnaireHelperService } from '../../services/questionnaire-helper.service';
+import { QuestionAnsweredService } from '../../services/questionnaire.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from 'src/app/app.component';
 import { ToastService } from '@app/services/toast.service';

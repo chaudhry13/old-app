@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, Input, NgZone } from "@angular/core";
 import { Location, GeocodingAddress, LocationViewModel } from '@app/models/location';
 import { AgmMap, AgmMarker } from "@agm/core";
-import { Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionLocationAnswer, QuestionLocationAnswerCreate } from '@app/models/questionnaire';
+import { Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionLocationAnswer, QuestionLocationAnswerCreate } from '../../models/questionnaire';
 import { FormGroup } from '@angular/forms';
 import { GeocodingService } from '@app/services/geocoding.service';
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { CountryService } from '@app/services/country.service';
-import { Country } from '@app/models/country';
+import { CountryService } from '@shared/services/country.service';
+import { Country } from '@shared/models/country';
 import { ModalController, ToastController } from '@ionic/angular';
 import { LocationModalPage } from '@shared/components/location-modal/location-modal.page';
 import { ToastService } from '@app/services/toast.service';

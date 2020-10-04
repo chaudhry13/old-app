@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { GenericService } from "./generic.service";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from "./auth-config.service";
 
 @Injectable()
 export class UserService extends GenericService {
@@ -19,9 +19,9 @@ export class UserService extends GenericService {
   }
 
   list(divisions: string[], search: string): Observable<User[]> {
-    var filter = {
-      divisions: divisions,
-      search: search
+    const filter = {
+      divisions,
+      search
     };
 
     return this.http.post<User[]>(this.apiBase + "/list", filter);

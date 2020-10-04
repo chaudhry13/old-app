@@ -11,7 +11,7 @@ import { DebugElement } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { ValidationService } from "@app/services/validation.service";
+import { ValidationService } from "../../services/validation.service";
 import { RouterTestingModule } from "@angular/router/testing";
 import { AppComponent } from "src/app/app.component";
 import { AgmCoreModule } from '@agm/core';

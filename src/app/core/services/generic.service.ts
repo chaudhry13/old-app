@@ -1,15 +1,14 @@
-import { AppConfigService } from './auth-config.service';
-import { AuthConfig } from 'angular-oauth2-oidc';
-import { AppConfig } from '../settings/auth.config';
+import { AppConfigService } from "./auth-config.service";
+import { AppConfig } from "../settings/auth.config";
 
 export class GenericService {
-  private extension: String;
+  private extension: string;
   public appConfigService: AppConfigService;
   public appConfig: AppConfig = new AppConfig();
-  constructor(_extension: string = "", _appConfigService: AppConfigService) {
-    this.extension = _extension;
-    this.appConfigService = _appConfigService;
-    _appConfigService.loadAppConfig();
+  constructor(extension: string = "", appConfigService: AppConfigService) {
+    this.extension = extension;
+    this.appConfigService = appConfigService;
+    appConfigService.loadAppConfig().then();
   }
 
   public get apiBase() {

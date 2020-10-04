@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { IonContent } from '@ionic/angular';
-import { PersonsViewModel } from '@app/models/incident-report';
+import { PersonsViewModel } from '../../../models/incident-report';
 
 @Component({
   selector: 'persons-form',

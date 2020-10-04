@@ -6,7 +6,7 @@ import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { ModalController } from "@ionic/angular";
 import { LocationModalPage } from "@shared/components/location-modal/location-modal.page";
 import { FormGroup } from "@angular/forms";
-import { CountryService } from "./country.service";
+import { CountryService } from "@shared/services/country.service";
 import { rejects } from "assert";
 
 @Injectable({

@@ -2,8 +2,8 @@ import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Audit } from "@app/models/audit";
-import { Control } from "@app/models/control";
+import { Audit } from "../models/audit";
+import { Control } from "../models/control";
 import { AppConfigService } from "@app/services/auth-config.service";
 
 @Injectable()

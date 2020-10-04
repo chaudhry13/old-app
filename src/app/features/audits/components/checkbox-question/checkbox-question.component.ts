@@ -1,12 +1,12 @@
-import { QuestionnaireHelperService } from '@app/services/questionnaire-helper.service';
-import { FormGroup } from '@angular/forms';
-import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionAnsweres} from '@app/models/questionnaire';
-import { Component, OnInit, Input } from '@angular/core';
+import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
+import { FormGroup } from "@angular/forms";
+import { Question, QuestionnaireUserAnswer, QuestionOption, QuestionAnsweres} from "../../models/questionnaire";
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'checkbox-question',
-  templateUrl: './checkbox-question.component.html',
-  styleUrls: ['./checkbox-question.component.scss'],
+  selector: "checkbox-question",
+  templateUrl: "./checkbox-question.component.html",
+  styleUrls: ["./checkbox-question.component.scss"],
 })
 export class CheckboxQuestionComponent implements OnInit {
   @Input() question: Question;

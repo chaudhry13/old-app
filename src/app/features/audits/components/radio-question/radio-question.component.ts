@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionOption } from '@app/models/questionnaire';
+import { QuestionTextType, Question, QuestionnaireUserAnswer, QuestionAnsweres, QuestionOption } from '../../models/questionnaire';
 import { FormGroup } from '@angular/forms';
-import { QuestionnaireHelperService } from '@app/services/questionnaire-helper.service';
+import { QuestionnaireHelperService } from '../../services/questionnaire-helper.service';
 
 // TODO: Sort question options!
 

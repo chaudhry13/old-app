@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { GenericService } from './generic.service';
+import { GenericService } from '@app/services/generic.service';
 import { HttpClient } from '@angular/common/http';
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from '@app/services/auth-config.service';
 import { QuestionnaireList, QuestionnaireDetails, QuestionnaireCopy, QuestionnaireUserAnswer, QuestionnaireUserAnswerList, QuestionnaireUserAnswerCreate, QuestionAnsweredCreate, QuestionAnsweres } from '../models/questionnaire';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';

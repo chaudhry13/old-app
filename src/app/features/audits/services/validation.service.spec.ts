@@ -1,13 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
-import { ValidationService } from '../../features/audits/services/validation.service';
+import { ValidationService } from './validation.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
-import { QuestionnaireHelperService } from '../../features/audits/services/questionnaire-helper.service';
-import { QuestionAnsweredService } from '../../features/audits/services/questionnaire.service';
-import { ToastService } from './toast.service';
+import { QuestionnaireHelperService } from './questionnaire-helper.service';
+import { QuestionAnsweredService } from './questionnaire.service';
+import { ToastService } from '@app/services/toast.service';
 import { Question, QuestionTypes, QuestionTextOptions, QuestionTextType } from '../models/questionnaire';
 import { not } from '@angular/compiler/src/output/output_ast';
 

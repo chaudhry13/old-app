@@ -21,6 +21,17 @@ import {LocationQuestionComponent} from "./components/location-question/location
 import {NumberQuestionComponent} from "./components/number-question/number-question.component";
 import {AuditService} from "./services/audit.service";
 import {ControlService} from "./services/control.service";
+import {FollowUpService} from "./services/follow-up.service";
+import {QuestionAnsweredService, QuestionnaireService, QuestionnaireUserAnswerService} from "./services/questionnaire.service";
+import {QuestionnaireHelperService} from "./services/questionnaire-helper.service";
+import {DivisionService} from "@app/services/division.service";
+import {StorageService} from "@app/services/storage.service";
+import {CameraService} from "@app/services/photo.service";
+import {ToastService} from "@app/services/toast.service";
+import { Geolocation } from "@ionic-native/geolocation/ngx";
+import {TokenService} from '@app/services/token.service';
+import {UserService} from '@app/services/user.service';
+import {ValidationService} from './services/validation.service';
 
 @NgModule({
   imports: [
@@ -52,7 +63,13 @@ import {ControlService} from "./services/control.service";
   ],
     providers: [
         AuditService,
-        ControlService
+        ControlService,
+        DivisionService,
+        FollowUpService,
+        QuestionnaireService,
+        QuestionnaireHelperService,
+        QuestionAnsweredService,
+        QuestionnaireUserAnswerService,
     ]
 })
 export class AuditModule { }

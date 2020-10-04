@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ControlService } from '../../services/control.service';
-import { Control } from '@app/models/control';
+import { Control } from '../../models/control';
 import { StorageService } from '@app/services/storage.service';
 import { Attachment } from '@app/models/file';
 import { Platform } from '@ionic/angular';
@@ -10,7 +10,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { DocumentViewer } from '@ionic-native/document-viewer/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { AuditService } from '../../services/audit.service';
-import { Audit } from '@app/models/audit';
+import { Audit } from '../../models/audit';
 import cronstrue from 'cronstrue';
 
 @Component({
@@ -49,7 +49,7 @@ export class AuditDetailsPage implements OnInit {
   getAudits() {
     this.controlService.get(this.id).then(control => {
       this.control = control;
-      this.frequency = cronstrue.toString(control.frequency);
+      this.frequency = cronstrue.toString(control.frequency); // TODO: Use CronService
 
       this.auditService.completed(control.id).then(audits => {
         this.completedAudits = audits;

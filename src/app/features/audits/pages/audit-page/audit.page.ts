@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter } from "@angular/core";
 import { ControlService } from "../../services/control.service";
-import { Control } from "@app/models/control";
+import { Control } from "../../models/control";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { Division } from "@app/models/division";

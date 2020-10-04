@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { Country } from '@app/models/country';
+import { Country } from '@shared/models/country';
 import { Division } from '@app/models/division';
 import { LocationViewModel } from '@app/models/location';
 import { User } from '@app/models/user';

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { QuestionnaireUserAnswer, Question, QuestionAnsweres, QuestionAnsweredEdit } from '@app/models/questionnaire';
+import { QuestionnaireUserAnswer, Question, QuestionAnsweres, QuestionAnsweredEdit } from '../../models/questionnaire';
 
 @Component({
   selector: 'number-question',

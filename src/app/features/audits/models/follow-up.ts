@@ -1,5 +1,5 @@
-import { Division } from "./division";
-import { User } from "./user";
+import { Division } from "@app/models/division";
+import { User } from "@app/models/user";
 
 export class FollowUp {
   id: string;

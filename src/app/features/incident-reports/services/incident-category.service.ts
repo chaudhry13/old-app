@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { GenericService } from "./generic.service";
+import { GenericService } from "@app/services/generic.service";
 import { IncidentCategory, IncidentCategoryMappingTable } from "../models/incident-category";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from './auth-config.service';
+import { AppConfigService } from '@app/services/auth-config.service';
 import { IncidentType } from '../models/incident-type';
 
 @Injectable()

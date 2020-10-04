@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "../../../core/services/user.service";
-import { DivisionService } from "../../../core/services/division.service";
-import { User } from "../../../core/models/user";
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Router } from '@angular/router';
-import { AccountService } from '../../../core/services/account.service';
-import { Division } from '../../../core/models/division';
+import { UserService } from "@app/services/user.service";
+import { DivisionService } from "@app/services/division.service";
+import { User } from "@app/models/user";
+import { OAuthService } from "angular-oauth2-oidc";
+import { Router } from "@angular/router";
+import { AccountService } from "@app/services/account.service";
+import { Division } from "@app/models/division";
 
 @Component({
   selector: "app-profile",
@@ -15,7 +15,11 @@ import { Division } from '../../../core/models/division';
 export class ProfilePage implements OnInit {
   divisions: Division[] = [];
   user: User = new User();
-  constructor(public userService: UserService, public divisionService: DivisionService, public accountService: AccountService, public oAuthService: OAuthService, private router: Router) { }
+  constructor(public userService: UserService,
+              public divisionService: DivisionService,
+              public accountService: AccountService,
+              public oAuthService: OAuthService,
+              private router: Router) { }
 
   ngOnInit() {
     this.listProfileInfo();
@@ -35,9 +39,7 @@ export class ProfilePage implements OnInit {
 
   logout() {
     localStorage.clear();
-    this.oAuthService.logOut(false);
-    setTimeout(() => {
-      this.router.navigate(["/login"]);
-    }, 1000);
+    this.oAuthService.logOut();
+    this.router.navigate(["/login"]).then();
   }
 }

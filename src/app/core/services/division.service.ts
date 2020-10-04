@@ -4,8 +4,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { GenericService } from "./generic.service";
 import { FormGroup } from "@angular/forms";
-import { OAuthService } from 'angular-oauth2-oidc';
-import { AppConfigService } from './auth-config.service';
+import { OAuthService } from "angular-oauth2-oidc";
+import { AppConfigService } from "./auth-config.service";
 
 @Injectable()
 export class DivisionService extends GenericService {
@@ -37,7 +37,7 @@ export class DivisionService extends GenericService {
   }
 
   async insert(name: string): Promise<boolean> {
-    let parameters = new HttpParams().set("name", name);
+    const parameters = new HttpParams().set("name", name);
 
     return this.http
       .post<boolean>(this.apiBase, "", {

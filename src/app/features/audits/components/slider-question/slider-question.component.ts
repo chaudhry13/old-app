@@ -1,8 +1,8 @@
-import { QuestionnaireHelperService } from '@app/services/questionnaire-helper.service';
-import { QuestionAnsweres } from '@app/models/questionnaire';
+import { QuestionnaireHelperService } from '../../services/questionnaire-helper.service';
+import { QuestionAnsweres } from '../../models/questionnaire';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { QuestionnaireUserAnswer, Question } from '@app/models/questionnaire';
+import { QuestionnaireUserAnswer, Question } from '../../models/questionnaire';
 
 @Component({
   selector: 'slider-question',

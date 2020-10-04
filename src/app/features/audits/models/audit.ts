@@ -1,4 +1,4 @@
-import { Attachment } from "./file";
+import { Attachment } from "@app/models/file";
 import { QuestionAnsweredStatus } from "./questionnaire";
 
 export class Audit {

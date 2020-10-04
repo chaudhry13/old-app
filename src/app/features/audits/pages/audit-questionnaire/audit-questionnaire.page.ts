@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {QuestionAndGroups, QuestionnaireUserAnswer, QuestionTypes} from '@app/models/questionnaire';
-import { QuestionnaireUserAnswerService } from '@app/services/questionnaire.service';
-import { QuestionnaireDetails } from '@app/models/questionnaire';
+import {QuestionAndGroups, QuestionnaireUserAnswer, QuestionTypes} from '../../models/questionnaire';
+import { QuestionnaireUserAnswerService } from '../../services/questionnaire.service';
+import { QuestionnaireDetails } from '../../models/questionnaire';
 import {ActivatedRoute} from '@angular/router';
 import { AuditService } from '../../services/audit.service';
 import {NavController} from '@ionic/angular';

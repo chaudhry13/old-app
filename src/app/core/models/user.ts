@@ -1,9 +1,9 @@
 import { Role } from "./role";
 import { Division } from "./division";
 import { RiskAssessment } from "./risk-assessment";
-import { IncidentReport } from "./incident-report";
+import { IncidentReport } from "../../features/incident-reports/models/incident-report";
 import { Treatment } from "./treatment";
-import { Control } from "./control";
+import { Control } from "../../features/audits/models/control";
 
 export class User {
 	id: string;

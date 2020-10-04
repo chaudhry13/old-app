@@ -1,14 +1,14 @@
-import { QuestionnaireHelperService } from "@app/services/questionnaire-helper.service";
-import { ValidationService } from "@app/services/validation.service";
+import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
+import { ValidationService } from "../../services/validation.service";
 import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
 import {
   Question,
   QuestionAnsweres,
   QuestionnaireUserAnswer,
   QuestionTypes,
-} from "@app/models/questionnaire";
+} from "../../models/questionnaire";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { QuestionAnsweredService } from "@app/services/questionnaire.service";
+import { QuestionAnsweredService } from "../../services/questionnaire.service";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { IonTextarea, NavController } from "@ionic/angular";
 import { ToastService } from "@app/services/toast.service";
@@ -18,7 +18,7 @@ import { Attachment } from "@app/models/file";
 import { UserService } from '@app/services/user.service';
 import { TokenService } from '@app/services/token.service';
 import { AccountService } from '@app/services/account.service';
-import { SettingsService } from '@app/services/settings.service';
+import { SettingsService } from '@app/settings/settings.service';
 import { AppConfigService } from '@app/services/auth-config.service';
 
 @Component({

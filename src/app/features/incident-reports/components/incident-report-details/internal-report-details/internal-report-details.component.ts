@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter } from '@angular/core';
-import { IncidentReport } from 'src/app/core/models/incident-report';
+import { IncidentReport } from 'src/app/features/incident-reports/models/incident-report';
 import { CameraService } from 'src/app/core/services/photo.service';
 import { Attachment } from 'src/app/core/models/file';
 import { StorageService } from 'src/app/core/services/storage.service';

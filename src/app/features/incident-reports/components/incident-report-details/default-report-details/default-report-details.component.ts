@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IncidentReport } from 'src/app/core/models/incident-report';
+import { IncidentReport } from 'src/app/features/incident-reports/models/incident-report';
 
 @Component({
   selector: 'default-report-details',

@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { VehicleColor, VehicleMakes, VehicleModels, VehiclesViewModel } from '@app/models/incident-report';
+import { VehicleColor, VehicleMakes, VehicleModels, VehiclesViewModel } from '../../../models/incident-report';
 
 @Component({
   selector: 'vehicle-form',

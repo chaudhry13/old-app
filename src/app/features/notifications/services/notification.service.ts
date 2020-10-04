@@ -3,8 +3,8 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { Notification } from "@app/models/notification";
-import { AppConfigService } from '@app/services/auth-config.service';
+import { Notification } from "../models/notification";
+import { AppConfigService } from "@app/services/auth-config.service";
 
 @Injectable()
 export class NotificationService extends GenericService {

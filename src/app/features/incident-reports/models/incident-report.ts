@@ -1,10 +1,10 @@
-import { Division } from "./division";
+import { Division } from "@app/models/division";
 import { IncidentCategory } from "./incident-category";
 import { IncidentType } from "./incident-type";
-import { Attachment } from "./file";
-import { Country } from "./country";
+import { Attachment } from "@app/models/file";
+import { Country } from "@shared/models/country";
 import { InjuryType, InjuryLocation, InjuryPart, InvolvedPerson } from "./health-safety";
-import { User } from './user';
+import { User } from '@app/models/user';
 
 export class IncidentReport {
 	id: string;

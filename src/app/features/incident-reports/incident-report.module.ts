@@ -26,21 +26,24 @@ import {PersonsFormComponent} from "./components/incident-report-forms/persons-f
 import {LocationFormComponent} from "./components/incident-report-forms/location-form/location-form.component";
 import {IntelligenceReportFormComponent} from "./components/incident-report-forms/intelligence-report-form/intelligence-report-form.component";
 import {VehicleFormComponent} from "./components/incident-report-forms/vehicle-form/vehicle-form.component";
+import {HealthSafetyService} from "./services/health-safety.service";
+import {IncidentCategoryService} from "./services/incident-category.service";
+import {IncidentReportService} from "@shared/services/incident-report.service";
 
 @NgModule({
-imports: [
+  imports: [
 	IonicModule,
 	CommonModule,
 	FormsModule,
 	ReactiveFormsModule,
 	IncidentReportRoutingModule,
+	SharedModule,
 	AgmCoreModule.forRoot({
 		apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
 		libraries: ["places"]
-	}),
-	SharedModule
-],
-declarations: [
+	})
+  ],
+  declarations: [
 	IncidentReportPage,
 	IncidentReportFilterPage,
 	InvestigationFilterComponent,
@@ -57,9 +60,14 @@ declarations: [
 	IncidentReportCreatePage,
 	DefaultReportFormComponent,
 	InvestigationReportFormComponent,
-	PersonsFormComponent, LocationFormComponent,
+	PersonsFormComponent,
+	LocationFormComponent,
 	IntelligenceReportFormComponent,
 	VehicleFormComponent
-]
+  ],
+  providers: [
+  	HealthSafetyService,
+    IncidentCategoryService
+  ]
 })
 export class IncidentReportPageModule { }

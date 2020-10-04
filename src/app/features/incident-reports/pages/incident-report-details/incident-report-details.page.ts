@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { IncidentReport } from "@app/models/incident-report";
-import { IncidentReportService } from "@app/services/incident-report.service";
+import { IncidentReport } from "../../models/incident-report";
+import { IncidentReportService } from "@shared/services/incident-report.service";
 import { CameraService } from "@app/services/photo.service";
 import {
   FileTransfer,
 } from "@ionic-native/file-transfer/ngx";
 import { User } from "@app/models/user";
 import { AgmMap } from "@agm/core";
-import { IncidentCategoryService } from '@app/services/incident-category.service';
-import { IncidentCategoryMappingTable } from '@app/models/incident-category';
+import { IncidentCategoryService } from '../../services/incident-category.service';
+import { IncidentCategoryMappingTable } from '../../models/incident-category';
 
 @Component({
   selector: "app-incident-report-details",

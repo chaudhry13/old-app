@@ -2,7 +2,7 @@ import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Audit, QuestionnaireUserAnswerAudit } from "@app/models/audit";
+import { Audit, QuestionnaireUserAnswerAudit } from "../models/audit";
 import { AppConfigService } from "@app/services/auth-config.service";
 
 @Injectable()

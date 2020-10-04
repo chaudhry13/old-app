@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Genders, Build, VehicleMakes, VehicleModels, VehicleColor } from 'src/app/core/models/incident-report';
+import { Genders, Build, VehicleMakes, VehicleModels, VehicleColor } from 'src/app/features/incident-reports/models/incident-report';
 
 @Component({
   selector: 'observation-filter',

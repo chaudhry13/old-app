@@ -1,6 +1,6 @@
 import { QuestionnaireService } from "./questionnaire.service";
-import { QuestionAnsweredService } from "src/app/core/services/questionnaire.service";
-import { ToastService } from "./toast.service";
+import { QuestionAnsweredService } from "src/app/features/audits/services/questionnaire.service";
+import { ToastService } from "@app/services/toast.service";
 import { FormGroup } from "@angular/forms";
 import {
   QuestionnaireUserAnswer,

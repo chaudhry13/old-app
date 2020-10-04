@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Division } from '@app/models/division';
 import { DivisionService } from '@app/services/division.service';
-import { IncidentCategoryService } from '@app/services/incident-category.service';
-import { IncidentCategory, IncidentCategoryMappingTable } from '@app/models/incident-category';
-import { IncidentType } from '@app/models/incident-type';
-import { IncidentReportService } from '@app/services/incident-report.service';
+import { IncidentCategoryService } from '../../services/incident-category.service';
+import { IncidentCategory, IncidentCategoryMappingTable } from '../../models/incident-category';
+import { IncidentType } from '../../models/incident-type';
+import { IncidentReportService } from '@shared/services/incident-report.service';
 import { ToastService } from '@app/services/toast.service';
-import { IncidentReportFormType } from '@app/models/incident-report';
+import { IncidentReportFormType } from '../../models/incident-report';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
