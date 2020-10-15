@@ -39,8 +39,9 @@
       style="width: 1rem; align-self: center"
       class="pointer"
     >
-      <ion-icon *ngIf="!showChildren" name="caret-forward-outline"></ion-icon>
-      <ion-icon *ngIf="showChildren" name="caret-down-outline"></ion-icon>
+      <ion-icon *ngIf="!showChildren && !division.individualDivision" name="caret-forward-outline"></ion-icon>
+      <ion-icon *ngIf="showChildren && !division.individualDivision" name="caret-down-outline"></ion-icon>
+      <ion-icon *ngIf="division.individualDivision" name="person-outline"></ion-icon>
     </div>
   </div>
 </div>
