@@ -42,7 +42,6 @@ export class IncidentReportFilterPage implements OnInit {
     this.listViewData().then(() => {
       this.filterForm = this.form;
       this.setFilters(this.filterForm.get("incidentCategoryIds").value);
-      this.setStartEndDate();
       this.subscribeToCategoryChanges();
     });
   }
@@ -57,7 +56,7 @@ export class IncidentReportFilterPage implements OnInit {
 
   private setFilters(categoryIds: any[]) {
     if (categoryIds) {
-      let ids = <number[]>categoryIds;
+      let ids = categoryIds as number[];
       this.filters = this.mappingTable.mappings
         .filter((m) => ids.some((id) => id == m.incidentCategoryId))
         .map((m) => m.form);
@@ -92,14 +91,6 @@ export class IncidentReportFilterPage implements OnInit {
 
   private async listCountries(): Promise<Country[]> {
     return this.countryService.list().toPromise();
-  }
-
-  private setStartEndDate() {
-    let startDate = this.filterForm.controls.startDate.value;
-    let endDate = this.filterForm.controls.endDate.value;
-
-    this.filterForm.controls.startDate.setValue(startDate);
-    this.filterForm.controls.endDate.setValue(endDate);
   }
 
   divisionsChanged(data) {

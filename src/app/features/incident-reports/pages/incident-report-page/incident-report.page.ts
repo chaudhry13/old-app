@@ -13,19 +13,14 @@ import { IncidentReportFilterPage } from "../incident-report-filters/incident-re
 })
 export class IncidentReportPage implements OnInit {
   public incidentReports: IncidentReport[] = [];
-  public infScrollincidentReports: IncidentReport[] = [];
+  public infScrollIncidentReports: IncidentReport[] = [];
   public incidentReportMaxLength: number;
   public incidentFilterForm: FormGroup;
 
-  public startDate: Date;
-  public endDate: Date;
-
-  public loadingOverlay: any;
-  public pageNumber: number = 1;
+  public pageNumber = 1;
 
   constructor(
     public incidentReportService: IncidentReportService,
-    public loadingController: LoadingController,
     private formBuilder: FormBuilder,
     public modalController: ModalController
   ) {
@@ -78,10 +73,16 @@ export class IncidentReportPage implements OnInit {
   }
 
   ngOnInit() {
-    this.startDate = new Date();
-    this.endDate = new Date();
-    this.startDate.setMonth(this.startDate.getMonth() - 1);
-    this.endDate.setMonth(this.endDate.getMonth() + 1);
+    this.setStartEndDates();
+  }
+
+  private setStartEndDates() {
+    const startDate = new Date();
+    const endDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    endDate.setMonth(endDate.getMonth() + 1);
+    this.incidentFilterForm.get("startDate").setValue(startDate.toJSON());
+    this.incidentFilterForm.get("endDate").setValue(endDate.toJSON());
   }
 
   ionViewWillEnter() {
@@ -94,7 +95,7 @@ export class IncidentReportPage implements OnInit {
       event.target.complete();
 
       if (
-        this.infScrollincidentReports.length >= this.incidentReportMaxLength
+        this.infScrollIncidentReports.length >= this.incidentReportMaxLength
       ) {
         event.target.disabled = true;
       }
@@ -105,14 +106,14 @@ export class IncidentReportPage implements OnInit {
     this.incidentReports
       .slice((this.pageNumber - 1) * 25, 25 * this.pageNumber)
       .forEach((incident) => {
-        this.infScrollincidentReports.push(incident);
+        this.infScrollIncidentReports.push(incident);
       });
     this.pageNumber++;
   }
 
   async list(filter: any) {
     this.incidentReports = null;
-    this.infScrollincidentReports = [];
+    this.infScrollIncidentReports = [];
     this.pageNumber = 1;
 
     this.incidentReportService.list(filter).then((incidentReports) => {
