@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
 import { FileUploadOptions } from "@ionic-native/file-transfer";
 import { OAuthService } from "angular-oauth2-oidc";
 import { ToastService } from "./toast.service";
@@ -9,54 +8,43 @@ import {
   FileTransfer,
 } from "@ionic-native/file-transfer/ngx";
 import { AlertController } from "@ionic/angular";
+import { Plugins, CameraResultType, CameraPhoto } from "@capacitor/core";
+
+const { Camera } = Plugins;
 
 @Injectable()
 export class CameraService {
-  private cameraOptions: CameraOptions = {
-    quality: 100,
-    destinationType: this.cameraNative.DestinationType.FILE_URI,
-    encodingType: this.cameraNative.EncodingType.JPEG,
-    mediaType: this.cameraNative.MediaType.PICTURE,
-  };
-
   uploadProgress: number = 0;
   uploadAlert: HTMLIonAlertElement;
   MAX_PHOTO_COUNT: number = 50;
 
   constructor(
-    private cameraNative: Camera,
-    private auth: OAuthService,
+    // private cameraNative: Camera,
+    private oAuthService: OAuthService,
     private toastService: ToastService,
     private appConfigService: AppConfigService,
     public fileTransfer: FileTransfer,
     private alertCtrl: AlertController
   ) {}
 
-  /**
-   * Take a picture or video, or load one from the library.
-   * @param {CameraOptions} [options] (Optional) Options that you want to pass to the camera. Encoding type, quality, etc. Platform-specific quirks are described in the [Cordova plugin docs](https://github.com/apache/cordova-plugin-camera#cameraoptions-errata-).
-   * @returns {Promise<any>} Returns a Promise that resolves with Base64 encoding of the image data, or the image file URI, depending on cameraOptions, otherwise rejects with an error.
-   */
-  camera(option?: CameraOptions): Promise<any> {
-    if (option) {
-      return this.cameraNative.getPicture(option);
-    }
-
-    return this.cameraNative.getPicture(this.cameraOptions);
+  takePhoto(): Promise<CameraPhoto> {
+    return Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.Uri
+    });
   }
 
-  options(image: any) {
-    var token = this.auth.getAccessToken();
+  getOptions(image: CameraPhoto): FileUploadOptions {
+    const token = this.oAuthService.getAccessToken();
 
-    let options: FileUploadOptions = {
+    return {
       fileKey: "file",
       fileName:
-        Date.now().toString() + "_" + image.substr(image.lastIndexOf("/") + 1),
+        Date.now().toString() + "_" + image.path.substr(image.path.lastIndexOf("/") + 1),
       mimeType: "image/jpeg",
       headers: { Authorization: "Bearer " + token },
     };
-
-    return options;
   }
 
   public takePhotoAndUpload(
@@ -68,41 +56,10 @@ export class CameraService {
         this.toastService.show("You cannot add more than 50 photos");
         return reject("You cannot add more than 50 photos");
       } else {
-        this.camera()
+        this.takePhoto()
           .then((image) => {
-            var uri = encodeURI(
-              this.appConfigService.getApiBaseUrl +
-                "/api/storage" +
-                urlExtension
-            );
-
-            const fileTransfer: FileTransferObject = this.fileTransfer.create();
-            const options = this.options(image);
-            options.chunkedMode = false;
-            options.params = {};
-
-            this.progress();
-
-            fileTransfer
-              .upload(image, uri, options)
-              .then((result) => {
-                this.toastService.show("Photo was uploaded successfully");
-                this.uploadAlert.dismiss();
-                console.debug(result);
-                return resolve(true);
-              })
-              .catch((error) => {
-                this.toastService.show("An error occurred uploading the image");
-                this.uploadAlert.dismiss();
-                console.debug(error);
-                return reject(error);
-              });
-
-            fileTransfer.onProgress((progress) => {
-              this.uploadProgress = (progress.loaded / progress.total) * 100;
-              var percent = Math.round(this.uploadProgress);
-              if (this.uploadAlert)
-                this.uploadAlert.subHeader = percent.toString() + "% uploaded";
+            this.uploadPhoto(urlExtension, image).then(result => {
+              return resolve(result);
             });
           })
           .then((result) => {
@@ -116,7 +73,38 @@ export class CameraService {
     });
   }
 
-  progress() {
+  private uploadPhoto(urlExtension: string, image: CameraPhoto): Promise<boolean> {
+    const uri = encodeURI(
+        this.appConfigService.getApiBaseUrl +
+        "/api/storage" +
+        urlExtension
+    );
+
+    const fileTransfer: FileTransferObject = this.fileTransfer.create();
+    const options = this.getOptions(image);
+    options.chunkedMode = false;
+    options.params = {};
+
+    return new Promise<boolean>((resolve, reject) => {
+      this.startProgressModal(fileTransfer);
+
+      fileTransfer.upload(image.path, uri, options)
+          .then((result) => {
+            this.uploadAlert.dismiss().then(() => {
+              this.toastService.show("Photo was uploaded successfully");
+              resolve(true);
+            });
+          })
+          .catch(() => {
+            this.uploadAlert.dismiss().then(() => {
+              this.toastService.show("An error occurred uploading the image");
+              reject(false);
+            });
+          });
+    });
+  }
+
+  startProgressModal(fileTransfer: FileTransferObject) {
     this.alertCtrl
       .create({
         header: "Uploading..",
@@ -125,6 +113,13 @@ export class CameraService {
       .then((alert) => {
         this.uploadAlert = alert;
         this.uploadAlert.present();
+
+        fileTransfer.onProgress((progress) => {
+          this.uploadProgress = (progress.loaded / progress.total) * 100;
+          var percent = Math.round(this.uploadProgress);
+          if (this.uploadAlert)
+            this.uploadAlert.subHeader = percent.toString() + "% uploaded";
+        });
       });
   }
 

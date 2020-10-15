@@ -208,59 +208,20 @@ export class AuditCompletePage implements OnInit {
     });
   }
 
-  takePicture() {
-    if (this.photos.length === 50) {
-      this.toastService.show("You cannot add more than 50 photos");
-    } else {
-      this.cameraService
-        .camera()
-        .then((image) => {
-          const uri = encodeURI(
-            this.appConfigService.getApiBaseUrl +
-              "/api/storage" +
-              "/audit?organizationId=" +
-              this.user.organization +
-              "&controlId=" +
-              this.audit.controlId +
-              "&auditId=" +
-              this.audit.id +
-              "&uid=" +
-              this.user.id
-          );
-
-          const fileTransfer: FileTransferObject = this.fileTransfer.create();
-          const options = this.cameraService.options(image);
-          options.chunkedMode = false;
-          options.params = {};
-
-          this.progress();
-
-          fileTransfer
-            .upload(image, uri, options)
-            .then(() => {
-              this.toastService.show("Photo was uploaded successfully");
-
-              this.uploadAlert.dismiss();
-              this.listFiles();
-            })
-            .catch(() => {
-              this.toastService.show("An error occurred uploading the image");
-              this.uploadAlert.dismiss();
-            });
-
-          fileTransfer.onProgress((progress) => {
-            this.uploadProgress = (progress.loaded / progress.total) * 100;
-            const percent = Math.round(this.uploadProgress);
-            this.uploadAlert.subHeader = percent.toString() + "% uploaded";
-          });
-        })
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((error) => {
-          console.debug(error);
-        });
-    }
+  async takePhotoAndUpload() {
+    const auditStorageUrlExt = "/audit?organizationId=" +
+        this.user.organization +
+        "&controlId=" +
+        this.audit.controlId +
+        "&auditId=" +
+        this.audit.id +
+        "&uid=" +
+        this.user.id;
+    this.cameraService.takePhotoAndUpload(auditStorageUrlExt, this.photos.length).then(result => {
+      if (result) {
+        this.listFiles();
+      }
+    });
   }
 
   enableLocation() {
