@@ -6,10 +6,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ionic serve",
-    "build": "ng build",
+    "build": "ionic build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-android": "ionic capacitor run android",
+    "build-ios": "ionic capacitor run android"
   },
   "private": true,
   "dependencies": {
