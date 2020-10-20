@@ -42,7 +42,7 @@ export class DivisionListComponent implements OnInit {
   ngOnInit() {
     this.listDivisions();
     if (this.updateDivisions) {
-      this.updateDivisions.subscribe((divisions) => {
+      this.updateDivisions.subscribe(divisions => {
         if (divisions) {
           this.userDivisions = divisions;
         }
@@ -57,70 +57,90 @@ export class DivisionListComponent implements OnInit {
     }
 
     if (this.setDivisions) {
-      this.setDivisions.subscribe((divisions) => {
+      this.setDivisions.subscribe(divisions => {
         if (!this.divisions && !this.userDivisions) {
           //No divisions has been given or loaded.
           //Saves the input divisions to a different variable
           this.tempInputDivisions = divisions;
-        } else {
+        }
+        else {
           //sends the selected divisions down the tree
           var selected: Division[];
           if (typeof divisions[0] == "string") {
             selected = this.buildDivisionTreeFromIds(divisions);
-          } else {
+          }
+          else {
             selected = <Division[]>divisions;
           }
 
-          this.inputDivisions = selected;
+          var uniqueSelected = selected.filter((item, i, ar) => ar.findIndex(t => t.id === item.id) === i);
+
+          this.inputDivisions = uniqueSelected;
 
           //Sets the individual divisions
-          this.divisions = this.divisions.concat(
-            selected.filter((d) => d.individualDivision)
-          );
+          this.divisions = this.divisions.filter(div => !div.individualDivision || uniqueSelected.filter(d => d.individualDivision).some(u => u.id == div.id));
 
           //Sets the names which have been selected
-          this.namesSelected = selected.map((x) => x.name); //this.namesFromIds(divisions);
-
+          this.namesSelected = uniqueSelected.map(x => x.name);//this.namesFromIds(divisions);
+          
           this.selectedNamesEmitter.emit(this.namesSelected);
 
           //Sets the children selected
-          this.childrenSelected = this.getSelectedTree(
-            selected,
-            this.divisions
-          );
+          this.childrenSelected = this.getSelectedTree(uniqueSelected, this.divisions);
         }
       });
+      this.setDivisionsFromGlobal(this.divisionService.get());
     }
   }
 
   onSelected(childItem: selectedItem) {
-    //Adding or removeing the child which has been clicked on
-    this.childrenSelected = this.childrenSelected.filter(
-      (x) => x.from != childItem.from
-    );
-    if (childItem.checked) {
-      this.childrenSelected.push(childItem);
+    if (this.addIndividual) {
+      //Adding or removeing the child which has been clicked on
+      this.childrenSelected = this.childrenSelected.filter(x => x.from != childItem.from);
+      if (childItem.checked) {
+        this.childrenSelected.push(childItem);
+      }
+
+      this.childrenSelected = this.childrenSelected.filter((item, i, ar) => ar.findIndex(t => t.selected[0].id === item.selected[0].id) === i);
+
+      //Takes the divisions selected
+      var selectedTopLevelDivisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
+      var selectedDivisions: Division[] = this.onlyTopLevel ? selectedTopLevelDivisions : [].concat(...selectedTopLevelDivisions.map(division => this.getAllChildren(division)));
+      selectedDivisions = selectedDivisions.filter((item, i, ar) => ar.findIndex(t => t.id === item.id) === i);
+
+      //Only print the top-level names
+      this.namesSelected = selectedTopLevelDivisions.map(x => x.name).filter((item, i, ar) => ar.findIndex(t => t === item) === i);;
+
+      //Emit the selected divisions
+      this.selected.emit(selectedDivisions.map(x => x.id));
+      this.selectedFull.emit(selectedDivisions);
     }
+    else {
+      var child = this.childrenSelected.find(c => c.from == childItem.from);
+      if (child) {
+        this.childrenSelected.find(c => c.from == childItem.from).checked = childItem.checked;
+        this.childrenSelected.find(c => c.from == childItem.from).selected = childItem.selected;
+      }
+      else {
+        this.childrenSelected.push(childItem);
+      }
+      this.childrenSelected = this.childrenSelected.filter(x => x.checked);
 
-    //Takes the divisions selected
-    var selectedTopLevelDivisions: Division[] = [].concat(
-      ...this.childrenSelected.map((x) => x.selected)
-    );
-    let selectedDivisions: Division[] = this.onlyTopLevel
-      ? selectedTopLevelDivisions
-      : [].concat(
-          ...selectedTopLevelDivisions.map((division) =>
-            this.getAllChildren(division)
-          )
-        );
+      var divisions: Division[] = [].concat(...this.childrenSelected.map(x => x.selected));
+      var selected: Division[];
+      selected = this.buildDivisionTreeFromIds(divisions.map(d => d.id));
 
-    //Only print the top-level names
-    this.namesSelected = selectedTopLevelDivisions.map((x) => x.name);
+      var uniqueSelected = selected.filter((item, i, ar) => ar.findIndex(t => t.id === item.id) === i);
 
-    //Emit the selected divisions
-    this.selected.emit(selectedDivisions.map((x) => x.id));
-    this.selectedFull.emit(selectedDivisions);
-    this.selectedNamesEmitter.emit(this.namesSelected);
+      console.log(uniqueSelected);
+  
+  
+     // Sets the names which have been selected
+      this.namesSelected = uniqueSelected.map(x => x.name);//this.namesFromIds(divisions);
+      this.selectedNamesEmitter.emit(this.namesSelected);
+      this.selected.emit(divisions.map(d => d.id));
+      this.selectedFull.emit(divisions);
+    }
   }
 
   clearAll() {
@@ -136,7 +156,7 @@ export class DivisionListComponent implements OnInit {
   getAllChildren(division: Division): Division[] {
     var result: Division[] = [division];
     if (division.children) {
-      division.children.forEach((child) => {
+      division.children.forEach(child => {
         result = result.concat(this.getAllChildren(child));
       });
     }
@@ -164,23 +184,19 @@ export class DivisionListComponent implements OnInit {
   }
 
   buildDivisionTreeFromIds(divisions: string[]): Division[] {
-    return this.buildDivisionTreeFromIdsHelper(divisions, this.divisions);
+    return this.buildDivisionTreeFromIdsHelper(divisions, this.divisions)
   }
 
-  buildDivisionTreeFromIdsHelper(
-    divisions: string[],
-    possible: Division[]
-  ): Division[] {
+  buildDivisionTreeFromIdsHelper(divisions: string[], possible: Division[]): Division[] {
     var result: Division[] = [];
 
-    possible.forEach((div) => {
+    possible.forEach(div => {
       if (divisions.includes(div.id)) {
         result.push(div);
-      } else {
+      }
+      else {
         if (div.children) {
-          result = result.concat(
-            this.buildDivisionTreeFromIdsHelper(divisions, div.children)
-          );
+          result = result.concat(this.buildDivisionTreeFromIdsHelper(divisions, div.children));
         }
       }
     });
@@ -195,20 +211,21 @@ export class DivisionListComponent implements OnInit {
   getSelectedTree(divs: Division[], divisions: Division[]): selectedItem[] {
     var result: selectedItem[] = [];
 
-    divisions.forEach((division) => {
+    divisions.forEach(division => {
       //If this division is selected
-      if (divs.some((div) => division.id == div.id)) {
+      if (divs.some(div => division.id == div.id)) {
         result.push({
           selected: [division],
           checked: true,
-          from: division.id,
+          from: division.id
         });
-      } else if (this.hasChild(division)) {
+      }
+      else if (this.hasChild(division)) {
         var selected = this.getSelectedTree(divs, division.children);
         //If a child has been selected
-        if (selected.some((s) => s.selected.length > 0)) {
+        if (selected.some(s => s.selected.length > 0)) {
           result.push({
-            selected: [].concat(...selected.map((s) => s.selected)),
+            selected: [].concat(...selected.map(s => s.selected)),
             from: division.id,
             checked: false,
           });
@@ -220,4 +237,8 @@ export class DivisionListComponent implements OnInit {
   }
 
   trackById = (item) => item.Id;
+
+  private setDivisionsFromGlobal(divisions: any) {
+    this.setDivisions.emit(divisions);
+  }
 }

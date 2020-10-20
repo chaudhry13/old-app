@@ -33,6 +33,7 @@ export class DivisionSelectorComponent implements OnInit {
     const { data } = await modal.onWillDismiss();
     this.selectedDivisionIds = data[0];
     this.selectedDivisionNames = data[1];
+
     if (data[1] && data[1].length > 0) {
       this.selectedDivisionsText = this.stringifyDivisionNames(data[1]);
     } else {
