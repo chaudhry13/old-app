@@ -78,14 +78,6 @@ export class IncidentReportCreatePage implements OnInit {
     this.listCategoryMappings();
   }
 
-  private subscribeToIncidentReportChanges() {
-    this.incidentForm.valueChanges
-      .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe((form) => {
-        console.log(form);
-      });
-  }
-
   public submitForm() {
     if (this.incidentForm.valid) {
       this.insertIncidentReport();
