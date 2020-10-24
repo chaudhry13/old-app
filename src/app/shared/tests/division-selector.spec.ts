@@ -1,124 +1,215 @@
-import { async } from "@angular/core/testing";
+import { AssertNotNull } from '@angular/compiler';
+import { async } from '@angular/core/testing';
 import { Division } from '@app/models/division';
-import { DivisionListComponent } from '@shared/components/division-list/division-list.component';
+import { User } from '@app/models/user';
 import { DivisionList } from '@shared/models/division-list';
 import { DivisionNode } from '@shared/models/division-node';
+import { TestHelper } from "./test-helper";
 
-describe("DivisionNode", () => {
-    var divNode: DivisionNode;
-    var childDivision: Division;
-    var parentDivision: Division;
-    describe("DivisionNode data", () => {
-        
+describe("Division Selector tests", () => {
+    var child: DivisionNode, child2: DivisionNode, parent: DivisionNode;
+
+    beforeEach(async(() => {
+        child = TestHelper.generateDivisionNode("child");
+        child2 = TestHelper.generateDivisionNode("child2");
+        parent = TestHelper.generateDivisionNode("parent");
+    }));
+
+    describe("DivisionNode", () => {
+        it("should initialize divisionNode with checked as false", () => {
+            expect(child).toBeTruthy();
+            expect(child.checked).toBeFalsy();
+        });
+    
+        it("should have division", () => {
+            expect(child.division).toBeTruthy();
+            expect(child.division.name).toBe("child");
+        });
+    
+        it("should be able to check it self", () => {
+            child.toggle();
+            expect(child.checked).toBeTruthy();
+        });
+    
+        it("should initially have null parent", () => {
+            expect(child.parent).toBeNull();
+        });
+    
+        it("should be able to add a child", () => {
+            parent.addChild(child);
+    
+            expect(parent.children.length).toBe(1);
+            expect(child.parent).toBe(parent);
+        });
+    });
+
+    describe("DivisionList", () => {
+
+        var divisionList: DivisionList;
+
         beforeEach(async(() => {
-            childDivision = new Division();
-            parentDivision = new Division();
-            divNode = new DivisionNode(childDivision)
+            divisionList = new DivisionList();
+            divisionList.updateToplevelDivisions([child, child2]);
         }));
 
-        it("should initialize divisionNode with not checked", () => {
-            expect(divNode).toBeTruthy();
-            expect(divNode.checked).toBeFalsy();
+        it("should contain a list of DivisionNodes", () => {
+            expect(divisionList.toplevelDivisions.length).toBe(2);
         });
 
-        it("should always have division", () => {
-            expect(divNode.division).toBeTruthy();
+        it("should be able to clear all DivisionNodes", () => {
+            child.check()
+            child2.check();
+
+            divisionList.clearAll();
+
+            expect(child.checked).toBeFalsy();
+            expect(child2.checked).toBeFalsy();
         });
 
-        it("should be able to check it self", () => {
-            divNode.check();
-            expect(divNode.checked).toBeTruthy();
+        it("should return the checked divisions", () => {
+            child.check()
+            child2.check();
+
+            expect(divisionList.getCheckedDivisions()).toEqual([child.division, child2.division]);
         });
 
-        it("should initially have null parent", () => {
-            expect(divNode.parent).toBeNull();
+        it("should check children if parent is checked if asFilter is true", () => {
+            parent.addMultipleChildren([child, child2]);
+
+            divisionList.updateToplevelDivisions([parent]);
+
+            divisionList.check(parent);
+
+            expect(parent.checked).toBeTruthy();
+            expect(child.checked).toBeTruthy();
+            expect(child2.checked).toBeTruthy();
         });
 
-        it("should be able to have parent", () => {
-            divNode.parent = new DivisionNode(parentDivision);
+        it("should check parents if asFilter is false", () => {
+            parent.addMultipleChildren([child, child2]);
 
-            expect(divNode.parent).toBeTruthy();
+            divisionList.updateToplevelDivisions([parent]);
+
+            divisionList.asFilter = false;
+
+            divisionList.check(child);
+
+            expect(parent.checked).toBeTruthy();
+            expect(child.checked).toBeTruthy();
+            expect(child2.checked).toBeFalsy();
         });
 
-        it("should be able to add child and set parent on child", () => {
-            var parentDivNode = new DivisionNode(parentDivision);
+        it("should clear down (children) if asFilter is true", () => {
+            parent.addMultipleChildren([child, child2]);
 
-            parentDivNode = parentDivNode.addChild(divNode);
+            divisionList.updateToplevelDivisions([parent]);
 
-            console.log(parentDivNode);
+            divisionList.asFilter = false;
 
-            expect(divNode.parent).toBeTruthy();
-            expect(parentDivNode.countChildren()).toBe(1);
+            divisionList.clear(child);
+            divisionList.clear(parent);
+
+            expect(parent.checked).toBeFalsy();
+            expect(child.checked).toBeFalsy();
+            expect(child2.checked).toBeFalsy();
+        });
+
+        it("should clear child only if asFilter is false", () => {
+            parent.addMultipleChildren([child, child2]);
+
+            divisionList.asFilter = false;
+
+            divisionList.check(child);
+            divisionList.clear(child);
+
+            expect(parent.checked).toBeTruthy();
+            expect(child.checked).toBeFalsy();
+            expect(child2.checked).toBeFalsy();
+        });
+
+        it("should clear down if orphan and asFilter is false", () => {
+            parent.addMultipleChildren([child, child2]);
+
+            divisionList.asFilter = false;
+
+            divisionList.clear(child);
+            divisionList.clear(parent);
+
+            expect(parent.checked).toBeFalsy();
+            expect(child.checked).toBeFalsy();
+            expect(child2.checked).toBeFalsy();
+        });
+
+        it("should convert toplevel divisions to divisionNodes", () => {
+            divisionList.toplevelDivisions = [];
+
+            var divisions:  Division[] = [
+                {
+                    id: "test1",
+                    name: "div1",
+                    children: [
+                        {
+                            id: "test1.1",
+                            name: "div1.1",
+                            created: new Date(),
+                            user: new User(),
+                            individualDivision: false,
+                            children: []
+                        },
+                        {
+                            id: "test1.2",
+                            name: "div1.2",
+                            created: new Date(),
+                            user: new User(),
+                            individualDivision: false,
+                            children: []
+                        }
+                    ],
+                    created: new Date(),
+                    user: new User(),
+                    individualDivision: false
+                },
+                {
+                    id: "test2",
+                    name: "div2",
+                    children: [
+                        {
+                            id: "test2.1",
+                            name: "div2.1",
+                            created: new Date(),
+                            user: new User(),
+                            individualDivision: false,
+                            children: []
+                        },
+                        {
+                            id: "test2.2",
+                            name: "div2.2",
+                            created: new Date(),
+                            user: new User(),
+                            individualDivision: false,
+                            children: []
+                        }
+                    ],
+                    created: new Date(),
+                    user: new User(),
+                    individualDivision: false
+                },
+                {
+                    id: "test3",
+                    name: "div3",
+                    created: new Date(),
+                    user: new User(),
+                    individualDivision: false,
+                    children: []
+                }
+            ];
+
+            divisionList.makeDivisionNodes(divisions);
+
+            expect(divisionList.toplevelDivisions.length).toBe(3);
+            expect(divisionList.toplevelDivisions[0].children[0].division.name).toBe("div1.1");
         });
     });
 });
 
-describe("DivisionList", () => {
 
-    describe("DivisionList Data",  () => {
-        var divisionList = new DivisionList();
-        var divNode1 = new DivisionNode(new Division);
-        var divNode2 = new DivisionNode(new Division);
-        var divNode3 = new DivisionNode(new Division);
-    
-        beforeEach(async(() => {
-            divisionList.updateToplevelDivisions([divNode1, divNode2, divNode3])
-        }));
-    
-        it("should contain an array of top level divisions", () => {
-            expect(divisionList.toplevelDivisions).toBeTruthy()
-            expect(divisionList.toplevelDivisions.length).toBe(3);
-        });
-    
-        it("should respect hierarchy in divisions", () => {
-            divNode1.addMultipleChildren([divNode2, divNode3]);
-    
-            divisionList.updateToplevelDivisions([divNode1]);
-    
-            expect(divNode1.countChildren()).toBe(2);
-            expect(divisionList.toplevelDivisions.length).toBe(1);
-        });
-    });
-
-    describe("DivisionList behaviour", () => {
-        var divisionList = new DivisionList();
-        var divNode1 = new DivisionNode(new Division, true);
-        var divNode2 = new DivisionNode(new Division, true);
-        var divNode3 = new DivisionNode(new Division, true);
-        var divNode4 = new DivisionNode(new Division, true);
-    
-        beforeEach(() => {
-            divNode1.addMultipleChildren([divNode2, divNode3]);
-            divNode2.addChild(divNode4);
-            divisionList.updateToplevelDivisions([divNode1]);
-        });
-
-        it("should be able to clear all checks", () => {
-            expect(divNode1.checked).toBeTruthy();
-            expect(divNode2.checked).toBeTruthy();
-            expect(divNode3.checked).toBeTruthy();
-            expect(divNode4.checked).toBeTruthy();
-
-            divisionList.clear();
-
-            expect(divNode1.checked).toBeFalsy();
-            expect(divNode2.checked).toBeFalsy();
-            expect(divNode3.checked).toBeFalsy();
-            expect(divNode4.checked).toBeFalsy();
-        });
-
-        it("should check parent of all children is checked", () => {
-            divisionList.asFilter = true;
-            divNode1.checked = false;
-            divNode2.checked = false;
-            divNode3.checked = false;
-            divNode4.checked = false;
-
-            divNode4.check();
-
-            expect(divNode2.checked).toBeTruthy();
-        });
-    });
-
-
-})

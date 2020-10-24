@@ -3,74 +3,56 @@ import { Division } from '@app/models/division';
 export class DivisionNode {
     public checked: boolean;
     public division: Division;
-    public parent: DivisionNode = null;
-    public leftmostChild: DivisionNode = null;
-    public rightSibling: DivisionNode = null;
-    public leftmostSibling: DivisionNode = null
+    public parent?: DivisionNode = null;
+    public children: DivisionNode[] = []
 
     constructor(division: Division, checked: boolean = false) {
         this.division = division;
         this.checked = checked;
-        this.leftmostSibling = this;
+    }
+
+    public toggle() {
+        this.checked = !this.checked;
     }
 
     public check() {
         this.checked = true;
     }
-
-    public addChild(child: DivisionNode): DivisionNode {
-        if (this.leftmostChild != null) {
-            this.leftmostChild = this.leftmostChild.makeSiblings(child);
-        } else {
-            var ysib = child.leftmostSibling;
-            this.leftmostChild = ysib;
-            while (ysib != null) {
-                ysib.parent = this;
-                ysib = ysib.rightSibling;
-            }
-        }
-
-        return this;
+    
+    public clear() {
+        this.checked = false;
     }
 
-    public countChildren(): number {
-        // var count = 0;
-        // var child = this.leftmostChild;
-        // console.log(child);
-        // while (child != null) {
-        //     count++;
-        //     child = child.rightSibling;
-        // }
+    public checkDown() {
+        this.check();
 
-        return 1;
+        if (this.children.length > 0) {
+            this.children.forEach(child => {
+                child.checkDown();
+            });
+        }
     }
 
-    public makeSiblings(node: DivisionNode): DivisionNode {
-        var rightSibling = this.rightSibling;
+    public clearDown() {
+        this.clear();
 
-        if (rightSibling == null) {
-            rightSibling = this;
-        } else {
-            while (rightSibling != null) {
-                rightSibling = rightSibling.rightSibling
-            }
+        if (this.children.length > 0) {
+            this.children.forEach(child => {
+                child.clearDown();
+            });
         }
+    }
 
-        var nodeSiblings = node.leftmostSibling;
+    public checkUp() {
+        this.check();
 
-        rightSibling.rightSibling = nodeSiblings;
+        if (this.parent)
+            this.parent.checkUp();
+    }
 
-        nodeSiblings.leftmostSibling = rightSibling.leftmostSibling;
-
-        nodeSiblings.parent = rightSibling.parent;
-
-        while (nodeSiblings.rightSibling != null) {
-            nodeSiblings = nodeSiblings.rightSibling;
-            nodeSiblings.leftmostSibling = rightSibling.leftmostSibling;
-            nodeSiblings.parent = rightSibling.parent;
-        }
-
-        return nodeSiblings;
+    public addChild(child: DivisionNode): void {
+        child.parent = this;
+        this.children.push(child);
     }
 
     public addMultipleChildren(children: DivisionNode[]): void {

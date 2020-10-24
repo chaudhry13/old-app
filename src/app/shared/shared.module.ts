@@ -24,6 +24,7 @@ import { ValidationService } from "../features/audits/services/validation.servic
 import { QRScanner } from "@ionic-native/qr-scanner/ngx";
 import { DeeplinkService } from "@app/services/deeplink.service";
 import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,10 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
     RiskLevelPipe,
     SanitizeHtmlPipe,
   ],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    IonicModule
+  ],
   exports: [
     CommonModule,
     FormsModule,
