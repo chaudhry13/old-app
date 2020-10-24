@@ -140,6 +140,8 @@ export class DivisionItemComponent implements OnInit, OnChanges {
     if (divisions.some(d => d.id == this.division.id)) {
       this.checked = true;
     }
+
+    this.inputDivisions = [];
   }
 
   getItem(): selectedItem {
@@ -154,6 +156,7 @@ export class DivisionItemComponent implements OnInit, OnChanges {
     //If a change has been made in the check, then return the result
     if (this.addIndividual) {
       this.onSelect.emit(this.getItem());
+      this.clearDown.emit();
     }
     else {
       if (!check) {
