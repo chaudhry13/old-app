@@ -1,5 +1,9 @@
 import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
+import { Division } from '@app/models/division';
+import { DivisionService } from '@app/services/division.service';
 import { ModalController } from "@ionic/angular";
+import { DivisionList } from '@shared/models/division-list';
+import { DivisionNode } from '@shared/models/division-node';
 import { DivisionSelectorModalPage } from "src/app/shared/components/division-selector-modal/division-selector-modal.page";
 
 @Component({
@@ -10,38 +14,48 @@ import { DivisionSelectorModalPage } from "src/app/shared/components/division-se
 export class DivisionSelectorComponent implements OnInit {
   @Input() public textSize: number = 0;
   @Input() public addIndividual: boolean = false;
+  @Input() public asFilter: boolean = true;
   @Output() public changeInSelectedDivisions = new EventEmitter<string[]>();
 
+  public divisionList: DivisionList;
   public selectedDivisionIds: string[] = [];
   public selectedDivisionNames: string[] = [];
   public selectedDivisionsText: string = "Select divisions...";
 
-  constructor(private modalController: ModalController) {}
+  constructor(private modalController: ModalController, private divisionService: DivisionService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.divisionList = new DivisionList();
+    this.divisionList.asFilter = this.asFilter;
+    this.listDivisions().then(divisions => {
+      this.divisionList.makeDivisionNodes(divisions);
+    });
+    console.log(this.divisionList);
+  }
+
+  public async listDivisions() {
+    return this.divisionService.list();
+  }
 
   async presentModal() {
     const modal = await this.modalController.create({
       component: DivisionSelectorModalPage,
       cssClass: "division-selector-modal",
       componentProps: {
-        selectedDivisionIds: this.selectedDivisionIds,
-        addIndividual: this.addIndividual,
+        divisionList: this.divisionList
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    this.selectedDivisionIds = data[0];
-    this.selectedDivisionNames = data[1];
+    this.divisionList = data;
+    this.selectedDivisionIds = this.divisionList.getCheckedDivisions().map(divNode => divNode.division.id)
+    this.selectedDivisionNames = this.divisionList.getCheckedDivisions().map(divNode => divNode.division.name)
 
-    if (data[1] && data[1].length > 0) {
-      this.selectedDivisionsText = this.stringifyDivisionNames(data[1]);
-    } else {
-      this.selectedDivisionsText = "Select divisions...";
-    }
-    if (data) {
+    if (this.selectedDivisionNames && this.selectedDivisionNames.length > 0) {
+      this.selectedDivisionsText = this.stringifyDivisionNames(this.selectedDivisionNames);
       this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
     } else {
+      this.selectedDivisionsText = "Select divisions...";
       this.changeInSelectedDivisions.emit([]);
     }
   }

@@ -6,6 +6,7 @@ import { OAuthService } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
 import { AccountService } from "@app/services/account.service";
 import { Division } from "@app/models/division";
+import { DivisionList } from '@shared/models/division-list';
 
 @Component({
   selector: "app-profile",
@@ -15,6 +16,7 @@ import { Division } from "@app/models/division";
 export class ProfilePage implements OnInit {
   divisions: Division[] = [];
   user: User = new User();
+  divisionList: DivisionList = new DivisionList();
   constructor(
     public userService: UserService,
     public divisionService: DivisionService,
@@ -31,8 +33,10 @@ export class ProfilePage implements OnInit {
     this.listProfileInfo();
   }
   private listProfileInfo() {
+    this.divisionList.asFilter = false;
     this.divisionService.list().then((data) => {
       this.divisions = data;
+      this.divisionList.makeDivisionNodes(data);
     });
     this.accountService.get().then((user) => {
       this.user = user;

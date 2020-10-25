@@ -1,27 +1,5 @@
-<div *ngIf="selector && inputDivisions">
-  <division-item
-    *ngFor="let division of divisions; trackBy: trackById"
-    [readonly]="readonly"
-    [division]="division"
-    [selector]="selector"
-    (list)="listDivisions()"
-    [isParrentChecked]="false"
-    (onSelect)="onSelected($event)"
-    [inputDivisions]="inputDivisions"
-    [clearChildren]="clearChildren"
-    [parentChildrenSelected]="childrenSelected"
-    [addIndividual]="addIndividual"
-  >
-  </division-item>
-</div>
-
-<!-- The non-selector -->
-<div *ngIf="!selector">
-  <division-item
-    *ngFor="let division of divisions; trackBy: trackById"
-    [readonly]="readonly"
-    [division]="division"
-    (list)="listDivisions()"
-  >
-  </division-item>
-</div>
+<ion-list>
+  <div *ngFor="let divNode of divisionList.toplevelDivisions">
+    <division-item [readonly]="readonly" [divNode]="divNode" [divisionList]="divisionList"></division-item>
+  </div>
+</ion-list>

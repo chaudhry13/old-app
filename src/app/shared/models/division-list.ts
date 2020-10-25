@@ -1,10 +1,12 @@
+import { EventEmitter, Output } from '@angular/core';
 import { Division } from '@app/models/division';
 import { DivisionNode } from './division-node';
 
 export class DivisionList {
     
     public toplevelDivisions: DivisionNode[] = [];
-    public asFilter: boolean = true;
+    public asFilter: boolean;
+    @Output() checkedDivisions = new EventEmitter<DivisionNode[]>();
 
     constructor() {
         
@@ -41,23 +43,22 @@ export class DivisionList {
         } else {
             this.check(divNode);
         }
+
+        this.checkedDivisions.emit(this.getCheckedDivisions());
     }
 
     public clear(divNode: DivisionNode): void {
         divNode.clearDown();
-
-        console.log(this.getCheckedDivisions());
     }
 
     public check(divNode: DivisionNode): void {
+        console.log(this);
         if (this.asFilter) {
             divNode.checkDown();
         } else {
             divNode.checkUp();
         }
-        console.log(this.getCheckedDivisions());
     }
-
 
     public clearAll(): void {
         this.toplevelDivisions.forEach(node => {
@@ -65,13 +66,12 @@ export class DivisionList {
         });
     }
 
-    public getCheckedDivisions(): Division[] {
+    public getCheckedDivisions(): DivisionNode[] {
         var checkedDivisions: DivisionNode[] = [];
 
         checkedDivisions = this.getCheckedOf(this.toplevelDivisions);
         
-
-        return checkedDivisions.map(divNode => divNode.division);
+        return checkedDivisions.map(divNode => divNode);
     }
 
     private getCheckedOf(divNodes: DivisionNode[]): DivisionNode[] {

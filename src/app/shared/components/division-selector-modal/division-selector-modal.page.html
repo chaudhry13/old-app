@@ -8,23 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div style="padding: 1rem">
-    <ion-button (click)="clearSelection()" size="small">Clear</ion-button>
-    <division-list
-      [readonly]="true"
-      [addIndividual]="addIndividual"
-      [selector]="true"
-      (selected)="onDivisionChange($event)"
-      (selectedFull)="onDivisionChangeFull($event)"
-      [setDivisions]="setDivisions"
-      [userDivisions]="userDivisions"
-      [selectedNamesEmitter]="selectedNamesEmitter"
-      [updateDivisions]="updateDivisions"
-      style="width: 100%"
-      [onlyTopLevel]="onlyTopLevel"
-      [clearSelectionEvent]="clearSelectionEvent"
-    >
+<ion-content *ngIf="divisionList">
+    <division-list [divisionList]="divisionList" style="width: 100%">
     </division-list>
-  </div>
 </ion-content>
