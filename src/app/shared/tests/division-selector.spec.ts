@@ -27,7 +27,7 @@ describe("Division Selector tests", () => {
         });
     
         it("should be able to check it self", () => {
-            child.toggle();
+            child.check();
             expect(child.checked).toBeTruthy();
         });
     
@@ -49,7 +49,7 @@ describe("Division Selector tests", () => {
 
         beforeEach(async(() => {
             divisionList = new DivisionList();
-            divisionList.updateToplevelDivisions([child, child2]);
+            divisionList.setDivisions([child, child2]);
         }));
 
         it("should contain a list of DivisionNodes", () => {
@@ -64,7 +64,7 @@ describe("Division Selector tests", () => {
             child.check()
             child2.check();
 
-            divisionList.updateToplevelDivisions([parent]);
+            divisionList.setDivisions([parent]);
 
             divisionList.clearAll();
 
@@ -85,7 +85,7 @@ describe("Division Selector tests", () => {
             
             parent.addMultipleChildren([child, child2]);
 
-            divisionList.updateToplevelDivisions([parent]);
+            divisionList.setDivisions([parent]);
 
             divisionList.check(parent);
 
@@ -99,7 +99,7 @@ describe("Division Selector tests", () => {
             
             parent.addMultipleChildren([child, child2]);
 
-            divisionList.updateToplevelDivisions([parent]);
+            divisionList.setDivisions([parent]);
 
             divisionList.check(child);
 
@@ -113,7 +113,7 @@ describe("Division Selector tests", () => {
             
             parent.addMultipleChildren([child, child2]);
 
-            divisionList.updateToplevelDivisions([parent]);
+            divisionList.setDivisions([parent]);
 
 
             divisionList.clear(child);

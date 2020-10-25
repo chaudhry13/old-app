@@ -4,15 +4,10 @@ export class DivisionNode {
     public checked: boolean;
     public division: Division;
     public parent?: DivisionNode = null;
-    public children: DivisionNode[] = []
+    public children: DivisionNode[] = [];
 
-    constructor(division: Division, checked: boolean = false) {
+    constructor(division: Division) {
         this.division = division;
-        this.checked = checked;
-    }
-
-    public toggle() {
-        this.checked = !this.checked;
     }
 
     public check() {
@@ -33,6 +28,13 @@ export class DivisionNode {
         }
     }
 
+    public checkUp() {
+        this.check();
+
+        if (this.parent)
+            this.parent.checkUp();
+    }
+
     public clearDown() {
         this.clear();
 
@@ -41,13 +43,6 @@ export class DivisionNode {
                 child.clearDown();
             });
         }
-    }
-
-    public checkUp() {
-        this.check();
-
-        if (this.parent)
-            this.parent.checkUp();
     }
 
     public addChild(child: DivisionNode): void {
@@ -60,5 +55,4 @@ export class DivisionNode {
             this.addChild(child);
         });
     }
-
 }

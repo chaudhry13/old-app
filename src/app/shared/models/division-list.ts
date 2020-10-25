@@ -6,10 +6,11 @@ export class DivisionList {
     
     public toplevelDivisions: DivisionNode[] = [];
     public asFilter: boolean;
-    @Output() checkedDivisions = new EventEmitter<DivisionNode[]>();
 
-    constructor() {
-        
+    constructor() { }
+
+    public setDivisions(divisionNodes: DivisionNode[]): void {
+        this.toplevelDivisions = divisionNodes;
     }
 
     public makeDivisionNodes(divisions: Division[]) {
@@ -19,7 +20,7 @@ export class DivisionList {
             divisionNodes.push(divNode);
         });
 
-        this.updateToplevelDivisions(divisionNodes);
+        this.setDivisions(divisionNodes);
     }
 
     private makeDivisionNode(division: Division): DivisionNode {
@@ -33,18 +34,12 @@ export class DivisionList {
         return divNode;
     }
 
-    public updateToplevelDivisions(divisionNodes: DivisionNode[]): void {
-        this.toplevelDivisions = divisionNodes;
-    }
-
     public toggle(divNode: DivisionNode): void {
         if (divNode.checked) {
             this.clear(divNode);
         } else {
             this.check(divNode);
         }
-
-        this.checkedDivisions.emit(this.getCheckedDivisions());
     }
 
     public clear(divNode: DivisionNode): void {
