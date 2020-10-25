@@ -35,12 +35,18 @@ export class DivisionList {
         this.toplevelDivisions = divisionNodes;
     }
 
-    public clear(divNode: DivisionNode): void {
-        if (this.asFilter) {
-            divNode.clearDown();
+    public toggle(divNode: DivisionNode): void {
+        if (divNode.checked) {
+            this.clear(divNode);
         } else {
-            divNode.clear();
+            this.check(divNode);
         }
+    }
+
+    public clear(divNode: DivisionNode): void {
+        divNode.clearDown();
+
+        console.log(this.getCheckedDivisions());
     }
 
     public check(divNode: DivisionNode): void {
@@ -49,6 +55,7 @@ export class DivisionList {
         } else {
             divNode.checkUp();
         }
+        console.log(this.getCheckedDivisions());
     }
 
 
@@ -59,13 +66,30 @@ export class DivisionList {
     }
 
     public getCheckedDivisions(): Division[] {
-        var checkedDivisions: Division[] = [];
-        this.toplevelDivisions.forEach(node => {
+        var checkedDivisions: DivisionNode[] = [];
+
+        checkedDivisions = this.getCheckedOf(this.toplevelDivisions);
+        
+
+        return checkedDivisions.map(divNode => divNode.division);
+    }
+
+    private getCheckedOf(divNodes: DivisionNode[]): DivisionNode[] {
+        var checkedDivNodes: DivisionNode[] = [];
+
+        divNodes.forEach(node => {
             if (node.checked) {
-                checkedDivisions.push(node.division);
+                checkedDivNodes.push(node);
+            }
+
+            if (node.children.length > 0) {
+                var childNodes = this.getCheckedOf(node.children);
+                childNodes.forEach(divNode => {
+                    checkedDivNodes.push(divNode);
+                });
             }
         });
 
-        return checkedDivisions;
+        return checkedDivNodes;
     }
 }

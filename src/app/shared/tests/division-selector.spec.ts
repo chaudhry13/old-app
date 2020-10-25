@@ -114,25 +114,12 @@ describe("Division Selector tests", () => {
             expect(child2.checked).toBeFalsy();
         });
 
-        it("should clear child only if asFilter is false", () => {
+        it("should clear down if asFilter is false", () => {
             parent.addMultipleChildren([child, child2]);
 
             divisionList.asFilter = false;
 
             divisionList.check(child);
-            divisionList.clear(child);
-
-            expect(parent.checked).toBeTruthy();
-            expect(child.checked).toBeFalsy();
-            expect(child2.checked).toBeFalsy();
-        });
-
-        it("should clear down if orphan and asFilter is false", () => {
-            parent.addMultipleChildren([child, child2]);
-
-            divisionList.asFilter = false;
-
-            divisionList.clear(child);
             divisionList.clear(parent);
 
             expect(parent.checked).toBeFalsy();
