@@ -30,7 +30,6 @@ export class DivisionSelectorComponent implements OnInit {
     this.listDivisions().then(divisions => {
       this.divisionList.makeDivisionNodes(divisions);
     });
-    console.log(this.divisionList);
   }
 
   public async listDivisions() {

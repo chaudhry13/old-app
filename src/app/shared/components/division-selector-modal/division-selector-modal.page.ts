@@ -14,7 +14,6 @@ export class DivisionSelectorModalPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.divisionList);
   }
 
   checkedDivisionsUpdated(divisionList) {

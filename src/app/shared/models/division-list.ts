@@ -52,7 +52,6 @@ export class DivisionList {
     }
 
     public check(divNode: DivisionNode): void {
-        console.log(this);
         if (this.asFilter) {
             divNode.checkDown();
         } else {
