@@ -20,6 +20,9 @@ export class DivisionSelectorModalPage implements OnInit {
     this.divisionList = divisionList;
   }
 
+  clearChecked() {
+    this.divisionList.clearAll();
+  }
 
   dismiss() {
     this.modalController.dismiss(this.divisionList);

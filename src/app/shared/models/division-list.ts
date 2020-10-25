@@ -61,7 +61,7 @@ export class DivisionList {
 
     public clearAll(): void {
         this.toplevelDivisions.forEach(node => {
-            node.checked = false;
+            node.clearDown();
         });
     }
 

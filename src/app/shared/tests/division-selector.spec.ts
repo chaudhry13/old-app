@@ -57,13 +57,20 @@ describe("Division Selector tests", () => {
         });
 
         it("should be able to clear all DivisionNodes", () => {
+            child.addChild(child2);
+            parent.addChild(child);
+
+            parent.check();
             child.check()
             child2.check();
+
+            divisionList.updateToplevelDivisions([parent]);
 
             divisionList.clearAll();
 
             expect(child.checked).toBeFalsy();
             expect(child2.checked).toBeFalsy();
+            expect(parent.checked).toBeFalsy();
         });
 
         it("should return the checked divisions", () => {
