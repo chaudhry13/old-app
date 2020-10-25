@@ -70,10 +70,12 @@ describe("Division Selector tests", () => {
             child.check()
             child2.check();
 
-            expect(divisionList.getCheckedDivisions()).toEqual([child.division, child2.division]);
+            expect(divisionList.getCheckedDivisions()).toEqual([child, child2]);
         });
 
         it("should check children if parent is checked if asFilter is true", () => {
+            divisionList.asFilter = true;
+            
             parent.addMultipleChildren([child, child2]);
 
             divisionList.updateToplevelDivisions([parent]);
@@ -86,11 +88,11 @@ describe("Division Selector tests", () => {
         });
 
         it("should check parents if asFilter is false", () => {
+            divisionList.asFilter = false;
+            
             parent.addMultipleChildren([child, child2]);
 
             divisionList.updateToplevelDivisions([parent]);
-
-            divisionList.asFilter = false;
 
             divisionList.check(child);
 
@@ -100,11 +102,12 @@ describe("Division Selector tests", () => {
         });
 
         it("should clear down (children) if asFilter is true", () => {
+            divisionList.asFilter = true;
+            
             parent.addMultipleChildren([child, child2]);
 
             divisionList.updateToplevelDivisions([parent]);
 
-            divisionList.asFilter = false;
 
             divisionList.clear(child);
             divisionList.clear(parent);
