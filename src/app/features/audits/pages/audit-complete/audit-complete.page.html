@@ -1,0 +1,200 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title *ngIf="audit">{{audit.title}}</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="audit">
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Description</ion-label>
+    </ion-list-header>
+    <div
+      *ngIf="audit.description"
+      class="ion-padding"
+      [innerHtml]="audit.description | sanitizeHtml"
+    ></div>
+    <div *ngIf="!audit.description" class="ion-padding">
+      <i>No description</i>
+    </div>
+    <ion-list-header>
+      <ion-label>Deadline</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label>{{ audit.date | date:'MMM dd, yyyy'}}</ion-label>
+    </ion-item>
+    <!-- If audit is not completed -->
+    <div *ngIf="!audit.completed">
+      <ion-item>
+        <ion-label> Follow-Up</ion-label>
+        <ion-toggle [(ngModel)]="audit.followUp"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        <ion-textarea
+          [disabled]="!audit.followUp"
+          placeholder="Enter remarks here.."
+          [(ngModel)]="audit.remarks"
+          rows="7"
+        >
+        </ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          placeholder="Enter name.."
+          [(ngModel)]="audit.other"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label> Location</ion-label>
+        <ion-toggle
+          [(ngModel)]="audit.location"
+          (ionChange)="enableLocation()"
+        ></ion-toggle>
+      </ion-item>
+      <ion-item *ngIf="audit.location" class="ion-padding-top">
+        <agm-map
+          *ngIf="renderMapComplete"
+          [latitude]="audit.latitude"
+          [longitude]="audit.longitude"
+        >
+          <agm-marker
+            [latitude]="audit.latitude"
+            [longitude]="audit.longitude"
+          ></agm-marker>
+        </agm-map>
+      </ion-item>
+      <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
+        <ion-list-header>
+          <ion-label>Questionnaires</ion-label>
+        </ion-list-header>
+        <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
+          <ion-item
+            button
+            routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}"
+            routerDirection="forward"
+            routerLinkActive="router-link-active"
+          >
+            <ion-label class="ion-text-wrap">
+              {{ userAnswer.questionnaireTitle }}
+            </ion-label>
+            ({{ userAnswer.questionsAnswered }} / {{
+            userAnswer.numberOfQuestions }})
+            <ion-icon
+              class="ion-padding-start"
+              name="help-circle-outline"
+            ></ion-icon>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+
+    <!-- If audit is completed -->
+    <div *ngIf="audit.completed">
+      <ion-list-header>
+        <ion-label>Completed On</ion-label>
+      </ion-list-header>
+      <ion-item>
+        {{ audit.completedAt | date:'EEE, MMM dd, yyyy h:mm a' }}
+      </ion-item>
+      <div *ngIf="completedUser">
+        <ion-list-header>
+          <ion-label>Completed By</ion-label>
+        </ion-list-header>
+        <ion-item>{{ completedUser.name }}</ion-item>
+      </div>
+      <div *ngIf="audit.other">
+        <ion-list-header>
+          <ion-label>Name</ion-label>
+        </ion-list-header>
+        <ion-item>{{ audit.other }}</ion-item>
+      </div>
+      <div *ngIf="audit.followUp">
+        <ion-list-header>
+          <ion-label>Remarks</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-textarea> {{ followUp.remarks }} </ion-textarea>
+        </ion-item>
+      </div>
+      <div *ngIf="showLocation">
+        <ion-list-header>
+          <ion-label>Location</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <agm-map
+            *ngIf="renderMap"
+            [latitude]="audit.latitude"
+            [longitude]="audit.longitude"
+          >
+            <agm-marker
+              [latitude]="audit.latitude"
+              [longitude]="audit.longitude"
+            ></agm-marker>
+          </agm-map>
+        </ion-item>
+      </div>
+      <div *ngIf="hasQuestionnaires && !questionnairesIsLoading">
+        <ion-list-header>
+          <ion-label>Questionnaires</ion-label>
+        </ion-list-header>
+        <div *ngFor="let userAnswer of audit.questionnaireUserAnswers">
+          <ion-item
+            button
+            routerLink="/tabs/tab1/questionnaire/{{userAnswer.id}}"
+            routerDirection="forward"
+            routerLinkActive="router-link-active"
+          >
+            <ion-label class="ion-text-wrap">
+              {{ userAnswer.questionnaireTitle }}
+            </ion-label>
+            ({{ userAnswer.questionsAnswered }} / {{
+            userAnswer.numberOfQuestions }})
+            <ion-icon name="help-circle-outline"></ion-icon>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+  </ion-list>
+
+  <ion-grid *ngIf="!audit.completed">
+    <ion-row>
+      <ion-col>
+        <ion-button
+          color="secondary"
+          expand="block"
+          class="ion-margin-bottom"
+          (click)="takePhotoAndUpload()"
+          >Take photo
+        </ion-button>
+        <ion-button
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="completeAudit()"
+          >Complete Audit
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list-header *ngIf="files && files.length > 0">
+    <ion-label>Files</ion-label>
+  </ion-list-header>
+  <ion-item *ngFor="let file of files; let id = index">
+    <ion-thumbnail slot="start" *ngIf="file">
+      <img src="{{ file.url }}" />
+    </ion-thumbnail>
+    <ion-label> {{ file.name }} </ion-label>
+    <ion-icon
+      *ngIf="!audit.completed"
+      (click)="removePicture(file)"
+      name="trash"
+      color="warning"
+      item-end
+    ></ion-icon>
+  </ion-item>
+</ion-content>

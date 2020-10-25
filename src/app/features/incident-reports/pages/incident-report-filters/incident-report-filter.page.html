@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Filter</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="filterForm && filters">
+  <form [formGroup]="filterForm">
+    <ion-item lines="full">
+      <ion-label>Divisions</ion-label>
+      <division-selector
+        style="max-width: 80%"
+        [textSize]="3"
+        [addIndividual]="false"
+        (changeInSelectedDivisions)="divisionsChanged($event)"
+      >
+      </division-selector>
+    </ion-item>
+    <ion-list>
+      <ion-item lines="full">
+        <ion-label>Internal</ion-label>
+        <ion-toggle
+          slot="end"
+          formControlName="internal"
+          name="internal"
+          checked
+        ></ion-toggle>
+      </ion-item>
+
+      <ion-item lines="full">
+        <ion-label>External</ion-label>
+        <ion-toggle
+          slot="end"
+          formControlName="external"
+          name="external"
+          checked
+        ></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Start Date</ion-label>
+        <ion-datetime
+          formControlName="startDate"
+          placeholder="Select Date"
+          slot="end"
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>End Date</ion-label>
+        <ion-datetime
+          formControlName="endDate"
+          placeholder="Select Date"
+          slot="end"
+        ></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Countries</ion-label>
+        <ion-select
+          class="filter-selector"
+          formControlName="countryIds"
+          multiple="true"
+          placeholder="Countries.."
+          cancelText="Close"
+          okText="Okay"
+          interface="alert"
+        >
+          <ion-select-option
+            *ngFor="let country of countries"
+            value="{{ country.id }}"
+          >
+            {{ country.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>Incident Categories</ion-label>
+        <ion-select
+          class="filter-selector"
+          formControlName="incidentCategoryIds"
+          multiple="true"
+          placeholder="Incident categories.."
+          cancelText="Close"
+          okText="Okay"
+          interface="alert"
+        >
+          <ion-select-option
+            *ngFor="let incidentCategory of incidentCategories"
+            value="{{ incidentCategory.id }}"
+          >
+            {{ incidentCategory.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Incident Types</ion-label>
+        <ion-select
+          class="filter-selector"
+          formControlName="incidentTypeIds"
+          multiple="true"
+          placeholder="Incident types.."
+          cancelText="Close"
+          okText="Okay"
+          interface="alert"
+        >
+          <ion-select-option
+            *ngFor="let incidentType of incidentTypes"
+            value="{{ incidentType.id }}"
+          >
+            {{ incidentType.name }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>
+  <investigation-filter
+    *ngIf="filters.includes('crane-incident')"
+    [incidentFilterForm]="filterForm"
+  >
+  </investigation-filter>
+  <observation-filter
+    *ngIf="filters.includes('Observation')"
+    [incidentReportFilter]="filterForm"
+  ></observation-filter>
+</ion-content>

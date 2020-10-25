@@ -1,0 +1,10 @@
+<div [formGroup]="answerForm" class="ion-padding-start">
+  <ion-input
+    [attr.disabled]="isReadOnly"
+    formControlName="numberAnswer"
+    type="numeric"
+    min="{{ from }}"
+    max="{{ to }}"
+  >
+  </ion-input>
+</div>

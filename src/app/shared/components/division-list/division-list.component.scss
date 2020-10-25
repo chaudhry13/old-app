@@ -1,0 +1,32 @@
+.btn-text {
+  width: -webkit-fill-available;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+}
+
+.hide-menu {
+  width: inherit;
+  position: absolute;
+  will-change: transform;
+  top: 0px;
+  left: 0px;
+  transform: translate3d(0px, 35px, 0px);
+  display: none;
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.dropdown {
+  flex: auto;
+}
+
+.dropdown-menu {
+  width: 100%;
+}

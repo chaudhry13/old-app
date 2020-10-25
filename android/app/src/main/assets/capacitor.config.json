@@ -1,13 +1,13 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "humanrisks-app",
+  "appId": "com.humnarisks",
+  "appName": "Human Risks",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
   "cordova": {
     "preferences": {
-      "ScrollEnabled": "false",
-      "android-minSdkVersion": "19",
+      "ScrollEnabled": "true",
+      "android-minSdkVersion": "22",
       "android-targetSdkVersion": "29",
       "BackupWebStorage": "none",
       "SplashMaintainAspectRatio": "true",
@@ -17,7 +17,30 @@
       "SplashScreenDelay": "3000",
       "KeyboardDisplayRequiresUserAction": "false",
       "GOOGLE_MAPS_ANDROID_API_KEY": "AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4",
-      "GOOGLE_MAPS_IOS_API_KEY": "AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4"
+      "GOOGLE_MAPS_IOS_API_KEY": "AIzaSyAZHIVgjyIZWgYI7boJ-CTQNUJ6d6cY1K4",
+      "WKWebViewOnly": "true",
+      "CordovaWebViewEngine": "CDVUIWebViewEngine"
     }
+  },
+  "plugins": {
+    "SplashScreen": {
+      "showSpinner": true
+    }
+  },
+  "server": {
+    "hostname": "localhost:8100",
+    "iosScheme": "ionic",
+    "androidScheme": "https",
+    "allowNavigation": [
+      "*.humanrisks.com",
+      "localhost:8100",
+      "*.azurewebsites.net"
+    ],
+    "cleartext": true
+  },
+  "android": {
+    "backgroundColor": "#ffffffff",
+    "allowMixedContent": true,
+    "hideLogs": false
   }
 }

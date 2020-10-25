@@ -1,0 +1,43 @@
+<ion-card-subtitle class="ion-padding"> Location Details </ion-card-subtitle>
+<ion-grid class="ion-no-padding ion-margin-bottom">
+  <ion-row>
+    <ion-col offset-4 *ngIf="incidentReport.address">
+      <ion-item lines="none">
+        <ion-label position="stacked">Address</ion-label>
+        <ion-label position="stacked">{{ incidentReport.address }}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col *ngIf="incidentReport.city">
+      <ion-item lines="none">
+        <ion-label position="stacked">City</ion-label>
+        <ion-label position="stacked">{{ incidentReport.city }}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col *ngIf="incidentReport.country">
+      <ion-item lines="none">
+        <ion-label position="stacked">Country</ion-label>
+        <ion-label position="stacked"
+          >{{ incidentReport.country.name }}
+        </ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <ion-item lines="none">
+        <ion-label position="stacked">Latitude</ion-label>
+        <ion-label position="stacked" readonly>{{
+          incidentReport.latitude
+        }}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col offset-4>
+      <ion-item lines="none">
+        <ion-label position="stacked">Longitude</ion-label>
+        <ion-label position="stacked" readonly>{{
+          incidentReport.longitude
+        }}</ion-label>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+</ion-grid>

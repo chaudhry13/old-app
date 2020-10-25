@@ -1,0 +1,5 @@
+<ion-list>
+  <div *ngFor="let divNode of divisionList.toplevelDivisions">
+    <division-item [readonly]="readonly" [divNode]="divNode" [divisionList]="divisionList"></division-item>
+  </div>
+</ion-list>

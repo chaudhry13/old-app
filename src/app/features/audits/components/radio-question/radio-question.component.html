@@ -1,0 +1,21 @@
+<ion-list lines="none">
+  <ion-radio-group mode="md">
+    <ion-item
+      *ngFor="let option of questionOptions"
+      (click)="optionPressed(option)"
+      [style.border-color]="option.colorHexValue"
+      class="radio-buttons"
+      style="margin: 8px"
+    >
+      <ion-radio
+        [attr.disabled]="isReadOnly"
+        class="ion-float-start"
+        color="primary"
+      >
+      </ion-radio>
+      <ion-label class="ion-padding-start ion-text-wrap">
+        {{ option.text }}
+      </ion-label>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>

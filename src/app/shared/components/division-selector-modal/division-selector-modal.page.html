@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Select Divisions</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button class="ion-margin-end" (click)="clearChecked()" size="small">Clear</ion-button>
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="divisionList">
+    <division-list [divisionList]="divisionList" style="width: 100%">
+    </division-list>
+</ion-content>

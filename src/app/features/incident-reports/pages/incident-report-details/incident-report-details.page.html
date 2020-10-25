@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Incident Report</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="incidentReport">
+  <agm-map
+    *ngIf="renderMap"
+    #map
+    [latitude]="incidentReport.latitude"
+    [longitude]="incidentReport.longitude"
+  >
+    <agm-marker
+      [latitude]="incidentReport.latitude"
+      [longitude]="incidentReport.longitude"
+    ></agm-marker>
+  </agm-map>
+
+  <ng-container [ngSwitch]="formType">
+    <investigation-report-details
+      [incidentReport]="incidentReport"
+      *ngSwitchCase="'crane-incident'"
+    >
+    </investigation-report-details>
+    <intelligence-report-details
+      [incidentReport]="incidentReport"
+      *ngSwitchCase="'Observation'"
+    >
+    </intelligence-report-details>
+    <default-report-details
+      *ngSwitchDefault
+      [incidentReport]="incidentReport"
+    ></default-report-details>
+  </ng-container>
+
+  <ion-card-content style="color: lightgray; font-size: small">
+    {{ incidentReport.id }}
+  </ion-card-content>
+</ion-content>

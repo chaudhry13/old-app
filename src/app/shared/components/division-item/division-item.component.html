@@ -1,0 +1,13 @@
+
+<ion-item detail="false">
+  <ion-icon slot="start" *ngIf="!showChildren && divNode.children.length > 0" name="caret-forward-outline" (click)="toggleShow()"></ion-icon>
+  <ion-icon slot="start" *ngIf="showChildren && divNode.children.length > 0" name="caret-down-outline" (click)="toggleShow()"></ion-icon>
+  <ion-icon slot="start" *ngIf="divNode.children.length == 0" name="remove-outline"></ion-icon>
+  <ion-label>{{divNode.division.name}}</ion-label>
+  <ion-checkbox *ngIf="!readonly" slot="start" [ngModel]="divNode.checked" (ngModelChange)="toggle(divNode)"></ion-checkbox>
+</ion-item>
+<ng-container *ngIf="showChildren">
+  <div class="ion-margin-start" *ngFor="let child of divNode.children">
+    <division-item [readonly]="readonly" [divNode]="child" [divisionList]="divisionList"></division-item>
+  </div>
+</ng-container>

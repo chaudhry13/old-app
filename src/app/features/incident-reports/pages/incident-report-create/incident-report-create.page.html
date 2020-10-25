@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Create Incident Report</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content">
+  <form [formGroup]="incidentForm">
+    <ion-list>
+      <ion-toolbar>
+        <division-selector
+          [textSize]="3"
+          [asFilter]="false"
+          (changeInSelectedDivisions)="divisionsChanged($event)"
+        >
+        </division-selector>
+      </ion-toolbar>
+      <ion-item>
+        <ion-label position="stacked">Incident Categories</ion-label>
+        <ion-select
+          formControlName="incidentCategoryId"
+          multiple="false"
+          cancelText="Cancel"
+          okText="Okay!"
+        >
+          <ion-select-option
+            *ngFor="let incidentCategory of incidentCategories"
+            value="{{ incidentCategory.id }}"
+          >
+            {{ incidentCategory.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="currentIncidentTypes && currentIncidentTypes.length > 0">
+        <ion-label position="stacked">Incident Type</ion-label>
+        <ion-select
+          formControlName="incidentTypeId"
+          multiple="false"
+          cancelText="Cancel"
+          okText="Okay!"
+        >
+          <ion-select-option
+            *ngFor="let incidentType of currentIncidentTypes"
+            value="{{ incidentType.id }}"
+          >
+            {{ incidentType.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </form>
+  <ng-container [ngSwitch]="formType">
+    <div *ngSwitchCase="'crane-incident'">
+      <investigation-report-form [incidentForm]="incidentForm">
+      </investigation-report-form>
+    </div>
+    <div *ngSwitchCase="'Observation'">
+      <intelligence-report-form
+        [incidentForm]="incidentForm"
+      ></intelligence-report-form>
+    </div>
+    <div *ngSwitchDefault>
+      <default-report-form [incidentForm]="incidentForm"></default-report-form>
+    </div>
+  </ng-container>
+  <div class="ion-padding-bottom">
+    <ion-button
+      class="ion-padding-top ion-padding-bottom"
+      expand="block"
+      color="primary"
+      type="submit"
+      [disabled]="!incidentForm.valid"
+      (click)="submitForm()"
+    >
+      Create</ion-button
+    >
+  </div>
+</ion-content>
