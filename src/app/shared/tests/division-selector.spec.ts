@@ -20,24 +20,24 @@ describe("Division Selector tests", () => {
             expect(child).toBeTruthy();
             expect(child.checked).toBeFalsy();
         });
-    
+
         it("should have division", () => {
             expect(child.division).toBeTruthy();
             expect(child.division.name).toBe("child");
         });
-    
+
         it("should be able to check it self", () => {
             child.check();
             expect(child.checked).toBeTruthy();
         });
-    
+
         it("should initially have null parent", () => {
             expect(child.parent).toBeNull();
         });
-    
+
         it("should be able to add a child", () => {
             parent.addChild(child);
-    
+
             expect(parent.children.length).toBe(1);
             expect(child.parent).toBe(parent);
         });
@@ -80,9 +80,9 @@ describe("Division Selector tests", () => {
             expect(divisionList.getCheckedDivisions()).toEqual([child, child2]);
         });
 
-        it("should check children if parent is checked if asFilter is true", () => {
+        it("should check children if parent is checked and is used as filter", () => {
             divisionList.asFilter = true;
-            
+
             parent.addMultipleChildren([child, child2]);
 
             divisionList.setDivisions([parent]);
@@ -94,9 +94,9 @@ describe("Division Selector tests", () => {
             expect(child2.checked).toBeTruthy();
         });
 
-        it("should check parents if asFilter is false", () => {
+        it("should check parents if not used as filter", () => {
             divisionList.asFilter = false;
-            
+
             parent.addMultipleChildren([child, child2]);
 
             divisionList.setDivisions([parent]);
@@ -108,9 +108,9 @@ describe("Division Selector tests", () => {
             expect(child2.checked).toBeFalsy();
         });
 
-        it("should clear down (children) if asFilter is true", () => {
+        it("should clear down (children) used as filter", () => {
             divisionList.asFilter = true;
-            
+
             parent.addMultipleChildren([child, child2]);
 
             divisionList.setDivisions([parent]);
@@ -124,7 +124,7 @@ describe("Division Selector tests", () => {
             expect(child2.checked).toBeFalsy();
         });
 
-        it("should clear down if asFilter is false", () => {
+        it("should clear down (children) if not used as filter", () => {
             parent.addMultipleChildren([child, child2]);
 
             divisionList.asFilter = false;
