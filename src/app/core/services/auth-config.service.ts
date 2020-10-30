@@ -15,18 +15,9 @@ export class AppConfigService {
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class seperate from Auth config
 
-  constructor(private storage: Storage, private oAuthService: OAuthService) {}
+  constructor(private storage: Storage, private oAuthService: OAuthService) { }
 
   public async loadAppConfig() {
-    // if (!environment.production) {
-    //   this.appConfig.apiUrl = "https://localhost:5000"
-    //   this.appConfig.issuer = "https://localhost:5001";
-    //   this.appConfig.redirectUri = "http://localhost:8100/callback";
-    //   this.appConfig.logoutUrl = "https://localhost:5001/account/logout";
-    //   this.appConfig.clientId = "ionic";
-    //   this.appConfig.oidc = false;
-    //   this.appConfig.scope = "api";
-    // } else {
     var num_keys = await this.storage.length();
     var issuer = await this.storage.get("iss");
     if (num_keys > 0 || issuer) {
@@ -49,7 +40,6 @@ export class AppConfigService {
       this.appConfig.oidc = false;
       this.appConfig.scope = "api";
     }
-    // }
   }
 
   public get getApiBaseUrl(): string {
