@@ -3,14 +3,8 @@
     <ion-title>Search address</ion-title>
   </ion-toolbar>
   <ion-toolbar color="primary">
-    <ion-searchbar
-      [(ngModel)]="query"
-      showCancelButton="always"
-      debounce="0"
-      (ngModelChange)="updateSearch()"
-      (ionCancel)="dismiss()"
-      placeholder="Start typing and select a location..."
-    >
+    <ion-searchbar [(ngModel)]="query" showCancelButton="always" debounce="0" (ngModelChange)="updateSearch()"
+      (ionCancel)="dismiss()" placeholder="Start typing and select a location...">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
