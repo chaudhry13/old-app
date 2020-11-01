@@ -1,4 +1,4 @@
-package com.humnarisks;
+package com.humanrisks1;
 
 import android.os.Bundle;
 
