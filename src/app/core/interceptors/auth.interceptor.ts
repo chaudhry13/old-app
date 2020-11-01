@@ -9,8 +9,8 @@ import {
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
-import { OAuthService } from "angular-oauth2-oidc";
 import { AppConfigService } from "../services/auth-config.service";
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable()
 export class TokenInterceptor
@@ -19,7 +19,7 @@ export class TokenInterceptor
   constructor(
     public injector: Injector,
     private router: Router,
-    private authService: OAuthService,
+    private auth: AuthService,
     appConfigService: AppConfigService
   ) {
     super("", appConfigService);
@@ -34,7 +34,7 @@ export class TokenInterceptor
         return next.handle(req);
       }
 
-      let token = this.authService.getAccessToken();
+      let token = this.auth.oAuth.getAccessToken();
 
       req = req.clone({
         setHeaders: {

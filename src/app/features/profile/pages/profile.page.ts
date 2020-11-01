@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { UserService } from "@app/services/user.service";
 import { DivisionService } from "@app/services/division.service";
 import { User } from "@app/models/user";
-import { OAuthService } from "angular-oauth2-oidc";
 import { Router } from "@angular/router";
 import { AccountService } from "@app/services/account.service";
 import { Division } from "@app/models/division";
 import { DivisionList } from '@shared/models/division-list';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: "app-profile",
@@ -21,9 +21,9 @@ export class ProfilePage implements OnInit {
     public userService: UserService,
     public divisionService: DivisionService,
     public accountService: AccountService,
-    public oAuthService: OAuthService,
+    public auth: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.listProfileInfo();
@@ -32,6 +32,7 @@ export class ProfilePage implements OnInit {
   ionViewWillEnter() {
     this.listProfileInfo();
   }
+
   private listProfileInfo() {
     this.divisionList.asFilter = false;
     this.divisionService.list().then((data) => {
@@ -44,8 +45,9 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    localStorage.clear();
-    this.oAuthService.logOut();
-    this.router.navigate(["/login"]).then();
+    this.router.navigate(["/login"]).then(success => {
+      localStorage.clear();
+      this.auth.oAuth.logOut(success);
+    });
   }
 }

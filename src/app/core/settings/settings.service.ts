@@ -1,6 +1,6 @@
 import { User } from "../models/user";
 import { Injectable } from "@angular/core";
-import { OAuthService } from "angular-oauth2-oidc";
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable()
 export class SettingsService {
@@ -21,8 +21,8 @@ export class SettingsService {
 
   public external: boolean;
 
-  constructor(public authService: OAuthService) {
-    let token = this.authService.getAccessToken();
+  constructor(public auth: AuthService) {
+    let token = this.auth.oAuth.getAccessToken();
   }
 
   public getWhiteLabel(shortname: string) {

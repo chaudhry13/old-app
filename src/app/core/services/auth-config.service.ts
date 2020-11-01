@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { AppConfig } from "../settings/auth.config";
-import { OAuthService, OAuthErrorEvent } from "angular-oauth2-oidc";
+import { OAuthErrorEvent } from "angular-oauth2-oidc";
 import { JwksValidationHandler } from "angular-oauth2-oidc-jwks";
 import { environment } from "../../../environments/environment";
+import { AuthService } from './auth.service';
 @Injectable({
   providedIn: "root",
 })
@@ -15,7 +16,7 @@ export class AppConfigService {
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class seperate from Auth config
 
-  constructor(private storage: Storage, private oAuthService: OAuthService) { }
+  constructor(private storage: Storage, private auth: AuthService) { }
 
   public async loadAppConfig() {
     var num_keys = await this.storage.length();
@@ -43,8 +44,8 @@ export class AppConfigService {
   }
 
   public get getApiBaseUrl(): string {
-    if (this.oAuthService.hasValidAccessToken()) {
-      var token = this.oAuthService.getAccessToken();
+    if (this.auth.oAuth.hasValidAccessToken()) {
+      var token = this.auth.oAuth.getAccessToken();
       const tokens: Array<any> = token.split(".");
       const decoded = this.decodeB64(tokens[1]);
       const tokenPayload: any = JSON.parse(decoded);
@@ -67,8 +68,8 @@ export class AppConfigService {
   }
 
   public get organizationId(): string {
-    if (this.oAuthService.hasValidAccessToken()) {
-      var token = this.oAuthService.getAccessToken();
+    if (this.auth.oAuth.hasValidAccessToken()) {
+      var token = this.auth.oAuth.getAccessToken();
       const tokens: Array<any> = token.split(".");
       const decoded = this.decodeB64(tokens[1]);
       const tokenPayload: any = JSON.parse(decoded);
@@ -90,11 +91,14 @@ export class AppConfigService {
   }
 
   configureImplicitFlowAuthentication() {
-    this.oAuthService.configure(this.appConfig);
-    this.oAuthService.setStorage(localStorage);
-    this.oAuthService.tokenValidationHandler = new JwksValidationHandler();
-    this.oAuthService.loadDiscoveryDocument();
-    this.oAuthService.events.subscribe((e) => {
+    this.auth.oAuth.configure(this.appConfig);
+    this.auth.oAuth.setStorage(localStorage);
+    this.auth.oAuth.tokenValidationHandler = new JwksValidationHandler();
+    this.auth.oAuth.loadDiscoveryDocument();
+    this.auth.oAuth.tryLogin().then(success => {
+      console.debug("Login Successful: " + success);
+    });
+    this.auth.oAuth.events.subscribe((e) => {
       if (!environment.production) {
         if (e instanceof OAuthErrorEvent) {
           console.error(e.reason);

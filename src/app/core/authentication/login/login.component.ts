@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { OAuthService, AuthConfig, OAuthErrorEvent } from "angular-oauth2-oidc";
-import { Router, RouterState } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { AlertController, Platform, NavController } from "@ionic/angular";
-import { Device } from "@ionic-native/device/ngx";
 import { AppConfigService } from "../../services/auth-config.service";
 import { TokenService } from "../../services/token.service";
+import { AuthService } from '@app/services/auth.service';
 
 declare const window: any;
 
@@ -15,16 +13,13 @@ declare const window: any;
 })
 export class LoginComponent implements OnInit {
   constructor(
-    private oauthService: OAuthService,
-    private router: Router,
+    private authService: AuthService,
     private inAppBrowser: InAppBrowser,
-    private device: Device,
-    private platform: Platform,
     private appConfigService: AppConfigService,
     private tokenService: TokenService,
     private navController: NavController
   ) {
-    oauthService.redirectUri = "http://localhost:8100/callback";
+    authService.oAuth.redirectUri = "http://localhost:8100/callback";
   }
 
   ngOnInit() {
@@ -32,37 +27,40 @@ export class LoginComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    if (window.cordova) {
-      var authConfigLogin = this.appConfigService.appConfig;
-      this.oauthService.configure(authConfigLogin);
-      this.loginDevice().then(
-        (success) => {
-          const idToken = success.id_token;
-          const accessToken = success.access_token;
-          const keyValuePair = `#id_token=${encodeURIComponent(
-            idToken
-          )}&access_token=${encodeURIComponent(accessToken)}`;
-          this.oauthService.tryLogin({
-            customHashFragment: keyValuePair,
-            disableOAuth2StateCheck: true,
-          });
-          this.navController.navigateForward("/callback");
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    var hasAccessToken = this.authService.oAuth.hasValidAccessToken();
+    if (hasAccessToken) {
+      this.navController.navigateRoot("/");
     } else {
-      this.loginWeb();
+      if (window.cordova) {
+        this.loginDevice().then(
+          (success) => {
+            const idToken = success.id_token;
+            const accessToken = success.access_token;
+            const keyValuePair = `#id_token=${encodeURIComponent(
+              idToken
+            )}&access_token=${encodeURIComponent(accessToken)}`;
+            this.authService.oAuth.tryLogin({
+              customHashFragment: keyValuePair,
+              disableOAuth2StateCheck: true,
+            });
+            this.navController.navigateForward("/callback");
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.loginWeb();
+      }
     }
   }
 
   loginWeb() {
-    this.oauthService.initImplicitFlow();
+    this.authService.oAuth.initImplicitFlow();
   }
 
   loginDevice(): Promise<any> {
-    return this.oauthService.createAndSaveNonce().then((nonce) => {
+    return this.authService.oAuth.createAndSaveNonce().then((nonce) => {
       let state: string = Math.floor(Math.random() * 1000000000).toString();
       if (window.crypto) {
         const array = new Uint32Array(1);
@@ -96,7 +94,7 @@ export class LoginComponent implements OnInit {
             this.tokenService.readToken(parsedResponse["access_token"]);
             const defaultError = "Problem authenticating with Okta";
 
-            browser.on("exit").subscribe(() => {});
+            browser.on("exit").subscribe(() => { });
 
             browser.close();
 
@@ -121,13 +119,13 @@ export class LoginComponent implements OnInit {
 
   buildOAuthUrl(state): string {
     return (
-      this.oauthService.issuer +
+      this.authService.oAuth.issuer +
       "/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dtoken%26client_id%3Dionic%26state%3D" +
       state +
       "%26redirect_uri%3D" +
-      this.oauthService.redirectUri +
+      this.authService.oAuth.redirectUri +
       "%26scope%3D" +
-      this.oauthService.scope
+      this.authService.oAuth.scope
     );
   }
 }

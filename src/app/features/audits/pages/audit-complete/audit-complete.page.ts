@@ -1,7 +1,6 @@
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { Component, OnInit, Input } from "@angular/core";
 import { Audit } from "../../models/audit";
-import { OAuthService } from "angular-oauth2-oidc";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { AuditService } from "../../services/audit.service";
@@ -22,6 +21,7 @@ import { AppConfigService } from "@app/services/auth-config.service";
 import { FollowUpService } from "../../services/follow-up.service";
 import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: "app-audit-complete",
@@ -56,7 +56,7 @@ export class AuditCompletePage implements OnInit {
   followUp: FollowUp = new FollowUp();
 
   constructor(
-    public oauthService: OAuthService,
+    public auth: AuthService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -87,7 +87,7 @@ export class AuditCompletePage implements OnInit {
   }
 
   ngOnInit() {
-    this.tokenService.readToken(this.oauthService.getAccessToken());
+    this.tokenService.readToken(this.auth.oAuth.getAccessToken());
     this.user = this.tokenService.getUser();
     this.getAudit();
   }
@@ -210,13 +210,13 @@ export class AuditCompletePage implements OnInit {
 
   async takePhotoAndUpload() {
     const auditStorageUrlExt = "/audit?organizationId=" +
-        this.user.organization +
-        "&controlId=" +
-        this.audit.controlId +
-        "&auditId=" +
-        this.audit.id +
-        "&uid=" +
-        this.user.id;
+      this.user.organization +
+      "&controlId=" +
+      this.audit.controlId +
+      "&auditId=" +
+      this.audit.id +
+      "&uid=" +
+      this.user.id;
     this.cameraService.takePhotoAndUpload(auditStorageUrlExt, this.photos.length).then(result => {
       if (result) {
         this.listFiles();

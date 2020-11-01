@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { PlacesSearchService } from "@app/services/places-search.service";
 import { LocationService } from "@app/services/location.service";
 import { UserService } from "@app/services/user.service";
 import { ToastService } from "@app/services/toast.service";
@@ -14,12 +13,12 @@ import { CronService } from "@app/services/cron.service";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { AccountService } from "@app/services/account.service";
 import { TokenService } from "@app/services/token.service";
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule],
   providers: [
-    PlacesSearchService,
     LocationService,
     UserService,
     TokenService,
@@ -32,6 +31,7 @@ import { TokenService } from "@app/services/token.service";
     CronService,
     AppConfigService,
     AccountService,
+    AuthService
   ],
 })
-export class CoreModule {}
+export class CoreModule { }

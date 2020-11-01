@@ -25,6 +25,7 @@ import { QRScanner } from "@ionic-native/qr-scanner/ngx";
 import { DeeplinkService } from "@app/services/deeplink.service";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { IonicModule } from '@ionic/angular';
+import { PlacesSearchService } from './services/places-search.service';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { IonicModule } from '@ionic/angular';
     QRScanner,
     DeeplinkService,
     IncidentReportService,
+    PlacesSearchService
   ],
 })
-export class SharedModule {}
+export class SharedModule { }

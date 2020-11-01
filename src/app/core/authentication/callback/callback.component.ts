@@ -1,10 +1,7 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { OAuthService } from "angular-oauth2-oidc";
+import { Component, OnInit } from "@angular/core";
 import { AlertController, NavController } from "@ionic/angular";
 import { TokenService } from "../../services/token.service";
-import { Storage } from "@ionic/storage";
-import { AppConfigService } from "../../services/auth-config.service";
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
   selector: "callback",
@@ -12,25 +9,27 @@ import { AppConfigService } from "../../services/auth-config.service";
 })
 export class CallbackComponent implements OnInit {
   constructor(
-    private router: Router,
-    private oAuthService: OAuthService,
+    private authService: AuthService,
     public alertController: AlertController,
     public tokenService: TokenService,
-    private appConfigService: AppConfigService,
     private navController: NavController
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.oAuthService.tryLogin();
-
-    if (this.oAuthService.hasValidAccessToken()) {
-      setTimeout(() => {
+    this.authService.oAuth.tryLogin().then(success => {
+      if (success || this.authService.oAuth.hasValidAccessToken()) {
         this.navController.navigateRoot("/");
-        // this.router.navigate(["/"]);
-      }, 1000);
+      } else {
+        this.navController.navigateRoot("/login");
+      }
+    });
+  }
+
+  ionViewWillEnter() {
+    if (this.authService.oAuth.hasValidAccessToken()) {
+      this.navController.navigateRoot("/");
     } else {
       this.navController.navigateRoot("/login");
-      //this.router.navigate(["/login"]);
     }
   }
 }

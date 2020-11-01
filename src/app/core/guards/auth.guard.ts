@@ -6,17 +6,18 @@ import {
   Route,
   Router,
 } from "@angular/router";
-import { OAuthService } from "angular-oauth2-oidc";
+import { AuthService } from '@app/services/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private oauthService: OAuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    var hasAccessToken = this.oauthService.hasValidAccessToken();
+    var hasAccessToken = this.auth.oAuth.hasValidAccessToken();
     if (!hasAccessToken) {
       this.router.navigate(["/login"]);
+    } else {
+      return hasAccessToken;
     }
-    return hasAccessToken;
   }
 }
