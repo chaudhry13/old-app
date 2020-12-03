@@ -3,7 +3,7 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
 import { IncidentReport } from "../../models/incident-report";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { distinctUntilChanged, debounceTime } from "rxjs/operators";
-import { LoadingController, ModalController } from "@ionic/angular";
+import { LoadingController, ModalController, NavController } from "@ionic/angular";
 import { IncidentReportFilterPage } from "../incident-report-filters/incident-report-filter.page";
 
 @Component({
@@ -22,7 +22,8 @@ export class IncidentReportPage implements OnInit {
   constructor(
     public incidentReportService: IncidentReportService,
     private formBuilder: FormBuilder,
-    public modalController: ModalController
+    public modalController: ModalController,
+    public navController: NavController
   ) {
     this.incidentFilterForm = this.formBuilder.group({
       startDate: [new Date().toJSON()],
@@ -150,5 +151,17 @@ export class IncidentReportPage implements OnInit {
 
   setFallbackIcon(incidentReport) {
     incidentReport.icon = "/assets/img/incident-reports/other_i.png";
+  }
+
+  goToCreateIncident(): void {
+    this.navController.navigateForward("/tabs/tab2/create").then(() => {
+      // TODO: on destroy
+    });
+  }
+
+  goToCreateActivity() {
+    this.navController.navigateForward("/tabs/tab2/activity-log").then(() => {
+      // TODO: on destroy
+    });
   }
 }

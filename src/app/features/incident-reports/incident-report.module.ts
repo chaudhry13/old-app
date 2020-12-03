@@ -23,7 +23,6 @@ import { IncidentReportCreatePage } from "./pages/incident-report-create/inciden
 import { DefaultReportFormComponent } from "./components/incident-report-forms/default-report-form/default-report-form.component";
 import { InvestigationReportFormComponent } from "./components/incident-report-forms/investigation-report-form/investigation-report-form.component";
 import { PersonsFormComponent } from "./components/incident-report-forms/persons-form/persons-form.component";
-import { LocationFormComponent } from "./components/incident-report-forms/location-form/location-form.component";
 import { IntelligenceReportFormComponent } from "./components/incident-report-forms/intelligence-report-form/intelligence-report-form.component";
 import { VehicleFormComponent } from "./components/incident-report-forms/vehicle-form/vehicle-form.component";
 import { HealthSafetyService } from "./services/health-safety.service";
@@ -61,10 +60,9 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
     DefaultReportFormComponent,
     InvestigationReportFormComponent,
     PersonsFormComponent,
-    LocationFormComponent,
     IntelligenceReportFormComponent,
     VehicleFormComponent,
   ],
-  providers: [HealthSafetyService, IncidentCategoryService],
+  providers: [HealthSafetyService, IncidentCategoryService, IncidentReportService],
 })
 export class IncidentReportPageModule {}

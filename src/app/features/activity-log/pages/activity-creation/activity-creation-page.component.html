@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-color ion-color-primary">
+    <ion-title class="title-ios hydrated">Report Activity</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="activityForm">
+    <ion-list>
+      <ion-list-header>
+        Activity Details
+      </ion-list-header>
+      <ion-item>
+        <ion-label position="stacked">Time</ion-label>
+        <ion-datetime
+          displayFormat="D MMM H:mm YYYY"
+          pickerFormat="D MMM YYYY H:mm"
+          formControlName="eventTime"
+        >
+        </ion-datetime>
+      </ion-item>
+      <ion-toolbar>
+        <division-selector
+          [textSize]="3"
+          [asFilter]="false"
+          (changeInSelectedDivisions)="divisionsChanged($event)"
+        >
+        </division-selector>
+      </ion-toolbar>
+      <ion-item>
+        <ion-label position="stacked">Link to Incident Report</ion-label>
+        <ion-select formControlName="linkedIncidentReportId" placeholder="Link to an Incident Report (optional)">
+          <ion-select-option *ngFor="let incidentReport of incidentReports"
+                             value="{{incidentReport.id}}">
+            {{incidentReport.title}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-textarea rows="8"
+                      formControlName="description"
+                      placeholder="Disclaimer!"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input formControlName="specifiedUser"
+                   placeholder="Enter your name here..">
+        </ion-input>
+      </ion-item>
+    </ion-list>
+    <location-form [buttonType]="'ion-item'" [searchable]="true" [mainForm]="activityForm">
+    </location-form>
+    <ion-button
+      class="ion-padding-top ion-padding-bottom"
+      expand="block"
+      color="secondary">
+      Upload photo
+    </ion-button>
+    <ion-button
+      class="ion-padding-top ion-padding-bottom"
+      expand="block"
+      color="primary"
+      type="submit"
+      [disabled]="!activityForm.valid"
+      (click)="createActivity()"
+    >
+      Create Activity
+    </ion-button>
+  </form>
+</ion-content>

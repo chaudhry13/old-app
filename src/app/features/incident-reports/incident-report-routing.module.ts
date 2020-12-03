@@ -17,6 +17,10 @@ const routes: Routes = [
     path: "create",
     component: IncidentReportCreatePage,
   },
+  {
+    path: "activity-log",
+    loadChildren: () => import("./../activity-log/activity-log.module").then( m => m.ActivityLogPageModule)
+  }
 ];
 
 @NgModule({

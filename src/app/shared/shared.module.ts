@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { DivisionItemComponent } from "./components/division-item/division-item.component";
 import { DivisionListComponent } from "./components/division-list/division-list.component";
 import { DivisionSelectorComponent } from "./components/division-selector/division-selector.component";
@@ -26,6 +26,7 @@ import { DeeplinkService } from "@app/services/deeplink.service";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { IonicModule } from '@ionic/angular';
 import { PlacesSearchService } from './services/places-search.service';
+import { LocationFormComponent } from "@shared/components/location-form/location-form.component";
 
 @NgModule({
   declarations: [
@@ -38,11 +39,13 @@ import { PlacesSearchService } from './services/places-search.service';
     LocationSearchbarComponent,
     RiskLevelPipe,
     SanitizeHtmlPipe,
+    LocationFormComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
@@ -56,6 +59,7 @@ import { PlacesSearchService } from './services/places-search.service';
     LocationSearchbarComponent,
     RiskLevelPipe,
     SanitizeHtmlPipe,
+    LocationFormComponent
   ],
   providers: [
     CameraService,
