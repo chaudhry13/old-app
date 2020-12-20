@@ -18,12 +18,13 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-      enableTracing: false,
-      initialNavigation: true,
-      useHash: false,
-      onSameUrlNavigation: "reload",
-    }),
+    preloadingStrategy: PreloadAllModules,
+    enableTracing: false,
+    initialNavigation: 'enabledNonBlocking',
+    useHash: false,
+    onSameUrlNavigation: "reload",
+    relativeLinkResolution: 'legacy'
+}),
   ],
   exports: [RouterModule],
 })
