@@ -1,0 +1,14 @@
+<ion-item *ngFor="let file of files">
+  <ion-thumbnail slot="start" *ngIf="file">
+    <img src="{{ file.url }}" />
+  </ion-thumbnail>
+  <ion-label>
+    {{ file.name }}
+  </ion-label>
+  <ion-icon
+    (click)="removePicture(file)"
+    name="trash"
+    color="warning"
+    item-end
+  ></ion-icon>
+</ion-item>

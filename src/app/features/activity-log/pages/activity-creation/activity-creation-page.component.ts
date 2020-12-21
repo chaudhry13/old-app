@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { IncidentReport } from "../../../incident-reports/models/incident-report";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { Division } from "@app/models/division";
 import { ActivityLogService } from "../../services/activity-log-service";
+import { NavController } from "@ionic/angular";
+import { ToastService } from "@app/services/toast.service";
 
 @Component({
   selector: "app-activity-log",
@@ -17,14 +19,18 @@ export class ActivityCreationPage implements OnInit {
 
   public incidentReports: IncidentReport[];
   public divisionsWithManagers: Division[];
+  public activityId: string;
+  public updateFiles = new EventEmitter<any>();
 
   constructor(public formBuilder: FormBuilder,
     public incidentReportService: IncidentReportService,
-    public activityLogService: ActivityLogService) { }
+    public activityLogService: ActivityLogService,
+    public navController: NavController,
+    public toastService: ToastService) { }
 
   ngOnInit() {
     this.activityForm = this.formBuilder.group({
-      activityId: [null, Validators.required],
+      activityId: [this.activityId, Validators.required],
       divisionId: [null, Validators.required],
       eventTime: [new Date().toISOString()],
       description: ["", Validators.required],
@@ -36,8 +42,18 @@ export class ActivityCreationPage implements OnInit {
       linkedIncidentReportId: [null]
     });
 
+    this.activityLogService.getActivityGuid().then(id => {
+      this.activityId = id;
+      this.activityForm.get("activityId").setValue(id);
+    });
+
+
     this.activityLogService.getDivisionsWithManagers().then(divisions => {
       this.divisionsWithManagers = divisions;
+    });
+
+    this.activityForm.valueChanges.subscribe(value => {
+      console.log(value);
     });
 
     this.getIncidentReports();
@@ -59,14 +75,15 @@ export class ActivityCreationPage implements OnInit {
     });
   }
 
-  divisionsChanged(data) {
-    if (data) {
-      // TODO: This should be a single picker for one division
-      this.activityForm.get("divisionId").setValue(data[0]);
-    }
+  createActivity(): void {
+    this.activityLogService.createActivity(this.activityForm).then(id => {
+      this.navController.navigateRoot("tabs/tab2").then(() => {
+        this.toastService.show("Activity is saved!");
+      });
+    });
   }
 
-  createActivity(): void {
-    console.log(this.activityForm.value);
+  uploadSuccess() {
+    this.updateFiles.emit();
   }
 }

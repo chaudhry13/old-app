@@ -49,6 +49,10 @@ export class StorageService extends GenericService {
       .toPromise();
   }
 
+  async listActivityFiles(activityId: string): Promise<Attachment[]> {
+    return this.http.get<Attachment[]>(this.apiBase + "/activity-log/activity?activityId=" + activityId).toPromise();
+  }
+
   async listControl(id: string): Promise<Attachment[]> {
     return this.http
       .get<Attachment[]>(this.apiBase + "/control?controlId=" + id)
@@ -176,6 +180,12 @@ export class StorageService extends GenericService {
       questionAnswerId +
       "&fileName=" +
       fileName;
+    return this.http.delete<any>(this.apiBase + url).toPromise();
+  }
+
+
+  async deleteActivityFile(activityId: string, fileName: string): Promise<any> {
+    var url = "/activity-log/activity?activityId=" + activityId + "&fileName=" + fileName;
     return this.http.delete<any>(this.apiBase + url).toPromise();
   }
 }

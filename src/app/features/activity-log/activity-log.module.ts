@@ -8,6 +8,7 @@ import { ActivityLogPageRoutingModule } from "./activity-log-routing.module";
 
 import { ActivityCreationPage } from "./pages/activity-creation/activity-creation-page.component";
 import { SharedModule } from "@shared/shared.module";
+import { ActivityLogService } from "./services/activity-log-service";
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { SharedModule } from "@shared/shared.module";
   ],
   declarations: [ActivityCreationPage],
   providers: [
-    FormBuilder
+    FormBuilder,
+    ActivityLogService
   ]
 })
 export class ActivityLogPageModule {}

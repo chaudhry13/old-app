@@ -27,6 +27,8 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
 import { IonicModule } from '@ionic/angular';
 import { PlacesSearchService } from './services/places-search.service';
 import { LocationFormComponent } from "@shared/components/location-form/location-form.component";
+import { UploadPhotoButtonComponent } from "@shared/components/upload-photo-button/upload-photo-button.component";
+import { PhotoListComponent } from "@shared/components/photo-list/photo-list.component";
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { LocationFormComponent } from "@shared/components/location-form/location
     LocationSearchbarComponent,
     RiskLevelPipe,
     SanitizeHtmlPipe,
-    LocationFormComponent
+    LocationFormComponent,
+    UploadPhotoButtonComponent,
+    PhotoListComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +63,9 @@ import { LocationFormComponent } from "@shared/components/location-form/location
     LocationSearchbarComponent,
     RiskLevelPipe,
     SanitizeHtmlPipe,
-    LocationFormComponent
+    LocationFormComponent,
+    UploadPhotoButtonComponent,
+    PhotoListComponent
   ],
   providers: [
     CameraService,

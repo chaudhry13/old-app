@@ -39,8 +39,8 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
     SharedModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"],
-    }),
+      libraries: ["places"]
+    })
   ],
   declarations: [
     IncidentReportPage,
@@ -61,8 +61,11 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
     InvestigationReportFormComponent,
     PersonsFormComponent,
     IntelligenceReportFormComponent,
-    VehicleFormComponent,
+    VehicleFormComponent
   ],
   providers: [HealthSafetyService, IncidentCategoryService, IncidentReportService],
+  exports: [
+    TakePhotoButtonComponent
+  ]
 })
 export class IncidentReportPageModule {}
