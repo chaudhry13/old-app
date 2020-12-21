@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { IncidentReport } from "../../../incident-reports/models/incident-report";
 import { IncidentReportService } from "@shared/services/incident-report.service";
+import { Division } from "@app/models/division";
+import { ActivityLogService } from "../../services/activity-log-service";
 
 @Component({
   selector: "app-activity-log",
@@ -14,12 +16,15 @@ export class ActivityCreationPage implements OnInit {
   public activityForm: FormGroup;
 
   public incidentReports: IncidentReport[];
+  public divisionsWithManagers: Division[];
 
   constructor(public formBuilder: FormBuilder,
-              public incidentReportService: IncidentReportService) { }
+    public incidentReportService: IncidentReportService,
+    public activityLogService: ActivityLogService) { }
 
   ngOnInit() {
     this.activityForm = this.formBuilder.group({
+      activityId: [null, Validators.required],
       divisionId: [null, Validators.required],
       eventTime: [new Date().toISOString()],
       description: ["", Validators.required],
@@ -31,8 +36,8 @@ export class ActivityCreationPage implements OnInit {
       linkedIncidentReportId: [null]
     });
 
-    this.activityForm.valueChanges.subscribe(change => {
-      console.log(change);
+    this.activityLogService.getDivisionsWithManagers().then(divisions => {
+      this.divisionsWithManagers = divisions;
     });
 
     this.getIncidentReports();

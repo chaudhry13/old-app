@@ -11,9 +11,7 @@
 
 <ion-content>
   <ion-list *ngIf="!incidentReports" class="ion-padding-top ion-padding-end">
-    <ion-item
-      *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]"
-    >
+    <ion-item *ngFor="let item of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]">
       <ion-avatar slot="start">
         <ion-skeleton-text animated></ion-skeleton-text>
       </ion-avatar>
@@ -31,21 +29,12 @@
     </ion-item>
   </ion-list>
 
-  <ion-list
-    *ngIf="infScrollIncidentReports"
-    class="ion-padding-top ion-padding-end"
-  >
-    <ion-item
-      *ngFor="let incidentReport of infScrollIncidentReports"
-      routerLink="/tabs/tab2/details/{{incidentReport.id}}/{{incidentReport.source}}"
-      routerDirection="forward"
-      routerLinkActive="router-link-active"
-    >
+  <ion-list *ngIf="infScrollIncidentReports" class="ion-padding-top ion-padding-end">
+    <ion-item *ngFor="let incidentReport of infScrollIncidentReports"
+      routerLink="/tabs/tab2/details/{{incidentReport.id}}/{{incidentReport.source}}" routerDirection="forward"
+      routerLinkActive="router-link-active">
       <ion-avatar slot="start">
-        <img
-          src="{{ incidentReport.icon }}"
-          (error)="setFallbackIcon(incidentReport)"
-        />
+        <img src="{{ incidentReport.icon }}" (error)="setFallbackIcon(incidentReport)" />
       </ion-avatar>
 
       <ion-label class="ion-text-wrap">
@@ -54,29 +43,21 @@
     </ion-item>
   </ion-list>
 
-  <ion-infinite-scroll
-    *ngIf="incidentReports"
-    threshold="100px"
-    (ionInfinite)="loadData($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading Incident Reports.."
-    >
+  <ion-infinite-scroll *ngIf="incidentReports" threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading Incident Reports..">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button color="primary" (click)="goToCreateIncident()">
-        <ion-icon name="radio-button-on"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="primary" (click)="goToCreateActivity()">
-        <ion-icon name="alert-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
 </ion-content>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button>
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="top">
+    <ion-fab-button color="primary" (click)="goToCreateIncident()">
+      <ion-icon name="radio-button-on"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-button color="primary" (click)="goToCreateActivity()">
+      <ion-icon name="alert-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
