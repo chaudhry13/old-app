@@ -5,6 +5,7 @@ import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { distinctUntilChanged, debounceTime } from "rxjs/operators";
 import { LoadingController, ModalController, NavController } from "@ionic/angular";
 import { IncidentReportFilterPage } from "../incident-report-filters/incident-report-filter.page";
+import { ActivityLogService } from "../../../activity-log/services/activity-log-service";
 
 @Component({
   selector: "app-incident-report-page",
@@ -18,12 +19,14 @@ export class IncidentReportPage implements OnInit {
   public incidentFilterForm: FormGroup;
 
   public pageNumber = 1;
+  public showCreateActivity: boolean;
 
   constructor(
     public incidentReportService: IncidentReportService,
     private formBuilder: FormBuilder,
     public modalController: ModalController,
-    public navController: NavController
+    public navController: NavController,
+    public activityLogService: ActivityLogService
   ) {
     this.incidentFilterForm = this.formBuilder.group({
       startDate: [new Date().toJSON()],
@@ -75,6 +78,11 @@ export class IncidentReportPage implements OnInit {
 
   ngOnInit() {
     this.setStartEndDates();
+    this.activityLogService.getDivisionsWithManagers().then(divisions => {
+      this.showCreateActivity = divisions.length !== 0;
+    }).catch(reason => {
+      this.showCreateActivity = false;
+    });
   }
 
   private setStartEndDates() {

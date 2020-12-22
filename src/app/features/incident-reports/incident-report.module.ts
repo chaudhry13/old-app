@@ -28,6 +28,7 @@ import { VehicleFormComponent } from "./components/incident-report-forms/vehicle
 import { HealthSafetyService } from "./services/health-safety.service";
 import { IncidentCategoryService } from "./services/incident-category.service";
 import { IncidentReportService } from "@shared/services/incident-report.service";
+import { ActivityLogService } from "../activity-log/services/activity-log-service";
 
 @NgModule({
   imports: [
@@ -63,9 +64,9 @@ import { IncidentReportService } from "@shared/services/incident-report.service"
     IntelligenceReportFormComponent,
     VehicleFormComponent
   ],
-  providers: [HealthSafetyService, IncidentCategoryService, IncidentReportService],
+  providers: [HealthSafetyService, IncidentCategoryService, IncidentReportService, ActivityLogService],
   exports: [
-    TakePhotoButtonComponent
+    TakePhotoButtonComponent,
   ]
 })
 export class IncidentReportPageModule {}
