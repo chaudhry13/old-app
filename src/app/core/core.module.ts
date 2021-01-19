@@ -8,12 +8,11 @@ import { CameraService } from "@app/services/photo.service";
 import { MapService } from "@app/services/maps.service";
 import { GeocodingService } from "@app/services/geocoding.service";
 import { DivisionService } from "@app/services/division.service";
-import { DeeplinkService } from "@app/services/deeplink.service";
 import { CronService } from "@app/services/cron.service";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { AccountService } from "@app/services/account.service";
 import { TokenService } from "@app/services/token.service";
-import { AuthService } from './services/auth.service';
+import { AuthService } from "./services/auth.service";
 
 @NgModule({
   declarations: [],

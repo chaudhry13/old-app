@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AlertController, NavController } from "@ionic/angular";
-import { TokenService } from "../../services/token.service";
-import { AuthService } from '@app/services/auth.service';
+import { TokenService } from "@app/services/token.service";
+import { AuthService } from "@app/services/auth.service";
 
 @Component({
   selector: "callback",
