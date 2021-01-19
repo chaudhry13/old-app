@@ -24,6 +24,14 @@
         </ion-select>
       </ion-item>
       <ion-item>
+        <ion-label position="stacked">Activity Type</ion-label>
+        <ion-select formControlName="activityTypeId" placeholder="Activity Type (required)">
+          <ion-select-option *ngFor="let activityType of activityTypes" value="{{activityType.id}}">
+            {{activityType.typeName}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
         <ion-label position="stacked">Link to Incident Report</ion-label>
         <ion-select formControlName="linkedIncidentReportId" placeholder="Link to an Incident Report (optional)">
           <ion-select-option *ngFor="let incidentReport of incidentReports" value="{{incidentReport.id}}">

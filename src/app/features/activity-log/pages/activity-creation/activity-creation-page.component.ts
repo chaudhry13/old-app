@@ -6,6 +6,7 @@ import { Division } from "@app/models/division";
 import { ActivityLogService } from "../../services/activity-log-service";
 import { NavController } from "@ionic/angular";
 import { ToastService } from "@app/services/toast.service";
+import { ActivityType } from "../../models/activity-type";
 
 @Component({
   selector: "app-activity-log",
@@ -16,6 +17,7 @@ export class ActivityCreationPage implements OnInit {
 
   public today = new Date();
   public activityForm: FormGroup;
+  public activityTypes: ActivityType[];
 
   public incidentReports: IncidentReport[];
   public divisionsWithManagers: Division[];
@@ -23,16 +25,17 @@ export class ActivityCreationPage implements OnInit {
   public updateFiles = new EventEmitter<any>();
 
   constructor(public formBuilder: FormBuilder,
-    public incidentReportService: IncidentReportService,
-    public activityLogService: ActivityLogService,
-    public navController: NavController,
-    public toastService: ToastService) { }
+              public incidentReportService: IncidentReportService,
+              public activityLogService: ActivityLogService,
+              public navController: NavController,
+              public toastService: ToastService) { }
 
   ngOnInit() {
     this.activityForm = this.formBuilder.group({
       activityId: [this.activityId, Validators.required],
       divisionId: [null, Validators.required],
       eventTime: [new Date().toISOString()],
+      activityTypeId: [null, Validators.required],
       description: ["", Validators.required],
       specifiedUser: [""],
       latitude: [""],
@@ -42,11 +45,14 @@ export class ActivityCreationPage implements OnInit {
       linkedIncidentReportId: [null]
     });
 
+    this.activityLogService.getActivityTypes().then(activityTypes => {
+      this.activityTypes = activityTypes;
+    });
+
     this.activityLogService.getActivityGuid().then(id => {
       this.activityId = id;
       this.activityForm.get("activityId").setValue(id);
     });
-
 
     this.activityLogService.getDivisionsWithManagers().then(divisions => {
       this.divisionsWithManagers = divisions;
@@ -76,7 +82,7 @@ export class ActivityCreationPage implements OnInit {
   }
 
   createActivity(): void {
-    this.activityLogService.createActivity(this.activityForm).then(id => {
+    this.activityLogService.createActivity(this.activityForm).then(() => {
       this.navController.navigateRoot("tabs/tab2").then(() => {
         this.toastService.show("Activity is saved!");
       });

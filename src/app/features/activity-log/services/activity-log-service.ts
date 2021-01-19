@@ -5,6 +5,7 @@ import { Division } from "@app/models/division";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { DivisionService } from "@app/services/division.service";
 import { GenericService } from "@app/services/generic.service";
+import { ActivityType } from "../models/activity-type";
 
 @Injectable({
     providedIn: "root"
@@ -28,5 +29,9 @@ export class ActivityLogService extends GenericService {
 
     public createActivity(activityData: FormGroup): Promise<string> {
         return this.http.post<string>(this.apiBase + "/activity", activityData.value).toPromise();
+    }
+
+    public getActivityTypes(): Promise<ActivityType[]> {
+        return this.http.get<ActivityType[]>(this.apiBase + "/activity/activity-types").toPromise();
     }
 }
