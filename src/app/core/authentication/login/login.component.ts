@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
-import { AlertController, Platform, NavController } from "@ionic/angular";
-import { AppConfigService } from "../../services/auth-config.service";
-import { TokenService } from "../../services/token.service";
-import { AuthService } from '@app/services/auth.service';
+import { NavController } from "@ionic/angular";
+import { AppConfigService } from "@app/services/auth-config.service";
+import { TokenService } from "@app/services/token.service";
+import { OAuthService } from "angular-oauth2-oidc";
 
 declare const window: any;
 
@@ -13,13 +13,13 @@ declare const window: any;
 })
 export class LoginComponent implements OnInit {
   constructor(
-    private authService: AuthService,
+    private authService: OAuthService,
     private inAppBrowser: InAppBrowser,
     private appConfigService: AppConfigService,
     private tokenService: TokenService,
     private navController: NavController
   ) {
-    authService.oAuth.redirectUri = "http://localhost:8100/callback";
+    authService.redirectUri = "http://localhost:8100/callback";
   }
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   ionViewWillEnter() {
-    var hasAccessToken = this.authService.oAuth.hasValidAccessToken();
+    const hasAccessToken = this.authService.hasValidAccessToken();
     if (hasAccessToken) {
       this.navController.navigateRoot("/");
     } else {
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
             const keyValuePair = `#id_token=${encodeURIComponent(
               idToken
             )}&access_token=${encodeURIComponent(accessToken)}`;
-            this.authService.oAuth.tryLogin({
+            this.authService.tryLogin({
               customHashFragment: keyValuePair,
               disableOAuth2StateCheck: true,
             });
@@ -56,11 +56,11 @@ export class LoginComponent implements OnInit {
   }
 
   loginWeb() {
-    this.authService.oAuth.initImplicitFlow();
+    this.authService.initImplicitFlow();
   }
 
   loginDevice(): Promise<any> {
-    return this.authService.oAuth.createAndSaveNonce().then((nonce) => {
+    return this.authService.createAndSaveNonce().then(() => {
       let state: string = Math.floor(Math.random() * 1000000000).toString();
       if (window.crypto) {
         const array = new Uint32Array(1);
@@ -119,13 +119,13 @@ export class LoginComponent implements OnInit {
 
   buildOAuthUrl(state): string {
     return (
-      this.authService.oAuth.issuer +
+      this.authService.issuer +
       "/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dtoken%26client_id%3Dionic%26state%3D" +
       state +
       "%26redirect_uri%3D" +
-      this.authService.oAuth.redirectUri +
+      this.authService.redirectUri +
       "%26scope%3D" +
-      this.authService.oAuth.scope
+      this.authService.scope
     );
   }
 }

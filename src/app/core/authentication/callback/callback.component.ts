@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertController, NavController } from "@ionic/angular";
+import { NavController } from "@ionic/angular";
 import { TokenService } from "@app/services/token.service";
-import { AuthService } from "@app/services/auth.service";
+import { OAuthService } from "angular-oauth2-oidc";
 
 @Component({
   selector: "callback",
@@ -9,27 +9,21 @@ import { AuthService } from "@app/services/auth.service";
 })
 export class CallbackComponent implements OnInit {
   constructor(
-    private authService: AuthService,
-    public alertController: AlertController,
+    private authService: OAuthService,
     public tokenService: TokenService,
     private navController: NavController
   ) { }
 
   ngOnInit() {
-    this.authService.oAuth.tryLogin().then(success => {
-      if (success || this.authService.oAuth.hasValidAccessToken()) {
+  }
+
+  ionViewWillEnter() {
+    this.authService.tryLogin().then(success => {
+      if (success || this.authService.hasValidAccessToken()) {
         this.navController.navigateRoot("/");
       } else {
         this.navController.navigateRoot("/login");
       }
     });
-  }
-
-  ionViewWillEnter() {
-    if (this.authService.oAuth.hasValidAccessToken()) {
-      this.navController.navigateRoot("/");
-    } else {
-      this.navController.navigateRoot("/login");
-    }
   }
 }

@@ -12,7 +12,6 @@ import { CronService } from "@app/services/cron.service";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { AccountService } from "@app/services/account.service";
 import { TokenService } from "@app/services/token.service";
-import { AuthService } from "./services/auth.service";
 
 @NgModule({
   declarations: [],
@@ -29,8 +28,7 @@ import { AuthService } from "./services/auth.service";
     DivisionService,
     CronService,
     AppConfigService,
-    AccountService,
-    AuthService
+    AccountService
   ],
 })
 export class CoreModule { }

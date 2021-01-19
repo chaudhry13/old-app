@@ -20,10 +20,10 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
     preloadingStrategy: PreloadAllModules,
     enableTracing: false,
-    initialNavigation: 'enabledNonBlocking',
+    initialNavigation: "enabledNonBlocking",
     useHash: false,
     onSameUrlNavigation: "reload",
-    relativeLinkResolution: 'legacy'
+    relativeLinkResolution: "legacy"
 }),
   ],
   exports: [RouterModule],
