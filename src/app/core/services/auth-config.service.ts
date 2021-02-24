@@ -59,6 +59,9 @@ export class AppConfigService {
       this.appConfig.redirectUri = await this.storage.get("redirect_uri");
       this.appConfig.oidc = await this.storage.get("oidc");
       this.appConfig.apiUrl = await this.storage.get("api_url");
+      if (this.appConfig.apiUrl == null) {
+        this.setDefaults();
+      }
     } else {
       this.setDefaults();
     }
