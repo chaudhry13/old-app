@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ionic build; npx jetify; npx cap sync android; npx cap open android
