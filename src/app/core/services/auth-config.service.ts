@@ -4,7 +4,6 @@ import { AppConfig } from "../settings/auth.config";
 import { OAuthErrorEvent, OAuthService } from "angular-oauth2-oidc";
 import { JwksValidationHandler } from "angular-oauth2-oidc-jwks";
 import { environment } from "@env";
-import { TokenService } from "@app/services/token.service";
 
 @Injectable({
   providedIn: "root",
@@ -15,11 +14,10 @@ export class AppConfigService {
   // TODO: GENERAL
   // - Find a solution to use environment.xxx instead of hardcoded in the code.
   // - This service should NOT be called as often. There is no need to.
-  // - Create an app config class seperate from Auth config
+  // - Create an app config class separate from Auth config
 
   constructor(private storage: Storage,
-              private auth: OAuthService,
-              private tokenService: TokenService) {
+              private auth: OAuthService) {
   }
 
   public setAppConfig(tokenPayload: any) {
