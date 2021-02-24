@@ -120,7 +120,7 @@ export class LocationQuestionComponent implements OnInit {
         this.answerForm.controls.locationAnswer.markAsTouched();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 

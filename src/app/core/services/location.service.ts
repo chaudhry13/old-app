@@ -33,7 +33,7 @@ export class LocationService {
           resolve(new LocationViewModel(model));
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
           reject();
         });
     });

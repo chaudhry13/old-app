@@ -1,11 +1,10 @@
-import { QuestionTextOptions } from "../models/questionnaire";
 import {
   QuestionTypes,
   Question,
   QuestionTextType,
 } from "../models/questionnaire";
 import { Injectable } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup } from "@angular/forms";
 
 @Injectable()
 export class ValidationService {
@@ -182,7 +181,6 @@ export class ValidationService {
   // No validation here yet
   locationValidation() {
     // FIXME: CALLED TOO MUCH
-    //console.log("validating location")
     return { isValid: true, regExp: null, errorMsg: null };
   }
 

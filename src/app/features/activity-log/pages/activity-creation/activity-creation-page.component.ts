@@ -58,10 +58,6 @@ export class ActivityCreationPage implements OnInit {
       this.divisionsWithManagers = divisions;
     });
 
-    this.activityForm.valueChanges.subscribe(value => {
-      console.log(value);
-    });
-
     this.getIncidentReports();
   }
 

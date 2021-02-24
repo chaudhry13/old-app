@@ -92,8 +92,8 @@ export class AuditDetailsPage implements OnInit {
         } else {
           this.fileOpener
             .open(url, "application/pdf")
-            .then(() => console.log("File is opened"))
-            .catch((e) => console.log("Error opening file", e));
+            .then(() => console.debug("File is opened"))
+            .catch((e) => console.error("Error opening file", e));
         }
       });
   }
