@@ -28,7 +28,7 @@ import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { AgmCoreModule } from "@agm/core";
 import { AccountService } from "@app/services/account.service";
 
-import { IonicStorageModule } from "@ionic/storage";
+import { IonicStorageModule, Storage } from "@ionic/storage";
 import { AppConfigService } from "@app/services/auth-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
@@ -42,6 +42,7 @@ import { StorageService } from "@app/services/storage.service";
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: [
@@ -53,7 +54,6 @@ import { StorageService } from "@app/services/storage.service";
         sendAccessToken: true,
       },
     }),
-    IonicStorageModule.forRoot(),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,

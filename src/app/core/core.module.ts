@@ -15,7 +15,9 @@ import { TokenService } from "@app/services/token.service";
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule],
+  imports: [
+    CommonModule
+  ],
   providers: [
     LocationService,
     UserService,

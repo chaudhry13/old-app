@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { AppConfig } from "../settings/auth.config";
-import { OAuthErrorEvent } from "angular-oauth2-oidc";
+import { OAuthErrorEvent, OAuthService } from "angular-oauth2-oidc";
 import { JwksValidationHandler } from "angular-oauth2-oidc-jwks";
-import { environment } from "../../../environments/environment";
-import { AuthService } from './auth.service';
+import { environment } from "@env";
+import { TokenService } from "@app/services/token.service";
+
 @Injectable({
   providedIn: "root",
 })
@@ -16,11 +17,40 @@ export class AppConfigService {
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class seperate from Auth config
 
-  constructor(private storage: Storage, private auth: AuthService) { }
+  constructor(private storage: Storage,
+              private auth: OAuthService,
+              private tokenService: TokenService) {
+  }
+
+  public setAppConfig(tokenPayload: any) {
+    this.saveToStorage(tokenPayload);
+    this.tokenPayloadToAppConfig(tokenPayload);
+  }
+
+  private tokenPayloadToAppConfig(tokenPayload: any) {
+    this.appConfig.clientId = tokenPayload.client_id;
+    this.appConfig.issuer = tokenPayload.iss;
+    this.appConfig.scope = tokenPayload.scope;
+    this.appConfig.logoutUrl = tokenPayload.iss + "/account/logout";
+    this.appConfig.redirectUri = "http://localhost:8100/callback";
+    this.appConfig.oidc = tokenPayload.oidc;
+    this.appConfig.apiUrl = tokenPayload.apiurl;
+    this.auth.configure(this.appConfig);
+  }
+
+  private saveToStorage(tokenPayload: any) {
+    this.storage.set("api_url", tokenPayload.apiurl);
+    this.storage.set("client_id", tokenPayload.client_id);
+    this.storage.set("iss", tokenPayload.iss);
+    this.storage.set("scope", tokenPayload.scope);
+    this.storage.set("logout_url", tokenPayload.iss + "/account/logout");
+    this.storage.set("redirect_uri", "http://localhost:8100/callback");
+    this.storage.set("oidc", false);
+  }
 
   public async loadAppConfig() {
-    var num_keys = await this.storage.length();
-    var issuer = await this.storage.get("iss");
+    let num_keys = await this.storage.length();
+    let issuer = await this.storage.get("iss");
     if (num_keys > 0 || issuer) {
       this.appConfig.clientId = await this.storage.get("client_id");
       this.appConfig.issuer = await this.storage.get("iss");
@@ -29,23 +59,25 @@ export class AppConfigService {
       this.appConfig.redirectUri = await this.storage.get("redirect_uri");
       this.appConfig.oidc = await this.storage.get("oidc");
       this.appConfig.apiUrl = await this.storage.get("api_url");
-      this.getApiBaseUrl;
     } else {
-      // Default auth configuration
-      this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/";
-      this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
-      this.appConfig.redirectUri = "http://localhost:8100/callback";
-      this.appConfig.logoutUrl =
-        "https://humanrisks-core-auth.azurewebsites.net/account/logout";
-      this.appConfig.clientId = "ionic";
-      this.appConfig.oidc = false;
-      this.appConfig.scope = "api";
+      this.setDefaults();
     }
   }
 
+  private setDefaults() {
+    this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/";
+    this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
+    this.appConfig.redirectUri = "http://localhost:8100/callback";
+    this.appConfig.logoutUrl =
+      "https://humanrisks-core-auth.azurewebsites.net/account/logout";
+    this.appConfig.clientId = "ionic";
+    this.appConfig.oidc = false;
+    this.appConfig.scope = "api";
+  }
+
   public get getApiBaseUrl(): string {
-    if (this.auth.oAuth.hasValidAccessToken()) {
-      var token = this.auth.oAuth.getAccessToken();
+    if (this.auth.hasValidAccessToken()) {
+      var token = this.auth.getAccessToken();
       const tokens: Array<any> = token.split(".");
       const decoded = this.decodeB64(tokens[1]);
       const tokenPayload: any = JSON.parse(decoded);
@@ -68,8 +100,8 @@ export class AppConfigService {
   }
 
   public get organizationId(): string {
-    if (this.auth.oAuth.hasValidAccessToken()) {
-      var token = this.auth.oAuth.getAccessToken();
+    if (this.auth.hasValidAccessToken()) {
+      var token = this.auth.getAccessToken();
       const tokens: Array<any> = token.split(".");
       const decoded = this.decodeB64(tokens[1]);
       const tokenPayload: any = JSON.parse(decoded);
@@ -79,26 +111,16 @@ export class AppConfigService {
     }
   }
 
-  public setAppConfig(tokenPayload: any) {
-    // Save auth config
-    this.storage.set("api_url", tokenPayload.apiurl);
-    this.storage.set("client_id", tokenPayload.client_id);
-    this.storage.set("iss", tokenPayload.iss);
-    this.storage.set("scope", tokenPayload.scope);
-    this.storage.set("logout_url", tokenPayload.iss + "/account/logout");
-    this.storage.set("redirect_uri", "http://localhost:8100/callback");
-    this.storage.set("oidc", false);
-  }
-
   configureImplicitFlowAuthentication() {
-    this.auth.oAuth.configure(this.appConfig);
-    this.auth.oAuth.setStorage(localStorage);
-    this.auth.oAuth.tokenValidationHandler = new JwksValidationHandler();
-    this.auth.oAuth.loadDiscoveryDocument();
-    this.auth.oAuth.tryLogin().then(success => {
+    this.auth.configure(this.appConfig);
+    this.auth.setStorage(localStorage);
+    this.auth.tokenValidationHandler = new JwksValidationHandler();
+    this.auth.loadDiscoveryDocumentAndTryLogin().then(success => {
       console.debug("Login Successful: " + success);
-    });
-    this.auth.oAuth.events.subscribe((e) => {
+    }).catch(() => {
+      console.debug("something went wrong in trylogin");
+    })
+    this.auth.events.subscribe((e) => {
       if (!environment.production) {
         if (e instanceof OAuthErrorEvent) {
           console.error(e.reason);

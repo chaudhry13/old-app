@@ -7,6 +7,8 @@ import { AccountService } from "@app/services/account.service";
 import { Division } from "@app/models/division";
 import { DivisionList } from '@shared/models/division-list';
 import { AuthService } from '@app/services/auth.service';
+import { OAuthService } from "angular-oauth2-oidc";
+import { Storage } from "@ionic/storage";
 
 @Component({
   selector: "app-profile",
@@ -21,8 +23,9 @@ export class ProfilePage implements OnInit {
     public userService: UserService,
     public divisionService: DivisionService,
     public accountService: AccountService,
-    public auth: AuthService,
-    private router: Router
+    public auth: OAuthService,
+    private router: Router,
+    private storage: Storage
   ) { }
 
   ngOnInit() {
@@ -45,9 +48,9 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
+    this.auth.logOut();
     this.router.navigate(["/login"]).then(success => {
-      localStorage.clear();
-      this.auth.oAuth.logOut(success);
+      console.debug("navigated from profile til login for logout button")
     });
   }
 }

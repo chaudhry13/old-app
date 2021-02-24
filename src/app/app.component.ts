@@ -13,7 +13,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private appConfigService: AppConfigService
+    private appConfigService: AppConfigService,
   ) {
     this.initialize();
   }

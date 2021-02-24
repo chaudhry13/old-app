@@ -7,15 +7,10 @@ import { Storage } from "@ionic/storage";
 export class TokenService {
   user: User;
 
-  constructor(
-    private storage: Storage,
-    private appConfigService: AppConfigService
-  ) {}
+  constructor() { }
 
   public readToken(token: string) {
-    const tokens: Array<any> = token.split(".");
-    const decoded = this.decodeB64(tokens[1]);
-    const tokenPayload: any = JSON.parse(decoded);
+    const tokenPayload = this.getTokenPayload(token);
 
     this.user = new User();
 
@@ -25,29 +20,27 @@ export class TokenService {
     this.user.role = tokenPayload.role;
     this.user.organization = tokenPayload.organization;
     this.user.riskline =
-      tokenPayload.riskline.toLowerCase() == "true" ? true : false;
+      tokenPayload.riskline.toLowerCase() == "true";
     this.user.controlrisks =
-      tokenPayload.controlrisks.toLowerCase() == "true" ? true : false;
+      tokenPayload.controlrisks.toLowerCase() == "true";
     this.user.advancedConsequence =
-      tokenPayload.advancedconsequence.toLowerCase() == "true" ? true : false;
+      tokenPayload.advancedconsequence.toLowerCase() == "true";
     this.user.currency = tokenPayload.currency;
     this.user.shortname = tokenPayload.shortname;
     this.user.termsaccepted =
-      tokenPayload.termsaccepted.toLowerCase() == "true" ? true : false;
+      tokenPayload.termsaccepted.toLowerCase() == "true";
     this.user.external =
-      tokenPayload.external.toLowerCase() == "true" ? true : false;
+      tokenPayload.external.toLowerCase() == "true";
 
     // Areas
     this.user.auditsArea =
-      tokenPayload.auditsarea.toLowerCase() == "true" ? true : false;
+      tokenPayload.auditsarea.toLowerCase() == "true";
     this.user.riskAssessmentsArea =
-      tokenPayload.riskassessmentsarea.toLowerCase() == "true" ? true : false;
+      tokenPayload.riskassessmentsarea.toLowerCase() == "true";
     this.user.incidentsArea =
-      tokenPayload.incidentsarea.toLowerCase() == "true" ? true : false;
+      tokenPayload.incidentsarea.toLowerCase() == "true";
     this.user.healthSafetyArea =
-      tokenPayload.healthsafetyarea.toLowerCase() == "true" ? true : false;
-
-    this.appConfigService.setAppConfig(tokenPayload);
+      tokenPayload.healthsafetyarea.toLowerCase() == "true";
   }
 
   public getTokenPayload(token: string): any {

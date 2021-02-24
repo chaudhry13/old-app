@@ -17,12 +17,20 @@ export class CallbackComponent implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+    this.tryToLogin();
+  }
+
+  private tryToLogin() {
     this.authService.tryLogin().then(success => {
       if (success || this.authService.hasValidAccessToken()) {
-        this.navController.navigateRoot("/");
+        this.navController.navigateRoot("/").then(() => {
+          console.debug("Has valid token, navigating from callback to root '/'");
+        });
       } else {
-        this.navController.navigateRoot("/login");
+        this.navController.navigateRoot("/login").then(() => {
+          console.debug("no valid token, navigating from callback to login");
+        });
       }
     });
   }

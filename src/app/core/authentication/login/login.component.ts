@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.appConfigService.loadAppConfig();
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     const hasAccessToken = this.authService.hasValidAccessToken();
     if (hasAccessToken) {
       this.navController.navigateRoot("/");
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
             this.navController.navigateForward("/callback");
           },
           (error) => {
-            console.log(error);
+            console.error(error);
           }
         );
       } else {
@@ -77,10 +77,9 @@ export class LoginComponent implements OnInit {
         );
 
         browser.on("loaderror").subscribe((error) => {
-          console.log(error);
+          console.error(error);
         });
         browser.on("loadstart").subscribe((event) => {
-          console.log(event);
           if (event.url.indexOf("http://localhost:8100/callback") === 0) {
             const responseParameters = event.url.split("#")[1].split("&");
 
@@ -92,6 +91,8 @@ export class LoginComponent implements OnInit {
               ] = responseParameters[i].split("=")[1];
             }
             this.tokenService.readToken(parsedResponse["access_token"]);
+            const tokenPayload = this.tokenService.getTokenPayload(parsedResponse["access_token"]);
+            this.appConfigService.setAppConfig(tokenPayload);
             const defaultError = "Problem authenticating with Okta";
 
             browser.on("exit").subscribe(() => { });
