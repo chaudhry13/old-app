@@ -45,13 +45,21 @@ export class AuditPage implements OnInit {
   }
 
   ngOnInit() {
+    this.listAuditsAndDivisions();
+
+    this.subscribeToControlFormChanges();
+  }
+
+  ionViewWillEnter() {
+    this.listAuditsAndDivisions();
+  }
+
+  private listAuditsAndDivisions() {
     this.list();
 
     this.divisionService.list().then((divisions) => {
       this.divisions = divisions;
     });
-
-    this.subscribeToControlFormChanges();
   }
 
   divisionsChanged(data) {

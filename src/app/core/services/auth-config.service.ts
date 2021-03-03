@@ -11,7 +11,7 @@ import { environment } from "@env";
 export class AppConfigService {
   appConfig: AppConfig = new AppConfig();
 
-  // TODO: GENERAL
+  // FIXME: GENERAL
   // - Find a solution to use environment.xxx instead of hardcoded in the code.
   // - This service should NOT be called as often. There is no need to.
   // - Create an app config class separate from Auth config
@@ -66,7 +66,6 @@ export class AppConfigService {
   }
 
   private setDefaults() {
-    console.debug("setting defaults");
     this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/";
     this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
     this.appConfig.redirectUri = "http://localhost:8100/callback";
@@ -121,11 +120,8 @@ export class AppConfigService {
     this.auth.configure(this.appConfig);
     this.auth.setStorage(localStorage);
     this.auth.tokenValidationHandler = new JwksValidationHandler();
-    console.debug("issuer here");
-    console.log(this.auth.issuer);
-    console.log(this.appConfig);
     this.auth.loadDiscoveryDocumentAndTryLogin().then(success => {
-      console.debug("Login Successful: " + success);
+      console.debug("Login Try Successful: " + success);
     }).catch(() => {
       console.debug("something went wrong in trylogin");
     })
