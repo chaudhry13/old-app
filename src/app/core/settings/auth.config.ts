@@ -1,5 +1,4 @@
 import { AuthConfig } from "angular-oauth2-oidc";
-import { isDevMode } from "@angular/core";
 
 export class AppConfig extends AuthConfig {
   apiUrl: string;
