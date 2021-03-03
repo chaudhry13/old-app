@@ -32,6 +32,7 @@
     "iosScheme": "ionic",
     "androidScheme": "https",
     "allowNavigation": [
+      "*",
       "*.humanrisks.com",
       "localhost:8100",
       "*.azurewebsites.net"

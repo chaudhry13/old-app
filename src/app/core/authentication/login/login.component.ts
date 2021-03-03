@@ -119,14 +119,16 @@ export class LoginComponent implements OnInit {
   }
 
   buildOAuthUrl(state): string {
+    console.debug("building auth url");
+    console.debug(this.appConfigService.issuer);
     return (
-      this.authService.issuer +
+      this.appConfigService.issuer +
       "/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dtoken%26client_id%3Dionic%26state%3D" +
       state +
       "%26redirect_uri%3D" +
-      this.authService.redirectUri +
+      this.appConfigService.redirectUri +
       "%26scope%3D" +
-      this.authService.scope
+      this.appConfigService.scope
     );
   }
 }

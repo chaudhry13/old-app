@@ -17,7 +17,7 @@ export class AppConfigService {
   // - Create an app config class separate from Auth config
 
   constructor(private storage: Storage,
-              private auth: OAuthService) {
+    private auth: OAuthService) {
   }
 
   public setAppConfig(tokenPayload: any) {
@@ -66,6 +66,7 @@ export class AppConfigService {
   }
 
   private setDefaults() {
+    console.debug("setting defaults");
     this.appConfig.apiUrl = "https://humanrisks-core-api.azurewebsites.net/";
     this.appConfig.issuer = "https://humanrisks-core-auth.azurewebsites.net";
     this.appConfig.redirectUri = "http://localhost:8100/callback";
@@ -96,6 +97,10 @@ export class AppConfigService {
     return this.appConfig.redirectUri;
   }
 
+  public get scope(): string {
+    return this.appConfig.scope;
+  }
+
   public get logoutUrl(): string {
     return this.appConfig.logoutUrl;
   }
@@ -116,6 +121,9 @@ export class AppConfigService {
     this.auth.configure(this.appConfig);
     this.auth.setStorage(localStorage);
     this.auth.tokenValidationHandler = new JwksValidationHandler();
+    console.debug("issuer here");
+    console.log(this.auth.issuer);
+    console.log(this.appConfig);
     this.auth.loadDiscoveryDocumentAndTryLogin().then(success => {
       console.debug("Login Successful: " + success);
     }).catch(() => {
