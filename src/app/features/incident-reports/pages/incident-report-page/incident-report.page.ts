@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { IncidentReport } from "../../models/incident-report";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
-import { distinctUntilChanged, debounceTime } from "rxjs/operators";
-import { LoadingController, ModalController, NavController } from "@ionic/angular";
+import { ModalController, NavController } from "@ionic/angular";
 import { IncidentReportFilterPage } from "../incident-report-filters/incident-report-filter.page";
 import { ActivityLogService } from "../../../activity-log/services/activity-log-service";
 
