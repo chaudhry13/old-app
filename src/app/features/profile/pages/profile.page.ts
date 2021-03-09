@@ -24,8 +24,7 @@ export class ProfilePage implements OnInit {
     public divisionService: DivisionService,
     public accountService: AccountService,
     public auth: OAuthService,
-    private router: Router,
-    private storage: Storage
+    private router: Router
   ) { }
 
   ngOnInit() {
