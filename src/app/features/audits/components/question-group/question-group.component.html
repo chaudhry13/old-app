@@ -15,9 +15,11 @@
         class="ion-padding-bottom"
       >
         <question
+          *ngIf="!toSkip.includes(question.id)"
           [isReadOnly]="isReadOnly"
           [question]="question"
           [questionnaireUserAnswer]="questionnaireUserAnswer"
+          (questionnaireUserAnswerChange)="changedAnswer($event)"
           [isInGroup]="true"
         >
         </question>

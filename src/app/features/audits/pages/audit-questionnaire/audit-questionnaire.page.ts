@@ -9,6 +9,7 @@ import { QuestionnaireDetails } from "../../models/questionnaire";
 import { ActivatedRoute } from "@angular/router";
 import { AuditService } from "../../services/audit.service";
 import { NavController } from "@ionic/angular";
+import { LogicService } from "../../services/logic.service";
 
 @Component({
   selector: "app-audit-questionnaire",
@@ -23,17 +24,20 @@ export class AuditQuestionnairePage implements OnInit {
   questionnaireUserAnswer: QuestionnaireUserAnswer;
 
   questionsAndQuestionGroups: QuestionAndGroups[] = [];
+  toSkip: string[] = [];
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
     public auditService: AuditService,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    public logicService: LogicService,
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
   ngOnInit() {
+    
     this.questionnaireUserAnswerService.get(this.id).then((qua) => {
       this.questionnaireUserAnswer = qua;
       this.questionnaire = qua.questionnaireSentOut.questionnaire;
@@ -89,6 +93,13 @@ export class AuditQuestionnairePage implements OnInit {
         "/tabs/tab1/complete/" + this.questionnaireUserAnswer.auditId
       )
       .then();
+  }
+
+  answerChanged(newAnswer) {
+    // Find questions to skip when the answer changes
+    this.logicService.WhichToSkip(this.questionnaire.questions, newAnswer).then(toSkip => {
+      this.toSkip = toSkip;
+    })
   }
 
   validateQuestionnaire(): boolean {

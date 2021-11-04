@@ -1,6 +1,6 @@
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { ValidationService } from "../../services/validation.service";
-import { Component, Input, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from "@angular/core";
 import {
   Question,
   QuestionAnsweres,
@@ -28,9 +28,10 @@ import { AppConfigService } from "@app/services/auth-config.service";
 })
 export class QuestionComponent implements OnInit {
   @Input() question: Question;
-  @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
+  @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Output() questionnaireUserAnswerChange = new EventEmitter();
 
   @ViewChild("comment") commentTextArea: IonTextarea;
 
@@ -64,6 +65,7 @@ export class QuestionComponent implements OnInit {
       na: [false],
       answered: [false],
       locationAnswer: [null],
+      optionAnswered: [[]],
     });
   }
 
@@ -75,15 +77,52 @@ export class QuestionComponent implements OnInit {
 
     if (this.questionAnswer != null) {
       this.answerForm.controls.na.setValue(this.questionAnswer.na);
+      this.hasComment = this.questionAnswer.hasComment;
+
+      /*
       if (!this.qhs.isNullOrWhitespace(this.questionAnswer.comment)) {
         this.answerForm.controls.comment.setValue(this.questionAnswer.comment);
         this.hasComment = true;
-      }
+      }*/
     }
 
+    // Used to update the logic and which questions should be shown
+    this.answerForm.valueChanges
+      .pipe(debounceTime(200), distinctUntilChanged())
+      .subscribe(() => {
+        console.log("update logic");
+        const answer = this.qhs.getQuestionAnswer(
+          this.questionAnswer,
+          this.question,
+          this.questionnaireUserAnswer,
+          this.answerForm
+        );
+        let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(qa => qa.id == this.questionAnswer.id);
+        this.questionnaireUserAnswer.questionAnsweres[index] = <QuestionAnsweres>{
+          id: answer.id,
+          answered: true,
+          questionId: answer.questionId,
+          text: answer.text,
+          slider: answer.slider,
+          numberAnswer: answer.numberAnswer,
+          hasComment: false,
+          na: answer.na,
+          question: this.question,
+          filesUploaded: 0,
+          userAnswerId: answer.userAnswerId,
+          locationAnswer: answer.locationAnswer,
+          optionAnswered: answer.optionAnswered,
+          issueId: null,
+          isIssue: null,
+        };
+        // Send signal to update the logic
+        this.questionnaireUserAnswerChange.emit(this.questionnaireUserAnswer);
+      });
+    // Update the answer in the database
     this.answerForm.valueChanges
       .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
+        console.log("Save in the database");
         this.hasComment = !this.qhs.isNullOrWhitespace(
           this.answerForm.controls.comment.value
         );

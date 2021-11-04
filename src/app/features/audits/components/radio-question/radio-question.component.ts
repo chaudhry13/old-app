@@ -5,6 +5,8 @@ import {
   QuestionnaireUserAnswer,
   QuestionAnsweres,
   QuestionOption,
+  QuestionOptionAnsweredCreate,
+  QuestionOptionAnswered,
 } from "../../models/questionnaire";
 import { FormGroup } from "@angular/forms";
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
@@ -24,6 +26,7 @@ export class RadioQuestionComponent implements OnInit {
   @Input() isReadOnly: boolean;
 
   questionOptions: QuestionOption[];
+  optionSelected: string = null;
 
   message = "";
   pattern = "";
@@ -37,9 +40,16 @@ export class RadioQuestionComponent implements OnInit {
   ngOnInit() {
     this.questionOptions = this.question.possibleAnswers;
     this.questionOptions.sort((a, b) => a.index - b.index);
+    var selected = this.questionAnswer.optionAnswered.findIndex(o => o.selected);
+    if (selected != -1) {
+      this.optionSelected = this.questionAnswer.optionAnswered[selected].questionOptionId;
+    }
   }
 
   optionPressed(option: QuestionOption) {
+    let answeredOptions = this.answerForm.controls.optionAnswered.value as QuestionOptionAnswered[];
+    answeredOptions = answeredOptions.filter(o => o.id != option.id);
+    
     this.qhs.updateOptionAnswer(
       this.questionAnswer,
       option,

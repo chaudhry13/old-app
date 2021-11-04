@@ -1,5 +1,5 @@
 <ion-list lines="none">
-  <ion-radio-group mode="md">
+  <ion-radio-group mode="md" [value]="optionSelected">
     <ion-item
       *ngFor="let option of questionOptions"
       (click)="optionPressed(option)"
@@ -8,6 +8,7 @@
       style="margin: 8px"
     >
       <ion-radio
+        [value]="option.id"
         [attr.disabled]="isReadOnly"
         class="ion-float-start"
         color="primary"

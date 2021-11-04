@@ -16,13 +16,15 @@
           [isReadOnly]="isReadOnly"
           [questionGroup]="item.reference"
           [questionnaireUserAnswer]="questionnaireUserAnswer"
+          (questionnaireUserAnswerChange)="answerChanged($event)"
+          [toSkip]="toSkip"
         >
         </question-group>
       </div>
 
       <!-- Standalone questions -->
       <ion-card
-        *ngIf="item.type == 'Question'"
+        *ngIf="item.type == 'Question' && !toSkip.includes(item.reference.id)"
         class="card ion-no-margin ion-margin-bottom"
         style="--background: white; border-radius: 0px"
       >
@@ -31,6 +33,7 @@
             [isReadOnly]="isReadOnly"
             [question]=" item.reference"
             [questionnaireUserAnswer]="questionnaireUserAnswer"
+            (questionnaireUserAnswerChange)="answerChanged($event)"
             [isInGroup]="false"
           >
           </question>

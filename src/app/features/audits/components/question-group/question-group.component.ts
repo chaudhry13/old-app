@@ -3,6 +3,10 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
 } from "@angular/core";
 import {
   QuestionGroupDetails,
@@ -14,12 +18,28 @@ import {
   templateUrl: "./question-group.component.html",
   styleUrls: ["./question-group.component.scss"],
 })
-export class QuestionGroupComponent implements OnInit {
+export class QuestionGroupComponent implements OnInit, OnChanges {
   @Input() questionGroup: QuestionGroupDetails;
-  @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Input() isReadOnly: boolean;
+  @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
+  @Input() toSkip: string[];
+  @Output() questionnaireUserAnswerChange = new EventEmitter();
 
   constructor() {}
-
+  
   ngOnInit() {}
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.questionnaireUserAnswer) {
+      this.updateLogic();
+    }
+  }
+
+  changedAnswer(newAnswer) {
+    this.questionnaireUserAnswerChange.emit(newAnswer);
+  }
+
+  updateLogic() {
+    console.log("Update logic in group!");
+  }
 }

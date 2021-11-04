@@ -29,6 +29,7 @@ import {
 } from "./services/questionnaire.service";
 import { QuestionnaireHelperService } from "./services/questionnaire-helper.service";
 import { DivisionService } from "@app/services/division.service";
+import { LogicService } from "./services/logic.service";
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { DivisionService } from "@app/services/division.service";
     QuestionnaireHelperService,
     QuestionAnsweredService,
     QuestionnaireUserAnswerService,
+    LogicService,
   ],
 })
 export class AuditModule {}

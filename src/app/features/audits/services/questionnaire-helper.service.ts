@@ -79,7 +79,8 @@ export class QuestionnaireHelperService {
       }
       answerEdit.optionAnswered.push(optionAnswered);
 
-      this.updateAnswer(answerEdit, questionAnswer, question);
+      answerForm.controls.optionAnswered.setValue(answerEdit.optionAnswered);
+      //this.updateAnswer(answerEdit, questionAnswer, question);
     } else {
       if (question.type === QuestionTypes.Checkbox) {
         answerEdit.optionAnswered.find(
@@ -92,7 +93,9 @@ export class QuestionnaireHelperService {
         ).selected = true;
       }
 
-      this.updateAnswer(answerEdit, questionAnswer, question);
+      answerForm.controls.optionAnswered.setValue(answerEdit.optionAnswered);
+      answerForm.controls.optionAnswered.markAsTouched({ onlySelf: true });
+      //this.updateAnswer(answerEdit, questionAnswer, question);
     }
   }
 
@@ -109,11 +112,11 @@ export class QuestionnaireHelperService {
       text: answerForm.controls.text.value,
       slider: answerForm.controls.slider.value,
       numberAnswer: answerForm.controls.numberAnswer.value,
-      comment: answerForm.controls.comment.value,
       na: answerForm.controls.na.value,
-      optionAnswered: questionAnswer.optionAnswered,
+      optionAnswered: answerForm.controls.optionAnswered.value,
       answered: true,
       locationAnswer: answerForm.controls.locationAnswer.value,
+      userAnswer: null,
     };
   }
 
