@@ -30,6 +30,8 @@ import {
 import { QuestionnaireHelperService } from "./services/questionnaire-helper.service";
 import { DivisionService } from "@app/services/division.service";
 import { LogicService } from "./services/logic.service";
+import { CommentService } from "@shared/services/comment.service";
+import { CommentModalComponent } from "./components/comment-modal/comment-modal.component";
 
 @NgModule({
   imports: [
@@ -58,6 +60,7 @@ import { LogicService } from "./services/logic.service";
     CheckboxQuestionComponent,
     LocationQuestionComponent,
     NumberQuestionComponent,
+    CommentModalComponent
   ],
   providers: [
     AuditService,
@@ -69,6 +72,9 @@ import { LogicService } from "./services/logic.service";
     QuestionAnsweredService,
     QuestionnaireUserAnswerService,
     LogicService,
+    CommentService,
+    QuestionnaireUserAnswerService,
+    AuditService
   ],
 })
 export class AuditModule {}

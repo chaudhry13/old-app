@@ -1,0 +1,35 @@
+<div>
+  <div class="modal-header">
+    <ion-icon size="large" name="pencil-outline"></ion-icon>
+    <ion-text color="dark">
+      <h5>Create Comment</h5>
+    </ion-text>
+    <div (click)="onClose()" class="close-btn">
+      <ion-icon size="large" name="close-outline"></ion-icon>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+    "
+  >
+    <ion-textarea
+      (ngModelChange)="onChange($event)"
+      [(ngModel)]="comment"
+      style="
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #f1f1f1;
+        padding: 10px;
+      "
+      placeholder="Enter Comment"
+    ></ion-textarea>
+    <ion-button [disabled]="showCreateButton" (click)="onCreate()"
+      >Create Comment</ion-button
+    >
+  </div>
+</div>

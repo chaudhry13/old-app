@@ -23,6 +23,10 @@ export class CommentService extends GenericService {
     return this.http.post<string>(this.apiBase, comment).toPromise();
   }
 
+  async insertComment(body:any): Promise<string> {
+    return this.http.post<string>(this.apiBase, body).toPromise();
+  }
+
   async delete(id: string): Promise<boolean> {
     return this.http.delete<boolean>(this.apiBase + "/" + id).toPromise();
   }

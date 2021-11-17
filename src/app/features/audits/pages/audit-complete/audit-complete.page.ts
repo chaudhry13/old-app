@@ -22,6 +22,7 @@ import { FollowUpService } from "../../services/follow-up.service";
 import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
 import { AuthService } from '@app/services/auth.service';
+import { CommentService } from "@shared/services/comment.service";
 
 @Component({
   selector: "app-audit-complete",
@@ -72,7 +73,8 @@ export class AuditCompletePage implements OnInit {
     public tokenService: TokenService,
     public followUpService: FollowUpService,
     public userService: UserService,
-    public qhs: QuestionnaireHelperService
+    public qhs: QuestionnaireHelperService,
+    private commentService:CommentService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
@@ -90,6 +92,14 @@ export class AuditCompletePage implements OnInit {
     this.tokenService.readToken(this.auth.oAuth.getAccessToken());
     this.user = this.tokenService.getUser();
     this.getAudit();
+
+
+    console.log("This is a Comment");
+    
+    this.commentService.list(this.id, 5).then(val=>{
+      console.log(val);
+      
+    })
   }
 
   // When ever the view becomes active

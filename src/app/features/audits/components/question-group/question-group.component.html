@@ -21,6 +21,9 @@
           [questionnaireUserAnswer]="questionnaireUserAnswer"
           (questionnaireUserAnswerChange)="changedAnswer($event)"
           [isInGroup]="true"
+          (questionnaireUserAnswerToParent)="
+            questionnaireUserAnswerData($event)
+          "
         >
         </question>
       </div>

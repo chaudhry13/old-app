@@ -25,10 +25,11 @@ export class QuestionGroupComponent implements OnInit, OnChanges {
   @Input() toSkip: string[];
   @Output() questionnaireUserAnswerChange = new EventEmitter();
 
+  hasComment: boolean;
   constructor() {}
-  
+
   ngOnInit() {}
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.questionnaireUserAnswer) {
       this.updateLogic();
@@ -41,5 +42,17 @@ export class QuestionGroupComponent implements OnInit, OnChanges {
 
   updateLogic() {
     console.log("Update logic in group!");
+  }
+  questionnaireUserAnswerData(data) {
+    console.log("My Favorite Data");
+    console.log("This is a Data");
+    console.log(data);
+    
+
+    // console.log(data[0].hasComment);
+
+    // data.forEach(element => {
+    //   this.hasComment = element.hasComment
+    // });
   }
 }

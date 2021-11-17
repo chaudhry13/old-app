@@ -8,3 +8,24 @@
 .question-header {
   font-size: 16px;
 }
+
+.question-replay-delete{
+  text-decoration: none;
+  color: #4a91e5;
+  margin: 10px;
+}
+
+.question-replay-delete:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+.commentArea{
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+.chatArea{
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}

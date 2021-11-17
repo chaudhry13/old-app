@@ -31,7 +31,7 @@ export class AuditQuestionnairePage implements OnInit {
     public questionnaireUserAnswerService: QuestionnaireUserAnswerService,
     public auditService: AuditService,
     public navCtrl: NavController,
-    public logicService: LogicService,
+    public logicService: LogicService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }
@@ -44,6 +44,7 @@ export class AuditQuestionnairePage implements OnInit {
       this.addQuestionsAndGroups();
       this.checkAuditCompleteStatus(this.questionnaireUserAnswer.auditId);
     });
+    
   }
 
   addQuestionsAndGroups() {
@@ -96,6 +97,8 @@ export class AuditQuestionnairePage implements OnInit {
   }
 
   answerChanged(newAnswer) {
+    console.log("Answer Chnged medu");
+    
     // Find questions to skip when the answer changes
     this.logicService.WhichToSkip(this.questionnaire.questions, newAnswer).then(toSkip => {
       this.toSkip = toSkip;

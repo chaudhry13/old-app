@@ -1,6 +1,15 @@
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { ValidationService } from "../../services/validation.service";
-import { Component, Input, OnInit, ViewChild, ElementRef, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  Output,
+  EventEmitter,
+  Injectable,
+} from "@angular/core";
 import {
   Question,
   QuestionAnsweres,
@@ -8,9 +17,17 @@ import {
   QuestionTypes,
 } from "../../models/questionnaire";
 import { FormBuilder, FormGroup } from "@angular/forms";
-import { QuestionAnsweredService } from "../../services/questionnaire.service";
+import {
+  QuestionAnsweredService,
+  QuestionnaireUserAnswerService,
+} from "../../services/questionnaire.service";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
-import { IonTextarea, NavController } from "@ionic/angular";
+import {
+  AlertController,
+  IonTextarea,
+  ModalController,
+  NavController,
+} from "@ionic/angular";
 import { ToastService } from "@app/services/toast.service";
 import { CameraService } from "@app/services/photo.service";
 import { StorageService } from "@app/services/storage.service";
@@ -20,6 +37,12 @@ import { TokenService } from "@app/services/token.service";
 import { AccountService } from "@app/services/account.service";
 import { SettingsService } from "@app/settings/settings.service";
 import { AppConfigService } from "@app/services/auth-config.service";
+import { CommentService } from "@shared/services/comment.service";
+import { AuditService } from "../../services/audit.service";
+import { ActivatedRoute } from "@angular/router";
+import { CommentType } from "@app/models/comment";
+import { Comment } from "@app/models/comment";
+import { CommentModalComponent } from "../comment-modal/comment-modal.component";
 
 @Component({
   selector: "question",
@@ -30,15 +53,26 @@ export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
+  hasComment: boolean = false;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Output() questionnaireUserAnswerChange = new EventEmitter();
-
+  @Input()
+  id: string;
   @ViewChild("comment") commentTextArea: IonTextarea;
+
+  @Output() questionnaireUserAnswerToParent = new EventEmitter();
+  showCreateComment: boolean = false;
+
+  commentId: string[];
+  common: FormGroup;
+  isInRole:string;
+
+  commentData: Comment[];
+  questionData: QuestionAnsweres[];
 
   QuestionTypes = QuestionTypes;
   questionAnswer: QuestionAnsweres;
   answerForm: FormGroup;
-  hasComment = false;
   showComment = false;
   public files: Attachment[];
   public photos: any[] = [];
@@ -52,8 +86,18 @@ export class QuestionComponent implements OnInit {
     public toastService: ToastService,
     public cameraService: CameraService,
     public storageService: StorageService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public commentService: CommentService,
+    public qua: QuestionnaireUserAnswerService,
+    public auditsService: AuditService,
+    public activatedRoute: ActivatedRoute,
+    public questionaireUserAnswerService: QuestionnaireUserAnswerService,
+    public modelController: ModalController,
+    private userService: UserService,
+    public alertController: AlertController
   ) {
+    this.id = this.activatedRoute.snapshot.paramMap.get("id");
+
     this.answerForm = this.formBuilder.group({
       id: [""],
       questionId: [""],
@@ -68,6 +112,103 @@ export class QuestionComponent implements OnInit {
       optionAnswered: [[]],
     });
   }
+  async onCreateComment() {
+    this.showCreateComment = !this.showCreateComment;
+    const modal = this.modelController.create({
+      component: CommentModalComponent,
+    });
+    (await modal).onDidDismiss().then((data) => {
+      console.log(data.data);
+      this.commentService
+        .insertComment({
+          riskAssessmentId: null,
+          incidentReportId: null,
+          commentId: null,
+          activityLogId: null,
+          activityId: null,
+          auditId: null,
+          questionAnswerId: this.questionAnswer.id,
+          text: data.data.comment,
+        })
+        .then((val) => {
+          console.log(val);
+          this.getCommentById();
+        });
+    });
+    return (await modal).present();
+  }
+  async onReplayComment(id) {
+    const modal = this.modelController.create({
+      component: CommentModalComponent,
+    });
+    (await modal).onDidDismiss().then((data) => {
+      console.log(data.data);
+      this.commentService
+        .insertComment({
+          riskAssessmentId: null,
+          incidentReportId: null,
+          commentId: id,
+          activityLogId: null,
+          activityId: null,
+          auditId: null,
+          questionAnswerId: this.questionAnswer.id,
+          text: data.data.comment,
+        })
+        .then((val) => {
+          console.log(val);
+          this.getCommentById();
+        });
+    });
+    return (await modal).present();
+  }
+
+  async onDeleteChildComment(id) {
+    const alert = this.alertController.create({
+      header: "Delete",
+      message: "Are you sure you want to delete the comment?",
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          handler: () => {},
+        },
+        {
+          text: "Delete",
+          handler: async () => {
+            await this.commentService.delete(id).then((val) => {
+              console.log(val);
+            });
+            this.getCommentById();
+          },
+        },
+      ],
+    });
+    return await (await alert).present();
+  }
+
+  async onDeleteComment(id) {
+    const alert = this.alertController.create({
+      header: "Delete",
+      message: "Are you sure you want to delete the comment?",
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          handler: () => {},
+        },
+        {
+          text: "Delete",
+          handler: async () => {
+            await this.commentService.delete(id).then((val) => {
+              console.log(val);
+            });
+            this.getCommentById();
+          },
+        },
+      ],
+    });
+    return await (await alert).present();
+  }
 
   ngOnInit() {
     this.questionAnswer = this.qhs.findQuestionAnswer(
@@ -75,16 +216,32 @@ export class QuestionComponent implements OnInit {
       this.questionnaireUserAnswer
     );
 
+    this.questionaireUserAnswerService.get(this.id).then((val) => {
+      console.log(this.id);
+      console.log(val.userId);
+      
+      this.userService.get(val.userId).forEach((val) => {
+        console.log("My User Administrator");
+        console.log(val.role);
+        this.isInRole = val.role
+      });
+    });
+
+    
+
     if (this.questionAnswer != null) {
       this.answerForm.controls.na.setValue(this.questionAnswer.na);
       this.hasComment = this.questionAnswer.hasComment;
+      console.log("HAs Comment Area");
 
-      /*
+      console.log(this.hasComment);
+    }
+
+    /*
       if (!this.qhs.isNullOrWhitespace(this.questionAnswer.comment)) {
         this.answerForm.controls.comment.setValue(this.questionAnswer.comment);
         this.hasComment = true;
       }*/
-    }
 
     // Used to update the logic and which questions should be shown
     this.answerForm.valueChanges
@@ -97,8 +254,12 @@ export class QuestionComponent implements OnInit {
           this.questionnaireUserAnswer,
           this.answerForm
         );
-        let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(qa => qa.id == this.questionAnswer.id);
-        this.questionnaireUserAnswer.questionAnsweres[index] = <QuestionAnsweres>{
+        let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
+          (qa) => qa.id == this.questionAnswer.id
+        );
+        this.questionnaireUserAnswer.questionAnsweres[index] = <
+          QuestionAnsweres
+        >{
           id: answer.id,
           answered: true,
           questionId: answer.questionId,
@@ -123,9 +284,9 @@ export class QuestionComponent implements OnInit {
       .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
         console.log("Save in the database");
-        this.hasComment = !this.qhs.isNullOrWhitespace(
-          this.answerForm.controls.comment.value
-        );
+        // this.hasComment = !this.qhs.isNullOrWhitespace(
+        //   this.answerForm.controls.comment.value
+        // );
 
         if (
           this.validationService.isQuestionAnswerValid(
@@ -161,6 +322,15 @@ export class QuestionComponent implements OnInit {
         this.commentTextArea.setFocus().then();
       }, 200);
     }
+    this.getCommentById();
+  }
+  getCommentById() {
+    this.commentService.list(this.questionAnswer.id, 6).then((val) => {
+      console.log("Comment Toggle");
+      console.log(val);
+      console.log(this.questionAnswer.id);
+      this.commentData = val;
+    });
   }
 
   public takePhotoAndUpload() {

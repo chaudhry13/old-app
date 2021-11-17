@@ -12,6 +12,7 @@ import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { AuditService } from "../../services/audit.service";
 import { Audit } from "../../models/audit";
 import cronstrue from "cronstrue";
+import { CommentService } from "@shared/services/comment.service";
 
 @Component({
   selector: "app-audit-details",
@@ -41,12 +42,20 @@ export class AuditDetailsPage implements OnInit {
     private ft: FileTransfer, // TODO: Fix this warning:
     // FileTransfer is deprecated
     private fileOpener: FileOpener,
-    private document: DocumentViewer
+    private document: DocumentViewer,
+    private commentSevice:CommentService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // console.log("This is a comment");
+    
+    // this.commentSevice.list(this.id, 6).then(val=>{
+    //   console.log(val);
+      
+    // })
+  }
 
   ionViewWillEnter() {
     this.getAudits(); // To make sure audits are updated properly
