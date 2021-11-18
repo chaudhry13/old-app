@@ -1,0 +1,126 @@
+<ion-content>
+  <div class="modal-header">
+    <ion-text class="ion-margin-start" color="dark">
+      <h5>Issue</h5>
+    </ion-text>
+    <div (click)="onClose()" class="close-btn">
+      <ion-icon size="large" name="close-outline"></ion-icon>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div *ngIf="showData">
+    <div class="item-style">
+      <ion-label>Title</ion-label>
+      <div class="label-style">
+        <ion-label style="color: #686e74">{{ issueTitle }}</ion-label>
+      </div>
+    </div>
+
+    <div class="item-style">
+      <ion-label>Category</ion-label>
+      <div class="label-style">
+        <ion-label style="color: #686e74">{{ issueCategory }}</ion-label>
+        <ion-icon
+          class="down-icon"
+          style="color: #686e74"
+          name="caret-down-outline"
+        ></ion-icon>
+      </div>
+    </div>
+
+    <div class="item-style">
+      <ion-label>Severity Level</ion-label>
+      <div class="label-style">
+        <ion-label style="color: #686e74">{{ issueSeverityLevel }}</ion-label>
+        <ion-icon
+          class="down-icon"
+          style="color: #686e74"
+          name="caret-down-outline"
+        ></ion-icon>
+      </div>
+    </div>
+
+    <div class="detail-item-style">
+      <ion-label>Details</ion-label>
+      <div class="detail-label-style">
+        <ion-label style="color: #686e74">{{ issueDetails }}</ion-label>
+      </div>
+    </div>
+
+    <div [formGroup]="answerForm" class="ion-padding">
+      <ion-label style="font-size: small">
+        <ion-icon
+          style="display: inline-block; color: #2c3752; font-size: small"
+          slot="start"
+          name="create"
+        ></ion-icon>
+        Comments({{ commentData.length }})
+      </ion-label>
+      <div>
+        <div class="commentArea" *ngFor="let comment of commentData">
+          <div style="align-self: flex-start">
+            <ion-icon size="large" name="person-circle-outline"></ion-icon>
+          </div>
+          <div class="chatArea">
+            <ion-label
+              ><b>{{ comment.user.name }}</b> on
+              {{ comment.created }}</ion-label
+            >
+            <ion-label class="ion-margin-top ion-margin-bottom">{{
+              comment.text
+            }}</ion-label>
+
+            <div
+              *ngIf="isInRole === 'Administrator' || isInRole === 'Manager'"
+              style="display: flex; flex-direction: row"
+            >
+              <ion-label
+                (click)="onReplayComment(comment.id)"
+                class="question-replay-delete"
+                >REPLAY</ion-label
+              >
+              <ion-label
+                (click)="onDeleteComment(comment.id)"
+                class="question-replay-delete"
+                >DELETE</ion-label
+              >
+            </div>
+
+            <!-- Child Comment Start -->
+            <div
+              class="commentArea"
+              *ngFor="let anotherComment of comment.comments"
+            >
+              <div style="align-self: flex-start">
+                <ion-icon size="large" name="person-circle-outline"></ion-icon>
+              </div>
+              <div class="chatArea">
+                <ion-label
+                  ><b>{{ comment.user.name }}</b> on
+                  {{ comment.created }}</ion-label
+                >
+                <ion-label class="ion-margin-top ion-margin-bottom">{{
+                  anotherComment.text
+                }}</ion-label>
+
+                <ion-label
+                  *ngIf="isInRole === 'Administrator' || isInRole === 'Manager'"
+                  (click)="onDeleteChildComment(anotherComment.id)"
+                  class="question-replay-delete"
+                  >DELETE</ion-label
+                >
+              </div>
+            </div>
+            <!-- Child Comment End -->
+          </div>
+        </div>
+      </div>
+      <ion-button
+        class="ion-margin-top"
+        (click)="onCreateComment()"
+        color="dark"
+        >Create Comment</ion-button
+      >
+    </div>
+  </div>
+</ion-content>

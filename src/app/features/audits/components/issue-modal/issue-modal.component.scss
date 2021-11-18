@@ -1,0 +1,76 @@
+.modal-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+.close-btn {
+  position: absolute;
+  right: 10px;
+}
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #f1f1f1;
+}
+.item-style {
+  // padding: 10px;
+  // background-color: #e9ecef;
+  margin: 10px;
+  // border-radius: 5px;
+  // border: 1px solid #b4b7bb;
+}
+.detail-item-style {
+  margin: 10px;
+}
+.detail-label-style {
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  border: 1px solid #b4b7bb;
+  margin-top: 10px;
+  position: relative;
+  height: 200px;
+}
+
+.label-style {
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  border: 1px solid #b4b7bb;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+.down-icon {
+  position: absolute;
+  right: 10px;
+}
+
+ion-label {
+  color: #4e4e4e;
+  font-size: 14px;
+}
+
+.question-replay-delete {
+  text-decoration: none;
+  color: #4a91e5;
+  margin: 10px;
+}
+
+.question-replay-delete:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.commentArea {
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+.chatArea {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}

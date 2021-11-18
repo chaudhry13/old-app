@@ -5,7 +5,14 @@
 >
   <ion-grid class="ion-no-margin ion-no-padding">
     <ion-col>
-      <ion-row>
+      <ion-row class="ion-align-items-center">
+        <ion-icon
+          *ngIf="issueId !== null"
+          (click)="toggleIssue()"
+          class="issueIcon ion-padding-top alertIcon"
+          color="danger"
+          name="alert-outline"
+        ></ion-icon>
         <ion-label class="ion-text-wrap ion-padding-top question-header">
           {{ question.title }}
           <span style="color: red" *ngIf="question.required"> * </span>

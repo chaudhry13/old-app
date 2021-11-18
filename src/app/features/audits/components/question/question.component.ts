@@ -24,6 +24,7 @@ import {
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import {
   AlertController,
+  AnimationController,
   IonTextarea,
   ModalController,
   NavController,
@@ -43,6 +44,7 @@ import { ActivatedRoute } from "@angular/router";
 import { CommentType } from "@app/models/comment";
 import { Comment } from "@app/models/comment";
 import { CommentModalComponent } from "../comment-modal/comment-modal.component";
+import { IssueModalComponent } from "../issue-modal/issue-modal.component";
 
 @Component({
   selector: "question",
@@ -65,7 +67,8 @@ export class QuestionComponent implements OnInit {
 
   commentId: string[];
   common: FormGroup;
-  isInRole:string;
+  isInRole: string;
+  issueId: string;
 
   commentData: Comment[];
   questionData: QuestionAnsweres[];
@@ -94,7 +97,8 @@ export class QuestionComponent implements OnInit {
     public questionaireUserAnswerService: QuestionnaireUserAnswerService,
     public modelController: ModalController,
     private userService: UserService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public animationController: AnimationController
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
 
@@ -210,24 +214,36 @@ export class QuestionComponent implements OnInit {
     return await (await alert).present();
   }
 
+  startAnimationOfIssueButton() {
+    const animation = this.animationController
+      .create()
+      .addElement(document.querySelectorAll(".alertIcon"))
+      .duration(1000)
+      .iterations(Infinity)
+      .fromTo("transform", "scale(1)", "scale(0.8)")
+      .fromTo("opacity", "1", "0.4");
+
+    return animation.play();
+  }
+
   ngOnInit() {
     this.questionAnswer = this.qhs.findQuestionAnswer(
       this.question.id,
       this.questionnaireUserAnswer
     );
+    this.startAnimationOfIssueButton();
+    this.issueId = this.questionAnswer.issueId;
 
     this.questionaireUserAnswerService.get(this.id).then((val) => {
       console.log(this.id);
       console.log(val.userId);
-      
+
       this.userService.get(val.userId).forEach((val) => {
         console.log("My User Administrator");
         console.log(val.role);
-        this.isInRole = val.role
+        this.isInRole = val.role;
       });
     });
-
-    
 
     if (this.questionAnswer != null) {
       this.answerForm.controls.na.setValue(this.questionAnswer.na);
@@ -323,6 +339,28 @@ export class QuestionComponent implements OnInit {
       }, 200);
     }
     this.getCommentById();
+  }
+  async toggleIssue() {
+    console.log("Here is my Issue Id");
+    console.log(this.questionAnswer.issueId);
+    console.log(this.questionAnswer.id);
+    // this.issueId = this.questionAnswer.issueId;
+
+    const issueModal = this.modelController.create({
+      component: IssueModalComponent,
+      componentProps: {
+        id: this.id,
+        questionAnswer: this.questionAnswer,
+        questionnaireUserAnswer: this.questionnaireUserAnswer,
+        answerForm: this.answerForm,
+        hasComment: this.hasComment,
+        isInRole: this.isInRole,
+        question: this.question,
+        issueId: this.issueId,
+      },
+    });
+
+    return (await issueModal).present();
   }
   getCommentById() {
     this.commentService.list(this.questionAnswer.id, 6).then((val) => {
