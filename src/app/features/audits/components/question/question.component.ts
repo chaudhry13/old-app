@@ -28,6 +28,7 @@ import {
   IonTextarea,
   ModalController,
   NavController,
+  Animation,
 } from "@ionic/angular";
 import { ToastService } from "@app/services/toast.service";
 import { CameraService } from "@app/services/photo.service";
@@ -55,6 +56,7 @@ export class QuestionComponent implements OnInit {
   @Input() question: Question;
   @Input() isInGroup: boolean;
   @Input() isReadOnly: boolean;
+
   hasComment: boolean = false;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
   @Output() questionnaireUserAnswerChange = new EventEmitter();
@@ -69,6 +71,7 @@ export class QuestionComponent implements OnInit {
   common: FormGroup;
   isInRole: string;
   issueId: string;
+  requireComment: boolean = false;
 
   commentData: Comment[];
   questionData: QuestionAnsweres[];
@@ -79,6 +82,8 @@ export class QuestionComponent implements OnInit {
   showComment = false;
   public files: Attachment[];
   public photos: any[] = [];
+
+  animation: Animation;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -101,7 +106,6 @@ export class QuestionComponent implements OnInit {
     public animationController: AnimationController
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
-
     this.answerForm = this.formBuilder.group({
       id: [""],
       questionId: [""],
@@ -116,6 +120,33 @@ export class QuestionComponent implements OnInit {
       optionAnswered: [[]],
     });
   }
+
+  async openCommentModal() {
+    const modal = this.modelController.create({
+      component: CommentModalComponent,
+    });
+    (await modal).onDidDismiss().then((data) => {
+      console.log(data.data);
+      this.commentService
+        .insertComment({
+          riskAssessmentId: null,
+          incidentReportId: null,
+          commentId: null,
+          activityLogId: null,
+          activityId: null,
+          auditId: null,
+          questionAnswerId: this.questionAnswer.id,
+          text: data.data.comment,
+        })
+        .then((val) => {
+          console.log(val);
+          this.requireComment = false;
+          // this.getCommentById();
+        });
+    });
+    return (await modal).present();
+  }
+
   async onCreateComment() {
     this.showCreateComment = !this.showCreateComment;
     const modal = this.modelController.create({
@@ -215,7 +246,7 @@ export class QuestionComponent implements OnInit {
   }
 
   startAnimationOfIssueButton() {
-    const animation = this.animationController
+    this.animation = this.animationController
       .create()
       .addElement(document.querySelectorAll(".alertIcon"))
       .duration(1000)
@@ -223,7 +254,12 @@ export class QuestionComponent implements OnInit {
       .fromTo("transform", "scale(1)", "scale(0.8)")
       .fromTo("opacity", "1", "0.4");
 
-    return animation.play();
+    this.animation.play();
+  }
+
+  ngOnDestroy() {
+    console.log("Application page has been destroy");
+    this.animation.stop();
   }
 
   ngOnInit() {
@@ -245,12 +281,15 @@ export class QuestionComponent implements OnInit {
       });
     });
 
+    if (this.questionAnswer.na && !this.questionAnswer.hasComment) {
+      this.requireComment = true;
+    } else {
+      this.requireComment = false;
+    }
+
     if (this.questionAnswer != null) {
       this.answerForm.controls.na.setValue(this.questionAnswer.na);
       this.hasComment = this.questionAnswer.hasComment;
-      console.log("HAs Comment Area");
-
-      console.log(this.hasComment);
     }
 
     /*
@@ -262,7 +301,7 @@ export class QuestionComponent implements OnInit {
     // Used to update the logic and which questions should be shown
     this.answerForm.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe(async () => {
         console.log("update logic");
         const answer = this.qhs.getQuestionAnswer(
           this.questionAnswer,
@@ -270,6 +309,16 @@ export class QuestionComponent implements OnInit {
           this.questionnaireUserAnswer,
           this.answerForm
         );
+
+        // if (answer.na) {
+        //   this.requireComment = answer.na;
+        // } else {
+        //   this.requireComment = false;
+        // }
+
+        // console.log("Answer Data");
+        // console.log(answer);
+
         let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
           (qa) => qa.id == this.questionAnswer.id
         );
@@ -318,7 +367,16 @@ export class QuestionComponent implements OnInit {
           );
           this.questionAnsweredService
             .update(answer)
-            .then(() => {
+            .then((data) => {
+              if (
+                answer.na &&
+                answer.answered
+              ) {
+                this.requireComment = true;
+                this.openCommentModal();
+              } else {
+                this.requireComment = false;
+              }
               this.toastService.show("Answer saved!");
             })
             .catch(() => {
@@ -341,11 +399,6 @@ export class QuestionComponent implements OnInit {
     this.getCommentById();
   }
   async toggleIssue() {
-    console.log("Here is my Issue Id");
-    console.log(this.questionAnswer.issueId);
-    console.log(this.questionAnswer.id);
-    // this.issueId = this.questionAnswer.issueId;
-
     const issueModal = this.modelController.create({
       component: IssueModalComponent,
       componentProps: {
@@ -368,6 +421,7 @@ export class QuestionComponent implements OnInit {
       console.log(val);
       console.log(this.questionAnswer.id);
       this.commentData = val;
+      this.showCreateComment = !this.showCreateComment;
     });
   }
 

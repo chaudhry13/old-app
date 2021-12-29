@@ -21,7 +21,7 @@ import { AppConfigService } from "@app/services/auth-config.service";
 import { FollowUpService } from "../../services/follow-up.service";
 import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from "@app/services/auth.service";
 import { CommentService } from "@shared/services/comment.service";
 
 @Component({
@@ -36,10 +36,20 @@ export class AuditCompletePage implements OnInit {
   audit: Audit = new Audit();
   files: Attachment[] = new Array();
 
+  subjectForReview: boolean;
+  // approveVisible: boolean = false;
+  rejectVisible: boolean = false;
   hasQuestionnaires = false;
   questionnairesIsLoading = false;
+  completeTaskBtnVisible: boolean = false;
+  approveVisible: boolean = false;
 
   auditForm: FormGroup;
+  sendToForm: FormGroup;
+  rejectText: String = "";
+  returnBtnText: String = "";
+  returnBtnVisible: Boolean = false;
+  rejectTextBtnVisible: Boolean = false;
 
   photo: string;
   photos: any = [];
@@ -74,32 +84,457 @@ export class AuditCompletePage implements OnInit {
     public followUpService: FollowUpService,
     public userService: UserService,
     public qhs: QuestionnaireHelperService,
-    private commentService:CommentService
+    private commentService: CommentService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
+  }
 
-    this.auditForm = this.formBuilder.group({
-      id: ["", Validators.required],
-      other: [""],
-      remarks: [""],
-      followUp: [false],
-      latitude: ["", Validators.required],
-      longitude: ["", Validators.required],
+  approveAudit() {
+    // let firstUser = this.audit.flow[0].id;
+    // let secondUser = this.audit.flow[1].id;
+    // let thirdUser = this.audit.flow[2].id;
+    if (
+      this.audit.currentId === this.audit.flow[0].id &&
+      this.audit.flow.length === 3 &&
+      this.audit.flow[0].id !== this.audit.flow[1].id &&
+      this.audit.flow[1].id !== this.audit.flow[2].id
+    ) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[1].id,
+        status: 3,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Rejected");
+                });
+            });
+        }
+      });
+    } else if (
+      this.audit.currentId === this.audit.flow[1].id &&
+      this.audit.flow.length === 3 &&
+      this.audit.flow[0].id !== this.audit.flow[1].id &&
+      this.audit.flow[1].id !== this.audit.flow[2].id
+    ) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[2].id,
+        status: 3,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Rejected");
+                });
+            });
+        }
+      });
+    } else if (
+      this.audit.currentId === this.audit.flow[0].id &&
+      this.audit.flow.length === 2 &&
+      this.audit.flow[0].id !== this.audit.flow[1].id
+    ) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[1].id,
+        status: 3,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Approved");
+                });
+            });
+        }
+      });
+    } else if (
+      this.audit.currentId === this.audit.flow[0].id &&
+      this.audit.flow.length === 2 &&
+      this.audit.flow[0].id === this.audit.flow[1].id
+    ) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[1].id,
+        status: 3,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Approved");
+                });
+            });
+        }
+      });
+    } else {
+      console.log("Clicked");
+    }
+
+    // this.auditService.canFinishAudit(this.audit.id).then((val) => {
+    //   if (val) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: null,
+    //       status: 1,
+    //     });
+    //     this.auditService.complete(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.router
+    //           .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //           .then(() => {
+    //             this.toastService.show("Audit Completed.");
+    //           });
+    //       }
+    //     });
+    //   }
+    // });
+  }
+  // returnToFirstUser() {
+  //   if (this.audit.flow.length === 3) {
+  //     this.getAudit();
+  //     this.sendToForm = this.formBuilder.group({
+  //       id: this.audit.id,
+  //       followUp: false,
+  //       remarks: "",
+  //       other: "",
+  //       sendToId: this.audit.flow[0].id,
+  //       status: 2,
+  //     });
+  //     this.auditService.sendTo(this.sendToForm).then((val) => {
+  //       if (val) {
+  //         this.auditService
+  //           .postList({
+  //             controlId: this.audit.controlId,
+  //             status: null,
+  //             current: null,
+  //             version: null,
+  //             startDate: null,
+  //             endDate: null,
+  //           })
+  //           .then((val) => {
+  //             this.getAudit();
+  //             this.router
+  //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+  //               .then(() => {
+  //                 this.toastService.show("Success");
+  //               });
+  //           });
+  //       }
+  //     });
+  //   }
+  // }
+
+  onCompleteTask() {
+    this.sendToForm = this.formBuilder.group({
+      id: this.audit.id,
+      followUp: false,
+      remarks: "",
+      other: "",
+      sendToId: null,
+      status: 1,
     });
+    this.auditService.complete(this.sendToForm).then((val) => {
+      if (val) {
+        this.router
+          .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+          .then(() => {
+            this.toastService.show("Task Completed");
+          });
+      }
+    });
+  }
+  rejectAudit() {
+    if (this.audit.currentId === this.audit.flow[1].id) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[0].id,
+        status: 2,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Rejected");
+                });
+            });
+        }
+      });
+    } else if (this.audit.currentId === this.audit.flow[2].id) {
+      this.sendToForm = this.formBuilder.group({
+        id: this.audit.id,
+        followUp: false,
+        remarks: "",
+        other: "",
+        sendToId: this.audit.flow[1].id,
+        status: 2,
+      });
+      this.auditService.sendTo(this.sendToForm).then((val) => {
+        if (val) {
+          this.auditService
+            .postList({
+              controlId: this.audit.controlId,
+              status: null,
+              current: null,
+              version: null,
+              startDate: null,
+              endDate: null,
+            })
+            .then((val) => {
+              this.getAudit();
+              this.router
+                .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+                .then(() => {
+                  this.toastService.show("Rejected");
+                });
+            });
+        }
+      });
+    }
+
+    // if (this.audit.flow.length === 3) {
+    //   if (this.audit.currentId === this.audit.flow[0].id) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: this.audit.flow[1].id,
+    //       status: 3,
+    //     });
+    //     this.auditService.sendTo(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.auditService
+    //           .postList({
+    //             controlId: this.audit.controlId,
+    //             status: null,
+    //             current: null,
+    //             version: null,
+    //             startDate: null,
+    //             endDate: null,
+    //           })
+    //           .then((val) => {
+    //             this.getAudit();
+    //             this.router
+    //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //               .then(() => {
+    //                 this.toastService.show("Success");
+    //               });
+    //           });
+    //       }
+    //     });
+    //   } else if (this.audit.currentId === this.audit.flow[1].id) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: this.audit.flow[2].id,
+    //       status: 3,
+    //     });
+    //     this.auditService.sendTo(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.auditService
+    //           .postList({
+    //             controlId: this.audit.controlId,
+    //             status: null,
+    //             current: null,
+    //             version: null,
+    //             startDate: null,
+    //             endDate: null,
+    //           })
+    //           .then((val) => {
+    //             this.getAudit();
+    //             this.router
+    //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //               .then(() => {
+    //                 this.toastService.show("Success");
+    //               });
+    //           });
+    //       }
+    //     });
+    //   } else if (this.audit.currentId === this.audit.flow[2].id) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: this.audit.flow[1].id,
+    //       status: 2,
+    //     });
+    //     this.auditService.sendTo(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.auditService
+    //           .postList({
+    //             controlId: this.audit.controlId,
+    //             status: null,
+    //             current: null,
+    //             version: null,
+    //             startDate: null,
+    //             endDate: null,
+    //           })
+    //           .then((val) => {
+    //             this.getAudit();
+    //             this.router
+    //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //               .then(() => {
+    //                 this.toastService.show("Success");
+    //               });
+    //           });
+    //       }
+    //     });
+    //   }
+    // } else if (this.audit.flow.length === 2) {
+    //   if (this.audit.currentId === this.audit.flow[0].id) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: this.audit.flow[1].id,
+    //       status: 3,
+    //     });
+    //     this.auditService.sendTo(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.auditService
+    //           .postList({
+    //             controlId: this.audit.controlId,
+    //             status: null,
+    //             current: null,
+    //             version: null,
+    //             startDate: null,
+    //             endDate: null,
+    //           })
+    //           .then((val) => {
+    //             this.getAudit();
+    //             this.router
+    //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //               .then(() => {
+    //                 this.toastService.show("Success");
+    //               });
+    //           });
+    //       }
+    //     });
+    //   } else if (this.audit.currentId === this.audit.flow[1].id) {
+    //     this.sendToForm = this.formBuilder.group({
+    //       id: this.audit.id,
+    //       followUp: false,
+    //       remarks: "",
+    //       other: "",
+    //       sendToId: this.audit.flow[0].id,
+    //       status: 2,
+    //     });
+    //     this.auditService.sendTo(this.sendToForm).then((val) => {
+    //       if (val) {
+    //         this.auditService
+    //           .postList({
+    //             controlId: this.audit.controlId,
+    //             status: null,
+    //             current: null,
+    //             version: null,
+    //             startDate: null,
+    //             endDate: null,
+    //           })
+    //           .then((val) => {
+    //             this.getAudit();
+    //             this.router
+    //               .navigate(["/tabs/tab1/details/" + this.audit.controlId])
+    //               .then(() => {
+    //                 this.toastService.show("Success");
+    //               });
+    //           });
+    //       }
+    //     });
+    //   }
+    // }
   }
 
   ngOnInit() {
     this.tokenService.readToken(this.auth.oAuth.getAccessToken());
     this.user = this.tokenService.getUser();
     this.getAudit();
-
-
-    console.log("This is a Comment");
-    
-    this.commentService.list(this.id, 5).then(val=>{
-      console.log(val);
-      
-    })
   }
 
   // When ever the view becomes active
@@ -130,9 +565,84 @@ export class AuditCompletePage implements OnInit {
     this.auditService.get(this.id).then(
       (data) => {
         this.audit = data;
-        if (this.audit.longitude && this.audit.latitude) {
-          this.showLocation = true;
+        this.subjectForReview = data.subjectForReview;
+
+        if (
+          (data.currentId === data.flow[0].id && data.flow.length === 2) ||
+          (data.currentId === data.flow[0].id && data.flow.length === 3)
+        ) {
+          this.approveVisible = true;
         }
+        // else if(){
+
+        // }
+        else if (
+          (data.currentId === data.flow[1].id && data.flow.length === 2) ||
+          (data.currentId === data.flow[2].id && data.flow.length === 3)
+        ) {
+          this.rejectVisible = true;
+          this.approveVisible = false;
+          this.completeTaskBtnVisible = true;
+        }
+        // if (data.flow.length === 2 && data.currentId === data.flow[1].id) {
+        //   this.approveVisible = false;
+        // } else if (
+        //   data.flow.length === 3 &&
+        //   data.currentId === data.flow[2].id
+        // ) {
+        //   this.approveVisible = false;
+        // } else {
+        //   this.approveVisible = true;
+        // }
+
+        // if (this.audit.currentId === this.audit.flow[0].id) {
+        //   this.rejectVisible = false;
+        // } else {
+        //   this.rejectVisible = true;
+        // }
+        // // this.rejectVisible = true;
+        // if (this.audit.longitude && this.audit.latitude) {
+        //   this.showLocation = true;
+        // }
+
+        // if (
+        //   this.audit.currentId === this.audit.flow[2].id &&
+        //   this.audit.flow.length === 3
+        // ) {
+        //   this.completeTaskBtnVisible = true;
+        // } else if (
+        //   this.audit.currentId === this.audit.flow[1].id &&
+        //   this.audit.flow.length === 2
+        // ) {
+        //   this.completeTaskBtnVisible = true;
+        // }
+
+        // if (data.status !== 1) {
+        //   this.rejectTextBtnVisible = true;
+        // } else {
+        //   this.rejectTextBtnVisible = false;
+        // }
+
+        // if (data.currentId === data.flow[1].id && data.flow.length === 3) {
+        //   this.returnBtnVisible = true;
+        //   this.returnBtnText = "Return to " + this.audit.flow[0].name;
+        // }
+
+        // if (data.flow.length === 3) {
+        //   if (data.currentId === data.flow[0].id) {
+        //     this.rejectText = "Submit for review by " + data.flow[1].name;
+        //   } else if (data.currentId === data.flow[1].id) {
+        //     this.rejectText = "Submit for approval by " + data.flow[2].name;
+        //   } else if (data.currentId === data.flow[2].id) {
+        //     this.rejectText = "Return to " + data.flow[0].name;
+        //   }
+        // } else if (data.flow.length === 2) {
+        //   if (data.currentId === data.flow[0].id) {
+        //     this.rejectText = "Submit for approval by " + data.flow[1].name;
+        //   } else if (data.currentId === data.flow[1].id) {
+        //     this.rejectText = "Return to " + data.flow[0].name;
+        //   }
+        // }
 
         if (this.audit.followUpId) {
           this.audit.followUp = true;
@@ -219,7 +729,8 @@ export class AuditCompletePage implements OnInit {
   }
 
   async takePhotoAndUpload() {
-    const auditStorageUrlExt = "/audit?organizationId=" +
+    const auditStorageUrlExt =
+      "/audit?organizationId=" +
       this.user.organization +
       "&controlId=" +
       this.audit.controlId +
@@ -227,11 +738,13 @@ export class AuditCompletePage implements OnInit {
       this.audit.id +
       "&uid=" +
       this.user.id;
-    this.cameraService.takePhotoAndUpload(auditStorageUrlExt, this.photos.length).then(result => {
-      if (result) {
-        this.listFiles();
-      }
-    });
+    this.cameraService
+      .takePhotoAndUpload(auditStorageUrlExt, this.photos.length)
+      .then((result) => {
+        if (result) {
+          this.listFiles();
+        }
+      });
   }
 
   enableLocation() {

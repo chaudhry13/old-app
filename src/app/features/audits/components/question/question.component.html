@@ -64,6 +64,7 @@
 </ion-item-divider>
 
 <div *ngIf="question" class="ion-padding-top">
+  <ion-label class="ion-padding" *ngIf="requireComment" color="danger">Please create a comment to support your answer</ion-label>
   <form [formGroup]="answerForm" *ngIf="question">
     <!-- If Text Question -->
     <text-question

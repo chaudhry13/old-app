@@ -1,4 +1,5 @@
 import { Attachment } from "@app/models/file";
+import { User } from "@app/models/user";
 import { QuestionAnsweredStatus } from "./questionnaire";
 
 export class Audit {
@@ -19,6 +20,11 @@ export class Audit {
   latitude: number;
   longitude: number;
   files: Attachment[];
+  flow: UserFlow[];
+  subjectForReview: boolean;
+  status: number;
+  currentId:string;
+  current:User
 
   questionnaire: boolean;
   questionnaireUserAnswers: Array<QuestionnaireUserAnswerAudit>;
@@ -26,6 +32,18 @@ export class Audit {
   constructor() {
     this.files = new Array<Attachment>();
   }
+}
+
+interface UserFlow {
+  id: string;
+  email: string;
+  deleted: boolean;
+  lastLogin: any;
+  name: string;
+  organizationId: string;
+  phone: string;
+  role: string;
+  termsAccepted: boolean;
 }
 
 export class QuestionnaireUserAnswerAudit {

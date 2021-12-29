@@ -37,13 +37,13 @@ export class AuditQuestionnairePage implements OnInit {
   }
 
   ngOnInit() {
-    
     this.questionnaireUserAnswerService.get(this.id).then((qua) => {
       this.questionnaireUserAnswer = qua;
       this.questionnaire = qua.questionnaireSentOut.questionnaire;
       this.addQuestionsAndGroups();
       this.checkAuditCompleteStatus(this.questionnaireUserAnswer.auditId);
     });
+
     
   }
 
@@ -97,12 +97,12 @@ export class AuditQuestionnairePage implements OnInit {
   }
 
   answerChanged(newAnswer) {
-    console.log("Answer Chnged medu");
-    
     // Find questions to skip when the answer changes
-    this.logicService.WhichToSkip(this.questionnaire.questions, newAnswer).then(toSkip => {
-      this.toSkip = toSkip;
-    })
+    this.logicService
+      .WhichToSkip(this.questionnaire.questions, newAnswer)
+      .then((toSkip) => {
+        this.toSkip = toSkip;
+      });
   }
 
   validateQuestionnaire(): boolean {

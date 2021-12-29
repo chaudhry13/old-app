@@ -170,13 +170,56 @@
           (click)="takePhotoAndUpload()"
           >Take photo
         </ion-button>
-        <ion-button
+        <!-- <ion-button
           class="ion-margin-top"
           color="primary"
           expand="block"
           (click)="completeAudit()"
           >Complete Audit
+        </ion-button> -->
+        <ion-button
+          *ngIf="approveVisible"
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="approveAudit()"
+          [disabled]="audit.status===1"
+          >Approve
         </ion-button>
+        <ion-button
+          *ngIf="rejectVisible"
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="rejectAudit()"
+          [disabled]="audit.status===1"
+          >Reject
+        </ion-button>
+
+        <ion-button
+          *ngIf="completeTaskBtnVisible"
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="onCompleteTask()"
+          >Complete Task
+        </ion-button>
+        <!-- <ion-button
+        *ngIf="rejectTextBtnVisible"
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="rejectAudit()"
+          >{{rejectText}}
+        </ion-button> -->
+        <!-- <ion-button
+          *ngIf="returnBtnVisible"
+          class="ion-margin-top"
+          color="primary"
+          expand="block"
+          (click)="returnToFirstUser()"
+          >{{returnBtnText}}
+        </ion-button> -->
       </ion-col>
     </ion-row>
   </ion-grid>

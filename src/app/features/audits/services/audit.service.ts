@@ -1,5 +1,5 @@
 import { GenericService } from "@app/services/generic.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Audit, QuestionnaireUserAnswerAudit } from "../models/audit";
@@ -43,6 +43,10 @@ export class AuditService extends GenericService {
     return this.http.get<Audit[]>(this.apiBase + "/list/" + id).toPromise();
   }
 
+  async postList(data: any): Promise<Audit[]> {
+    return this.http.post<Audit[]>(this.apiBase + "/list", data).toPromise();
+  }
+
   async forecast(frequency: string, date: string): Promise<string[]> {
     return this.http
       .get<string[]>(
@@ -61,6 +65,10 @@ export class AuditService extends GenericService {
 
   async delete(id: string): Promise<string> {
     return this.http.delete<string>(this.apiBase + "/" + id).toPromise();
+  }
+
+  async sendTo(data: FormGroup): Promise<any> {
+    return this.http.post(this.apiBase + "/sendTo", data.value).toPromise();
   }
 
   async canFinishAudit(id: string): Promise<boolean> {
