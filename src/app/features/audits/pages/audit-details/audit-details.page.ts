@@ -10,9 +10,13 @@ import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { AuditService } from "../../services/audit.service";
-import { Audit } from "../../models/audit";
+import { Audit, AuditStatus } from "../../models/audit";
 import cronstrue from "cronstrue";
 import { CommentService } from "@shared/services/comment.service";
+import { SettingsService } from "@app/settings/settings.component";
+import { AuthService } from "@app/services/auth.service";
+import { TokenService } from "@app/services/token.service";
+import { User } from "@app/models/user";
 
 @Component({
   selector: "app-audit-details",
@@ -25,12 +29,14 @@ export class AuditDetailsPage implements OnInit {
   public control: Control;
 
   public overdueAudits: Audit[];
+  public startedAudits: Audit[];
   public upcomingAudits: Audit[];
   public completedAudits: Audit[];
 
   public files: Attachment[];
 
   public frequency: string;
+  public user: User;
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -43,12 +49,16 @@ export class AuditDetailsPage implements OnInit {
     // FileTransfer is deprecated
     private fileOpener: FileOpener,
     private document: DocumentViewer,
-    private commentSevice:CommentService
+    private commentSevice:CommentService,
+    private auth: AuthService,
+    private tokenService: TokenService,
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
   ngOnInit() {
+    this.tokenService.readToken(this.auth.oAuth.getAccessToken());
+    this.user = this.tokenService.getUser();
     // console.log("This is a comment");
     
     // this.commentSevice.list(this.id, 6).then(val=>{
@@ -66,16 +76,22 @@ export class AuditDetailsPage implements OnInit {
       this.control = control;
       this.frequency = cronstrue.toString(control.frequency); // TODO: Use CronService
 
-      this.auditService.completed(control.id).then((audits) => {
-        this.completedAudits = audits;
-      });
-
-      this.auditService.upcoming(control.id).then((audits) => {
-        this.upcomingAudits = audits;
-      });
-
-      this.auditService.overdue(control.id, []).then((audits) => {
-        this.overdueAudits = audits;
+      let auditFilter = {
+        controlId: this.id,
+        status: null,
+        current: null,
+        version: null,
+        startDate: null,
+        endDate: null
+      };
+      this.auditService.list(auditFilter).then(response => {
+        // Setting the audits
+        this.completedAudits = response.filter(a => a.status == AuditStatus.Completed).sort((a, b) => {
+          return a.date > b.date ? -1 : 1;
+        });
+        this.overdueAudits = response.filter(a => a.late && a.status == AuditStatus.Upcoming);
+        this.startedAudits = response.filter(a => a.status == AuditStatus.Rejected || a.status == AuditStatus["Awaiting Approvel"]);
+        this.upcomingAudits = response.filter(a => a.status == AuditStatus.Upcoming && !a.late);
       });
 
       this.storageService.listControl(control.id).then((files) => {

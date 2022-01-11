@@ -2,7 +2,7 @@ import { GenericService } from "@app/services/generic.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Audit, QuestionnaireUserAnswerAudit } from "../models/audit";
+import { Audit, AuditFilter, QuestionnaireUserAnswerAudit } from "../models/audit";
 import { AppConfigService } from "@app/services/auth-config.service";
 
 @Injectable()
@@ -39,9 +39,9 @@ export class AuditService extends GenericService {
       .toPromise();
   }
 
-  async list(id: string): Promise<Audit[]> {
-    return this.http.get<Audit[]>(this.apiBase + "/list/" + id).toPromise();
-  }
+  async list(filter: AuditFilter): Promise<Audit[]> {
+		return this.http.post<Audit[]>(this.apiBase + "/list", filter).toPromise();
+	}
 
   async postList(data: any): Promise<Audit[]> {
     return this.http.post<Audit[]>(this.apiBase + "/list", data).toPromise();

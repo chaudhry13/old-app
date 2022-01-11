@@ -21,6 +21,16 @@
     <div *ngIf="!control.description" class="ion-padding">
       <i>No description</i>
     </div>
+    <ion-list-header *ngIf="control.reviewer">
+      <ion-label>Reviewer</ion-label>
+    </ion-list-header>
+    <ion-item *ngIf="control.reviewer">
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ control.reviewer.name }}</h2>
+        <p>{{ control.reviewer.email }}</p>
+      </ion-label>
+    </ion-item>
     <ion-list-header>
       <ion-label>Responsible manager</ion-label>
     </ion-list-header>
@@ -76,6 +86,26 @@
       routerLinkActive="router-link-active"
     >
       <ion-label> {{audit.date | date}} </ion-label>
+      <ion-label> {{ audit.current.id == user.id ? 'You' : audit.current.name }} </ion-label>
+      <ion-icon
+        class="ion-float-left"
+        name="checkmark-circle-outline"
+      ></ion-icon>
+    </ion-item>
+    
+    <ion-list-header>
+      <ion-label>Started Audits</ion-label>
+    </ion-list-header>
+
+    <ion-item
+      button
+      *ngFor="let audit of startedAudits"
+      routerLink="/tabs/tab1/complete/{{audit.id}}"
+      routerDirection="forward"
+      routerLinkActive="router-link-active"
+    >
+      <ion-label> {{audit.date | date}} </ion-label>
+      <ion-label> {{ audit.current.id == user.id ? 'You' : audit.current.name }} </ion-label>
       <ion-icon
         class="ion-float-left"
         name="checkmark-circle-outline"
@@ -94,6 +124,7 @@
       routerLinkActive="router-link-active"
     >
       <ion-label> {{audit.date | date}} </ion-label>
+      <ion-label> {{ audit.current.id == user.id ? 'You' : audit.current.name }} </ion-label>
       <ion-icon
         class="icon"
         color="danger"
@@ -114,6 +145,7 @@
       routerLinkActive="router-link-active"
     >
       <ion-label> {{audit.date | date}}</ion-label>
+      <ion-label> {{ audit.current.id == user.id ? 'You' : audit.current.name }} </ion-label>
       <ion-icon
         color="success"
         class="ion-float-left"

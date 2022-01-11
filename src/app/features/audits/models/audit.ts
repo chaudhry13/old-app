@@ -22,7 +22,7 @@ export class Audit {
   files: Attachment[];
   flow: UserFlow[];
   subjectForReview: boolean;
-  status: number;
+  status: AuditStatus;
   currentId:string;
   current:User
 
@@ -32,6 +32,22 @@ export class Audit {
   constructor() {
     this.files = new Array<Attachment>();
   }
+}
+
+export class AuditFilter {
+  controlId: string;
+  status: number;
+  startDate: string;
+  endDate: string;
+  current: string;
+  version: number;
+}
+
+export enum AuditStatus {
+  Upcoming,
+  Completed,
+  Rejected,
+  "Awaiting Approvel",
 }
 
 interface UserFlow {

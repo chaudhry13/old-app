@@ -9,6 +9,7 @@ export class Control {
   description: string;
   responsible: User;
   responsibleEmployee: User;
+  reviewer: User;
   startDate: string;
   frequency: string;
   division: Division;

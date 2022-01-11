@@ -1,6 +1,6 @@
 import { QuestionnaireHelperService } from "../../services/questionnaire-helper.service";
 import { Component, OnInit, Input } from "@angular/core";
-import { Audit } from "../../models/audit";
+import { Audit, AuditStatus } from "../../models/audit";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AlertController } from "@ionic/angular";
 import { AuditService } from "../../services/audit.service";
@@ -567,15 +567,20 @@ export class AuditCompletePage implements OnInit {
         this.audit = data;
         this.subjectForReview = data.subjectForReview;
 
+        this.setButtons();
+        /*if ( // If you are the last, you can complete
+          (data.currentId === data.flow[2].id && data.flow.length === 2) || 
+          (data.currentId === data.flow[3].id && data.flow.length === 3)
+        ) {
+          this.completeTaskBtnVisible = true;
+        }
+
         if (
           (data.currentId === data.flow[0].id && data.flow.length === 2) ||
           (data.currentId === data.flow[0].id && data.flow.length === 3)
         ) {
           this.approveVisible = true;
         }
-        // else if(){
-
-        // }
         else if (
           (data.currentId === data.flow[1].id && data.flow.length === 2) ||
           (data.currentId === data.flow[2].id && data.flow.length === 3)
@@ -584,65 +589,13 @@ export class AuditCompletePage implements OnInit {
           this.approveVisible = false;
           this.completeTaskBtnVisible = true;
         }
-        // if (data.flow.length === 2 && data.currentId === data.flow[1].id) {
-        //   this.approveVisible = false;
-        // } else if (
-        //   data.flow.length === 3 &&
-        //   data.currentId === data.flow[2].id
-        // ) {
-        //   this.approveVisible = false;
-        // } else {
-        //   this.approveVisible = true;
-        // }
-
-        // if (this.audit.currentId === this.audit.flow[0].id) {
-        //   this.rejectVisible = false;
-        // } else {
-        //   this.rejectVisible = true;
-        // }
-        // // this.rejectVisible = true;
-        // if (this.audit.longitude && this.audit.latitude) {
-        //   this.showLocation = true;
-        // }
-
-        // if (
-        //   this.audit.currentId === this.audit.flow[2].id &&
-        //   this.audit.flow.length === 3
-        // ) {
-        //   this.completeTaskBtnVisible = true;
-        // } else if (
-        //   this.audit.currentId === this.audit.flow[1].id &&
-        //   this.audit.flow.length === 2
-        // ) {
-        //   this.completeTaskBtnVisible = true;
-        // }
-
-        // if (data.status !== 1) {
-        //   this.rejectTextBtnVisible = true;
-        // } else {
-        //   this.rejectTextBtnVisible = false;
-        // }
-
-        // if (data.currentId === data.flow[1].id && data.flow.length === 3) {
-        //   this.returnBtnVisible = true;
-        //   this.returnBtnText = "Return to " + this.audit.flow[0].name;
-        // }
-
-        // if (data.flow.length === 3) {
-        //   if (data.currentId === data.flow[0].id) {
-        //     this.rejectText = "Submit for review by " + data.flow[1].name;
-        //   } else if (data.currentId === data.flow[1].id) {
-        //     this.rejectText = "Submit for approval by " + data.flow[2].name;
-        //   } else if (data.currentId === data.flow[2].id) {
-        //     this.rejectText = "Return to " + data.flow[0].name;
-        //   }
-        // } else if (data.flow.length === 2) {
-        //   if (data.currentId === data.flow[0].id) {
-        //     this.rejectText = "Submit for approval by " + data.flow[1].name;
-        //   } else if (data.currentId === data.flow[1].id) {
-        //     this.rejectText = "Return to " + data.flow[0].name;
-        //   }
-        // }
+        else if (
+          (data.currentId === data.flow[1].id && data.flow.length === 3)
+        ) {
+          this.rejectVisible = true;
+          this.approveVisible = true;
+        }*/
+        
 
         if (this.audit.followUpId) {
           this.audit.followUp = true;
@@ -668,6 +621,43 @@ export class AuditCompletePage implements OnInit {
         this.toastService.show("An error occurred retrieving the audit..");
       }
     );
+  }
+
+  setButtons() {
+    if (!this.subjectForReview) {
+      this.completeTaskBtnVisible = true;
+      this.rejectVisible = false;
+      this.approveVisible = false;
+      return;
+    }
+
+    const flowIds = this.audit.flow.map(f => f.id);
+    const status = this.audit.status;
+    var isAdmin = this.user.role == 'Administrator';
+
+    var newArr = flowIds.slice();
+    var currentIsLast = false;
+    
+    currentIsLast = newArr[newArr.length - 1] == this.audit.currentId;
+    newArr.splice(-1, 1);
+    this.approveVisible = (isAdmin || newArr.some((f) => f == this.user.id)) && !currentIsLast;
+
+    // You can approve if you are the last in the flow (or, if the "current" is the last in the flow)
+    newArr = flowIds.slice().filter((x) => x != null);
+    this.completeTaskBtnVisible =
+      isAdmin || newArr.splice(-1, 1).some((x) => x == this.user.id);
+
+    // You can reject if you are in the flow, but not the first or if you are an admin. But not if the audit is upcomming i.e. the first version of the audit
+    newArr = flowIds.slice();
+    var currentIsFirst = false;
+    
+    currentIsFirst = newArr[0] == this.audit.currentId;
+    newArr.splice(0, 1);
+    
+    this.rejectVisible =
+      status != AuditStatus.Upcoming &&
+      (isAdmin || newArr.some((f) => f == this.user.id)) &&
+      !currentIsFirst;
   }
 
   getAuditQuestionnaires() {
