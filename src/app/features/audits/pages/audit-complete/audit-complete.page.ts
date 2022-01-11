@@ -123,7 +123,7 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Rejected");
+                  this.toastService.show("Approved");
                 });
             });
         }
@@ -158,7 +158,7 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Rejected");
+                  this.toastService.show("Approved");
                 });
             });
         }
