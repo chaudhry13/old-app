@@ -8,7 +8,7 @@
     "preferences": {
       "ScrollEnabled": "true",
       "android-minSdkVersion": "22",
-      "android-targetSdkVersion": "29",
+      "android-targetSdkVersion": "30",
       "BackupWebStorage": "none",
       "SplashMaintainAspectRatio": "true",
       "FadeSplashScreenDuration": "300",
