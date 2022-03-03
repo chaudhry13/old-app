@@ -9,10 +9,7 @@ import { ToastService } from "@app/services/toast.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ControlService } from "../../services/control.service";
-import {
-  FileTransfer,
-  FileTransferObject,
-} from "@ionic-native/file-transfer/ngx";
+
 import { TokenService } from "@app/services/token.service";
 import { User } from "@app/models/user";
 import { Attachment } from "@app/models/file";
@@ -77,7 +74,6 @@ export class AuditCompletePage implements OnInit {
     public cameraService: CameraService,
     public toastService: ToastService,
     public geolocation: Geolocation,
-    public fileTransfer: FileTransfer,
     public storageService: StorageService,
     public appConfigService: AppConfigService,
     public tokenService: TokenService,
@@ -595,7 +591,6 @@ export class AuditCompletePage implements OnInit {
           this.rejectVisible = true;
           this.approveVisible = true;
         }*/
-        
 
         if (this.audit.followUpId) {
           this.audit.followUp = true;
@@ -631,16 +626,17 @@ export class AuditCompletePage implements OnInit {
       return;
     }
 
-    const flowIds = this.audit.flow.map(f => f.id);
+    const flowIds = this.audit.flow.map((f) => f.id);
     const status = this.audit.status;
-    var isAdmin = this.user.role == 'Administrator';
+    var isAdmin = this.user.role == "Administrator";
 
     var newArr = flowIds.slice();
     var currentIsLast = false;
-    
+
     currentIsLast = newArr[newArr.length - 1] == this.audit.currentId;
     newArr.splice(-1, 1);
-    this.approveVisible = (isAdmin || newArr.some((f) => f == this.user.id)) && !currentIsLast;
+    this.approveVisible =
+      (isAdmin || newArr.some((f) => f == this.user.id)) && !currentIsLast;
 
     // You can approve if you are the last in the flow (or, if the "current" is the last in the flow)
     newArr = flowIds.slice().filter((x) => x != null);
@@ -650,10 +646,10 @@ export class AuditCompletePage implements OnInit {
     // You can reject if you are in the flow, but not the first or if you are an admin. But not if the audit is upcomming i.e. the first version of the audit
     newArr = flowIds.slice();
     var currentIsFirst = false;
-    
+
     currentIsFirst = newArr[0] == this.audit.currentId;
     newArr.splice(0, 1);
-    
+
     this.rejectVisible =
       status != AuditStatus.Upcoming &&
       (isAdmin || newArr.some((f) => f == this.user.id)) &&

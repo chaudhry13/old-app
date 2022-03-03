@@ -1,0 +1,10 @@
+<h1>MAIN PAGE</h1>
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)">
+  <ion-input
+    type="text"
+    placeholder="Organization Name"
+    class="form-control"
+    formControlName="orgName"
+  ></ion-input>
+  <pre>{{form.value | json}}</pre>
+</form>

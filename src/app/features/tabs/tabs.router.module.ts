@@ -12,7 +12,7 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/audits/audit.module#AuditModule",
+            loadChildren: () => import('src/app/features/audits/audit.module').then(m => m.AuditModule),
           },
         ],
       },
@@ -22,7 +22,7 @@ const routes: Routes = [
           {
             path: "",
             loadChildren:
-              "src/app/features/incident-reports/incident-report.module#IncidentReportPageModule",
+              () => import('src/app/features/incident-reports/incident-report.module').then(m => m.IncidentReportPageModule),
           },
         ],
       },
@@ -32,7 +32,7 @@ const routes: Routes = [
           {
             path: "",
             loadChildren:
-              "src/app/features/notifications/notification.module#NotificationPageModule",
+              () => import('src/app/features/notifications/notification.module').then(m => m.NotificationPageModule),
           },
         ],
       },
@@ -42,7 +42,7 @@ const routes: Routes = [
           {
             path: "",
             loadChildren:
-              "src/app/features/profile/profile.module#ProfilePageModule",
+              () => import('src/app/features/profile/profile.module').then(m => m.ProfilePageModule),
           },
         ],
       },

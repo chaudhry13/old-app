@@ -3,7 +3,6 @@ import { ActivatedRoute } from "@angular/router";
 import { IncidentReport } from "../../models/incident-report";
 import { IncidentReportService } from "@shared/services/incident-report.service";
 import { CameraService } from "@app/services/photo.service";
-import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { User } from "@app/models/user";
 import { AgmMap } from "@agm/core";
 import { IncidentCategoryService } from "../../services/incident-category.service";
@@ -30,7 +29,6 @@ export class IncidentReportDetailsPage implements OnInit {
     public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,
     public cameraService: CameraService,
-    public fileTransfer: FileTransfer,
     public incidentCategoryService: IncidentCategoryService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");

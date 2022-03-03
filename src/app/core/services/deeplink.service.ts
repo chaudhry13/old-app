@@ -15,7 +15,7 @@ export class DeeplinkService {
     let path: string[];
     let url: URL;
 
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (!link || link === "" || link.length === 0) {
         reject();
       } else {

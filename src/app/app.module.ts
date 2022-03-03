@@ -22,7 +22,6 @@ import { TokenInterceptor } from "@app/interceptors/auth.interceptor";
 
 import { File } from "@ionic-native/file/ngx";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
-import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 
 import { AgmCoreModule } from "@agm/core";
@@ -34,9 +33,22 @@ import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
 import { TokenService } from "@app/services/token.service";
 import { StorageService } from "@app/services/storage.service";
+import {
+  FileTransfer,
+  FileUploadOptions,
+  FileTransferObject,
+} from "@awesome-cordova-plugins/file-transfer/ngx";
+import { HomeComponent } from "./home/home.component";
+import { SharedModule } from "@shared/shared.module";
+import { AuthConfigModule } from './auth/auth-config.module';
 
 @NgModule({
-  declarations: [AppComponent, CallbackComponent, LoginComponent],
+  declarations: [
+    AppComponent,
+    CallbackComponent,
+    LoginComponent,
+    HomeComponent,
+  ],
   entryComponents: [CallbackComponent, LoginComponent],
   imports: [
     BrowserModule,
@@ -61,6 +73,8 @@ import { StorageService } from "@app/services/storage.service";
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
       libraries: ["places"],
     }),
+    SharedModule,
+    AuthConfigModule,
   ],
   providers: [
     AccountService,

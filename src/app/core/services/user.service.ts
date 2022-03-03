@@ -14,6 +14,10 @@ export class UserService extends GenericService {
     super("/users", appConfigService);
   }
 
+  getUserInfo() {
+    return this.http.get<User>(this.apiBase + "/GetUserInfo");
+  }
+
   get(id: string): Observable<User> {
     return this.http.get<User>(this.apiBase + "/" + id);
   }
