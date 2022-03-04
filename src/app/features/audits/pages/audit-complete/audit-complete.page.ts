@@ -14,12 +14,12 @@ import { TokenService } from "@app/services/token.service";
 import { User } from "@app/models/user";
 import { Attachment } from "@app/models/file";
 import { StorageService } from "@app/services/storage.service";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { FollowUpService } from "../../services/follow-up.service";
 import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
-import { AuthService } from "@app/services/auth.service";
 import { CommentService } from "@shared/services/comment.service";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-audit-complete",
@@ -528,8 +528,7 @@ export class AuditCompletePage implements OnInit {
   }
 
   ngOnInit() {
-    this.tokenService.readToken(this.auth.oAuth.getAccessToken());
-    this.user = this.tokenService.getUser();
+    this.user = this.auth.user;
     this.getAudit();
   }
 

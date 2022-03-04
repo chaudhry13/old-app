@@ -13,10 +13,10 @@ import { Audit, AuditStatus } from "../../models/audit";
 import cronstrue from "cronstrue";
 import { CommentService } from "@shared/services/comment.service";
 import { SettingsService } from "@app/settings/settings.component";
-import { AuthService } from "@app/services/auth.service";
 import { TokenService } from "@app/services/token.service";
 import { User } from "@app/models/user";
 import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-audit-details",
@@ -57,14 +57,7 @@ export class AuditDetailsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.tokenService.readToken(this.auth.oAuth.getAccessToken());
-    this.user = this.tokenService.getUser();
-    // console.log("This is a comment");
-
-    // this.commentSevice.list(this.id, 6).then(val=>{
-    //   console.log(val);
-
-    // })
+    this.user = this.auth.user;
   }
 
   ionViewWillEnter() {

@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { User } from "../models/user";
-import { AppConfigService } from "./auth-config.service";
+import { AppConfigService } from "./app-config.service";
 import { Storage } from "@ionic/storage";
 
 @Injectable()
 export class TokenService {
   user: User;
 
-  constructor() { }
+  constructor() {}
 
   public readToken(token: string) {
     const tokenPayload = this.getTokenPayload(token);
@@ -19,22 +19,18 @@ export class TokenService {
     this.user.name = tokenPayload.given_name;
     this.user.role = tokenPayload.role;
     this.user.organization = tokenPayload.organization;
-    this.user.riskline =
-      tokenPayload.riskline.toLowerCase() == "true";
-    this.user.controlrisks =
-      tokenPayload.controlrisks.toLowerCase() == "true";
+    this.user.riskline = tokenPayload.riskline.toLowerCase() == "true";
+    this.user.controlrisks = tokenPayload.controlrisks.toLowerCase() == "true";
     this.user.advancedConsequence =
       tokenPayload.advancedconsequence.toLowerCase() == "true";
     this.user.currency = tokenPayload.currency;
     this.user.shortname = tokenPayload.shortname;
     this.user.termsaccepted =
       tokenPayload.termsaccepted.toLowerCase() == "true";
-    this.user.external =
-      tokenPayload.external.toLowerCase() == "true";
+    this.user.external = tokenPayload.external.toLowerCase() == "true";
 
     // Areas
-    this.user.auditsArea =
-      tokenPayload.auditsarea.toLowerCase() == "true";
+    this.user.auditsArea = tokenPayload.auditsarea.toLowerCase() == "true";
     this.user.riskAssessmentsArea =
       tokenPayload.riskassessmentsarea.toLowerCase() == "true";
     this.user.incidentsArea =

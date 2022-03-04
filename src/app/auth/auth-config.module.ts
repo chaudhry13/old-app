@@ -1,27 +1,29 @@
-import { NgModule } from '@angular/core';
-import { AuthModule } from 'angular-auth-oidc-client';
-
+import { NgModule } from "@angular/core";
+import { AuthModule, LogLevel } from "angular-auth-oidc-client";
+import config from "../../assets/appsettings.json";
 
 @NgModule({
-    imports: [AuthModule.forRoot({
-        config: {
-            authority: config.appConfig.AuthServer,
-            redirectUrl: window.location.origin,
-            postLogoutRedirectUri: window.location.origin,
-            clientId: '',
-            scope: `openid offline_access email ${config.appConfig.ApiAudience}`, // offline access for refresh tokens
-            responseType: "code",
-            silentRenew: true, // automatically renew access tokens before expiration
-            useRefreshToken: true, // use refresh token for silent renew isntead of iframe
-            customParamsAuthRequest: {
-              audience: config.appConfig.ApiAudience,
-            },
-            customParamsRefreshTokenRequest: {
-              scope: `openid offline_access email ${config.appConfig.ApiAudience}`,
-            },
-            logLevel: LogLevel.None,
-          }
-      })],
-    exports: [AuthModule],
+  imports: [
+    AuthModule.forRoot({
+      config: {
+        authority: config.AuthServer,
+        redirectUrl: window.location.origin,
+        postLogoutRedirectUri: window.location.origin,
+        clientId: config.ClientId,
+        scope: `openid offline_access email ${config.ApiAudience}`, // offline access for refresh tokens
+        responseType: "code",
+        silentRenew: true, // automatically renew access tokens before expiration
+        useRefreshToken: true, // use refresh token for silent renew isntead of iframe
+        customParamsAuthRequest: {
+          audience: config.ApiAudience,
+        },
+        customParamsRefreshTokenRequest: {
+          scope: `openid offline_access email ${config.ApiAudience}`,
+        },
+        logLevel: LogLevel.None,
+      },
+    }),
+  ],
+  exports: [AuthModule],
 })
 export class AuthConfigModule {}

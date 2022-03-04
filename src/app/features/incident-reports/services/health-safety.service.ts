@@ -8,7 +8,7 @@ import {
   InjuryLocation,
   InvolvedPerson,
 } from "../models/health-safety";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 
 @Injectable()
 export class HealthSafetyService extends GenericService {

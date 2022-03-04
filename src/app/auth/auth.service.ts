@@ -68,18 +68,19 @@ export class AuthService {
    * @returns Returns the OidcSecurityService.checkAuth observable.
    */
   initializeAuth() {
-    return this.auth.checkAuth().pipe(
-      switchMap(({ isAuthenticated, idToken, accessToken }) => {
-        if (isAuthenticated)
-          return this.initUser().pipe(tap(() => this.isLoading.next(false)));
-        this.isLoading.next(false);
-        return EMPTY;
-      }),
-      catchError((err) => {
-        this.error.next(err);
-        return this.logout();
-      })
-    );
+    return this.auth.checkAuth().pipe(tap(() => this.isLoading.next(false)));
+    // .pipe(
+    //   switchMap(({ isAuthenticated, idToken, accessToken }) => {
+    //     if (isAuthenticated)
+    //       return this.initUser().pipe(tap(() => this.isLoading.next(false)));
+    //     this.isLoading.next(false);
+    //     return EMPTY;
+    //   }),
+    //   catchError((err) => {
+    //     this.error.next(err);
+    //     return this.logout();
+    //   })
+    // );
   }
 
   /**
@@ -99,7 +100,6 @@ export class AuthService {
    * @returns Return OidcSecurityService.logoffAndRevokeTokens() observable.
    */
   logout() {
-    window["Intercom"]("shutdown");
     return this.auth.logoffAndRevokeTokens();
   }
 

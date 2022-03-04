@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { GenericService } from "./generic.service";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from "./auth-config.service";
+import { AppConfigService } from "./app-config.service";
 
 @Injectable()
 export class UserService extends GenericService {

@@ -7,7 +7,7 @@ import {
   PaginationResult,
   Pagination,
 } from "../../features/incident-reports/models/pagination";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 
 @Injectable()
 export class IncidentReportService extends GenericService {

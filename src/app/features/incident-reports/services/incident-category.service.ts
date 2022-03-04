@@ -6,7 +6,7 @@ import {
   IncidentCategoryMappingTable,
 } from "../models/incident-category";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { IncidentType } from "../models/incident-type";
 
 @Injectable()

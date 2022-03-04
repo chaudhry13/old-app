@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Audit } from "../models/audit";
 import { Control } from "../models/control";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 
 @Injectable()
 export class ControlService extends GenericService {

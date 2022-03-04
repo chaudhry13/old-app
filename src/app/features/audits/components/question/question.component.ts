@@ -38,7 +38,7 @@ import { UserService } from "@app/services/user.service";
 import { TokenService } from "@app/services/token.service";
 import { AccountService } from "@app/services/account.service";
 import { SettingsService } from "@app/settings/settings.service";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { CommentService } from "@shared/services/comment.service";
 import { AuditService } from "../../services/audit.service";
 import { ActivatedRoute } from "@angular/router";
@@ -46,6 +46,7 @@ import { CommentType } from "@app/models/comment";
 import { Comment } from "@app/models/comment";
 import { CommentModalComponent } from "../comment-modal/comment-modal.component";
 import { IssueModalComponent } from "../issue-modal/issue-modal.component";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "question",
@@ -103,7 +104,8 @@ export class QuestionComponent implements OnInit {
     public modelController: ModalController,
     private userService: UserService,
     public alertController: AlertController,
-    public animationController: AnimationController
+    public animationController: AnimationController,
+    private auth: AuthService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.answerForm = this.formBuilder.group({
@@ -368,10 +370,7 @@ export class QuestionComponent implements OnInit {
           this.questionAnsweredService
             .update(answer)
             .then((data) => {
-              if (
-                answer.na &&
-                answer.answered
-              ) {
+              if (answer.na && answer.answered) {
                 this.requireComment = true;
                 this.openCommentModal();
               } else {
@@ -456,7 +455,7 @@ export class QuestionComponent implements OnInit {
   }
 
   private getUserOrgId() {
-    return this.appConfigService.organizationId;
+    return this.auth.user.organization;
   }
 
   private async listQuestionFiles() {

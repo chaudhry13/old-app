@@ -9,8 +9,8 @@ import {
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { catchError } from "rxjs/operators";
-import { AppConfigService } from "../services/auth-config.service";
-import { AuthService } from '@app/services/auth.service';
+import { AppConfigService } from "../services/app-config.service";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Injectable()
 export class TokenInterceptor
@@ -34,7 +34,7 @@ export class TokenInterceptor
         return next.handle(req);
       }
 
-      let token = this.auth.oAuth.getAccessToken();
+      let token = this.auth.getAccessToken();
 
       req = req.clone({
         setHeaders: {

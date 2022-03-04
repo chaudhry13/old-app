@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AppConfigService } from "@app/services/app-config.service";
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   selector: "app-home",
@@ -8,7 +10,11 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 })
 export class HomeComponent implements OnInit {
   form: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    public auth: AuthService,
+    private configService: AppConfigService
+  ) {
     this.form = fb.group({
       orgName: ["", Validators.required],
     });
@@ -22,7 +28,11 @@ export class HomeComponent implements OnInit {
     this.setApplicationConfig(this.form.get("orgName").value);
   }
 
-  setApplicationConfig(orgName: string) {
-    alert(orgName);
+  async setApplicationConfig(orgName: string) {
+    await this.configService.setUrlFromOrgName(orgName);
+  }
+
+  logout() {
+    this.auth.logout().subscribe();
   }
 }

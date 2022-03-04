@@ -1,15 +1,15 @@
 import { Injectable } from "@angular/core";
 import { ToastService } from "./toast.service";
-import { AppConfigService } from "./auth-config.service";
+import { AppConfigService } from "./app-config.service";
 
 import { AlertController } from "@ionic/angular";
 import { Plugins, CameraResultType, CameraPhoto } from "@capacitor/core";
-import { AuthService } from "./auth.service";
 import {
   FileTransfer,
   FileTransferObject,
   FileUploadOptions,
 } from "@awesome-cordova-plugins/file-transfer/ngx";
+import { AuthService } from "src/app/auth/auth.service";
 
 const { Camera } = Plugins;
 
@@ -37,8 +37,7 @@ export class CameraService {
   }
 
   getOptions(image: CameraPhoto): FileUploadOptions {
-    const token = this.auth.oAuth.getAccessToken();
-
+    const token = this.auth.getAccessToken();
     return {
       fileKey: "file",
       fileName:
@@ -81,7 +80,7 @@ export class CameraService {
     image: CameraPhoto
   ): Promise<boolean> {
     const uri = encodeURI(
-      this.appConfigService.getApiBaseUrl + "/api/storage" + urlExtension
+      this.appConfigService.apiUrl + "/api/storage" + urlExtension
     );
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();

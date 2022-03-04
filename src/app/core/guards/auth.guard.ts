@@ -6,18 +6,23 @@ import {
   Route,
   Router,
 } from "@angular/router";
-import { AuthService } from '@app/services/auth.service';
+import { map } from "rxjs/operators";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    var hasAccessToken = this.auth.oAuth.hasValidAccessToken();
-    if (!hasAccessToken) {
-      this.router.navigate(["/login"]);
-    } else {
-      return hasAccessToken;
-    }
+    console.log("in guard");
+
+    return this.auth.isAuthenticated$.pipe(
+      map(({ isAuthenticated }) => {
+        console.log(isAuthenticated);
+        if (isAuthenticated) return true;
+        this.auth.login();
+        return false;
+      })
+    );
   }
 }

@@ -10,11 +10,9 @@ import { Camera } from "@ionic-native/camera/ngx";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { CallbackComponent } from "@app/authentication/callback/callback.component";
 import { AuthGuard } from "@app/guards/auth.guard";
 
 import { OAuthModule } from "angular-oauth2-oidc";
-import { LoginComponent } from "@app/authentication/login/login.component";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -28,7 +26,7 @@ import { AgmCoreModule } from "@agm/core";
 import { AccountService } from "@app/services/account.service";
 
 import { IonicStorageModule, Storage } from "@ionic/storage";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
 import { TokenService } from "@app/services/token.service";
@@ -40,16 +38,10 @@ import {
 } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
-import { AuthConfigModule } from './auth/auth-config.module';
+import { AuthConfigModule } from "./auth/auth-config.module";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CallbackComponent,
-    LoginComponent,
-    HomeComponent,
-  ],
-  entryComponents: [CallbackComponent, LoginComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -84,8 +76,7 @@ import { AuthConfigModule } from './auth/auth-config.module';
       deps: [AppConfigService],
       useFactory: (appConfigService: AppConfigService) => {
         return () => {
-          // Make sure to return a promise!
-          return appConfigService.loadAppConfig();
+          return appConfigService.loadConfig();
         };
       },
     },

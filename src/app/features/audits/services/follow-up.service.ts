@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { FollowUp } from "../models/follow-up";
 import { Observable } from "rxjs";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 
 @Injectable()
 export class FollowUpService extends GenericService {

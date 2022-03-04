@@ -3,7 +3,7 @@ import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Comment, CommentType } from "@app/models/comment";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 
 @Injectable()
 export class CommentService extends GenericService {
@@ -23,7 +23,7 @@ export class CommentService extends GenericService {
     return this.http.post<string>(this.apiBase, comment).toPromise();
   }
 
-  async insertComment(body:any): Promise<string> {
+  async insertComment(body: any): Promise<string> {
     return this.http.post<string>(this.apiBase, body).toPromise();
   }
 
