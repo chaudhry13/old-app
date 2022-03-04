@@ -45,21 +45,11 @@ export class TokenInterceptor
 
       return next.handle(req).pipe(
         catchError((error: any, caught: Observable<HttpEvent<any>>) => {
-          if (error.status === 401) {
-            this.handleAuthError();
-          } else {
-            console.debug("On Error Status: " + error.Status);
-          }
-
           throw error;
         })
       );
     }
 
     return next.handle(req);
-  }
-
-  private handleAuthError() {
-    this.router.navigate(["/login"]);
   }
 }

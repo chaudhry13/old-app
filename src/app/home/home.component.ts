@@ -29,10 +29,14 @@ export class HomeComponent implements OnInit {
   }
 
   async setApplicationConfig(orgName: string) {
-    await this.configService.setUrlFromOrgName(orgName);
+    await this.configService.setConfigFromOrgName(orgName);
   }
 
   logout() {
     this.auth.logout().subscribe();
+  }
+
+  login() {
+    this.auth.login();
   }
 }

@@ -61,10 +61,7 @@ import { AuthConfigModule } from "./auth/auth-config.module";
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"],
-    }),
+    AgmCoreModule.forRoot(),
     SharedModule,
     AuthConfigModule,
   ],
@@ -78,6 +75,28 @@ import { AuthConfigModule } from "./auth/auth-config.module";
         return () => {
           return appConfigService.loadConfig();
         };
+      },
+    },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        const outerPromise = new Promise<void>((resolve, reject) => {
+          // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
+          // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
+          appConfigService.loadConfig().then(() => {
+            const script = document.createElement("script");
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${appConfigService.apiKey}&libraries=places,visualization`;
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
+            script.onload = () => resolve();
+            script.onerror = () => resolve();
+          });
+        });
+
+        return () => outerPromise;
       },
     },
     File,

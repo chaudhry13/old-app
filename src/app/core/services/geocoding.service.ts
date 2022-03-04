@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { GeocodingResult } from "../models/location";
 import { Injectable } from "@angular/core";
+import { AppConfigService } from "./app-config.service";
 
 @Injectable()
 export class GeocodingService {
   public base: string = "https://maps.googleapis.com/maps/api/geocode/json";
-  public key: string = "&key=AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0";
+  public key: string = `&key=${this.config.apiKey}`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private config: AppConfigService) {}
 
   reverseGeocode(latitude: number, longitude: number): Promise<GoogleResult> {
     return this.http

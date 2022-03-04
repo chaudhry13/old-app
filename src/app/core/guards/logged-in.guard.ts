@@ -6,25 +6,27 @@ import {
   Route,
   Router,
 } from "@angular/router";
+import { NavController } from "@ionic/angular";
 import { map } from "rxjs/operators";
 import { AuthService } from "src/app/auth/auth.service";
 
-@Injectable()
-export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+@Injectable({
+  providedIn: "root",
+})
+export class LoggedInGuard implements CanActivate {
+  constructor(private auth: AuthService, public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log("guard");
+    console.log("logged in guard");
 
     return this.auth.isAuthenticated$.pipe(
       map(({ isAuthenticated }) => {
         console.log(isAuthenticated);
-
         if (isAuthenticated) {
-          return true;
+          this.router.navigate(["tabs/tab1"]);
+          return false;
         }
-        this.router.navigate(["home"]);
-        return false;
+        return true;
       })
     );
   }

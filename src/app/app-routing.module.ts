@@ -1,20 +1,23 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@app/guards/auth.guard";
+import { LoggedInGuard } from "@app/guards/logged-in.guard";
 import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
   {
-    path: "",
+    path: "home",
     component: HomeComponent,
+    canActivate: [LoggedInGuard],
   },
   {
-    path: "",
+    path: "tabs",
     canActivate: [AuthGuard],
     loadChildren: () =>
       import("./features/tabs/tabs.module").then((m) => m.TabsPageModule),
   },
-  { path: "**", redirectTo: "" },
+  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: "**", redirectTo: "home" },
 ];
 
 @NgModule({
