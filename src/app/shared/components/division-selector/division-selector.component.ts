@@ -28,6 +28,7 @@ export class DivisionSelectorComponent implements OnInit {
     this.divisionList = new DivisionList();
     this.divisionList.asFilter = this.asFilter;
     this.listDivisions().then(divisions => {
+      divisions = divisions.filter(d => !d.individualDivision);
       this.divisionList.makeDivisionNodes(divisions);
     });
   }
@@ -51,7 +52,7 @@ export class DivisionSelectorComponent implements OnInit {
     this.selectedDivisionNames = this.divisionList.getCheckedDivisions().map(divNode => divNode.division.name)
 
     if (this.selectedDivisionNames && this.selectedDivisionNames.length > 0) {
-      this.selectedDivisionsText = this.stringifyDivisionNames(this.selectedDivisionNames);
+      this.selectedDivisionsText = this.selectedDivisionIds.length + ' selected divisions';
       this.changeInSelectedDivisions.emit(this.selectedDivisionIds);
     } else {
       this.selectedDivisionsText = "Select divisions...";
