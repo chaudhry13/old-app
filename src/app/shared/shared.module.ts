@@ -29,6 +29,7 @@ import { PlacesSearchService } from './services/places-search.service';
 import { LocationFormComponent } from "@shared/components/location-form/location-form.component";
 import { UploadPhotoButtonComponent } from "@shared/components/upload-photo-button/upload-photo-button.component";
 import { PhotoListComponent } from "@shared/components/photo-list/photo-list.component";
+import { HRDatePipe } from "./pipes/hr-date.pipe";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { PhotoListComponent } from "@shared/components/photo-list/photo-list.com
     SanitizeHtmlPipe,
     LocationFormComponent,
     UploadPhotoButtonComponent,
-    PhotoListComponent
+    PhotoListComponent,
+    HRDatePipe
   ],
   imports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { PhotoListComponent } from "@shared/components/photo-list/photo-list.com
     SanitizeHtmlPipe,
     LocationFormComponent,
     UploadPhotoButtonComponent,
-    PhotoListComponent
+    PhotoListComponent,
+    HRDatePipe
   ],
   providers: [
     CameraService,

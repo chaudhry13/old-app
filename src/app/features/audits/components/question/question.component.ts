@@ -73,7 +73,7 @@ export class QuestionComponent implements OnInit {
   issueId: string;
   requireComment: boolean = false;
 
-  commentData: Comment[];
+  commentData: Comment[] = [];
   questionData: QuestionAnsweres[];
 
   QuestionTypes = QuestionTypes;
@@ -126,7 +126,6 @@ export class QuestionComponent implements OnInit {
       component: CommentModalComponent,
     });
     (await modal).onDidDismiss().then((data) => {
-      console.log(data.data);
       this.commentService
         .insertComment({
           riskAssessmentId: null,
@@ -139,9 +138,8 @@ export class QuestionComponent implements OnInit {
           text: data.data.comment,
         })
         .then((val) => {
-          console.log(val);
           this.requireComment = false;
-          // this.getCommentById();
+          this.getCommentById();
         });
     });
     return (await modal).present();
@@ -153,7 +151,7 @@ export class QuestionComponent implements OnInit {
       component: CommentModalComponent,
     });
     (await modal).onDidDismiss().then((data) => {
-      console.log(data.data);
+      
       this.commentService
         .insertComment({
           riskAssessmentId: null,
@@ -166,7 +164,7 @@ export class QuestionComponent implements OnInit {
           text: data.data.comment,
         })
         .then((val) => {
-          console.log(val);
+          this.showComment = true;
           this.getCommentById();
         });
     });
@@ -177,7 +175,6 @@ export class QuestionComponent implements OnInit {
       component: CommentModalComponent,
     });
     (await modal).onDidDismiss().then((data) => {
-      console.log(data.data);
       this.commentService
         .insertComment({
           riskAssessmentId: null,
@@ -190,7 +187,6 @@ export class QuestionComponent implements OnInit {
           text: data.data.comment,
         })
         .then((val) => {
-          console.log(val);
           this.getCommentById();
         });
     });
@@ -211,7 +207,6 @@ export class QuestionComponent implements OnInit {
           text: "Delete",
           handler: async () => {
             await this.commentService.delete(id).then((val) => {
-              console.log(val);
             });
             this.getCommentById();
           },
@@ -235,7 +230,6 @@ export class QuestionComponent implements OnInit {
           text: "Delete",
           handler: async () => {
             await this.commentService.delete(id).then((val) => {
-              console.log(val);
             });
             this.getCommentById();
           },
@@ -258,7 +252,6 @@ export class QuestionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.log("Application page has been destroy");
     this.animation.stop();
   }
 
@@ -271,18 +264,15 @@ export class QuestionComponent implements OnInit {
     this.issueId = this.questionAnswer.issueId;
 
     this.questionaireUserAnswerService.get(this.id).then((val) => {
-      console.log(this.id);
-      console.log(val.userId);
-
       this.userService.get(val.userId).forEach((val) => {
-        console.log("My User Administrator");
-        console.log(val.role);
         this.isInRole = val.role;
       });
     });
 
     if (this.questionAnswer.na && !this.questionAnswer.hasComment) {
       this.requireComment = true;
+    } else if (this.checkOptionRequireComment() && !this.questionAnswer.hasComment){
+        this.requireComment = true;
     } else {
       this.requireComment = false;
     }
@@ -302,7 +292,6 @@ export class QuestionComponent implements OnInit {
     this.answerForm.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe(async () => {
-        console.log("update logic");
         const answer = this.qhs.getQuestionAnswer(
           this.questionAnswer,
           this.question,
@@ -316,8 +305,6 @@ export class QuestionComponent implements OnInit {
         //   this.requireComment = false;
         // }
 
-        // console.log("Answer Data");
-        // console.log(answer);
 
         let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
           (qa) => qa.id == this.questionAnswer.id
@@ -348,7 +335,6 @@ export class QuestionComponent implements OnInit {
     this.answerForm.valueChanges
       .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe(() => {
-        console.log("Save in the database");
         // this.hasComment = !this.qhs.isNullOrWhitespace(
         //   this.answerForm.controls.comment.value
         // );
@@ -374,7 +360,11 @@ export class QuestionComponent implements OnInit {
               ) {
                 this.requireComment = true;
                 this.openCommentModal();
-              } else {
+              } else if (this.checkOptionRequireComment()) {
+                this.requireComment = true;
+                this.openCommentModal();
+              }
+              else {
                 this.requireComment = false;
               }
               this.toastService.show("Answer saved!");
@@ -386,6 +376,15 @@ export class QuestionComponent implements OnInit {
       });
 
     this.listQuestionFiles();
+  }
+
+  checkOptionRequireComment(): boolean {
+    var require = this.questionAnswer.optionAnswered.filter(o => o.selected).some(o => {
+      var found = this.question.possibleAnswers.find(p => p.id == o.questionOptionId);
+      return found.requireComment;
+    });
+    
+    return require && !this.hasComment;
   }
 
   toggleComment() {
@@ -417,11 +416,21 @@ export class QuestionComponent implements OnInit {
   }
   getCommentById() {
     this.commentService.list(this.questionAnswer.id, 6).then((val) => {
-      console.log("Comment Toggle");
-      console.log(val);
-      console.log(this.questionAnswer.id);
       this.commentData = val;
       this.showCreateComment = !this.showCreateComment;
+      if (val && val.length > 0) {
+        this.hasComment = true;
+      }
+      else {
+        this.hasComment = false;
+      }
+
+      if (this.checkOptionRequireComment() && !this.hasComment) {
+        this.requireComment = true;
+      }
+      else {
+        this.requireComment = false;
+      }
     });
   }
 

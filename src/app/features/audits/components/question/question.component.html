@@ -169,7 +169,7 @@
         </div>
         <div class="chatArea">
           <ion-label
-            ><b>{{ comment.user.name }}</b> on {{ comment.created }}</ion-label
+            ><b>{{ comment.user.name }}</b> on {{ comment.created | HRDate }}</ion-label
           >
           <ion-label>{{ comment.text }}</ion-label>
 
@@ -190,8 +190,7 @@
           </div>
 
           <!-- Child Comment Start -->
-          <div
-            class="commentArea"
+          <div class="commentArea"
             *ngFor="let anotherComment of comment.comments"
           >
             <div style="align-self: flex-start">

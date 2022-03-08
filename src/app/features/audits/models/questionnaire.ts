@@ -112,6 +112,7 @@ export class QuestionOption {
 	colorHexValue: string;
 	index: number;
 	answers: Array<QuestionOptionAnswered>;
+  	requireComment: boolean;
 }
 
 export class QuestionnaireList {
