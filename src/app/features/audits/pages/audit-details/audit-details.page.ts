@@ -11,9 +11,7 @@ import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { AuditService } from "../../services/audit.service";
 import { Audit, AuditStatus } from "../../models/audit";
 import cronstrue from "cronstrue";
-import { CommentService } from "@shared/services/comment.service";
-import { SettingsService } from "@app/settings/settings.component";
-import { TokenService } from "@app/services/token.service";
+import { CommentService } from "@app/services/comment.service";
 import { User } from "@app/models/user";
 import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { AuthService } from "src/app/auth/auth.service";
@@ -50,8 +48,7 @@ export class AuditDetailsPage implements OnInit {
     private fileOpener: FileOpener,
     private document: DocumentViewer,
     private commentSevice: CommentService,
-    private auth: AuthService,
-    private tokenService: TokenService
+    private auth: AuthService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }

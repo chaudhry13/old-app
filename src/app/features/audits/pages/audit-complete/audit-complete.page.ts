@@ -9,8 +9,6 @@ import { ToastService } from "@app/services/toast.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ControlService } from "../../services/control.service";
-
-import { TokenService } from "@app/services/token.service";
 import { User } from "@app/models/user";
 import { Attachment } from "@app/models/file";
 import { StorageService } from "@app/services/storage.service";
@@ -18,7 +16,7 @@ import { AppConfigService } from "@app/services/app-config.service";
 import { FollowUpService } from "../../services/follow-up.service";
 import { FollowUp } from "../../models/follow-up";
 import { UserService } from "@app/services/user.service";
-import { CommentService } from "@shared/services/comment.service";
+import { CommentService } from "@app/services/comment.service";
 import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
@@ -76,7 +74,6 @@ export class AuditCompletePage implements OnInit {
     public geolocation: Geolocation,
     public storageService: StorageService,
     public appConfigService: AppConfigService,
-    public tokenService: TokenService,
     public followUpService: FollowUpService,
     public userService: UserService,
     public qhs: QuestionnaireHelperService,

@@ -8,7 +8,7 @@ import { AppConfigService } from "./app-config.service";
 @Injectable()
 export class GeocodingService {
   public base: string = "https://maps.googleapis.com/maps/api/geocode/json";
-  public key: string = `&key=${this.config.apiKey}`;
+  public key: string = `&key=${this.config.orgConfig.googleApiKey}`;
 
   constructor(private http: HttpClient, private config: AppConfigService) {}
 

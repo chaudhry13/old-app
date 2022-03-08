@@ -8,8 +8,6 @@ import { AppConfigService } from "./app-config.service";
 
 @Injectable()
 export class UserService extends GenericService {
-  public role: string;
-
   constructor(private http: HttpClient, appConfigService: AppConfigService) {
     super("/users", appConfigService);
   }

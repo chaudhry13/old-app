@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router, UrlTree, UrlSegmentGroup } from "@angular/router";
 import { AuditService } from "../../features/audits/services/audit.service";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 
 @Injectable()
 export class DeeplinkService {

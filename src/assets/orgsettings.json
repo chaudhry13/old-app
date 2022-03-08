@@ -1,0 +1,5 @@
+{
+  "apiServer": "https://localhost:5000",
+  "googleApiKey": "AIzaSyCWqvwqWfwNMP84f_gHBq_YL8j43hKJB50",
+  "auth0OrgId": ""
+}

@@ -11,7 +11,6 @@ import { DivisionService } from "@app/services/division.service";
 import { CronService } from "@app/services/cron.service";
 import { AppConfigService } from "@app/services/app-config.service";
 import { AccountService } from "@app/services/account.service";
-import { TokenService } from "@app/services/token.service";
 
 @NgModule({
   declarations: [],
@@ -19,7 +18,6 @@ import { TokenService } from "@app/services/token.service";
   providers: [
     LocationService,
     UserService,
-    TokenService,
     ToastService,
     StorageService,
     CameraService,

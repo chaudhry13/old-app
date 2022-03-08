@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { IncidentReport } from "../../models/incident-report";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 import { CameraService } from "@app/services/photo.service";
 import { User } from "@app/models/user";
 import { AgmMap } from "@agm/core";

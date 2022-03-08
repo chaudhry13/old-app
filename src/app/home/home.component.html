@@ -1,12 +1,15 @@
-<h1>MAIN PAGE</h1>
-<form [formGroup]="form" (ngSubmit)="onSubmit($event)">
-  <ion-input
-    type="text"
-    placeholder="Organization Name"
-    class="form-control"
-    formControlName="orgName"
-  ></ion-input>
-  <pre>{{form.value | json}}</pre>
-</form>
-<button (click)="login()">login</button>
-<button (click)="logout()">logout</button>
+<div class="home-cont">
+  <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+    <ion-input
+      type="text"
+      placeholder="Organization Name"
+      class="org-input"
+      formControlName="orgName"
+      style="width: 100%"
+    ></ion-input>
+    <ion-button type="submit" style="width: 100%;">Select</ion-button>
+    <div style="height: 40px;"></div>
+    <ion-button (click)="login()" style="width: 100%;">Login</ion-button>
+  </form>
+  
+</div>

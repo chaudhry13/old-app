@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { PlacesSearchService } from "@shared/services/places-search.service";
+import { PlacesSearchService } from "@app/services/places-search.service";
 
 @Component({
   selector: "location-searchbar",
@@ -10,9 +10,9 @@ export class LocationSearchbarComponent implements OnInit {
   public autocompleteItems: any[];
   public query: string;
 
-  constructor(public placesSearchService: PlacesSearchService) { }
+  constructor(public placesSearchService: PlacesSearchService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   updateSearch() {
     this.placesSearchService

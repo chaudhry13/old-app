@@ -29,7 +29,6 @@ import { IonicStorageModule, Storage } from "@ionic/storage";
 import { AppConfigService } from "@app/services/app-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
-import { TokenService } from "@app/services/token.service";
 import { StorageService } from "@app/services/storage.service";
 import {
   FileTransfer,
@@ -87,7 +86,7 @@ import { AuthConfigModule } from "./auth/auth-config.module";
           // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
           appConfigService.loadConfig().then(() => {
             const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${appConfigService.apiKey}&libraries=places,visualization`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${appConfigService.orgConfig.googleApiKey}&libraries=places,visualization`;
             script.async = true;
             script.defer = true;
             document.body.appendChild(script);
@@ -111,7 +110,6 @@ import { AuthConfigModule } from "./auth/auth-config.module";
     Keyboard,
     Camera,
     UserService,
-    TokenService,
     StorageService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

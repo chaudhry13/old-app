@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { User } from "@app/models/user";
+import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
 import { LoginResponse, OidcSecurityService } from "angular-auth-oidc-client";
+import { stringify } from "querystring";
 import {
   BehaviorSubject,
   combineLatest,
@@ -58,7 +60,8 @@ export class AuthService {
 
   constructor(
     private auth: OidcSecurityService,
-    private userService: UserService
+    private userService: UserService,
+    private config: AppConfigService
   ) {}
 
   /**
@@ -68,19 +71,18 @@ export class AuthService {
    * @returns Returns the OidcSecurityService.checkAuth observable.
    */
   initializeAuth() {
-    return this.auth.checkAuth().pipe(tap(() => this.isLoading.next(false)));
-    // .pipe(
-    //   switchMap(({ isAuthenticated, idToken, accessToken }) => {
-    //     if (isAuthenticated)
-    //       return this.initUser().pipe(tap(() => this.isLoading.next(false)));
-    //     this.isLoading.next(false);
-    //     return EMPTY;
-    //   }),
-    //   catchError((err) => {
-    //     this.error.next(err);
-    //     return this.logout();
-    //   })
-    // );
+    return this.auth.checkAuth().pipe(
+      switchMap(({ isAuthenticated, idToken, accessToken }) => {
+        if (isAuthenticated)
+          return this.initUser().pipe(tap(() => this.isLoading.next(false)));
+        this.isLoading.next(false);
+        return EMPTY;
+      }),
+      catchError((err) => {
+        this.error.next(err);
+        return this.logout();
+      })
+    );
   }
 
   /**
@@ -107,7 +109,14 @@ export class AuthService {
    * Initialize login flow, redirect to Identity provider.
    */
   login() {
-    this.auth.authorize();
+    const auth0OrgId = this.config.orgConfig.auth0OrgId;
+    if (auth0OrgId)
+      this.auth.authorize(null, {
+        customParams: {
+          organization: auth0OrgId,
+        },
+      });
+    else this.auth.authorize();
   }
 
   /**

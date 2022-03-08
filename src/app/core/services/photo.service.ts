@@ -80,7 +80,7 @@ export class CameraService {
     image: CameraPhoto
   ): Promise<boolean> {
     const uri = encodeURI(
-      this.appConfigService.apiUrl + "/api/storage" + urlExtension
+      this.appConfigService.orgConfig.apiServer + "/api/storage" + urlExtension
     );
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();

@@ -1,5 +1,4 @@
 import { AppConfigService } from "./app-config.service";
-import { AppConfig } from "../settings/auth.config";
 
 export class GenericService {
   private extension: string;
@@ -11,6 +10,6 @@ export class GenericService {
   }
 
   public get apiBase() {
-    return this.appConfigService.apiUrl + "/api" + this.extension;
+    return this.appConfigService.orgConfig.apiServer + "/api" + this.extension;
   }
 }

@@ -11,7 +11,7 @@ import {
 import { IncidentType } from "../../models/incident-type";
 import { IncidentCategoryService } from "../../services/incident-category.service";
 import { distinctUntilChanged } from "rxjs/operators";
-import { CountryService } from "@shared/services/country.service";
+import { CountryService } from "@app/services/country.service";
 
 @Component({
   selector: "app-incident-report-filter-page",
