@@ -7,10 +7,8 @@ import {
   FileTransfer,
 } from "@ionic-native/file-transfer/ngx";
 import { AlertController } from "@ionic/angular";
-import { Plugins, CameraResultType, CameraPhoto } from "@capacitor/core";
+import { Camera, CameraResultType, Photo } from "@capacitor/camera";
 import { AuthService } from './auth.service';
-
-const { Camera } = Plugins;
 
 @Injectable()
 export class CameraService {
@@ -27,7 +25,7 @@ export class CameraService {
     private alertCtrl: AlertController
   ) { }
 
-  takePhoto(): Promise<CameraPhoto> {
+  takePhoto(): Promise<Photo> {
     return Camera.getPhoto({
       quality: 100,
       allowEditing: false,
@@ -35,7 +33,7 @@ export class CameraService {
     });
   }
 
-  getOptions(image: CameraPhoto): FileUploadOptions {
+  getOptions(image: Photo): FileUploadOptions {
     const token = this.auth.oAuth.getAccessToken();
 
     return {
@@ -73,7 +71,7 @@ export class CameraService {
     });
   }
 
-  private uploadPhoto(urlExtension: string, image: CameraPhoto): Promise<boolean> {
+  private uploadPhoto(urlExtension: string, image: Photo): Promise<boolean> {
     const uri = encodeURI(
       this.appConfigService.getApiBaseUrl +
       "/api/storage" +
