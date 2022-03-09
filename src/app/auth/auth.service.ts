@@ -109,6 +109,7 @@ export class AuthService {
    * Initialize login flow, redirect to Identity provider.
    */
   login() {
+    // Auth0 specific, specify organization login screen
     const auth0OrgId = this.config.orgConfig.auth0OrgId;
     if (auth0OrgId)
       this.auth.authorize(null, {

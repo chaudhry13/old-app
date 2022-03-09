@@ -4,7 +4,12 @@ import { AppConfigService } from "./app-config.service";
 
 import { AlertController } from "@ionic/angular";
 import { AuthService } from "src/app/auth/auth.service";
-import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
+import {
+  FileTransfer,
+  FileTransferObject,
+  FileUploadOptions,
+} from "@awesome-cordova-plugins/file-transfer/ngx";
+import { Camera, CameraResultType, Photo } from "@capacitor/camera";
 
 @Injectable()
 export class CameraService {
@@ -30,7 +35,7 @@ export class CameraService {
   }
 
   getOptions(image: Photo): FileUploadOptions {
-    const token = this.auth.oAuth.getAccessToken();
+    const token = this.auth.getAccessToken();
 
     return {
       fileKey: "file",
