@@ -26,6 +26,7 @@ import { PlacesSearchService } from "../core/services/places-search.service";
 import { LocationFormComponent } from "@shared/components/location-form/location-form.component";
 import { UploadPhotoButtonComponent } from "@shared/components/upload-photo-button/upload-photo-button.component";
 import { PhotoListComponent } from "@shared/components/photo-list/photo-list.component";
+import { HRDatePipe } from "./pipes/hr-date.pipe";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { PhotoListComponent } from "@shared/components/photo-list/photo-list.com
     LocationFormComponent,
     UploadPhotoButtonComponent,
     PhotoListComponent,
+    HRDatePipe,
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -58,6 +60,7 @@ import { PhotoListComponent } from "@shared/components/photo-list/photo-list.com
     LocationFormComponent,
     UploadPhotoButtonComponent,
     PhotoListComponent,
+    HRDatePipe,
   ],
   providers: [
     CameraService,
