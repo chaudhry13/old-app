@@ -27,12 +27,17 @@ export class AppConfigService {
     if (environment.production) {
       const config = await this.httpClient
         .get<AuthConfig>(
-          "https://humanrisks-core-api.azurewebsites.net/api/appConfig/getAppAuthConfig"
+          "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig"
         )
         .toPromise();
       this._authConfig = config;
     } else {
-      this._authConfig = authConfig;
+      const config = await this.httpClient
+        .get<AuthConfig>(
+          "https://localhost:5000/api/mobileappsettings/getAuthConfig"
+        )
+        .toPromise();
+      this._authConfig = config;
     }
   }
 
@@ -44,11 +49,16 @@ export class AppConfigService {
     if (environment.production) {
       const config = await this.httpClient
         .get<OrgConfig>(
-          "https://humanrisks-core-api.azurewebsites.net/api/appConfig/getAppConfig/orgName"
+          "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/hr"
         )
         .toPromise();
       this._orgConfig = config;
     } else {
+      const config = await this.httpClient
+        .get<OrgConfig>(
+          "https://localhost:5000/api/mobileappsettings/getOrgConfig/hr"
+        )
+        .toPromise();
       this._orgConfig = config;
     }
   }
@@ -57,11 +67,16 @@ export class AppConfigService {
     if (environment.production) {
       const config = await this.httpClient
         .get<OrgConfig>(
-          `https://humanrisks-core-api.azurewebsites.net/api/appConfig/getAppConfig/${orgName}`
+          `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`
         )
         .toPromise();
       this._orgConfig = config;
     } else {
+      const config = await this.httpClient
+        .get<OrgConfig>(
+          `https://localhost:5000/api/mobileappsettings/getOrgConfig/${orgName}`
+        )
+        .toPromise();
       this._orgConfig = config;
     }
   }
