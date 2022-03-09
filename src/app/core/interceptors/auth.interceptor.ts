@@ -17,8 +17,11 @@ export class TokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Only attach access token to calls made to the api url
-    if (req.url.startsWith(this.config.orgConfig.apiServer)) {
+    // Only attach access token to calls made to the api url, after config is loaded (previous call is to laod config)
+    if (
+      this.config.orgConfig &&
+      req.url.startsWith(this.config.orgConfig.apiServer)
+    ) {
       let token = this.auth.getAccessToken();
       if (token) {
         req = req.clone({
