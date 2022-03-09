@@ -1,5 +1,0 @@
-{
-  "authServer": "https://localhost:5001",
-  "clientId": "ionic",
-  "apiAudience": "api"
-}
