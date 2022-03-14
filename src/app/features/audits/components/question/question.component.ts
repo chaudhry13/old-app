@@ -299,13 +299,6 @@ export class QuestionComponent implements OnInit {
           this.answerForm
         );
 
-        // if (answer.na) {
-        //   this.requireComment = answer.na;
-        // } else {
-        //   this.requireComment = false;
-        // }
-
-
         let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
           (qa) => qa.id == this.questionAnswer.id
         );
@@ -356,7 +349,7 @@ export class QuestionComponent implements OnInit {
             .then((data) => {
               if (
                 answer.na &&
-                answer.answered
+                answer.answered && !this.hasComment
               ) {
                 this.requireComment = true;
                 this.openCommentModal();
@@ -425,7 +418,7 @@ export class QuestionComponent implements OnInit {
         this.hasComment = false;
       }
 
-      if (this.checkOptionRequireComment() && !this.hasComment) {
+      if ((this.answerForm.controls.na.value || this.checkOptionRequireComment()) && !this.hasComment) {
         this.requireComment = true;
       }
       else {
