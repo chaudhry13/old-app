@@ -35,7 +35,7 @@ export const httpLoaderFactory = (config: AppConfigService) => {
       )
     )
   );
-  return new StsConfigHttpLoader(config$);
+  return new StsConfigHttpLoader(config$.toPromise());
 };
 
 @NgModule({
