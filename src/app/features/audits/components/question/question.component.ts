@@ -150,7 +150,6 @@ export class QuestionComponent implements OnInit {
       component: CommentModalComponent,
     });
     (await modal).onDidDismiss().then((data) => {
-      
       this.commentService
         .insertComment({
           riskAssessmentId: null,
@@ -205,8 +204,7 @@ export class QuestionComponent implements OnInit {
         {
           text: "Delete",
           handler: async () => {
-            await this.commentService.delete(id).then((val) => {
-            });
+            await this.commentService.delete(id).then((val) => {});
             this.getCommentById();
           },
         },
@@ -228,8 +226,7 @@ export class QuestionComponent implements OnInit {
         {
           text: "Delete",
           handler: async () => {
-            await this.commentService.delete(id).then((val) => {
-            });
+            await this.commentService.delete(id).then((val) => {});
             this.getCommentById();
           },
         },
@@ -270,8 +267,11 @@ export class QuestionComponent implements OnInit {
 
     if (this.questionAnswer.na && !this.questionAnswer.hasComment) {
       this.requireComment = true;
-    } else if (this.checkOptionRequireComment() && !this.questionAnswer.hasComment){
-        this.requireComment = true;
+    } else if (
+      this.checkOptionRequireComment() &&
+      !this.questionAnswer.hasComment
+    ) {
+      this.requireComment = true;
     } else {
       this.requireComment = false;
     }
@@ -297,13 +297,6 @@ export class QuestionComponent implements OnInit {
           this.questionnaireUserAnswer,
           this.answerForm
         );
-
-        // if (answer.na) {
-        //   this.requireComment = answer.na;
-        // } else {
-        //   this.requireComment = false;
-        // }
-
 
         let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
           (qa) => qa.id == this.questionAnswer.id
@@ -332,7 +325,7 @@ export class QuestionComponent implements OnInit {
       });
     // Update the answer in the database
     this.answerForm.valueChanges
-      .pipe(debounceTime(2000), distinctUntilChanged())
+      .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe(() => {
         // this.hasComment = !this.qhs.isNullOrWhitespace(
         //   this.answerForm.controls.comment.value
@@ -353,14 +346,13 @@ export class QuestionComponent implements OnInit {
           this.questionAnsweredService
             .update(answer)
             .then((data) => {
-              if (answer.na && answer.answered) {
+              if (answer.na && answer.answered && !this.hasComment) {
                 this.requireComment = true;
                 this.openCommentModal();
               } else if (this.checkOptionRequireComment()) {
                 this.requireComment = true;
                 this.openCommentModal();
-              }
-              else {
+              } else {
                 this.requireComment = false;
               }
               this.toastService.show("Answer saved!");
@@ -375,11 +367,15 @@ export class QuestionComponent implements OnInit {
   }
 
   checkOptionRequireComment(): boolean {
-    var require = this.questionAnswer.optionAnswered.filter(o => o.selected).some(o => {
-      var found = this.question.possibleAnswers.find(p => p.id == o.questionOptionId);
-      return found.requireComment;
-    });
-    
+    var require = this.questionAnswer.optionAnswered
+      .filter((o) => o.selected)
+      .some((o) => {
+        var found = this.question.possibleAnswers.find(
+          (p) => p.id == o.questionOptionId
+        );
+        return found.requireComment;
+      });
+
     return require && !this.hasComment;
   }
 
@@ -416,15 +412,17 @@ export class QuestionComponent implements OnInit {
       this.showCreateComment = !this.showCreateComment;
       if (val && val.length > 0) {
         this.hasComment = true;
-      }
-      else {
+      } else {
         this.hasComment = false;
       }
 
-      if (this.checkOptionRequireComment() && !this.hasComment) {
+      if (
+        (this.answerForm.controls.na.value ||
+          this.checkOptionRequireComment()) &&
+        !this.hasComment
+      ) {
         this.requireComment = true;
-      }
-      else {
+      } else {
         this.requireComment = false;
       }
     });
