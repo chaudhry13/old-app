@@ -68,21 +68,17 @@ export class AuditDetailsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log('this is a test');
     this.getAudits(); // To make sure audits are updated properly
   }
 
   getAudits() {
     this.controlService.get(this.id).then((control) => {
-      console.log(control);
       this.control = control;
-      console.log('test3');
       
       if (control.frequency) {
         this.frequency = cronstrue.toString(control.frequency); // TODO: Use CronService
       }
       
-      console.log('test1');
       let auditFilter = {
         controlId: this.id,
         status: null,
@@ -91,9 +87,7 @@ export class AuditDetailsPage implements OnInit {
         startDate: null,
         endDate: null
       };
-      console.log('test2');
       this.auditService.list(auditFilter).then(response => {
-        console.log('Loaded audits:', response);
         // Setting the audits
         this.completedAudits = response.filter(a => a.status == AuditStatus.Completed).sort((a, b) => {
           return a.date > b.date ? -1 : 1;

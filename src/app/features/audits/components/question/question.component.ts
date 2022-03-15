@@ -326,7 +326,7 @@ export class QuestionComponent implements OnInit {
       });
     // Update the answer in the database
     this.answerForm.valueChanges
-      .pipe(debounceTime(2000), distinctUntilChanged())
+      .pipe(debounceTime(200), distinctUntilChanged())
       .subscribe(() => {
         // this.hasComment = !this.qhs.isNullOrWhitespace(
         //   this.answerForm.controls.comment.value
