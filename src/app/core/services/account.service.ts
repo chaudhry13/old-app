@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { User } from "../models/user";
-import { AppConfigService } from "./auth-config.service";
+import { AppConfigService } from "./app-config.service";
 
 @Injectable()
 export class AccountService extends GenericService {

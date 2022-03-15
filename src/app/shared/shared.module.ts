@@ -13,19 +13,16 @@ import { SanitizeHtmlPipe } from "@shared/pipes/sanitazion.pipe";
 import { CameraService } from "@app/services/photo.service";
 import { ToastService } from "@app/services/toast.service";
 import { DivisionService } from "@app/services/division.service";
-import { CountryService } from "@shared/services/country.service";
+import { CountryService } from "@app/services/country.service";
 import { LocationService } from "@app/services/location.service";
 import { GeocodingService } from "@app/services/geocoding.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { UserService } from "@app/services/user.service";
-import { TokenService } from "@app/services/token.service";
-import { StorageService } from "@app/services/storage.service";
 import { ValidationService } from "../features/audits/services/validation.service";
 import { QRScanner } from "@ionic-native/qr-scanner/ngx";
 import { DeeplinkService } from "@app/services/deeplink.service";
-import { IncidentReportService } from "@shared/services/incident-report.service";
-import { IonicModule } from '@ionic/angular';
-import { PlacesSearchService } from './services/places-search.service';
+import { IncidentReportService } from "@app/services/incident-report.service";
+import { IonicModule } from "@ionic/angular";
+import { PlacesSearchService } from "../core/services/places-search.service";
 import { LocationFormComponent } from "@shared/components/location-form/location-form.component";
 import { UploadPhotoButtonComponent } from "@shared/components/upload-photo-button/upload-photo-button.component";
 import { PhotoListComponent } from "@shared/components/photo-list/photo-list.component";
@@ -45,14 +42,9 @@ import { HRDatePipe } from "./pipes/hr-date.pipe";
     LocationFormComponent,
     UploadPhotoButtonComponent,
     PhotoListComponent,
-    HRDatePipe
+    HRDatePipe,
   ],
-  imports: [
-    CommonModule,
-    IonicModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   exports: [
     CommonModule,
     FormsModule,
@@ -68,7 +60,7 @@ import { HRDatePipe } from "./pipes/hr-date.pipe";
     LocationFormComponent,
     UploadPhotoButtonComponent,
     PhotoListComponent,
-    HRDatePipe
+    HRDatePipe,
   ],
   providers: [
     CameraService,
@@ -82,7 +74,7 @@ import { HRDatePipe } from "./pipes/hr-date.pipe";
     QRScanner,
     DeeplinkService,
     IncidentReportService,
-    PlacesSearchService
+    PlacesSearchService,
   ],
 })
-export class SharedModule { }
+export class SharedModule {}

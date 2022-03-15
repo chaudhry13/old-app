@@ -30,10 +30,10 @@ import {
 import { QuestionnaireHelperService } from "./services/questionnaire-helper.service";
 import { DivisionService } from "@app/services/division.service";
 import { LogicService } from "./services/logic.service";
-import { CommentService } from "@shared/services/comment.service";
+import { CommentService } from "@app/services/comment.service";
 import { CommentModalComponent } from "./components/comment-modal/comment-modal.component";
 import { IssueModalComponent } from "./components/issue-modal/issue-modal.component";
-import { IssueService } from "@shared/services/issue.service";
+import { IssueService } from "@app/services/issue.service";
 
 @NgModule({
   imports: [
@@ -63,7 +63,7 @@ import { IssueService } from "@shared/services/issue.service";
     LocationQuestionComponent,
     NumberQuestionComponent,
     CommentModalComponent,
-    IssueModalComponent
+    IssueModalComponent,
   ],
   providers: [
     AuditService,
@@ -78,7 +78,7 @@ import { IssueService } from "@shared/services/issue.service";
     CommentService,
     QuestionnaireUserAnswerService,
     AuditService,
-    IssueService
+    IssueService,
   ],
 })
 export class AuditModule {}

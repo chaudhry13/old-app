@@ -4,8 +4,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { GenericService } from "./generic.service";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from "./auth-config.service";
-import { AuthService } from './auth.service';
+import { AppConfigService } from "./app-config.service";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Injectable()
 export class DivisionService extends GenericService {
@@ -25,7 +25,7 @@ export class DivisionService extends GenericService {
     this.selected$ = this.subject.asObservable();
   }
 
-  set(divisions: Division[]) { }
+  set(divisions: Division[]) {}
 
   selected(data) {
     this.divisions = data;

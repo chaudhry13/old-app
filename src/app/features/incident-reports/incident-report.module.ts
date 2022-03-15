@@ -27,7 +27,7 @@ import { IntelligenceReportFormComponent } from "./components/incident-report-fo
 import { VehicleFormComponent } from "./components/incident-report-forms/vehicle-form/vehicle-form.component";
 import { HealthSafetyService } from "./services/health-safety.service";
 import { IncidentCategoryService } from "./services/incident-category.service";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 import { ActivityLogService } from "../activity-log/services/activity-log-service";
 
 @NgModule({
@@ -40,8 +40,8 @@ import { ActivityLogService } from "../activity-log/services/activity-log-servic
     SharedModule,
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"]
-    })
+      libraries: ["places"],
+    }),
   ],
   declarations: [
     IncidentReportPage,
@@ -62,11 +62,14 @@ import { ActivityLogService } from "../activity-log/services/activity-log-servic
     InvestigationReportFormComponent,
     PersonsFormComponent,
     IntelligenceReportFormComponent,
-    VehicleFormComponent
+    VehicleFormComponent,
   ],
-  providers: [HealthSafetyService, IncidentCategoryService, IncidentReportService, ActivityLogService],
-  exports: [
-    TakePhotoButtonComponent,
-  ]
+  providers: [
+    HealthSafetyService,
+    IncidentCategoryService,
+    IncidentReportService,
+    ActivityLogService,
+  ],
+  exports: [TakePhotoButtonComponent],
 })
 export class IncidentReportPageModule {}

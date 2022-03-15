@@ -4,7 +4,7 @@ import { TabsPage } from "./tabs.page";
 
 const routes: Routes = [
   {
-    path: "tabs",
+    path: "",
     component: TabsPage,
     children: [
       {
@@ -12,7 +12,10 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren: "src/app/features/audits/audit.module#AuditModule",
+            loadChildren: () =>
+              import("src/app/features/audits/audit.module").then(
+                (m) => m.AuditModule
+              ),
           },
         ],
       },
@@ -21,8 +24,10 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren:
-              "src/app/features/incident-reports/incident-report.module#IncidentReportPageModule",
+            loadChildren: () =>
+              import(
+                "src/app/features/incident-reports/incident-report.module"
+              ).then((m) => m.IncidentReportPageModule),
           },
         ],
       },
@@ -31,8 +36,10 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren:
-              "src/app/features/notifications/notification.module#NotificationPageModule",
+            loadChildren: () =>
+              import("src/app/features/notifications/notification.module").then(
+                (m) => m.NotificationPageModule
+              ),
           },
         ],
       },
@@ -41,22 +48,15 @@ const routes: Routes = [
         children: [
           {
             path: "",
-            loadChildren:
-              "src/app/features/profile/profile.module#ProfilePageModule",
+            loadChildren: () =>
+              import("src/app/features/profile/profile.module").then(
+                (m) => m.ProfilePageModule
+              ),
           },
         ],
       },
-      {
-        path: "",
-        redirectTo: "/tabs/tab1",
-        pathMatch: "full",
-      },
+      { path: "", redirectTo: "tabs/tab1", pathMatch: "full" },
     ],
-  },
-  {
-    path: "",
-    redirectTo: "/tabs/tab1",
-    pathMatch: "full",
   },
 ];
 

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { GenericService } from "./generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Attachment } from "../models/file";
-import { AppConfigService } from "./auth-config.service";
+import { AppConfigService } from "./app-config.service";
 
 @Injectable()
 export class StorageService extends GenericService {
@@ -50,7 +50,11 @@ export class StorageService extends GenericService {
   }
 
   async listActivityFiles(activityId: string): Promise<Attachment[]> {
-    return this.http.get<Attachment[]>(this.apiBase + "/activity-log/activity?activityId=" + activityId).toPromise();
+    return this.http
+      .get<Attachment[]>(
+        this.apiBase + "/activity-log/activity?activityId=" + activityId
+      )
+      .toPromise();
   }
 
   async listControl(id: string): Promise<Attachment[]> {
@@ -183,9 +187,12 @@ export class StorageService extends GenericService {
     return this.http.delete<any>(this.apiBase + url).toPromise();
   }
 
-
   async deleteActivityFile(activityId: string, fileName: string): Promise<any> {
-    var url = "/activity-log/activity?activityId=" + activityId + "&fileName=" + fileName;
+    var url =
+      "/activity-log/activity?activityId=" +
+      activityId +
+      "&fileName=" +
+      fileName;
     return this.http.delete<any>(this.apiBase + url).toPromise();
   }
 }

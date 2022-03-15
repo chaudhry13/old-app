@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import {
   QuestionnaireList,
   QuestionnaireDetails,

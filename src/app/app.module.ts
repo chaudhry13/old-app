@@ -10,11 +10,9 @@ import { Camera } from "@ionic-native/camera/ngx";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { CallbackComponent } from "@app/authentication/callback/callback.component";
 import { AuthGuard } from "@app/guards/auth.guard";
 
 import { OAuthModule } from "angular-oauth2-oidc";
-import { LoginComponent } from "@app/authentication/login/login.component";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -22,22 +20,28 @@ import { TokenInterceptor } from "@app/interceptors/auth.interceptor";
 
 import { File } from "@ionic-native/file/ngx";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
-import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 
 import { AgmCoreModule } from "@agm/core";
 import { AccountService } from "@app/services/account.service";
 
 import { IonicStorageModule, Storage } from "@ionic/storage";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
-import { TokenService } from "@app/services/token.service";
 import { StorageService } from "@app/services/storage.service";
+import {
+  FileTransfer,
+  FileUploadOptions,
+  FileTransferObject,
+} from "@awesome-cordova-plugins/file-transfer/ngx";
+import { HomeComponent } from "./home/home.component";
+import { SharedModule } from "@shared/shared.module";
+import { AuthConfigModule } from "./auth/auth-config.module";
+import { OrgConfig } from "@app/interfaces/org-config";
 
 @NgModule({
-  declarations: [AppComponent, CallbackComponent, LoginComponent],
-  entryComponents: [CallbackComponent, LoginComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -57,10 +61,9 @@ import { StorageService } from "@app/services/storage.service";
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"],
-    }),
+    AgmCoreModule.forRoot(),
+    SharedModule,
+    AuthConfigModule,
   ],
   providers: [
     AccountService,
@@ -70,9 +73,38 @@ import { StorageService } from "@app/services/storage.service";
       deps: [AppConfigService],
       useFactory: (appConfigService: AppConfigService) => {
         return () => {
-          // Make sure to return a promise!
-          return appConfigService.loadAppConfig();
+          const promise = appConfigService
+            .getCached<OrgConfig>("orgConfig")
+            .then((x) => {
+              appConfigService.orgConfig = x;
+            });
+          return promise;
         };
+      },
+    },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      deps: [AppConfigService],
+      useFactory: (appConfigService: AppConfigService) => {
+        const outerPromise = new Promise<void>((resolve, reject) => {
+          // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
+          // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
+          appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
+            //console.log(x);
+            if (x) {
+              const script = document.createElement("script");
+              script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
+              script.async = true;
+              script.defer = true;
+              document.body.appendChild(script);
+              script.onload = () => resolve();
+              script.onerror = () => resolve();
+            }
+          });
+        });
+
+        return () => outerPromise;
       },
     },
     File,
@@ -87,7 +119,6 @@ import { StorageService } from "@app/services/storage.service";
     Keyboard,
     Camera,
     UserService,
-    TokenService,
     StorageService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

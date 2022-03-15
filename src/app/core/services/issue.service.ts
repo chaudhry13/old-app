@@ -3,7 +3,7 @@ import { GenericService } from "@app/services/generic.service";
 import { HttpClient } from "@angular/common/http";
 import { Comment, CommentType } from "@app/models/comment";
 import { FormGroup } from "@angular/forms";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { IssueBase } from "src/app/features/audits/models/issue";
 
 @Injectable()

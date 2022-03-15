@@ -7,7 +7,7 @@ import {
   ChangeDetectorRef,
 } from "@angular/core";
 import { NavParams, ModalController } from "@ionic/angular";
-import { PlacesSearchService } from "@shared/services/places-search.service";
+import { PlacesSearchService } from "@app/services/places-search.service";
 
 declare var google: any;
 
@@ -30,7 +30,7 @@ export class LocationModalPage implements OnInit {
     this.autocomplete = {};
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ionViewWillEnter() {
     this.acService = new google.maps.places.AutocompleteService();

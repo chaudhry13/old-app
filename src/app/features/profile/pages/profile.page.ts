@@ -5,10 +5,8 @@ import { User } from "@app/models/user";
 import { Router } from "@angular/router";
 import { AccountService } from "@app/services/account.service";
 import { Division } from "@app/models/division";
-import { DivisionList } from '@shared/models/division-list';
-import { AuthService } from '@app/services/auth.service';
-import { OAuthService } from "angular-oauth2-oidc";
-import { Storage } from "@ionic/storage";
+import { DivisionList } from "@shared/models/division-list";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-profile",
@@ -17,17 +15,18 @@ import { Storage } from "@ionic/storage";
 })
 export class ProfilePage implements OnInit {
   divisions: Division[] = [];
-  user: User = new User();
+  user: User;
   divisionList: DivisionList = new DivisionList();
   constructor(
     public userService: UserService,
     public divisionService: DivisionService,
     public accountService: AccountService,
-    public auth: OAuthService,
+    public auth: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
+    this.user = this.auth.user;
     this.listProfileInfo();
   }
 
@@ -42,15 +41,9 @@ export class ProfilePage implements OnInit {
       this.divisions = data;
       this.divisionList.makeDivisionNodes(data);
     });
-    this.accountService.get().then((user) => {
-      this.user = user;
-    });
   }
 
   logout() {
-    this.auth.logOut();
-    this.router.navigate(["/login"]).then(success => {
-      console.debug("navigated from profile til login for logout button")
-    });
+    this.auth.logout().subscribe();
   }
 }

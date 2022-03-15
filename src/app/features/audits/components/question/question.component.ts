@@ -35,17 +35,15 @@ import { CameraService } from "@app/services/photo.service";
 import { StorageService } from "@app/services/storage.service";
 import { Attachment } from "@app/models/file";
 import { UserService } from "@app/services/user.service";
-import { TokenService } from "@app/services/token.service";
-import { AccountService } from "@app/services/account.service";
-import { SettingsService } from "@app/settings/settings.service";
-import { AppConfigService } from "@app/services/auth-config.service";
-import { CommentService } from "@shared/services/comment.service";
+import { AppConfigService } from "@app/services/app-config.service";
+import { CommentService } from "@app/services/comment.service";
 import { AuditService } from "../../services/audit.service";
 import { ActivatedRoute } from "@angular/router";
 import { CommentType } from "@app/models/comment";
 import { Comment } from "@app/models/comment";
 import { CommentModalComponent } from "../comment-modal/comment-modal.component";
 import { IssueModalComponent } from "../issue-modal/issue-modal.component";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "question",
@@ -103,7 +101,8 @@ export class QuestionComponent implements OnInit {
     public modelController: ModalController,
     private userService: UserService,
     public alertController: AlertController,
-    public animationController: AnimationController
+    public animationController: AnimationController,
+    private auth: AuthService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.answerForm = this.formBuilder.group({
@@ -151,7 +150,6 @@ export class QuestionComponent implements OnInit {
       component: CommentModalComponent,
     });
     (await modal).onDidDismiss().then((data) => {
-      
       this.commentService
         .insertComment({
           riskAssessmentId: null,
@@ -206,8 +204,7 @@ export class QuestionComponent implements OnInit {
         {
           text: "Delete",
           handler: async () => {
-            await this.commentService.delete(id).then((val) => {
-            });
+            await this.commentService.delete(id).then((val) => {});
             this.getCommentById();
           },
         },
@@ -229,8 +226,7 @@ export class QuestionComponent implements OnInit {
         {
           text: "Delete",
           handler: async () => {
-            await this.commentService.delete(id).then((val) => {
-            });
+            await this.commentService.delete(id).then((val) => {});
             this.getCommentById();
           },
         },
@@ -271,8 +267,11 @@ export class QuestionComponent implements OnInit {
 
     if (this.questionAnswer.na && !this.questionAnswer.hasComment) {
       this.requireComment = true;
-    } else if (this.checkOptionRequireComment() && !this.questionAnswer.hasComment){
-        this.requireComment = true;
+    } else if (
+      this.checkOptionRequireComment() &&
+      !this.questionAnswer.hasComment
+    ) {
+      this.requireComment = true;
     } else {
       this.requireComment = false;
     }
@@ -347,17 +346,13 @@ export class QuestionComponent implements OnInit {
           this.questionAnsweredService
             .update(answer)
             .then((data) => {
-              if (
-                answer.na &&
-                answer.answered && !this.hasComment
-              ) {
+              if (answer.na && answer.answered && !this.hasComment) {
                 this.requireComment = true;
                 this.openCommentModal();
               } else if (this.checkOptionRequireComment()) {
                 this.requireComment = true;
                 this.openCommentModal();
-              }
-              else {
+              } else {
                 this.requireComment = false;
               }
               this.toastService.show("Answer saved!");
@@ -372,11 +367,15 @@ export class QuestionComponent implements OnInit {
   }
 
   checkOptionRequireComment(): boolean {
-    var require = this.questionAnswer.optionAnswered.filter(o => o.selected).some(o => {
-      var found = this.question.possibleAnswers.find(p => p.id == o.questionOptionId);
-      return found.requireComment;
-    });
-    
+    var require = this.questionAnswer.optionAnswered
+      .filter((o) => o.selected)
+      .some((o) => {
+        var found = this.question.possibleAnswers.find(
+          (p) => p.id == o.questionOptionId
+        );
+        return found.requireComment;
+      });
+
     return require && !this.hasComment;
   }
 
@@ -413,15 +412,17 @@ export class QuestionComponent implements OnInit {
       this.showCreateComment = !this.showCreateComment;
       if (val && val.length > 0) {
         this.hasComment = true;
-      }
-      else {
+      } else {
         this.hasComment = false;
       }
 
-      if ((this.answerForm.controls.na.value || this.checkOptionRequireComment()) && !this.hasComment) {
+      if (
+        (this.answerForm.controls.na.value ||
+          this.checkOptionRequireComment()) &&
+        !this.hasComment
+      ) {
         this.requireComment = true;
-      }
-      else {
+      } else {
         this.requireComment = false;
       }
     });
@@ -458,7 +459,7 @@ export class QuestionComponent implements OnInit {
   }
 
   private getUserOrgId() {
-    return this.appConfigService.organizationId;
+    return this.auth.user.organization;
   }
 
   private async listQuestionFiles() {
