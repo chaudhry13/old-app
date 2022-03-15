@@ -15,11 +15,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(private auth: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log("guard");
+    //console.log("guard");
 
     return this.auth.isAuthenticated$.pipe(
       map(({ isAuthenticated }) => {
-        console.log(isAuthenticated);
+        //console.log(isAuthenticated);
 
         if (isAuthenticated) {
           return true;
@@ -31,11 +31,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log("guard");
+    //console.log("guard");
 
     return this.auth.isAuthenticated$.pipe(
       map(({ isAuthenticated }) => {
-        console.log(isAuthenticated);
+        //console.log(isAuthenticated);
 
         if (isAuthenticated) {
           return true;

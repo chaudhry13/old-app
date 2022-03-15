@@ -10,6 +10,7 @@ import {
   FileUploadOptions,
 } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { Camera, CameraResultType, Photo } from "@capacitor/camera";
+import { OrgConfig } from "@app/interfaces/org-config";
 
 @Injectable()
 export class CameraService {
@@ -75,9 +76,8 @@ export class CameraService {
   }
 
   private uploadPhoto(urlExtension: string, image: Photo): Promise<boolean> {
-    const uri = encodeURI(
-      this.appConfigService.orgConfig.apiServer + "/api/storage" + urlExtension
-    );
+    const apiServer = this.appConfigService.orgConfig.apiServer;
+    const uri = encodeURI(apiServer + "/api/storage" + urlExtension);
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     const options = this.getOptions(image);

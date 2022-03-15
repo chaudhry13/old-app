@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { OrgConfig } from "@app/interfaces/org-config";
 import { AppConfigService } from "@app/services/app-config.service";
 import { ToastService } from "@app/services/toast.service";
 import { AuthService } from "../auth/auth.service";
@@ -27,7 +28,7 @@ export class HomeComponent implements OnInit {
   onSubmit($event: Event) {
     $event.preventDefault();
     this.setApplicationConfig(this.form.get("orgName").value)
-      .then(() => this.toastService.show("Organization changed!", "success"))
+      .then(this.onConfigSuccess)
       .catch(() => this.toastService.show("Invalid Organization!", "danger"));
   }
 
@@ -38,4 +39,6 @@ export class HomeComponent implements OnInit {
   login() {
     this.auth.login();
   }
+
+  onConfigSuccess = () => this.login();
 }

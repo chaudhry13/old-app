@@ -38,6 +38,7 @@ import {
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { AuthConfigModule } from "./auth/auth-config.module";
+import { OrgConfig } from "@app/interfaces/org-config";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -72,7 +73,12 @@ import { AuthConfigModule } from "./auth/auth-config.module";
       deps: [AppConfigService],
       useFactory: (appConfigService: AppConfigService) => {
         return () => {
-          return appConfigService.loadConfig();
+          const promise = appConfigService
+            .getCached<OrgConfig>("orgConfig")
+            .then((x) => {
+              appConfigService.orgConfig = x;
+            });
+          return promise;
         };
       },
     },
@@ -84,14 +90,17 @@ import { AuthConfigModule } from "./auth/auth-config.module";
         const outerPromise = new Promise<void>((resolve, reject) => {
           // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
           // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
-          appConfigService.loadConfig().then(() => {
-            const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${appConfigService.orgConfig.googleApiKey}&libraries=places,visualization`;
-            script.async = true;
-            script.defer = true;
-            document.body.appendChild(script);
-            script.onload = () => resolve();
-            script.onerror = () => resolve();
+          appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
+            //console.log(x);
+            if (x) {
+              const script = document.createElement("script");
+              script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
+              script.async = true;
+              script.defer = true;
+              document.body.appendChild(script);
+              script.onload = () => resolve();
+              script.onerror = () => resolve();
+            }
           });
         });
 

@@ -1,3 +1,4 @@
+import { OrgConfig } from "@app/interfaces/org-config";
 import { AppConfigService } from "./app-config.service";
 
 export class GenericService {

@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { OrgConfig } from "@app/interfaces/org-config";
 import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
@@ -129,8 +130,11 @@ export class AuthService {
   }
 
   private initUser() {
+    //console.log("init user");
     return this.userService.getUserInfo().pipe(
       tap((u) => {
+        //console.log("user", u);
+
         this._user = u;
       })
     );

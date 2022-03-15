@@ -4,6 +4,7 @@ import { Storage } from "@ionic/storage";
 import { environment } from "src/environments/environment";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { AuthConfig } from "@app/interfaces/auth-config";
+import { GenericService } from "./generic.service";
 
 /**
  * Ideally we would want to use environment variables to load initial configuration of Auth/Tenants. For the app build we would need
@@ -20,21 +21,24 @@ import { AuthConfig } from "@app/interfaces/auth-config";
   providedIn: "root",
 })
 export class AppConfigService {
-  constructor(private storage: Storage, private httpClient: HttpClient) {}
-
   private _orgConfig: OrgConfig;
   public get orgConfig() {
     return this._orgConfig;
   }
-
-  private _authConfig: AuthConfig;
-  public get authConfig() {
-    return this._authConfig;
+  public set orgConfig(val: OrgConfig) {
+    this._orgConfig = val;
   }
+
+  // private _authConfig: AuthConfig;
+  // public get authConfig() {
+  //   return this._authConfig;
+  // }
+
+  constructor(private storage: Storage, private httpClient: HttpClient) {}
 
   public async loadAuthConfig() {
     if (environment.production) {
-      const config = await this.httpClient
+      const authConfig = await this.httpClient
         .get<AuthConfig>(
           "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig",
           {
@@ -42,9 +46,10 @@ export class AppConfigService {
           }
         )
         .toPromise();
-      this._authConfig = config;
+
+      await this.setCache("authConfig", authConfig);
     } else {
-      const config = await this.httpClient
+      const authConfig = await this.httpClient
         .get<AuthConfig>(
           "https://localhost:5000/api/mobileappsettings/getAuthConfig",
           {
@@ -52,41 +57,14 @@ export class AppConfigService {
           }
         )
         .toPromise();
-      this._authConfig = config;
-    }
-  }
 
-  /**
-   * Get config from prod db if env is prod, otherwise read from appsetting
-   * s.json.
-   */
-  public async loadConfig() {
-    if (environment.production) {
-      const config = await this.httpClient
-        .get<OrgConfig>(
-          "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/hr",
-          {
-            headers: { "x-api-key": "hrmobilekey" },
-          }
-        )
-        .toPromise();
-      this._orgConfig = config;
-    } else {
-      const config = await this.httpClient
-        .get<OrgConfig>(
-          "https://localhost:5000/api/mobileappsettings/getOrgConfig/hr",
-          {
-            headers: { "x-api-key": "hrmobilekey" },
-          }
-        )
-        .toPromise();
-      this._orgConfig = config;
+      await this.setCache("authConfig", authConfig);
     }
   }
 
   public async setConfigFromOrgName(orgName: string) {
     if (environment.production) {
-      const config = await this.httpClient
+      const orgConfig = await this.httpClient
         .get<OrgConfig>(
           `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
@@ -94,9 +72,10 @@ export class AppConfigService {
           }
         )
         .toPromise();
-      this._orgConfig = config;
+
+      await this.setCache("orgConfig", orgConfig);
     } else {
-      const config = await this.httpClient
+      const orgConfig = await this.httpClient
         .get<OrgConfig>(
           `https://localhost:5000/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
@@ -104,15 +83,20 @@ export class AppConfigService {
           }
         )
         .toPromise();
-      this._orgConfig = config;
+
+      await this.setCache("orgConfig", orgConfig);
     }
   }
 
-  private async getCachedOrDefault(key: string, def: string) {
-    return (await this.storage.get(key)) ?? def;
+  public async getCached<T>(key: string): Promise<T> {
+    return await this.storage.get(key);
   }
 
-  private async setCache(key: string, val: string) {
+  public async setCache(key: string, val: any) {
     await this.storage.set(key, val);
+  }
+
+  public async clearCache(key: string) {
+    await this.storage.remove(key);
   }
 }

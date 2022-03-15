@@ -43,5 +43,6 @@ export class AppComponent {
   private initAuth() {
     this.auth.initializeAuth().pipe(takeUntil(this.unsub$)).subscribe();
     //this.auth.loginCallback().pipe(takeUntil(this.unsub$)).subscribe();
+    //this.auth.error$.subscribe((x) => console.log(x));
   }
 }

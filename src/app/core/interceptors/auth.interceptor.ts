@@ -8,6 +8,7 @@ import {
 import { Observable } from "rxjs";
 import { AppConfigService } from "../services/app-config.service";
 import { AuthService } from "src/app/auth/auth.service";
+import { GenericService } from "@app/services/generic.service";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -17,11 +18,9 @@ export class TokenInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    const apiServer = this.config?.orgConfig?.apiServer;
     // Only attach access token to calls made to the api url, after config is loaded (previous call is to laod config)
-    if (
-      this.config.orgConfig &&
-      req.url.startsWith(this.config.orgConfig.apiServer)
-    ) {
+    if (apiServer && req.url.startsWith(apiServer)) {
       let token = this.auth.getAccessToken();
       if (token) {
         req = req.clone({

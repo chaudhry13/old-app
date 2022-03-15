@@ -29,7 +29,9 @@ export class ActivityLogService extends GenericService {
 
   public getDivisionsWithoutManagers(): Promise<Division[]> {
     return this.http
-      .post<Division[]>(this.apiBase + "/getdivisions", { withManagers: false })
+      .post<Division[]>(this.apiBase + "/getdivisions", {
+        withManagers: false,
+      })
       .toPromise();
   }
 
