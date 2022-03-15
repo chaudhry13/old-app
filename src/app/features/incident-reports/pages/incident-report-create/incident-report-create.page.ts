@@ -9,7 +9,7 @@ import {
   IncidentCategoryMappingTable,
 } from "../../models/incident-category";
 import { IncidentType } from "../../models/incident-type";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 import { ToastService } from "@app/services/toast.service";
 import { IncidentReportFormType } from "../../models/incident-report";
 import { debounceTime, distinctUntilChanged } from "rxjs/operators";

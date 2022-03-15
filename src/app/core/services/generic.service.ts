@@ -1,17 +1,16 @@
-import { AppConfigService } from "./auth-config.service";
-import { AppConfig } from "../settings/auth.config";
+import { OrgConfig } from "@app/interfaces/org-config";
+import { AppConfigService } from "./app-config.service";
 
 export class GenericService {
   private extension: string;
-  public appConfigService: AppConfigService;
-  public appConfig: AppConfig = new AppConfig();
-  constructor(extension: string = "", appConfigService: AppConfigService) {
+  constructor(
+    extension: string = "",
+    public appConfigService: AppConfigService
+  ) {
     this.extension = extension;
-    this.appConfigService = appConfigService;
-    appConfigService.loadAppConfig().then();
   }
 
   public get apiBase() {
-    return this.appConfigService.getApiBaseUrl + "/api" + this.extension;
+    return this.appConfigService.orgConfig.apiServer + "/api" + this.extension;
   }
 }

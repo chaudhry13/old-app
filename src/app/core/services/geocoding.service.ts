@@ -3,28 +3,33 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { GeocodingResult } from "../models/location";
 import { Injectable } from "@angular/core";
+import { AppConfigService } from "./app-config.service";
+import { OrgConfig } from "@app/interfaces/org-config";
 
 @Injectable()
 export class GeocodingService {
   public base: string = "https://maps.googleapis.com/maps/api/geocode/json";
-  public key: string = "&key=AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private config: AppConfigService) {}
 
   reverseGeocode(latitude: number, longitude: number): Promise<GoogleResult> {
+    const apiKey = this.config.orgConfig.googleApiKey;
+
+    const key = `&key=${apiKey}`;
     return this.http
-      .get<GoogleResult>(
-        this.base + `?latlng=${latitude},${longitude}` + this.key,
-        {
-          headers: new HttpHeaders().set("Accept", "application/json"),
-        }
-      )
+      .get<GoogleResult>(this.base + `?latlng=${latitude},${longitude}` + key, {
+        headers: new HttpHeaders().set("Accept", "application/json"),
+      })
       .toPromise();
   }
 
   geocode(address: string) {
+    const apiKey = this.config.orgConfig.googleApiKey;
+
+    const key = `&key=${apiKey}`;
+
     return this.http
-      .get<GoogleResult>(this.base + "?address=" + address + this.key, {
+      .get<GoogleResult>(this.base + "?address=" + address + key, {
         headers: new HttpHeaders().set("Accept", "application/json"),
       })
       .toPromise();

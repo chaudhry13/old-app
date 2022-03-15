@@ -5,10 +5,11 @@ import { ToastController } from "@ionic/angular";
 export class ToastService {
   constructor(private toastCtrl: ToastController) {}
 
-  show(message: string) {
+  show(message: string, level: string = "success") {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
+      color: level,
     });
 
     toast.then((toast) => toast.present());

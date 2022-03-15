@@ -15,7 +15,7 @@ import {
 import { FormGroup } from "@angular/forms";
 import { GeocodingService } from "@app/services/geocoding.service";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
-import { CountryService } from "@shared/services/country.service";
+import { CountryService } from "@app/services/country.service";
 import { Country } from "@shared/models/country";
 import { ModalController, ToastController } from "@ionic/angular";
 import { LocationModalPage } from "@shared/components/location-modal/location-modal.page";

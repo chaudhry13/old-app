@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router, UrlTree, UrlSegmentGroup } from "@angular/router";
 import { AuditService } from "../../features/audits/services/audit.service";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 
 @Injectable()
 export class DeeplinkService {
@@ -15,7 +15,7 @@ export class DeeplinkService {
     let path: string[];
     let url: URL;
 
-    return new Promise<any>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (!link || link === "" || link.length === 0) {
         reject();
       } else {

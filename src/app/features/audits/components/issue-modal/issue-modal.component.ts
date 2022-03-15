@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Comment } from "@app/models/comment";
 import { AlertController, ModalController } from "@ionic/angular";
-import { CommentService } from "@shared/services/comment.service";
-import { IssueService } from "@shared/services/issue.service";
+import { CommentService } from "@app/services/comment.service";
+import { IssueService } from "@app/services/issue.service";
 import { IssueCategory, IssueSeverityLevel } from "../../models/issue";
 import {
   Question,

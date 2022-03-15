@@ -1,29 +1,10 @@
 import { User } from "../models/user";
 import { Injectable } from "@angular/core";
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from "src/app/auth/auth.service";
 
 @Injectable()
 export class SettingsService {
-  public organizationId: string;
-
-  public advancedConsequence: boolean;
-
-  public riskAssessmentArea: boolean;
-  public incidentReportsArea: boolean;
-  public auditsArea: boolean;
-  public healthSafetyArea: boolean;
-
-  public riskline: boolean;
-  public controlrisks: boolean;
-
-  public currency: string;
-  public shortname: string;
-
-  public external: boolean;
-
-  constructor(public auth: AuthService) {
-    let token = this.auth.oAuth.getAccessToken();
-  }
+  constructor() {}
 
   public getWhiteLabel(shortname: string) {
     switch (shortname) {

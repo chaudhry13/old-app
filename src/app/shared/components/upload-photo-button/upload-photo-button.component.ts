@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { IncidentReport } from "src/app/features/incident-reports/models/incident-report";
 import { CameraService } from "src/app/core/services/photo.service";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "upload-photo-button",
@@ -14,19 +15,26 @@ export class UploadPhotoButtonComponent implements OnInit {
 
   public photos: any[] = [];
 
-  constructor(private cameraService: CameraService,
-              private appConfigService: AppConfigService) {}
+  constructor(
+    private cameraService: CameraService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {}
 
   takePhotoAndUpload() {
     this.cameraService
       .takePhotoAndUpload(
-        "/activity-log/activity?organizationId=" + this.appConfigService.organizationId + "&activityId=" + this.id,
+        "/activity-log/activity?organizationId=" +
+          this.auth.user.organization +
+          "&activityId=" +
+          this.id,
         this.photos.length
       )
       .then((result) => {
-        if (result) { this.uploadSuccessEvent.emit(); }
+        if (result) {
+          this.uploadSuccessEvent.emit();
+        }
       })
       .catch(() => {
         // This is taken care of in takePhotoAndUpload()

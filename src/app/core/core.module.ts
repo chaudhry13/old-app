@@ -9,19 +9,15 @@ import { MapService } from "@app/services/maps.service";
 import { GeocodingService } from "@app/services/geocoding.service";
 import { DivisionService } from "@app/services/division.service";
 import { CronService } from "@app/services/cron.service";
-import { AppConfigService } from "@app/services/auth-config.service";
+import { AppConfigService } from "@app/services/app-config.service";
 import { AccountService } from "@app/services/account.service";
-import { TokenService } from "@app/services/token.service";
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   providers: [
     LocationService,
     UserService,
-    TokenService,
     ToastService,
     StorageService,
     CameraService,
@@ -30,7 +26,7 @@ import { TokenService } from "@app/services/token.service";
     DivisionService,
     CronService,
     AppConfigService,
-    AccountService
+    AccountService,
   ],
 })
-export class CoreModule { }
+export class CoreModule {}

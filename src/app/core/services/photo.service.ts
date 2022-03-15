@@ -1,14 +1,16 @@
 import { Injectable } from "@angular/core";
-import { FileUploadOptions } from "@ionic-native/file-transfer";
 import { ToastService } from "./toast.service";
-import { AppConfigService } from "./auth-config.service";
-import {
-  FileTransferObject,
-  FileTransfer,
-} from "@ionic-native/file-transfer/ngx";
+import { AppConfigService } from "./app-config.service";
+
 import { AlertController } from "@ionic/angular";
+import { AuthService } from "src/app/auth/auth.service";
+import {
+  FileTransfer,
+  FileTransferObject,
+  FileUploadOptions,
+} from "@awesome-cordova-plugins/file-transfer/ngx";
 import { Camera, CameraResultType, Photo } from "@capacitor/camera";
-import { AuthService } from './auth.service';
+import { OrgConfig } from "@app/interfaces/org-config";
 
 @Injectable()
 export class CameraService {
@@ -23,23 +25,25 @@ export class CameraService {
     private appConfigService: AppConfigService,
     public fileTransfer: FileTransfer,
     private alertCtrl: AlertController
-  ) { }
+  ) {}
 
   takePhoto(): Promise<Photo> {
     return Camera.getPhoto({
       quality: 100,
       allowEditing: false,
-      resultType: CameraResultType.Uri
+      resultType: CameraResultType.Uri,
     });
   }
 
   getOptions(image: Photo): FileUploadOptions {
-    const token = this.auth.oAuth.getAccessToken();
+    const token = this.auth.getAccessToken();
 
     return {
       fileKey: "file",
       fileName:
-        Date.now().toString() + "_" + image.path.substr(image.path.lastIndexOf("/") + 1),
+        Date.now().toString() +
+        "_" +
+        image.path.substr(image.path.lastIndexOf("/") + 1),
       mimeType: "image/jpeg",
       headers: { Authorization: "Bearer " + token },
     };
@@ -56,7 +60,7 @@ export class CameraService {
       } else {
         this.takePhoto()
           .then((image) => {
-            this.uploadPhoto(urlExtension, image).then(result => {
+            this.uploadPhoto(urlExtension, image).then((result) => {
               return resolve(result);
             });
           })
@@ -72,11 +76,8 @@ export class CameraService {
   }
 
   private uploadPhoto(urlExtension: string, image: Photo): Promise<boolean> {
-    const uri = encodeURI(
-      this.appConfigService.getApiBaseUrl +
-      "/api/storage" +
-      urlExtension
-    );
+    const apiServer = this.appConfigService.orgConfig.apiServer;
+    const uri = encodeURI(apiServer + "/api/storage" + urlExtension);
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
     const options = this.getOptions(image);
@@ -86,7 +87,8 @@ export class CameraService {
     return new Promise<boolean>((resolve, reject) => {
       this.startProgressModal(fileTransfer);
 
-      fileTransfer.upload(image.path, uri, options)
+      fileTransfer
+        .upload(image.path, uri, options)
         .then((result) => {
           this.uploadAlert.dismiss().then(() => {
             this.toastService.show("Photo was uploaded successfully");

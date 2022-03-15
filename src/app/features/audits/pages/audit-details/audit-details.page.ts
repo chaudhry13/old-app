@@ -8,15 +8,13 @@ import { Platform } from "@ionic/angular";
 import { File } from "@ionic-native/file/ngx";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
-import { FileTransfer } from "@ionic-native/file-transfer/ngx";
 import { AuditService } from "../../services/audit.service";
 import { Audit, AuditStatus } from "../../models/audit";
 import cronstrue from "cronstrue";
-import { CommentService } from "@shared/services/comment.service";
-import { SettingsService } from "@app/settings/settings.component";
-import { AuthService } from "@app/services/auth.service";
-import { TokenService } from "@app/services/token.service";
+import { CommentService } from "@app/services/comment.service";
 import { User } from "@app/models/user";
+import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
+import { AuthService } from "src/app/auth/auth.service";
 
 @Component({
   selector: "app-audit-details",
@@ -49,22 +47,14 @@ export class AuditDetailsPage implements OnInit {
     // FileTransfer is deprecated
     private fileOpener: FileOpener,
     private document: DocumentViewer,
-    private commentSevice:CommentService,
-    private auth: AuthService,
-    private tokenService: TokenService,
+    private commentSevice: CommentService,
+    private auth: AuthService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
   }
 
   ngOnInit() {
-    this.tokenService.readToken(this.auth.oAuth.getAccessToken());
-    this.user = this.tokenService.getUser();
-    // console.log("This is a comment");
-    
-    // this.commentSevice.list(this.id, 6).then(val=>{
-    //   console.log(val);
-      
-    // })
+    this.user = this.auth.user;
   }
 
   ionViewWillEnter() {
@@ -74,27 +64,37 @@ export class AuditDetailsPage implements OnInit {
   getAudits() {
     this.controlService.get(this.id).then((control) => {
       this.control = control;
-      
+
       if (control.frequency) {
         this.frequency = cronstrue.toString(control.frequency); // TODO: Use CronService
       }
-      
+
       let auditFilter = {
         controlId: this.id,
         status: null,
         current: null,
         version: null,
         startDate: null,
-        endDate: null
+        endDate: null,
       };
-      this.auditService.list(auditFilter).then(response => {
+      this.auditService.list(auditFilter).then((response) => {
         // Setting the audits
-        this.completedAudits = response.filter(a => a.status == AuditStatus.Completed).sort((a, b) => {
-          return a.date > b.date ? -1 : 1;
-        });
-        this.overdueAudits = response.filter(a => a.late && a.status == AuditStatus.Upcoming);
-        this.startedAudits = response.filter(a => a.status == AuditStatus.Rejected || a.status == AuditStatus["Awaiting Approvel"]);
-        this.upcomingAudits = response.filter(a => a.status == AuditStatus.Upcoming && !a.late);
+        this.completedAudits = response
+          .filter((a) => a.status == AuditStatus.Completed)
+          .sort((a, b) => {
+            return a.date > b.date ? -1 : 1;
+          });
+        this.overdueAudits = response.filter(
+          (a) => a.late && a.status == AuditStatus.Upcoming
+        );
+        this.startedAudits = response.filter(
+          (a) =>
+            a.status == AuditStatus.Rejected ||
+            a.status == AuditStatus["Awaiting Approvel"]
+        );
+        this.upcomingAudits = response.filter(
+          (a) => a.status == AuditStatus.Upcoming && !a.late
+        );
       });
 
       this.storageService.listControl(control.id).then((files) => {

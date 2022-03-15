@@ -1,30 +1,36 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@app/guards/auth.guard";
-import { CallbackComponent } from "@app/authentication/callback/callback.component";
-import { LoginComponent } from "@app/authentication/login/login.component";
+import { LoggedInGuard } from "@app/guards/logged-in.guard";
+import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
   {
-    path: "",
-    canActivate: [AuthGuard],
-    loadChildren: "./features/tabs/tabs.module#TabsPageModule",
+    path: "home",
+    component: HomeComponent,
+    canActivate: [LoggedInGuard],
   },
-  { path: "login", component: LoginComponent },
-  { path: "callback", component: CallbackComponent },
-  { path: "**", redirectTo: "" },
+  {
+    path: "tabs",
+    canActivate: [AuthGuard],
+    //canActivateChild: [AuthGuard],
+    loadChildren: () =>
+      import("./features/tabs/tabs.module").then((m) => m.TabsPageModule),
+  },
+  { path: "", redirectTo: "home", pathMatch: "full" },
+  { path: "**", redirectTo: "home" },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
-    preloadingStrategy: PreloadAllModules,
-    enableTracing: false,
-    initialNavigation: "enabledNonBlocking",
-    useHash: false,
-    onSameUrlNavigation: "reload",
-    relativeLinkResolution: "legacy"
-}),
+      preloadingStrategy: PreloadAllModules,
+      enableTracing: false,
+      initialNavigation: "enabledNonBlocking",
+      useHash: false,
+      onSameUrlNavigation: "reload",
+      relativeLinkResolution: "legacy",
+    }),
   ],
   exports: [RouterModule],
 })

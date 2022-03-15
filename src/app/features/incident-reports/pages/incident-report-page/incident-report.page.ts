@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { IncidentReportService } from "@shared/services/incident-report.service";
+import { IncidentReportService } from "@app/services/incident-report.service";
 import { IncidentReport } from "../../models/incident-report";
 import { Validators, FormGroup, FormBuilder } from "@angular/forms";
 import { ModalController, NavController } from "@ionic/angular";
@@ -77,11 +77,14 @@ export class IncidentReportPage implements OnInit {
 
   ngOnInit() {
     this.setStartEndDates();
-    this.activityLogService.getDivisionsWithManagers().then(divisions => {
-      this.showCreateActivity = divisions.length !== 0;
-    }).catch(reason => {
-      this.showCreateActivity = false;
-    });
+    this.activityLogService
+      .getDivisionsWithManagers()
+      .then((divisions) => {
+        this.showCreateActivity = divisions.length !== 0;
+      })
+      .catch((reason) => {
+        this.showCreateActivity = false;
+      });
   }
 
   private setStartEndDates() {
