@@ -564,6 +564,8 @@ export class AuditCompletePage implements OnInit {
   getAudit() {
     this.auditService.get(this.id).then(
       (data) => {
+        if (!data) return;
+        
         this.audit = data;
         this.subjectForReview = data.subjectForReview;
 
