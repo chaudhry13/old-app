@@ -562,34 +562,7 @@ export class AuditCompletePage implements OnInit {
         this.subjectForReview = data.subjectForReview;
 
         this.setButtons();
-        /*if ( // If you are the last, you can complete
-          (data.currentId === data.flow[2].id && data.flow.length === 2) || 
-          (data.currentId === data.flow[3].id && data.flow.length === 3)
-        ) {
-          this.completeTaskBtnVisible = true;
-        }
-
-        if (
-          (data.currentId === data.flow[0].id && data.flow.length === 2) ||
-          (data.currentId === data.flow[0].id && data.flow.length === 3)
-        ) {
-          this.approveVisible = true;
-        }
-        else if (
-          (data.currentId === data.flow[1].id && data.flow.length === 2) ||
-          (data.currentId === data.flow[2].id && data.flow.length === 3)
-        ) {
-          this.rejectVisible = true;
-          this.approveVisible = false;
-          this.completeTaskBtnVisible = true;
-        }
-        else if (
-          (data.currentId === data.flow[1].id && data.flow.length === 3)
-        ) {
-          this.rejectVisible = true;
-          this.approveVisible = true;
-        }*/
-
+        
         if (this.audit.followUpId) {
           this.audit.followUp = true;
           this.followUpService.get(this.audit.followUpId).then((followUp) => {
