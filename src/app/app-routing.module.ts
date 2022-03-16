@@ -18,10 +18,6 @@ const routes: Routes = [
     loadChildren: () =>
       import("./features/tabs/tabs.module").then((m) => m.TabsPageModule),
   },
-  {
-    path: "error",
-    component: ErrorPageComponent,
-  },
   { path: "", redirectTo: "home", pathMatch: "full" },
   { path: "**", redirectTo: "home" },
 ];

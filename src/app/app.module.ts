@@ -75,27 +75,14 @@ import { filter, tap } from "rxjs/operators";
       multi: true,
       deps: [AppConfigService],
       useFactory: (appConfigService: AppConfigService) => {
-        return () => {
-          const promise = appConfigService
-            .getCached<OrgConfig>("orgConfig")
-            .then((x) => {
-              appConfigService.orgConfig = x;
-            });
-          return promise;
-        };
-      },
-    },
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      deps: [AppConfigService],
-      useFactory: (appConfigService: AppConfigService) => {
         const outerPromise = new Promise<void>((resolve, reject) => {
           // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
           // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
           appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
             //console.log(x);
             if (x) {
+              appConfigService.orgConfig = x;
+
               const script = document.createElement("script");
               script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
               script.async = true;
@@ -103,6 +90,8 @@ import { filter, tap } from "rxjs/operators";
               document.body.appendChild(script);
               script.onload = () => resolve();
               script.onerror = () => resolve();
+
+              appConfigService.clearCache("orgConfig");
             } else {
               resolve();
             }

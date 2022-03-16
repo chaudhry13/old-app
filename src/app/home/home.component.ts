@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
     $event.preventDefault();
     this.setApplicationConfig(this.form.get("orgName").value)
       .then(this.onConfigSuccess)
-      .catch(() => this.toastService.show("Invalid Organization!", "danger"));
+      .catch((e) => this.toastService.show("Invalid Organization!", "danger"));
   }
 
   async setApplicationConfig(orgName: string) {
