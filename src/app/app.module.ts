@@ -39,9 +39,12 @@ import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { AuthConfigModule } from "./auth/auth-config.module";
 import { OrgConfig } from "@app/interfaces/org-config";
+import { ErrorPageComponent } from "./error-page/error-page.component";
+import { EventTypes, PublicEventsService } from "angular-auth-oidc-client";
+import { filter, tap } from "rxjs/operators";
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, ErrorPageComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -100,8 +103,7 @@ import { OrgConfig } from "@app/interfaces/org-config";
               document.body.appendChild(script);
               script.onload = () => resolve();
               script.onerror = () => resolve();
-            }
-            else {
+            } else {
               resolve();
             }
           });

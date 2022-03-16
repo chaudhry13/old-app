@@ -5,6 +5,7 @@ import { environment } from "src/environments/environment";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { AuthConfig } from "@app/interfaces/auth-config";
 import { GenericService } from "./generic.service";
+import { Router } from "@angular/router";
 
 /**
  * Ideally we would want to use environment variables to load initial configuration of Auth/Tenants. For the app build we would need
@@ -34,11 +35,18 @@ export class AppConfigService {
   //   return this._authConfig;
   // }
 
-  constructor(private storage: Storage, private httpClient: HttpClient) {}
+  constructor(
+    private storage: Storage,
+    private httpClient: HttpClient,
+    private router: Router
+  ) {}
 
-  public async loadAuthConfig() {
+  public loadAuthConfig() {
+    const authConfigCached = this.getCached<AuthConfig>("authConfig");
+    //if (authConfigCached) return authConfigCached;
+
     if (environment.production) {
-      const authConfig = await this.httpClient
+      const res = this.httpClient
         .get<AuthConfig>(
           "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig",
           {
@@ -46,10 +54,11 @@ export class AppConfigService {
           }
         )
         .toPromise();
+      res.then((x) => this.setCache("authConfig", x));
 
-      await this.setCache("authConfig", authConfig);
+      return res;
     } else {
-      const authConfig = await this.httpClient
+      const res = this.httpClient
         .get<AuthConfig>(
           "https://localhost:5000/api/mobileappsettings/getAuthConfig",
           {
@@ -57,8 +66,8 @@ export class AppConfigService {
           }
         )
         .toPromise();
-
-      await this.setCache("authConfig", authConfig);
+      res.then((x) => this.setCache("authConfig", x));
+      return res;
     }
   }
 

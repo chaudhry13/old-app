@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@app/guards/auth.guard";
 import { LoggedInGuard } from "@app/guards/logged-in.guard";
+import { ErrorPageComponent } from "./error-page/error-page.component";
 import { HomeComponent } from "./home/home.component";
 
 const routes: Routes = [
@@ -16,6 +17,10 @@ const routes: Routes = [
     //canActivateChild: [AuthGuard],
     loadChildren: () =>
       import("./features/tabs/tabs.module").then((m) => m.TabsPageModule),
+  },
+  {
+    path: "error",
+    component: ErrorPageComponent,
   },
   { path: "", redirectTo: "home", pathMatch: "full" },
   { path: "**", redirectTo: "home" },

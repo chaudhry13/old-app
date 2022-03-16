@@ -22,6 +22,44 @@
   </head>
 
   <body>
-    <app-root></app-root>
+    <app-root>
+      <div
+        style="
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          display: flex;
+          align-items: center;
+          justify-content: space-evenly;
+          flex-direction: column;
+        "
+      >
+        <div
+          id="errorMsgElement"
+          style="
+            margin-bottom: 2em;
+            width: 100%;
+            text-align: center;
+            color: red;
+          "
+        ></div>
+        <button
+          style="
+            width: 200px;
+            height: 40px;
+            visibility: hidden;
+            border: none;
+            box-shadow: 0 0 2px 1px #2b3245;
+            cursor: pointer;
+            background: none;
+            border-radius: 5px;
+          "
+          id="but"
+        >
+          Reload
+        </button>
+      </div>
+    </app-root>
   </body>
 </html>
