@@ -43,7 +43,7 @@ export class AppConfigService {
 
   public loadAuthConfig() {
     const authConfigCached = this.getCached<AuthConfig>("authConfig");
-    //if (authConfigCached) return authConfigCached;
+    if (authConfigCached) return authConfigCached;
 
     if (environment.production) {
       const res = this.httpClient
