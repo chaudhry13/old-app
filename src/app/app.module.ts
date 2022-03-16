@@ -101,6 +101,9 @@ import { OrgConfig } from "@app/interfaces/org-config";
               script.onload = () => resolve();
               script.onerror = () => resolve();
             }
+            else {
+              resolve();
+            }
           });
         });
 
