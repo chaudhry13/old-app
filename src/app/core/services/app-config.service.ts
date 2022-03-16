@@ -42,40 +42,41 @@ export class AppConfigService {
   ) {}
 
   public loadAuthConfig() {
-    const authConfigCached = this.getCached<AuthConfig>("authConfig");
-    if (authConfigCached) return authConfigCached;
-
-    if (environment.production) {
-      const res = this.httpClient
+    return this.getCached<AuthConfig>("authConfig").then(authConfigCached => {
+      if (authConfigCached) return authConfigCached;
+      
+      if (environment.production) {
+        const res = this.httpClient
         .get<AuthConfig>(
-          "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig",
+          "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
-        )
-        .toPromise();
-      res.then((x) => this.setCache("authConfig", x));
+          )
+          .toPromise();
+          res.then((x) => this.setCache("authConfig", x));
 
       return res;
     } else {
       const res = this.httpClient
-        .get<AuthConfig>(
-          "https://localhost:5000/api/mobileappsettings/getAuthConfig",
-          {
+      .get<AuthConfig>(
+        "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
+        {
             headers: { "x-api-key": "hrmobilekey" },
           }
-        )
-        .toPromise();
+          )
+          .toPromise();
       res.then((x) => this.setCache("authConfig", x));
       return res;
     }
+  });
   }
 
   public async setConfigFromOrgName(orgName: string) {
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
@@ -86,7 +87,7 @@ export class AppConfigService {
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://localhost:5000/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
