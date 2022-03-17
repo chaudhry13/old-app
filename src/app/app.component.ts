@@ -1,12 +1,12 @@
 import { Component } from "@angular/core";
-import { Platform } from "@ionic/angular";
+import { NavController, Platform } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { AppConfigService } from "./core/services/app-config.service";
 import { Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
-import { Deeplinks } from '@awesome-cordova-plugins/deeplinks/ngx';
+import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { HomeComponent } from "./home/home.component";
 import { AuditPage } from "./features/audits/pages/audit-page/audit.page";
 
@@ -23,7 +23,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private appConfigService: AppConfigService,
     private auth: AuthService,
-    private deeplinks: Deeplinks
+    private deeplinks: Deeplinks,
+    public navController: NavController
   ) {
     this.initialize();
   }
@@ -37,18 +38,22 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
-      // this.appConfigService.loadAppConfig().then(() => {
-      //   this.appConfigService.configureImplicitFlowAuthentication();
-      // });
-      
-      this.deeplinks.route({
-        '': HomeComponent
-      }).subscribe(match => {
-        console.log('Successfully matched route', match);
-      }, nomatch => {
-        console.error('Got a deeplink that didn\'t match', nomatch);
-      });
-      
+
+      this.deeplinks
+        .routeWithNavController(this.navController, {})
+        .pipe(takeUntil(this.unsub$))
+        .subscribe(
+          (match) =>
+            this.navController
+              .navigateForward(match.$link.path + "?" + match.$link.queryString)
+              .then(() => this.initAuth()),
+          (nomatch) =>
+            console.error(
+              "Got a deeplink that didn't match",
+              JSON.stringify(nomatch)
+            )
+        );
+
       this.initAuth();
     });
   }

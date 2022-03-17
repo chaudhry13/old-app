@@ -50,17 +50,17 @@ import { filter, tap } from "rxjs/operators";
     HttpClientModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: [
-          "https://test1api.humanrisks.com/",
-          "https://humanrisks-core-api.azurewebsites.net",
-          "https://app1api.humanrisks.com",
-          "https://localhost:5000",
-        ],
-        sendAccessToken: true,
-      },
-    }),
+    // OAuthModule.forRoot({
+    //   resourceServer: {
+    //     allowedUrls: [
+    //       "https://test1api.humanrisks.com/",
+    //       "https://humanrisks-core-api.azurewebsites.net",
+    //       "https://app1api.humanrisks.com",
+    //       "https://localhost:5000",
+    //     ],
+    //     sendAccessToken: true,
+    //   },
+    // }),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
