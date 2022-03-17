@@ -74,6 +74,8 @@ export class AuthService {
   initializeAuth() {
     return this.auth.checkAuth().pipe(
       switchMap(({ isAuthenticated, idToken, accessToken }) => {
+        console.log(idToken);
+        console.log(accessToken);
         if (isAuthenticated)
           return this.initUser().pipe(tap(() => this.isLoading.next(false)));
         this.isLoading.next(false);

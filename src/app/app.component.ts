@@ -7,8 +7,7 @@ import { Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
 import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
-import { HomeComponent } from "./home/home.component";
-import { AuditPage } from "./features/audits/pages/audit-page/audit.page";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-root",
@@ -24,7 +23,8 @@ export class AppComponent {
     private appConfigService: AppConfigService,
     private auth: AuthService,
     private deeplinks: Deeplinks,
-    public navController: NavController
+    public navController: NavController,
+    private router: Router,
   ) {
     this.initialize();
   }
@@ -38,7 +38,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
-
+      
       this.deeplinks
         .routeWithNavController(this.navController, {})
         .pipe(takeUntil(this.unsub$))
@@ -46,7 +46,11 @@ export class AppComponent {
           (match) =>
             this.navController
               .navigateForward(match.$link.path + "?" + match.$link.queryString)
-              .then(() => this.initAuth()),
+              .then(() => {
+                this.initAuth().subscribe(() => {
+                  this.router.navigate(["/tabs/tab1"]);
+                });
+              }),
           (nomatch) =>
             console.error(
               "Got a deeplink that didn't match",
@@ -54,12 +58,12 @@ export class AppComponent {
             )
         );
 
-      this.initAuth();
+      this.initAuth().subscribe();
     });
   }
 
   private initAuth() {
-    this.auth.initializeAuth().pipe(takeUntil(this.unsub$)).subscribe();
+    return this.auth.initializeAuth().pipe(takeUntil(this.unsub$));
     //this.auth.loginCallback().pipe(takeUntil(this.unsub$)).subscribe();
     //this.auth.error$.subscribe((x) => console.log(x));
   }
