@@ -6,6 +6,9 @@ import { AppConfigService } from "./core/services/app-config.service";
 import { Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
+import { Deeplinks } from '@awesome-cordova-plugins/deeplinks/ngx';
+import { HomeComponent } from "./home/home.component";
+import { AuditPage } from "./features/audits/pages/audit-page/audit.page";
 
 @Component({
   selector: "app-root",
@@ -19,7 +22,8 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private appConfigService: AppConfigService,
-    private auth: AuthService
+    private auth: AuthService,
+    private deeplinks: Deeplinks
   ) {
     this.initialize();
   }
@@ -36,6 +40,15 @@ export class AppComponent {
       // this.appConfigService.loadAppConfig().then(() => {
       //   this.appConfigService.configureImplicitFlowAuthentication();
       // });
+      
+      this.deeplinks.route({
+        '': HomeComponent
+      }).subscribe(match => {
+        console.log('Successfully matched route', match);
+      }, nomatch => {
+        console.error('Got a deeplink that didn\'t match', nomatch);
+      });
+      
       this.initAuth();
     });
   }

@@ -42,6 +42,17 @@ export class AppConfigService {
   ) {}
 
   public async loadAuthConfig() {
+    const res = await this.httpClient
+        .get<AuthConfig>(
+          "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
+          {
+            headers: { "x-api-key": "hrmobilekey" },
+          }
+        )
+        .toPromise();
+      this._authConfig = res;
+    return;
+    
     const cached = await this.getCached<AuthConfig>("authConfig");
 
     if (cached) {
@@ -75,6 +86,18 @@ export class AppConfigService {
   }
 
   public async setConfigFromOrgName(orgName: string) {
+    const orgConfig = await this.httpClient
+      .get<OrgConfig>(
+        `https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
+        {
+          headers: { "x-api-key": "hrmobilekey" },
+        }
+      )
+      .toPromise();
+    this._orgConfig = orgConfig;
+    await this.setCache("orgConfig", orgConfig);
+    return;
+    
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(

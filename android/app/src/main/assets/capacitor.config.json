@@ -27,17 +27,6 @@
 			"showSpinner": true
 		}
 	},
-	"server": {
-		"hostname": "localhost:8100",
-		"iosScheme": "ionic",
-		"androidScheme": "https",
-		"allowNavigation": [
-			"*.humanrisks.com",
-			"localhost:8100",
-			"*.azurewebsites.net"
-		],
-		"cleartext": true
-	},
 	"android": {
 		"backgroundColor": "#ffffffff",
 		"allowMixedContent": true,

@@ -28,6 +28,10 @@
     <param name="ios-package" value="QRScanner"/>
   </feature>
 
+  <feature name="IonicDeeplinkPlugin">
+    <param name="ios-package" value="IonicDeeplinkPlugin" onload="true"/>
+  </feature>
+
   
   <preference name="ScrollEnabled" value="true" />
   <preference name="android-minSdkVersion" value="22" />
