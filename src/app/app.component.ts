@@ -44,10 +44,14 @@ export class AppComponent {
       if (this.platform.is('ios')) {
         App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
           this.zone.run(() => {
-              if (event.url) {
+              console.log(event.url);
+              if (event.url.includes('code')) {
                 this.initAuth(event.url).subscribe(() => {
                   this.router.navigate(["/tabs/tab1"]);
                 });
+              }
+              else if (event.url) {
+                this.router.navigate(['/home']);
               }
               else {
                 this.toast.show('Failed to authenticate', 'danger');
@@ -65,9 +69,14 @@ export class AppComponent {
             this.navController
               .navigateForward(match.$link.path + "?" + match.$link.queryString)
               .then(() => {
-                this.initAuth().subscribe(() => {
-                  this.router.navigate(["/tabs/tab1"]);
-                });
+                if (match.$link.includes('code')) {
+                  this.initAuth().subscribe(() => {
+                    this.router.navigate(["/tabs/tab1"]);
+                  });
+                }
+                else {
+                  this.router.navigate(['/home']);
+                }
               }),
           (nomatch) => {
             this.toast.show('Failed to authenticate', 'danger');

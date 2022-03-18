@@ -5,14 +5,20 @@ import {
   HttpHandler,
   HttpRequest,
 } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { EMPTY, Observable } from "rxjs";
 import { AppConfigService } from "../services/app-config.service";
 import { AuthService } from "src/app/auth/auth.service";
 import { GenericService } from "@app/services/generic.service";
+import { catchError } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private auth: AuthService, private config: AppConfigService) {}
+  constructor(
+    private auth: AuthService, 
+    private config: AppConfigService,
+    private router: Router
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -38,6 +44,11 @@ export class TokenInterceptor implements HttpInterceptor {
       }
     }
 
-    return next.handle(req);
+    return next.handle(req).pipe(catchError(err => {
+      if (err.status === 401) {
+        this.router.navigate(['/home']);
+      }
+      return EMPTY;
+    }));
   }
 }
