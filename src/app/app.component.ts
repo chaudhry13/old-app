@@ -69,7 +69,8 @@ export class AppComponent {
             this.navController
               .navigateForward(match.$link.path + "?" + match.$link.queryString)
               .then(() => {
-                if (match.$link.includes('code')) {
+                console.log( JSON.stringify(match) );
+                if ((match.$link.path + "?" + match.$link.queryString).includes('code')) {
                   this.initAuth().subscribe(() => {
                     this.router.navigate(["/tabs/tab1"]);
                   });

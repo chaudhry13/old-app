@@ -4,14 +4,12 @@ import { RouteReuseStrategy } from "@angular/router";
 
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
-import { StatusBar } from "@awesome-cordova-plugins/status-bar/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthGuard } from "@app/guards/auth.guard";
 
-import { OAuthModule } from "angular-oauth2-oidc";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { Device } from "@ionic-native/device/ngx";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -24,23 +22,19 @@ import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { AgmCoreModule } from "@agm/core";
 import { AccountService } from "@app/services/account.service";
 
-import { IonicStorageModule, Storage } from "@ionic/storage";
+import { IonicStorageModule } from "@ionic/storage";
 import { AppConfigService } from "@app/services/app-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
 import { StorageService } from "@app/services/storage.service";
 import {
   FileTransfer,
-  FileUploadOptions,
-  FileTransferObject,
 } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { AuthConfigModule } from "./auth/auth-config.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
-import { EventTypes, PublicEventsService } from "angular-auth-oidc-client";
-import { filter, tap } from "rxjs/operators";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -105,7 +99,6 @@ import { filter, tap } from "rxjs/operators";
     FileTransfer,
     DocumentViewer,
     AuthGuard,
-    StatusBar,
     SplashScreen,
     InAppBrowser,
     Device,
