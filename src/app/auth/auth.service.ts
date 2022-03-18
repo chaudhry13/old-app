@@ -71,11 +71,24 @@ export class AuthService {
    * an error with authentication, just logout to redirect to login as there is no unprotected pages.
    * @returns Returns the OidcSecurityService.checkAuth observable.
    */
-  initializeAuth() {
+  initializeAuth(url: string = null) {
+    if (url) {
+      return this.auth.checkAuth(url).pipe(
+        switchMap(({ isAuthenticated, idToken, accessToken }) => {
+          if (isAuthenticated)
+            return this.initUser().pipe(tap(() => this.isLoading.next(false)));
+          this.isLoading.next(false);
+          return EMPTY;
+        }),
+        catchError((err) => {
+          this.error.next(err);
+          return this.logout();
+        })
+      );
+    }
+    
     return this.auth.checkAuth().pipe(
       switchMap(({ isAuthenticated, idToken, accessToken }) => {
-        console.log(idToken);
-        console.log(accessToken);
         if (isAuthenticated)
           return this.initUser().pipe(tap(() => this.isLoading.next(false)));
         this.isLoading.next(false);

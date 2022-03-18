@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.auth.isAuthenticated$.pipe(
       map(({ isAuthenticated }) => {
-        console.log(isAuthenticated);
+        console.log('is auth in auth guard', isAuthenticated);
 
         if (isAuthenticated) {
           return true;

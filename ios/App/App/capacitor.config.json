@@ -27,15 +27,6 @@
 			"showSpinner": true
 		}
 	},
-	"server": {
-		"allowNavigation": [
-			"*.humanrisks.com",
-			"localhost:8100",
-			"localhost",
-			"*.localhost",
-			"*.azurewebsites.net"
-		]
-	},
 	"android": {
 		"backgroundColor": "#ffffffff",
 		"allowMixedContent": true,

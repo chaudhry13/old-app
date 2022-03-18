@@ -3,9 +3,8 @@ import { BrowserModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
 
 import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
-import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { Camera } from "@ionic-native/camera/ngx";
+import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
+import { StatusBar } from "@awesome-cordova-plugins/status-bar/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -111,7 +110,6 @@ import { filter, tap } from "rxjs/operators";
     InAppBrowser,
     Device,
     Keyboard,
-    Camera,
     UserService,
     StorageService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

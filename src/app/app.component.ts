@@ -1,13 +1,14 @@
-import { Component } from "@angular/core";
+import { Component, NgZone } from "@angular/core";
 import { NavController, Platform } from "@ionic/angular";
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
-import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { AppConfigService } from "./core/services/app-config.service";
+import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
+import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
 import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { Router } from "@angular/router";
+import { App, URLOpenListenerEvent } from '@capacitor/app';
+import { ToastService } from "@app/services/toast.service";
 
 @Component({
   selector: "app-root",
@@ -20,11 +21,12 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private appConfigService: AppConfigService,
     private auth: AuthService,
     private deeplinks: Deeplinks,
     public navController: NavController,
     private router: Router,
+    private zone: NgZone,
+    private toast: ToastService,
   ) {
     this.initialize();
   }
@@ -38,33 +40,42 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
-      
+
+      App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+        this.zone.run(() => {
+            if (event.url) {
+              this.gotBack(event.url);
+            }
+            else {
+              this.toast.show('Failed to authenticate', 'danger');
+            }
+          });
+      });
+      /*
       this.deeplinks
         .routeWithNavController(this.navController, {})
-        .pipe(takeUntil(this.unsub$))
         .subscribe(
-          (match) =>
-            this.navController
-              .navigateForward(match.$link.path + "?" + match.$link.queryString)
-              .then(() => {
-                this.initAuth().subscribe(() => {
-                  this.router.navigate(["/tabs/tab1"]);
-                });
-              }),
-          (nomatch) =>
+          (match) => { this.gotBack() },
+          (nomatch) => {
+            this.toast.show('Failed to authenticate', 'danger');
             console.error(
               "Got a deeplink that didn't match",
               JSON.stringify(nomatch)
-            )
-        );
-
+              )
+            }
+          );
+      */
       this.initAuth().subscribe();
     });
   }
 
-  private initAuth() {
-    return this.auth.initializeAuth().pipe(takeUntil(this.unsub$));
-    //this.auth.loginCallback().pipe(takeUntil(this.unsub$)).subscribe();
-    //this.auth.error$.subscribe((x) => console.log(x));
+  private gotBack(url: string = null) {
+    this.initAuth(url).subscribe(() => {
+      this.router.navigate(["/tabs/tab1"]);
+    });
+  }
+
+  private initAuth(url: string = null) {
+    return this.auth.initializeAuth(url).pipe(takeUntil(this.unsub$));
   }
 }
