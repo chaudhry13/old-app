@@ -48,8 +48,8 @@ export class DivisionSelectorComponent implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     this.divisionList = data;
-    this.selectedDivisionIds = this.divisionList.getCheckedDivisions().map(divNode => divNode.division.id)
-    this.selectedDivisionNames = this.divisionList.getCheckedDivisions().map(divNode => divNode.division.name)
+    this.selectedDivisionIds = this.divisionList?.getCheckedDivisions().map(divNode => divNode.division.id)
+    this.selectedDivisionNames = this.divisionList?.getCheckedDivisions().map(divNode => divNode.division.name)
 
     if (this.selectedDivisionNames && this.selectedDivisionNames.length > 0) {
       this.selectedDivisionsText = this.selectedDivisionIds.length + ' selected divisions';

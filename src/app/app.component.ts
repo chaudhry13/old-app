@@ -1,7 +1,6 @@
 import { Component, NgZone } from "@angular/core";
 import { NavController, Platform } from "@ionic/angular";
 import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
-import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
@@ -9,6 +8,7 @@ import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { Router } from "@angular/router";
 import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { ToastService } from "@app/services/toast.service";
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: "app-root",
@@ -20,7 +20,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private auth: AuthService,
     private deeplinks: Deeplinks,
     public navController: NavController,
@@ -38,7 +37,7 @@ export class AppComponent {
 
   initialize() {
     this.platform.ready().then(() => {
-      this.statusBar.styleLightContent();
+      
       this.splashScreen.hide();
 
       // For IOS
@@ -58,6 +57,7 @@ export class AppComponent {
       }
       else {
       // For android
+      StatusBar.setOverlaysWebView({ overlay: false });
       this.deeplinks
         .routeWithNavController(this.navController, {})
         .subscribe(

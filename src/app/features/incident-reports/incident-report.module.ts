@@ -38,10 +38,7 @@ import { ActivityLogService } from "../activity-log/services/activity-log-servic
     ReactiveFormsModule,
     IncidentReportRoutingModule,
     SharedModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"],
-    }),
+    AgmCoreModule
   ],
   declarations: [
     IncidentReportPage,

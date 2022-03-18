@@ -42,10 +42,7 @@ import { IssueService } from "@app/services/issue.service";
     FormsModule,
     ReactiveFormsModule,
     AuditRoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyAXqcs7go3XxPZarCGTcSJxm_OU7ClN3Q0",
-      libraries: ["places"],
-    }),
+    AgmCoreModule,
     SharedModule,
   ],
   declarations: [
