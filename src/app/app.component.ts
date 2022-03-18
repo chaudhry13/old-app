@@ -41,21 +41,34 @@ export class AppComponent {
       this.statusBar.styleLightContent();
       this.splashScreen.hide();
 
-      App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
-        this.zone.run(() => {
-            if (event.url) {
-              this.gotBack(event.url);
-            }
-            else {
-              this.toast.show('Failed to authenticate', 'danger');
-            }
-          });
-      });
-      /*
+      // For IOS
+      if (this.platform.is('ios')) {
+        App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+          this.zone.run(() => {
+              if (event.url) {
+                this.initAuth(event.url).subscribe(() => {
+                  this.router.navigate(["/tabs/tab1"]);
+                });
+              }
+              else {
+                this.toast.show('Failed to authenticate', 'danger');
+              }
+            });
+        });
+      }
+      else {
+      // For android
       this.deeplinks
         .routeWithNavController(this.navController, {})
         .subscribe(
-          (match) => { this.gotBack() },
+          (match) =>
+            this.navController
+              .navigateForward(match.$link.path + "?" + match.$link.queryString)
+              .then(() => {
+                this.initAuth().subscribe(() => {
+                  this.router.navigate(["/tabs/tab1"]);
+                });
+              }),
           (nomatch) => {
             this.toast.show('Failed to authenticate', 'danger');
             console.error(
@@ -64,14 +77,8 @@ export class AppComponent {
               )
             }
           );
-      */
+      }
       this.initAuth().subscribe();
-    });
-  }
-
-  private gotBack(url: string = null) {
-    this.initAuth(url).subscribe(() => {
-      this.router.navigate(["/tabs/tab1"]);
     });
   }
 
