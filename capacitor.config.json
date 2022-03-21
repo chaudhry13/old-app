@@ -27,12 +27,8 @@
       "showSpinner": true
     }
   },
-  "server": {
-    "androidScheme": "https"
-  },
   "android": {
     "backgroundColor": "#ffffffff",
-    "allowMixedContent": true,
     "hideLogs": false
   },
   "linuxAndroidStudioPath": "/snap/bin/android-studio"

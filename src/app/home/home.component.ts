@@ -9,6 +9,7 @@ import {
 } from "@ionic-native/in-app-browser/ngx";
 import { AuthService } from "../auth/auth.service";
 import { Browser } from "@capacitor/browser";
+import { Platform } from "@ionic/angular";
 
 @Component({
   selector: "app-home",
@@ -46,9 +47,6 @@ export class HomeComponent implements OnInit {
     const url = this.auth.getLoginUrl();
     console.log(url);
     await this.openCapacitorSite(url);
-    console.log("after open");
-
-    Browser.addListener("browserPageLoaded", () => console.log("load start"));
   }
 
   onConfigSuccess = () => this.login();

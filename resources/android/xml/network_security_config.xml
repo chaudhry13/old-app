@@ -6,7 +6,7 @@
         </trust-anchors>
     </base-config> -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">com.humanrisks</domain>
     </domain-config>
 </network-security-config>
 
