@@ -7,6 +7,9 @@ import { AccountService } from "@app/services/account.service";
 import { Division } from "@app/models/division";
 import { DivisionList } from "@shared/models/division-list";
 import { AuthService } from "src/app/auth/auth.service";
+import { Browser } from "@capacitor/browser";
+import { from } from "rxjs";
+import { switchMap, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-profile",
@@ -44,6 +47,24 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    this.auth.logout().subscribe();
+    //this.auth.logout().subscribe();
+    this.auth
+      .revoke()
+      .pipe(
+        switchMap(() =>
+          this.completeLogout().pipe(tap(() => this.auth.logoutLocal()))
+        )
+      )
+      .subscribe();
   }
+
+  completeLogout = () => {
+    const url = this.auth.getLogoutUrl();
+
+    return from(this.openCapacitorSite(url));
+  };
+
+  openCapacitorSite = async (url: string) => {
+    await Browser.open({ url, windowName: "_self" });
+  };
 }

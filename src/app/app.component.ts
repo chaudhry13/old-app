@@ -6,9 +6,9 @@ import { AuthService } from "./auth/auth.service";
 import { takeUntil } from "rxjs/operators";
 import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { Router } from "@angular/router";
-import { App, URLOpenListenerEvent } from '@capacitor/app';
+import { App, URLOpenListenerEvent } from "@capacitor/app";
 import { ToastService } from "@app/services/toast.service";
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 @Component({
   selector: "app-root",
@@ -25,9 +25,10 @@ export class AppComponent {
     public navController: NavController,
     private router: Router,
     private zone: NgZone,
-    private toast: ToastService,
+    private toast: ToastService
   ) {
     this.initialize();
+    this.auth.error$.subscribe((x) => console.log("auth error", x));
   }
 
   ngOnDestroy(): void {
@@ -37,62 +38,61 @@ export class AppComponent {
 
   initialize() {
     this.platform.ready().then(() => {
-      
+      console.log("ready stedi");
       this.splashScreen.hide();
 
       // For IOS
-      if (this.platform.is('ios')) {
-        App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+      if (this.platform.is("ios")) {
+        App.addListener("appUrlOpen", (event: URLOpenListenerEvent) => {
           this.zone.run(() => {
-              console.log(event.url);
-              if (event.url.includes('code')) {
-                this.initAuth(event.url).subscribe(() => {
-                  this.router.navigate(["/tabs/tab1"]);
-                });
-              }
-              else if (event.url) {
-                this.router.navigate(['/home']);
-              }
-              else {
-                this.toast.show('Failed to authenticate', 'danger');
-              }
-            });
+            console.log(event.url);
+            if (event.url.includes("code")) {
+              this.initAuth(event.url).subscribe(() => {
+                this.router.navigate(["/tabs/tab1"]);
+              });
+            } else if (event.url) {
+              this.router.navigate(["/home"]);
+            } else {
+              this.toast.show("Failed to authenticate", "danger");
+            }
+          });
         });
-      }
-      else {
-      // For android
-      StatusBar.setOverlaysWebView({ overlay: false });
-      this.deeplinks
-        .routeWithNavController(this.navController, {})
-        .subscribe(
+      } else if (this.platform.is("android")) {
+        // For android
+        StatusBar.setOverlaysWebView({ overlay: false });
+        this.deeplinks.routeWithNavController(this.navController, {}).subscribe(
           (match) =>
             this.navController
               .navigateForward(match.$link.path + "?" + match.$link.queryString)
               .then(() => {
-                console.log( JSON.stringify(match) );
-                if ((match.$link.path + "?" + match.$link.queryString).includes('code')) {
+                console.log(JSON.stringify(match));
+
+                if (
+                  (match.$link.path + "?" + match.$link.queryString).includes(
+                    "code"
+                  )
+                ) {
                   this.initAuth().subscribe(() => {
                     this.router.navigate(["/tabs/tab1"]);
                   });
-                }
-                else {
-                  this.router.navigate(['/home']);
+                } else {
+                  this.router.navigate(["/home"]);
                 }
               }),
           (nomatch) => {
-            this.toast.show('Failed to authenticate', 'danger');
+            this.toast.show("Failed to authenticate", "danger");
             console.error(
               "Got a deeplink that didn't match",
               JSON.stringify(nomatch)
-              )
-            }
-          );
+            );
+          }
+        );
       }
       this.initAuth().subscribe();
     });
   }
 
   private initAuth(url: string = null) {
-    return this.auth.initializeAuth(url).pipe(takeUntil(this.unsub$));
+    return this.auth.initializeAuth(url);
   }
 }

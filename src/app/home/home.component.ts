@@ -3,7 +3,12 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { AppConfigService } from "@app/services/app-config.service";
 import { ToastService } from "@app/services/toast.service";
+import {
+  InAppBrowser,
+  InAppBrowserOptions,
+} from "@ionic-native/in-app-browser/ngx";
 import { AuthService } from "../auth/auth.service";
+import { Browser } from "@capacitor/browser";
 
 @Component({
   selector: "app-home",
@@ -16,7 +21,8 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder,
     public auth: AuthService,
     private configService: AppConfigService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private iab: InAppBrowser
   ) {
     this.form = fb.group({
       orgName: ["", Validators.required],
@@ -36,9 +42,18 @@ export class HomeComponent implements OnInit {
     await this.configService.setConfigFromOrgName(orgName);
   }
 
-  login() {
-    this.auth.login();
+  async login() {
+    const url = this.auth.getLoginUrl();
+    console.log(url);
+    await this.openCapacitorSite(url);
+    console.log("after open");
+
+    Browser.addListener("browserPageLoaded", () => console.log("load start"));
   }
 
   onConfigSuccess = () => this.login();
+
+  openCapacitorSite = async (url: string) => {
+    await Browser.open({ url, windowName: "_self" });
+  };
 }

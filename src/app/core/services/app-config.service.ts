@@ -43,22 +43,17 @@ export class AppConfigService {
 
   public async loadAuthConfig() {
     const res = await this.httpClient
-        .get<AuthConfig>(
-          "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
-          {
-            headers: { "x-api-key": "hrmobilekey" },
-          }
-        )
-        .toPromise();
-      this._authConfig = res;
-    return;
-    
-    const cached = await this.getCached<AuthConfig>("authConfig");
+      .get<AuthConfig>(
+        "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
+        {
+          headers: { "x-api-key": "hrmobilekey" },
+        }
+      )
+      .toPromise()
+      .catch((x) => console.log(x));
+    this._authConfig = res as AuthConfig;
 
-    if (cached) {
-      this._authConfig = cached;
-      return;
-    }
+    return;
 
     if (environment.production) {
       const res = await this.httpClient
@@ -70,7 +65,6 @@ export class AppConfigService {
         )
         .toPromise();
       this._authConfig = res;
-      await this.setCache("authConfig", res);
     } else {
       const res = await this.httpClient
         .get<AuthConfig>(
@@ -81,7 +75,6 @@ export class AppConfigService {
         )
         .toPromise();
       this._authConfig = res;
-      await this.setCache("authConfig", res);
     }
   }
 
@@ -97,7 +90,7 @@ export class AppConfigService {
     this._orgConfig = orgConfig;
     await this.setCache("orgConfig", orgConfig);
     return;
-    
+
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(

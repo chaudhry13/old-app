@@ -9,10 +9,12 @@ import {
   BehaviorSubject,
   combineLatest,
   EMPTY,
+  forkJoin,
   from,
   NEVER,
   Observable,
   of,
+  throwError,
 } from "rxjs";
 import { catchError, filter, map, switchMap, tap } from "rxjs/operators";
 
@@ -86,7 +88,7 @@ export class AuthService {
         })
       );
     }
-    
+
     return this.auth.checkAuth().pipe(
       switchMap(({ isAuthenticated, idToken, accessToken }) => {
         if (isAuthenticated)
@@ -121,6 +123,10 @@ export class AuthService {
     return this.auth.logoffAndRevokeTokens();
   }
 
+  logoutLocal() {
+    this.auth.logoffLocal();
+  }
+
   /**
    * Initialize login flow, redirect to Identity provider.
    */
@@ -134,6 +140,25 @@ export class AuthService {
         },
       });
     else this.auth.authorize();
+  }
+
+  getLoginUrl() {
+    return this.auth.getAuthorizeUrl();
+  }
+
+  getLogoutUrl() {
+    return this.auth.getEndSessionUrl();
+  }
+
+  revoke() {
+    return forkJoin([
+      this.auth.revokeAccessToken(),
+      this.auth.revokeRefreshToken(),
+    ]);
+  }
+
+  forceRefresh() {
+    return this.auth.forceRefreshSession();
   }
 
   /**

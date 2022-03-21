@@ -27,9 +27,7 @@ import { AppConfigService } from "@app/services/app-config.service";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { UserService } from "@app/services/user.service";
 import { StorageService } from "@app/services/storage.service";
-import {
-  FileTransfer,
-} from "@awesome-cordova-plugins/file-transfer/ngx";
+import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { AuthConfigModule } from "./auth/auth-config.module";
@@ -43,17 +41,6 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
     HttpClientModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    // OAuthModule.forRoot({
-    //   resourceServer: {
-    //     allowedUrls: [
-    //       "https://test1api.humanrisks.com/",
-    //       "https://humanrisks-core-api.azurewebsites.net",
-    //       "https://app1api.humanrisks.com",
-    //       "https://localhost:5000",
-    //     ],
-    //     sendAccessToken: true,
-    //   },
-    // }),
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -72,7 +59,7 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
           // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
           // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
           appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
-            //console.log(x);
+            console.log("load org config", x);
             if (x) {
               appConfigService.orgConfig = x;
 
@@ -83,8 +70,6 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
               document.body.appendChild(script);
               script.onload = () => resolve();
               script.onerror = () => resolve();
-
-              appConfigService.clearCache("orgConfig");
             } else {
               resolve();
             }
