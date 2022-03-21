@@ -67,6 +67,10 @@ export class AuthService {
     private config: AppConfigService
   ) {}
 
+  getIdToken() {
+    return this.auth.getIdToken();
+  }
+
   /**
    * Authentication initialization method. Subscribe to it once in app component to start auth process,
    * call backend for user info, set authenticated user state, and push false to isLoading$. If there is
@@ -151,8 +155,12 @@ export class AuthService {
     else return this.auth.getAuthorizeUrl();
   }
 
-  getLogoutUrl() {
-    return this.auth.getEndSessionUrl();
+  getLogoutUrl(idToken?: string) {
+    return idToken
+      ? this.auth.getEndSessionUrl({
+          id_token_hint: idToken,
+        })
+      : this.auth.getEndSessionUrl();
   }
 
   revoke() {
