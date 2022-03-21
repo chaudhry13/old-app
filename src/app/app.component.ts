@@ -69,15 +69,9 @@ export class AppComponent {
             }
           } else if (url?.startsWith("com.humanrisks://logout")) {
             // Call handleRedirectCallback and close the browser
-            this.auth
-              .initializeAuth(url)
-              .pipe(
-                tap(() => {
-                  this.router.navigate(["/home"]);
-                  if (this.platform.is("ios")) Browser.close();
-                })
-              )
-              .subscribe();
+
+            this.router.navigate(["/home"]);
+            if (this.platform.is("ios")) Browser.close();
           }
         });
       });
