@@ -44,6 +44,8 @@ export class AppComponent {
 
       this.auth.initializeAuth().subscribe();
 
+      if (this.platform.is('android')) StatusBar.setOverlaysWebView({ overlay: false });
+
       App.addListener("appUrlOpen", ({ url }) => {
         // Must run inside an NgZone for Angular to pick up the changes
         // https://capacitorjs.com/docs/guides/angular
