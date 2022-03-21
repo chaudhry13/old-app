@@ -40,11 +40,12 @@ export class AppComponent {
   initialize() {
     this.platform.ready().then(() => {
       console.log("ready stedi");
+      this.auth.initializeAuth().subscribe((x) => console.log(x));
+
       this.splashScreen.hide();
 
-      this.auth.initializeAuth().subscribe();
-
-      if (this.platform.is('android')) StatusBar.setOverlaysWebView({ overlay: false });
+      if (this.platform.is("android"))
+        StatusBar.setOverlaysWebView({ overlay: false });
 
       App.addListener("appUrlOpen", ({ url }) => {
         // Must run inside an NgZone for Angular to pick up the changes
@@ -60,7 +61,8 @@ export class AppComponent {
               this.auth
                 .initializeAuth(url)
                 .pipe(
-                  tap(() => {
+                  tap((x) => {
+                    console.log(x);
                     this.router.navigate(["/tabs/tab1"]);
                     if (this.platform.is("ios")) Browser.close();
                   })
@@ -71,9 +73,11 @@ export class AppComponent {
             }
           } else if (url?.startsWith("com.humanrisks://logout")) {
             // Call handleRedirectCallback and close the browser
-
-            this.router.navigate(["/home"]);
-            if (this.platform.is("ios")) Browser.close();
+            this.auth.initializeAuth().subscribe((x) => {
+              console.log("checkauth after logut", x);
+              this.router.navigate(["/home"]);
+              if (this.platform.is("ios")) Browser.close();
+            });
           }
         });
       });

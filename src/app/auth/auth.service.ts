@@ -80,7 +80,7 @@ export class AuthService {
           if (isAuthenticated)
             return this.initUser().pipe(tap(() => this.isLoading.next(false)));
           this.isLoading.next(false);
-          return EMPTY;
+          return of({ isAuthenticated, idToken, accessToken });
         }),
         catchError((err) => {
           this.error.next(err);
@@ -94,7 +94,7 @@ export class AuthService {
         if (isAuthenticated)
           return this.initUser().pipe(tap(() => this.isLoading.next(false)));
         this.isLoading.next(false);
-        return EMPTY;
+        return of({ isAuthenticated, idToken, accessToken });
       }),
       catchError((err) => {
         this.error.next(err);
