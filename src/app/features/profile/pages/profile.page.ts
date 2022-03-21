@@ -51,9 +51,8 @@ export class ProfilePage implements OnInit {
     this.auth
       .revoke()
       .pipe(
-        switchMap(() =>
-          this.completeLogout().pipe(tap(() => this.auth.logoutLocal()))
-        )
+        tap(() => this.auth.logoutLocal()),
+        switchMap(() => this.completeLogout())
       )
       .subscribe();
   }
