@@ -143,7 +143,12 @@ export class AuthService {
   }
 
   getLoginUrl() {
-    return this.auth.getAuthorizeUrl();
+    const auth0OrgId = this.config.orgConfig.auth0OrgId;
+    if (auth0OrgId)
+      return this.auth.getAuthorizeUrl({
+        organization: auth0OrgId,
+      });
+    else return this.auth.getAuthorizeUrl();
   }
 
   getLogoutUrl() {
