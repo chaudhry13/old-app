@@ -38,36 +38,31 @@ export class GeocodingService {
   geocodeResult(results: GeocodingResult[]): GeocodingAddress {
     var model = new GeocodingAddress();
 
-    var indice = 0;
-
-    if (results.length > 0) {
-      for (var j = 0; j < results.length; j++) {
-        if (results[j].types[0] == "street_address") {
-          indice = j;
-          break;
+    var resultDict: {key: string, shortName: string, longName: string}[] = results.reduce((res, current) => {
+      current.address_components.forEach((type) => {
+        if (!res.some(x => x.key === type.types[0])) {
+          res.push({ key: type.types[0], shortName: type.short_name, longName: type.long_name });
         }
-      }
+      });
+      return res;
+    }, []);
+    
+    var geoRes = results.findIndex(r => r.geometry?.location?.lat && r.geometry?.location?.lng);
+
+    model.latitude = results[geoRes].geometry.location.lat;
+    model.longitude = results[geoRes].geometry.location.lng;
+
+    if (resultDict.some(r => r.key == "route")) {
+      model.street = resultDict.find(r => r.key == "route").longName;
     }
-
-    model.latitude = results[indice].geometry.location.lat;
-    model.longitude = results[indice].geometry.location.lng;
-
-    for (var i = 0; i < results[indice].address_components.length; i++) {
-      if (results[indice].address_components[i].types[0] == "route") {
-        model.street = results[indice].address_components[i].long_name;
-      }
-
-      if (results[indice].address_components[i].types[0] == "street_number") {
-        model.street_number = results[indice].address_components[i].long_name;
-      }
-
-      if (results[indice].address_components[i].types[0] == "locality") {
-        model.city = results[indice].address_components[i].long_name;
-      }
-
-      if (results[indice].address_components[i].types[0] == "country") {
-        model.country = results[indice].address_components[i].short_name;
-      }
+    if (resultDict.some(r => r.key == "street_number")) {
+      model.street_number = resultDict.find(r => r.key == "street_number").longName;
+    }
+    if (resultDict.some(r => r.key == "locality")) {
+      model.city = resultDict.find(r => r.key == "locality").longName;
+    }
+    if (resultDict.some(r => r.key == "country")) {
+      model.country = resultDict.find(r => r.key == "country").shortName;
     }
 
     return model;
