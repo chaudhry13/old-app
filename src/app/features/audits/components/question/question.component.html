@@ -141,12 +141,8 @@
   </form>
 
   <error-msg
-    [displayError]="
-      !validationService.isQuestionAnswerValid(question, answerForm).isValid
-    "
-    [errorMsg]="
-      validationService.isQuestionAnswerValid(question, answerForm).errorMsg
-    "
+    [displayError]="hasError"
+    [errorMsg]="errorMsg"
   ></error-msg>
 
   <div

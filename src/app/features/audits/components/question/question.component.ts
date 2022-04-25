@@ -82,6 +82,8 @@ export class QuestionComponent implements OnInit {
   public photos: any[] = [];
 
   animation: Animation;
+  errorMsg: string = null;
+  hasError: boolean = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -325,18 +327,13 @@ export class QuestionComponent implements OnInit {
       });
     // Update the answer in the database
     this.answerForm.valueChanges
-      .pipe(debounceTime(200), distinctUntilChanged())
+      .pipe(debounceTime(200))
       .subscribe(() => {
-        // this.hasComment = !this.qhs.isNullOrWhitespace(
-        //   this.answerForm.controls.comment.value
-        // );
-
-        if (
-          this.validationService.isQuestionAnswerValid(
-            this.question,
-            this.answerForm
-          ).isValid
-        ) {
+        var validation = this.validationService.isQuestionAnswerValid(this.question, this.answerForm);
+        this.errorMsg = validation.errorMsg;
+        this.hasError = !validation.isValid;
+        
+        if (validation.isValid) {
           const answer = this.qhs.getQuestionAnswer(
             this.questionAnswer,
             this.question,

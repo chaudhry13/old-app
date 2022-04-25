@@ -15,6 +15,8 @@ export class LogicService extends GenericService {
     something: QuestionnaireUserAnswer
   ): Promise<string[]> {
     var questionAnswers = something.questionAnsweres.map((qa) => {
+      if (qa.locationAnswer && qa.locationAnswer.country)
+        qa.locationAnswer.countryId = qa.locationAnswer.country.id;
       return {
         id: qa.id,
         answered: qa.answered,
@@ -24,7 +26,6 @@ export class LogicService extends GenericService {
         numberAnswer: qa.numberAnswer,
         hasComment: qa.hasComment,
         na: qa.na,
-        question: qa.question,
         userAnswerId: qa.userAnswerId,
         locationAnswer: qa.locationAnswer,
         optionAnswers: qa.optionAnswered.map((oa) => {

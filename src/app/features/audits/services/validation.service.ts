@@ -17,16 +17,7 @@ export class ValidationService {
     question: Question,
     answerForm: FormGroup
   ): QuestionValidation {
-    if (
-      !Object.keys(answerForm.controls).every(
-        (c) => answerForm.controls[c].untouched
-      )
-    ) {
-      // If NOT all controls are untouched we validate
-      return this.validateQuestion(question, answerForm);
-    } else {
-      return { isValid: false, regExp: new RegExp(""), errorMsg: "" };
-    }
+    return this.validateQuestion(question, answerForm);
   }
 
   validateQuestion(question: Question, answerForm: FormGroup) {
@@ -108,12 +99,9 @@ export class ValidationService {
       regularExpType.errorMsg = "null";
     }
 
-    if (
-      (!this.isNullOrWhitespace(answerForm.controls.text.value) &&
+    if (!this.isNullOrWhitespace(answerForm.controls.text.value) &&
         regularExpType.regExp.test(answerForm.controls.text.value) &&
-        answerForm.controls.text.valid) ||
-      answerForm.controls.text.untouched
-    ) {
+        answerForm.controls.text.valid) {
       regularExpType.isValid = true;
     }
 

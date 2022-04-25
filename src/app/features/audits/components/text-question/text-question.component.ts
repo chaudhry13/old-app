@@ -26,7 +26,7 @@ export class TextQuestionComponent implements OnInit {
 
   ngOnInit() {
     if (this.questionAnswer != null) {
-      this.answerForm.controls.text.setValue(this.questionAnswer.text);
+      this.answerForm.controls.text.setValue(this.questionAnswer.text, { emitEvent: false });
     }
   }
 }

@@ -43,8 +43,6 @@ export class AuditQuestionnairePage implements OnInit {
       this.addQuestionsAndGroups();
       this.checkAuditCompleteStatus(this.questionnaireUserAnswer.auditId);
     });
-
-    
   }
 
   addQuestionsAndGroups() {
@@ -101,8 +99,15 @@ export class AuditQuestionnairePage implements OnInit {
     this.logicService
       .WhichToSkip(this.questionnaire.questions, newAnswer)
       .then((toSkip) => {
-        this.toSkip = toSkip;
+        if (toSkip)
+          this.toSkip = toSkip;
+        else
+          this.toSkip = [];
       });
+  }
+
+  shouldSkip(questionId: string) {
+    return this.toSkip.includes(questionId);
   }
 
   validateQuestionnaire(): boolean {

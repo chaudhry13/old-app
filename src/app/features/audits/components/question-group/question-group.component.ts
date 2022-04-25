@@ -22,7 +22,7 @@ export class QuestionGroupComponent implements OnInit, OnChanges {
   @Input() questionGroup: QuestionGroupDetails;
   @Input() isReadOnly: boolean;
   @Input() questionnaireUserAnswer: QuestionnaireUserAnswer;
-  @Input() toSkip: string[];
+  @Input() toSkip: string[] = [];
   @Output() questionnaireUserAnswerChange = new EventEmitter();
 
   hasComment: boolean;

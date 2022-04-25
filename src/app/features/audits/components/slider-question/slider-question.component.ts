@@ -26,7 +26,7 @@ export class SliderQuestionComponent implements OnInit {
     );
 
     if (this.questionAnswer != null) {
-      this.setSliderValue();
+      this.setSliderValue(false);
     } else {
       this.setDefaultSliderValue();
     }
@@ -39,8 +39,8 @@ export class SliderQuestionComponent implements OnInit {
     this.rangeValue = this.question.sliderOptions.sliderFrom;
   }
 
-  private setSliderValue(): void {
-    this.answerForm.controls.slider.setValue(this.questionAnswer.slider);
+  private setSliderValue(emit = true): void {
+    this.answerForm.controls.slider.setValue(this.questionAnswer.slider, { emitEvent: emit });
     this.rangeValue = this.questionAnswer.slider;
   }
 

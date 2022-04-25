@@ -24,7 +24,7 @@
 
       <!-- Standalone questions -->
       <ion-card
-        *ngIf="item.type == 'Question' && !toSkip.includes(item.reference.id)"
+        *ngIf="item.type == 'Question' && !shouldSkip(item.reference.id)"
         class="card ion-no-margin ion-margin-bottom"
         style="--background: white; border-radius: 0px"
       >

@@ -68,7 +68,7 @@ export class LocationQuestionComponent implements OnInit {
 
         var location = this.generateLocationAnswerObject();
 
-        this.answerForm.controls.locationAnswer.setValue(location);
+        this.answerForm.controls.locationAnswer.setValue(location, { emitEvent: false });
 
         this.renderMap = true;
       } else {
@@ -96,7 +96,7 @@ export class LocationQuestionComponent implements OnInit {
   }
 
   onMarkerDragEnd(positionData) {
-    this.setNewPosition(positionData.coords.lng, positionData.coords.lat);
+    this.setNewPosition(positionData.latLng.lng(), positionData.latLng.lat());
   }
 
   setNewPosition(long: number, lat: number) {

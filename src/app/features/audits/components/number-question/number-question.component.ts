@@ -27,7 +27,7 @@ export class NumberQuestionComponent implements OnInit {
   ngOnInit() {
     if (this.questionAnswer != null) {
       this.answerForm.controls.numberAnswer.setValue(
-        this.questionAnswer.numberAnswer
+        this.questionAnswer.numberAnswer, { emitEvent: false }
       );
     }
 

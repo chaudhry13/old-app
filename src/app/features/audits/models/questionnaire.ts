@@ -345,6 +345,7 @@ export class QuestionLocationAnswer {
 	address: string;
 	city: string;
 	country: Country;
+	countryId: number;
 	latitude?: number | null;
 	longitude?: number | null;
 }
