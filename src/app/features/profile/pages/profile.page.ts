@@ -41,8 +41,8 @@ export class ProfilePage implements OnInit {
     this.divisionList.asFilter = false;
     this.divisionList.toplevelDivisions = [];
     this.divisionService.list().then((data) => {
-      this.divisions = data;
-      this.divisionList.makeDivisionNodes(data);
+      this.divisions = data.filter(d => !d.individualDivision);
+      this.divisionList.makeDivisionNodes(this.divisions);
     });
   }
 
