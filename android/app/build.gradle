@@ -6,8 +6,8 @@ android {
         applicationId "com.humanrisks1"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20220320
-        versionName "2.3.7"
+        versionCode 20220425
+        versionName "2.3.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
