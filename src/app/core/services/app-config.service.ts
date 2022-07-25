@@ -41,19 +41,14 @@ export class AppConfigService {
     private router: Router
   ) {}
 
-  public async loadAuthConfig() {
-    const res = await this.httpClient
-      .get<AuthConfig>(
-        "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig",
-        {
-          headers: { "x-api-key": "hrmobilekey" },
-        }
-      )
-      .toPromise()
-      .catch((x) => console.log(x));
-    this._authConfig = res as AuthConfig;
+  loadPublicKey() {
+    const pubKeyUrl = this.authConfig.pubKeyUrl;
+    const pubKey = this.httpClient.get(pubKeyUrl, { responseType: 'text' }).toPromise();
 
-    return;
+    return pubKey;
+  }
+
+  public async loadAuthConfig() {
 
     if (environment.production) {
       const res = await this.httpClient
@@ -79,17 +74,6 @@ export class AppConfigService {
   }
 
   public async setConfigFromOrgName(orgName: string) {
-    const orgConfig = await this.httpClient
-      .get<OrgConfig>(
-        `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
-        {
-          headers: { "x-api-key": "hrmobilekey" },
-        }
-      )
-      .toPromise();
-    this._orgConfig = orgConfig;
-    await this.setCache("orgConfig", orgConfig);
-    return;
 
     if (environment.production) {
       const orgConfig = await this.httpClient

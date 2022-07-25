@@ -30,9 +30,9 @@ import { StorageService } from "@app/services/storage.service";
 import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
-import { AuthConfigModule } from "./auth/auth-config.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
+import { AuthModule } from "./auth/auth.module";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -46,7 +46,7 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
     ReactiveFormsModule,
     AgmCoreModule.forRoot(),
     SharedModule,
-    AuthConfigModule,
+    AuthModule,
   ],
   providers: [
     AccountService,

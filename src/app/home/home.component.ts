@@ -44,14 +44,9 @@ export class HomeComponent implements OnInit {
   }
 
   async login() {
-    const url = this.auth.getLoginUrl();
-    console.log(url);
-    await this.openCapacitorSite(url);
+    this.auth.login();
   }
 
   onConfigSuccess = () => this.login();
 
-  openCapacitorSite = async (url: string) => {
-    await Browser.open({ url, windowName: "_self" });
-  };
 }

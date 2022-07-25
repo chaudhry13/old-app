@@ -47,25 +47,12 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    //this.auth.logout().subscribe();
-    const idToken = this.auth.getIdToken();
 
-    this.auth
-      .revoke()
-      .pipe(
-        tap(() => this.auth.logoutLocal()),
-        switchMap(() => this.completeLogout(idToken))
-      )
-      .subscribe();
+this.auth.logout
   }
 
   completeLogout = (token: string) => {
     let url = this.auth.getLogoutUrl();
-
-    if (url.includes("id_token_hint=undefined")) {
-      url = this.auth.getLogoutUrl(token);
-      url = url.replace("id_token_hint=undefined", "");
-    }
 
     return from(this.openCapacitorSite(url));
   };
