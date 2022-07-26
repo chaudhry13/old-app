@@ -10,19 +10,20 @@ import { App } from '@capacitor/app';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
+import { OrgConfig } from '@app/interfaces/org-config';
 
 
-const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {
+const orgConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {
   if (responseType === 'CODE') {
     return {
-      issuer: config.authConfig.authServer,
-      logoutUrl: config.authConfig.logoutUrl,
+      issuer: config.orgConfig.authServer,
+      logoutUrl: config.orgConfig.logoutUrl,
       redirectUri: window.location.origin,
-      clientId: config.authConfig.clientId,
+      clientId: config.orgConfig.clientId,
       customQueryParams: {
-        audience: config.authConfig.apiAudience,
+        audience: config.orgConfig.apiAudience,
       },
-      scope: `openid offline_access email ${config.authConfig.apiAudience}`,
+      scope: `openid offline_access email ${config.orgConfig.apiAudience}`,
       showDebugInformation: true,
       responseType: 'code',
       strictDiscoveryDocumentValidation: false,
@@ -33,15 +34,15 @@ const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigS
     };
   } else if (responseType === 'IMPLICIT') {
     return {
-      issuer: config.authConfig.authServer,
-      logoutUrl: config.authConfig.logoutUrl,
+      issuer: config.orgConfig.authServer,
+      logoutUrl: config.orgConfig.logoutUrl,
       redirectUri: window.location.origin,
       silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
-      clientId: config.authConfig.clientId,
+      clientId: config.orgConfig.clientId,
       customQueryParams: {
-        audience: config.authConfig.apiAudience,
+        audience: config.orgConfig.apiAudience,
       },
-      scope: `openid email ${config.authConfig.apiAudience}`,
+      scope: `openid email ${config.orgConfig.apiAudience}`,
       showDebugInformation: true,
     };
   } else throw new Error('Unexpected response type!');
@@ -58,41 +59,43 @@ const createJWKFromPem = (pem: string, kid: string = null): any => {
   return jwks;
 };
 
-const loadFactory = (config: AppConfigService,platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => () => {
-  return config.loadAuthConfig().then(async () => {
-    const responseType: 'CODE' | 'IMPLICIT' = config.authConfig.authFlow;
-    const authConfig: AuthConfig = authConfigFactory(responseType, config);
+export const loadFactory = (config: AppConfigService,platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => async () => {
+  console.log(auth)
+    const responseType: 'CODE' | 'IMPLICIT' = config.orgConfig.authFlow;
+    const authConfig: AuthConfig = orgConfigFactory(responseType, config);
 
     // if not using discovery, then we need to manbually set some params
-    if(!config.authConfig.useDiscovery) {
-      if(!config.authConfig.loginUrl) throw new Error('LoginUrl is required, when not using discovery!');
-      if(!config.authConfig.pubKeyUrl) throw new Error('Public key url is required, when not using discovery!');
-      if(!config.authConfig.tokenUrl && responseType === 'CODE') throw new Error('TokenUrl is required with CODE FLOW, when not using discovery!');
+    if(!config.orgConfig.useDiscovery) {
+      if(!config.orgConfig.loginUrl) throw new Error('LoginUrl is required, when not using discovery!');
+      if(!config.orgConfig.pubKeyUrl) throw new Error('Public key url is required, when not using discovery!');
+      if(!config.orgConfig.tokenUrl && responseType === 'CODE') throw new Error('TokenUrl is required with CODE FLOW, when not using discovery!');
 
-      authConfig.loginUrl = config.authConfig.loginUrl;
-      authConfig.revocationEndpoint = config.authConfig.revocationUrl;
-      authConfig.tokenEndpoint = config.authConfig.tokenUrl;
+      authConfig.loginUrl = config.orgConfig.loginUrl;
+      authConfig.revocationEndpoint = config.orgConfig.revocationUrl;
+      authConfig.tokenEndpoint = config.orgConfig.tokenUrl;
 
       const pem = await config.loadPublicKey();
       if (pem) {
-        const jwks = createJWKFromPem(pem, config.authConfig.kid);
+        const jwks = createJWKFromPem(pem, config.orgConfig.kid);
         authConfig.jwks = jwks;
       }
       else throw new Error('Failed to load public key!');
     }
 
     auth.configure(authConfig);
-    if(config.authConfig.useDiscovery) await auth.loadDiscoveryDocument();
+    if(config.orgConfig.useDiscovery) await auth.loadDiscoveryDocument();
     auth.registerEvents();
-    if (config.authConfig.silentRefresh) auth.initAutomaticSilentRefresh();
+    if (config.orgConfig.silentRefresh) auth.initAutomaticSilentRefresh();
     if (responseType === 'IMPLICIT') auth.setValidationHandler();
     
     return initialize(platform, splashScreen, zone, auth, router);
-  });
+
 };
 
 const initialize = (platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => {
+  console.log("initialize")
   return platform.ready().then((x) => {
+    console.log("platofrm ready")
 
     splashScreen.hide();
 
@@ -140,12 +143,12 @@ const initialize = (platform: Platform, splashScreen: SplashScreen, zone: NgZone
   imports: [OAuthModule.forRoot()],
   exports: [OAuthModule],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      deps: [AppConfigService, AuthService, Platform, SplashScreen, NgZone, Router],
-      useFactory: loadFactory,
-    },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   multi: true,
+    //   deps: [AppConfigService, AuthService, Platform, SplashScreen, NgZone, Router],
+    //   useFactory: loadFactory,
+    // },
   ],
 })
 export class AuthModule {}

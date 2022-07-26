@@ -4,7 +4,7 @@ import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
 import { LoginResponse, OidcSecurityService } from "angular-auth-oidc-client";
-import { AuthConfig, OAuthService } from "angular-oauth2-oidc";
+import {  AuthConfig, OAuthService } from "angular-oauth2-oidc";
 import { stringify } from "querystring";
 import {
   BehaviorSubject,
@@ -83,9 +83,9 @@ export class AuthService {
 
   async logout() {
     window['Intercom']('shutdown');
-    if(!this.config.authConfig.logoutUrl && !this.config.authConfig.useDiscovery) return;
+    if(!this.config.orgConfig.logoutUrl && !this.config.orgConfig.useDiscovery) return;
 
-    if (this.config.authConfig.useDiscovery && this.config.authConfig.revocationUrl || (this.config.authConfig.logoutUrl && this.config.authConfig.revocationUrl)) {
+    if (this.config.orgConfig.useDiscovery && this.config.orgConfig.revocationUrl || (this.config.orgConfig.logoutUrl && this.config.orgConfig.revocationUrl)) {
       await this.auth.revokeTokenAndLogout(
         {
           client_id: this.auth.clientId,
@@ -94,7 +94,7 @@ export class AuthService {
         true
       );
       this.isAuthenticated.next(false);
-    } else if(this.config.authConfig.useDiscovery || this.config.authConfig.logoutUrl) {
+    } else if(this.config.orgConfig.useDiscovery || this.config.orgConfig.logoutUrl) {
       this.auth.logOut({
         client_id: this.auth.clientId,
         returnTo: this.auth.redirectUri,

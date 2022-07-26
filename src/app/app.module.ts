@@ -1,8 +1,8 @@
-import { NgModule, APP_INITIALIZER } from "@angular/core";
+import { NgModule, APP_INITIALIZER, NgZone } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { RouteReuseStrategy } from "@angular/router";
+import { Router, RouteReuseStrategy } from "@angular/router";
 
-import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
+import { IonicModule, IonicRouteStrategy, Platform } from "@ionic/angular";
 import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -32,7 +32,8 @@ import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
-import { AuthModule } from "./auth/auth.module";
+import { AuthModule, loadFactory } from "./auth/auth.module";
+import { AuthService } from "./auth/auth.service";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -46,23 +47,25 @@ import { AuthModule } from "./auth/auth.module";
     ReactiveFormsModule,
     AgmCoreModule.forRoot(),
     SharedModule,
-    AuthModule,
+    AuthModule
   ],
   providers: [
     AccountService,
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [AppConfigService],
-      useFactory: (appConfigService: AppConfigService) => {
+      deps: [AppConfigService, AuthService, Platform, SplashScreen, NgZone, Router],
+      useFactory: (appConfigService: AppConfigService,auth: AuthService, platform: Platform,  splash: SplashScreen, zone: NgZone, router: Router) => {
         const outerPromise = new Promise<void>((resolve, reject) => {
           // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
           // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
-          appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
+          appConfigService.getCached<OrgConfig>("orgConfig").then(async (x) => {
             console.log("load org config", x);
+            
             if (x) {
               appConfigService.orgConfig = x;
-
+              console.log("auth",auth)
+              await loadFactory(appConfigService,platform, splash, zone, auth, router)();
               const script = document.createElement("script");
               script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
               script.async = true;

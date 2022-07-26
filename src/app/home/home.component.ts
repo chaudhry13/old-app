@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { AppConfigService } from "@app/services/app-config.service";
@@ -10,6 +10,9 @@ import {
 import { AuthService } from "../auth/auth.service";
 import { Browser } from "@capacitor/browser";
 import { Platform } from "@ionic/angular";
+import { loadFactory } from "../auth/auth.module";
+import { Router } from "@angular/router";
+import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 
 @Component({
   selector: "app-home",
@@ -23,7 +26,12 @@ export class HomeComponent implements OnInit {
     public auth: AuthService,
     private configService: AppConfigService,
     private toastService: ToastService,
-    private iab: InAppBrowser
+    private iab: InAppBrowser,
+    private router: Router,
+    private ngZone: NgZone,
+    private splashScreen: SplashScreen,
+    private platform: Platform
+
   ) {
     this.form = fb.group({
       orgName: ["", Validators.required],
@@ -44,7 +52,8 @@ export class HomeComponent implements OnInit {
   }
 
   async login() {
-    this.auth.login();
+    loadFactory(this.configService, this.platform, this.splashScreen, this.ngZone, this.auth, this.router)().then(() => this.auth.login())
+    
   }
 
   onConfigSuccess = () => this.login();
