@@ -4,13 +4,11 @@ import rs from 'jsrsasign';
 import { AuthService } from './auth/auth.service';
 import { NgModule, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
-import { StatusBar } from '@capacitor/status-bar';
 import { App } from '@capacitor/app';
 import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
 
-export const configureAuth = async (config: AppConfigService,platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router)  => {
+export const configureAuth = async (config: AppConfigService,platform: Platform, zone: NgZone, auth: AuthService, router: Router)  => {
     const responseType: 'CODE' | 'IMPLICIT' = config.orgConfig.authFlow;
     const authConfig: AuthConfig = authConfigFactory(responseType, config);
 
@@ -41,17 +39,15 @@ export const configureAuth = async (config: AppConfigService,platform: Platform,
 
 export const initAuthListeners = async (platform: Platform,auth: AuthService) => {
  
-  if (platform.is("ios") || platform.is("android")) {
     App.addListener("appUrlOpen", ({ url }) => {
       auth.initLogin().then(() => {
         Browser.close();
       })
       //zone.run(() => {});
     });
-  }
-  else {
+  
     auth.initLogin();
-  }
+  
 }
 
 const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {

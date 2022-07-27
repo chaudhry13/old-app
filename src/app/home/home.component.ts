@@ -12,7 +12,6 @@ import { Browser } from "@capacitor/browser";
 import { Platform } from "@ionic/angular";
 import { configureAuth } from "../auth.init";
 import { Router } from "@angular/router";
-import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 
 @Component({
   selector: "app-home",
@@ -29,7 +28,6 @@ export class HomeComponent implements OnInit {
     private iab: InAppBrowser,
     private router: Router,
     private ngZone: NgZone,
-    private splashScreen: SplashScreen,
     private platform: Platform
   ) {
     this.form = fb.group({
@@ -48,7 +46,6 @@ export class HomeComponent implements OnInit {
       await configureAuth(
         this.configService,
         this.platform,
-        this.splashScreen,
         this.ngZone,
         this.auth,
         this.router

@@ -1,6 +1,5 @@
 import { Component, NgZone } from "@angular/core";
 import { NavController, Platform } from "@ionic/angular";
-import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 import { EMPTY, Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { mergeMap, takeUntil, tap } from "rxjs/operators";
@@ -20,7 +19,6 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private auth: AuthService,
     private deeplinks: Deeplinks,
     public navController: NavController,

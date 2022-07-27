@@ -3,7 +3,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouteReuseStrategy } from "@angular/router";
 
 import { IonicModule, IonicRouteStrategy, Platform } from "@ionic/angular";
-import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -57,7 +56,7 @@ import { beforeAppInit } from "./app.init";
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [AppConfigService, AuthService, Platform, SplashScreen, NgZone, Router],
+      deps: [AppConfigService, AuthService, Platform, NgZone, Router],
       useFactory: beforeAppInit
     },
     File,
@@ -65,7 +64,6 @@ import { beforeAppInit } from "./app.init";
     FileTransfer,
     DocumentViewer,
     AuthGuard,
-    SplashScreen,
     InAppBrowser,
     Device,
     Keyboard,
