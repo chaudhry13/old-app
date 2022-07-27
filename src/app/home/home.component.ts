@@ -10,7 +10,7 @@ import {
 import { AuthService } from "../auth/auth.service";
 import { Browser } from "@capacitor/browser";
 import { Platform } from "@ionic/angular";
-import { loadFactory } from "../auth/auth.module";
+import { configureAuth } from "../auth.init";
 import { Router } from "@angular/router";
 import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 
@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
     private ngZone: NgZone,
     private splashScreen: SplashScreen,
     private platform: Platform
-
   ) {
     this.form = fb.group({
       orgName: ["", Validators.required],
@@ -40,18 +39,23 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {}
 
-  onSubmit($event: Event) {
-    $event.preventDefault();
-    this.setApplicationConfig(this.form.get("orgName").value)
-      .then(() => this.login())
-      .catch((e) => this.toastService.show("Invalid Organization!", "danger"));
-  }
-
-  async setApplicationConfig(orgName: string) {
-    await this.configService.setConfigFromOrgName(orgName);
-  }
-
-  async login() {
-    loadFactory(this.configService, this.platform, this.splashScreen, this.ngZone, this.auth, this.router)().then(() => this.auth.login())
+  async onSubmit($event: Event) {
+    try {
+      $event.preventDefault();
+      await this.configService.setConfigFromOrgName(
+        this.form.get("orgName").value
+      );
+      await configureAuth(
+        this.configService,
+        this.platform,
+        this.splashScreen,
+        this.ngZone,
+        this.auth,
+        this.router
+      );
+      this.auth.login();
+    } catch (e) {
+      this.toastService.show("Invalid Organization!", "danger");
+    }
   }
 }

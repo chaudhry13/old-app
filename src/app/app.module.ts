@@ -32,9 +32,11 @@ import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
-import { AuthModule, loadFactory } from "./auth/auth.module";
+import { configureAuth, initAuthListeners } from "./auth.init";
 import { AuthService } from "./auth/auth.service";
 import { StatusBar } from "@capacitor/status-bar";
+import { OAuthModule } from "angular-oauth2-oidc";
+import { beforeAppInit } from "./app.init";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -48,7 +50,7 @@ import { StatusBar } from "@capacitor/status-bar";
     ReactiveFormsModule,
     AgmCoreModule.forRoot(),
     SharedModule,
-    AuthModule
+    OAuthModule.forRoot(),
   ],
   providers: [
     AccountService,
@@ -56,34 +58,7 @@ import { StatusBar } from "@capacitor/status-bar";
       provide: APP_INITIALIZER,
       multi: true,
       deps: [AppConfigService, AuthService, Platform, SplashScreen, NgZone, Router],
-      useFactory: (appConfigService: AppConfigService,auth: AuthService, platform: Platform,  splash: SplashScreen, zone: NgZone, router: Router) => {
-        const outerPromise = new Promise<void>((resolve, reject) => {
-          // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
-          // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
-          appConfigService.getCached<OrgConfig>("orgConfig").then(async (x) => {
-            console.log("load org config", x);
-            
-            if (x) {
-              appConfigService.orgConfig = x;
-              console.log("auth",auth)
-              await (loadFactory(appConfigService,platform, splash, zone, auth, router)());
-              const script = document.createElement("script");
-              script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
-              script.async = true;
-              script.defer = true;
-              document.body.appendChild(script);
-              script.onload = () => resolve();
-              script.onerror = () => resolve();
-            } else {
-              auth.initLogin();
-             resolve();
-              
-            }
-          });
-        });
-
-        return () => outerPromise;
-      },
+      useFactory: beforeAppInit
     },
     File,
     FileOpener,

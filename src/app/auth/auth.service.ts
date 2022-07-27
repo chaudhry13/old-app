@@ -1,23 +1,13 @@
 import { Injectable } from "@angular/core";
-import { OrgConfig } from "@app/interfaces/org-config";
 import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
-import { LoginResponse, OidcSecurityService } from "angular-auth-oidc-client";
 import {  AuthConfig, OAuthService } from "angular-oauth2-oidc";
-import { stringify } from "querystring";
 import {
   BehaviorSubject,
   combineLatest,
-  EMPTY,
-  forkJoin,
-  from,
-  NEVER,
-  Observable,
-  of,
-  throwError,
 } from "rxjs";
-import { catchError, filter, map, switchMap, tap } from "rxjs/operators";
+import { filter, map, tap } from "rxjs/operators";
 import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @Injectable({
@@ -32,10 +22,8 @@ export class AuthService {
     return this._user;
   }
 
- 
   public isDoneLoading$ = this.isDoneLoading.asObservable();
   public isAuthenticated$ = this.isAuthenticated.asObservable();
-
 
   public canLoadInGuard$ = combineLatest([this.isAuthenticated$, this.isDoneLoading$]).pipe(
     filter(([isAuthenticated, isDoneLoading]) => isDoneLoading),
@@ -80,10 +68,6 @@ export class AuthService {
       .subscribe();
   }
 
-  clearLocalSession() {
-    this.isAuthenticated.next(false);
-  }
-
   async logout() {
     if(!this.config.orgConfig.logoutUrl && !this.config.orgConfig.useDiscovery) return;
 
@@ -118,10 +102,6 @@ export class AuthService {
     this.auth.tokenValidationHandler = new JwksValidationHandler();
   }
 
-  /**
-   *
-   * @returns Access token for authenticated user.
-   */
   getAccessToken() {
     return this.auth.getAccessToken();
   }
@@ -132,17 +112,12 @@ export class AuthService {
     if (isAuthenticated) {
       const userInfo = await this.userService.getUserInfo().toPromise();
       this._user = userInfo;
-      //console.log('User info: ', userInfo);
     }
     this.isAuthenticated.next(isAuthenticated);
   }
 
   loadDiscoveryDocument() {
     return this.auth.loadDiscoveryDocument();
-  }
-
-  getLogoutUrl() {
-    return this.auth.logoutUrl;
   }
 
 }
