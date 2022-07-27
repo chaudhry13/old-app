@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
   onSubmit($event: Event) {
     $event.preventDefault();
     this.setApplicationConfig(this.form.get("orgName").value)
-      .then(this.onConfigSuccess)
+      .then(() => this.login())
       .catch((e) => this.toastService.show("Invalid Organization!", "danger"));
   }
 
@@ -53,9 +53,5 @@ export class HomeComponent implements OnInit {
 
   async login() {
     loadFactory(this.configService, this.platform, this.splashScreen, this.ngZone, this.auth, this.router)().then(() => this.auth.login())
-    
   }
-
-  onConfigSuccess = () => this.login();
-
 }

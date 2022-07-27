@@ -42,7 +42,6 @@ export class AppConfigService {
   }
 
   public async setConfigFromOrgName(orgName: string) {
-    console.log('env', environment);
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(

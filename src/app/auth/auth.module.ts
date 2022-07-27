@@ -1,19 +1,17 @@
-import { AuthConfig, OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { AuthConfig, OAuthModule } from 'angular-oauth2-oidc';
 import { AppConfigService } from "@app/services/app-config.service";
 import rs from 'jsrsasign';
 import { AuthService } from './auth.service';
-import { APP_INITIALIZER, NgModule, NgZone } from '@angular/core';
+import { NgModule, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
 import { StatusBar } from '@capacitor/status-bar';
 import { App } from '@capacitor/app';
-import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Browser } from '@capacitor/browser';
-import { OrgConfig } from '@app/interfaces/org-config';
 
 
-const orgConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {
+const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {
   if (responseType === 'CODE') {
     return {
       issuer: config.orgConfig.authServer,
@@ -28,7 +26,6 @@ const orgConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigSe
       responseType: 'code',
       strictDiscoveryDocumentValidation: false,
       openUri: (uri: string) => {
-        console.log("openUri", uri);
         Browser.open({ url: uri, windowName: "_self" })
       },
     };
@@ -44,6 +41,8 @@ const orgConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigSe
       },
       scope: `openid email ${config.orgConfig.apiAudience}`,
       showDebugInformation: true,
+      openUri: (uri: string) => {
+        Browser.open({ url: uri, windowName: "_self" })}
     };
   } else throw new Error('Unexpected response type!');
 };
@@ -60,9 +59,8 @@ const createJWKFromPem = (pem: string, kid: string = null): any => {
 };
 
 export const loadFactory = (config: AppConfigService,platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => async () => {
-  console.log(auth)
     const responseType: 'CODE' | 'IMPLICIT' = config.orgConfig.authFlow;
-    const authConfig: AuthConfig = orgConfigFactory(responseType, config);
+    const authConfig: AuthConfig = authConfigFactory(responseType, config);
 
     // if not using discovery, then we need to manbually set some params
     if(!config.orgConfig.useDiscovery) {
@@ -88,55 +86,50 @@ export const loadFactory = (config: AppConfigService,platform: Platform, splashS
     if (config.orgConfig.silentRefresh) auth.initAutomaticSilentRefresh();
     if (responseType === 'IMPLICIT') auth.setValidationHandler();
     
-    return initialize(platform, splashScreen, zone, auth, router);
+    initAuthListeners(platform, splashScreen, zone, auth, router);
 
 };
 
-const initialize = (platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => {
-  console.log("initialize")
-  return platform.ready().then((x) => {
-    console.log("platofrm ready")
-
-    splashScreen.hide();
-
-    if (platform.is("android"))
-      StatusBar.setOverlaysWebView({ overlay: false });
-
+const initAuthListeners = async (platform: Platform, splashScreen: SplashScreen, zone: NgZone, auth: AuthService, router: Router) => {
+  const x = await platform.ready();
+  splashScreen.hide();
+  if (platform.is("android"))
+    StatusBar.setOverlaysWebView({ overlay: false });
+  if (platform.is("ios") || platform.is("android")) {
     App.addListener("appUrlOpen", ({ url }) => {
       // Must run inside an NgZone for Angular to pick up the changes
       // https://capacitorjs.com/docs/guides/angular
       console.log("opened", url);
       zone.run(() => {
         if (url?.startsWith("com.humanrisks://login")) {
-          if (
-            url.includes("state=") &&
-            (url.includes("error=") || url.includes("code="))
-          ) {
+          if (url.includes("state=") &&
+            (url.includes("error=") || url.includes("code="))) {
 
             auth
               .initLogin()
-              .then(x => {
-                console.log(x);
-                router.navigate(["/tabs/tab1"]);
-                if (platform.is("ios")) Browser.close();
+              .then(x_1 => {
+                // console.log(x);
+                // router.navigate(["/tabs/tab1"]);
+                if (platform.is("ios"))
+                  Browser.close();
               }
-                 
+
               );
           } else {
-            if (platform.is("ios")) Browser.close();
+            if (platform.is("ios"))
+              Browser.close();
           }
         } else if (url?.startsWith("com.humanrisks://logout")) {
-          // Call handleRedirectCallback and close the browser
-          auth.logout().then((x) => {
-            console.log("checkauth after logut", x);
-            router.navigate(["/home"]);
-            if (platform.is("ios")) Browser.close();
-          });
+          auth.clearLocalSession();
+          if (platform.is("ios"))
+            Browser.close();
         }
       });
     });
-    return x;
-  });
+  }
+  else {
+    auth.initLogin();
+  }
 }
 
 @NgModule({

@@ -34,6 +34,7 @@ import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
 import { AuthModule, loadFactory } from "./auth/auth.module";
 import { AuthService } from "./auth/auth.service";
+import { StatusBar } from "@capacitor/status-bar";
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -65,7 +66,7 @@ import { AuthService } from "./auth/auth.service";
             if (x) {
               appConfigService.orgConfig = x;
               console.log("auth",auth)
-              await loadFactory(appConfigService,platform, splash, zone, auth, router)();
+              await (loadFactory(appConfigService,platform, splash, zone, auth, router)());
               const script = document.createElement("script");
               script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
               script.async = true;
@@ -74,7 +75,9 @@ import { AuthService } from "./auth/auth.service";
               script.onload = () => resolve();
               script.onerror = () => resolve();
             } else {
-              resolve();
+              auth.initLogin();
+             resolve();
+              
             }
           });
         });

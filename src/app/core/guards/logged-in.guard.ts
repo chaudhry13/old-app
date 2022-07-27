@@ -17,9 +17,8 @@ export class LoggedInGuard implements CanActivate {
   constructor(private auth: AuthService, public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.auth.isAuthenticated$.pipe(
-      map(( isAuthenticated ) => {
-        console.log('is auth in logged-in', isAuthenticated);
+    return this.auth.canLoadInGuard$.pipe(
+      map(( {isAuthenticated} ) => {
         if (isAuthenticated) {
           this.router.navigate(["tabs/tab1"]);
           return false;

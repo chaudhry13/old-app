@@ -8,8 +8,6 @@ import { Division } from "@app/models/division";
 import { DivisionList } from "@shared/models/division-list";
 import { AuthService } from "src/app/auth/auth.service";
 import { Browser } from "@capacitor/browser";
-import { from } from "rxjs";
-import { switchMap, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-profile",
@@ -41,23 +39,12 @@ export class ProfilePage implements OnInit {
     this.divisionList.asFilter = false;
     this.divisionList.toplevelDivisions = [];
     this.divisionService.list().then((data) => {
-      this.divisions = data.filter(d => !d.individualDivision);
+      this.divisions = data.filter((d) => !d.individualDivision);
       this.divisionList.makeDivisionNodes(this.divisions);
     });
   }
 
   logout() {
-
-this.auth.logout
+    this.auth.logout();
   }
-
-  completeLogout = (token: string) => {
-    let url = this.auth.getLogoutUrl();
-
-    return from(this.openCapacitorSite(url));
-  };
-
-  openCapacitorSite = async (url: string) => {
-    await Browser.open({ url, windowName: "_self" });
-  };
 }

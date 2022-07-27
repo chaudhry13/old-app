@@ -80,12 +80,15 @@ export class AuthService {
       .subscribe();
   }
 
+  clearLocalSession() {
+    this.isAuthenticated.next(false);
+  }
 
   async logout() {
-    window['Intercom']('shutdown');
     if(!this.config.orgConfig.logoutUrl && !this.config.orgConfig.useDiscovery) return;
 
     if (this.config.orgConfig.useDiscovery && this.config.orgConfig.revocationUrl || (this.config.orgConfig.logoutUrl && this.config.orgConfig.revocationUrl)) {
+
       await this.auth.revokeTokenAndLogout(
         {
           client_id: this.auth.clientId,
