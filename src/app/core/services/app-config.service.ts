@@ -57,7 +57,7 @@ export class AppConfigService {
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://localhost:5000/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://staging-api.humanrisks.com/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
