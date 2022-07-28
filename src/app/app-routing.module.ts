@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { AuthGuard } from "@app/guards/auth.guard";
 import { LoggedInGuard } from "@app/guards/logged-in.guard";
-import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { ErrorPageComponent } from "./error-page/error-page.component";
 import { HomeComponent } from "./home/home.component";
 
@@ -36,7 +35,6 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
   providers: [
-    Deeplinks
   ]
 })
 export class AppRoutingModule {}

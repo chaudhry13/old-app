@@ -3,7 +3,6 @@ import { NavController, Platform } from "@ionic/angular";
 import { EMPTY, Subject } from "rxjs";
 import { AuthService } from "./auth/auth.service";
 import { mergeMap, takeUntil, tap } from "rxjs/operators";
-import { Deeplinks } from "@awesome-cordova-plugins/deeplinks/ngx";
 import { Router } from "@angular/router";
 import { App, URLOpenListenerEvent } from "@capacitor/app";
 import { ToastService } from "@app/services/toast.service";
@@ -20,7 +19,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private auth: AuthService,
-    private deeplinks: Deeplinks,
     public navController: NavController,
     private router: Router,
     private zone: NgZone,

@@ -14,9 +14,9 @@ dependencies {
     implementation project(':capacitor-camera')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
-    implementation "com.android.support:support-v4:27.+"
+
 }
-apply from: "../../node_modules/cordova-plugin-qrscanner/src/android/qrscanner.gradle"
+
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()
