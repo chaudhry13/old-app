@@ -10,7 +10,7 @@ import { Browser } from '@capacitor/browser';
 
 export const configureAuth = async (config: AppConfigService,platform: Platform, zone: NgZone, auth: AuthService, router: Router)  => {
     const responseType: 'CODE' | 'IMPLICIT' = config.orgConfig.authFlow;
-    const authConfig: AuthConfig = authConfigFactory(responseType, config);
+    const authConfig: AuthConfig = authConfigFactory(responseType, config, platform);
 
     // if not using discovery, then we need to manbually set some params
     if(!config.orgConfig.useDiscovery) {
@@ -37,25 +37,31 @@ export const configureAuth = async (config: AppConfigService,platform: Platform,
     if (responseType === 'IMPLICIT') auth.setValidationHandler();
 };
 
-export const initAuthListeners = async (platform: Platform,auth: AuthService) => {
- 
+export const initAuthListeners = async (platform: Platform,auth: AuthService, zone: NgZone, router: Router) => {
+  console.log('initAuthListeners');
     App.addListener("appUrlOpen", ({ url }) => {
-      auth.initLogin().then(() => {
-        Browser.close();
-      })
-      //zone.run(() => {});
+      console.log('appUrlOpen', url);
+      
+      zone.run(async () => {
+        const hash = url.substring(url.indexOf('?'));
+        console.log('hash', hash);
+        await auth.initLogin(hash)
+        platform.is('ios') && await Browser.close();
+        router.navigate(['/tabs/tab1']);
+      });
     });
   
     auth.initLogin();
   
 }
 
-const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService): AuthConfig => {
+const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigService, platform: Platform): AuthConfig => {
   if (responseType === 'CODE') {
     return {
       issuer: config.orgConfig.authServer,
       logoutUrl: config.orgConfig.logoutUrl,
-      redirectUri: window.location.origin,
+      redirectUri: (!platform.is('ios') && !platform.is('android')) ? window.location.origin : "com.humanrisks://login",
+      postLogoutRedirectUri: (!platform.is('ios') && !platform.is('android')) ? window.location.origin : "com.humanrisks://logout",
       clientId: config.orgConfig.clientId,
       customQueryParams: {
         audience: config.orgConfig.apiAudience,
@@ -72,8 +78,9 @@ const authConfigFactory = (responseType: 'CODE' | 'IMPLICIT', config: AppConfigS
     return {
       issuer: config.orgConfig.authServer,
       logoutUrl: config.orgConfig.logoutUrl,
-      redirectUri: window.location.origin,
-      silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
+      redirectUri: (!platform.is('ios') && !platform.is('android')) ? window.location.origin : "com.humanrisks://login",
+      silentRefreshRedirectUri: ((!platform.is('ios') && !platform.is('android')) ? (window.location.origin + "/") : "com.humanrisks://") + 'silent-refresh.html',
+      postLogoutRedirectUri: (!platform.is('ios') && !platform.is('android')) ? window.location.origin : "com.humanrisks://logout",
       clientId: config.orgConfig.clientId,
       customQueryParams: {
         audience: config.orgConfig.apiAudience,

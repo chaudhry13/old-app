@@ -40,10 +40,9 @@ export class AuthService {
     this.auth.setupAutomaticSilentRefresh();
   }
 
-  async initLogin() {
-
-    await this.auth.tryLogin();
-
+  async initLogin(customFragment?: string) {
+    customFragment ? await this.auth.tryLogin({customHashFragment: customFragment}) : await this.auth.tryLogin();
+    
     this.getUserIfAuthenticated()
       .catch(() => {
         this.logout();
@@ -76,7 +75,7 @@ export class AuthService {
       await this.auth.revokeTokenAndLogout(
         {
           client_id: this.auth.clientId,
-          returnTo: this.auth.redirectUri,
+          returnTo: this.auth.postLogoutRedirectUri,
         },
         true
       );
@@ -84,7 +83,7 @@ export class AuthService {
     } else if(this.config.orgConfig.useDiscovery || this.config.orgConfig.logoutUrl) {
       this.auth.logOut({
         client_id: this.auth.clientId,
-        returnTo: this.auth.redirectUri,
+        returnTo: this.auth.postLogoutRedirectUri,
       });
       this.isAuthenticated.next(false);
     }
@@ -108,6 +107,7 @@ export class AuthService {
 
   private async getUserIfAuthenticated() {
     const isAuthenticated = this.auth.hasValidIdToken();
+    console.log('isAuthenticated', isAuthenticated);
 
     if (isAuthenticated) {
       const userInfo = await this.userService.getUserInfo().toPromise();

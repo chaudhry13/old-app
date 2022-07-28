@@ -30,7 +30,7 @@ export const beforeAppInit = (
         if (x) {
           appConfigService.orgConfig = x;
           await configureAuth(appConfigService, platform, zone, auth, router);
-          await initAuthListeners(platform, auth);
+          await initAuthListeners(platform, auth, zone, router);
           const script = document.createElement("script");
           script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
           script.async = true;
@@ -39,7 +39,7 @@ export const beforeAppInit = (
           script.onload = () => resolve();
           script.onerror = () => resolve();
         } else {
-          await initAuthListeners(platform, auth);
+          await initAuthListeners(platform, auth, zone, router);
           console.log("default home route");
           resolve();
         }
