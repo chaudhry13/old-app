@@ -23,7 +23,6 @@
 
     <div *ngFor="let sectionControl of formSections.controls">
         <div *ngFor="let buildingComponent of sectionControl.controls?.buildingComponents?.controls">
-          <!--
           <ng-container [ngSwitch]="buildingComponent?.value?.type">
 
             <ng-container *ngSwitchCase="BuildingComponentType.Dropdown">
@@ -31,7 +30,7 @@
                       [id]="buildingComponent.value.id"
                       [formControl]="buildingComponent"></app-drop-down-building-component>
             </ng-container>
-
+            <!--
             <ng-container *ngSwitchCase="BuildingComponentType.Text">
               <app-text-building-component
                       [id]="buildingComponent.value.id"
@@ -57,11 +56,10 @@
                       [id]="buildingComponent.value.id"
                       [formControl]="buildingComponent"></app-number-building-component>
             </ng-container>
+            -->
 
             <div *ngSwitchDefault></div>
-
           </ng-container>
-          -->
         </div>
 
       </div>
