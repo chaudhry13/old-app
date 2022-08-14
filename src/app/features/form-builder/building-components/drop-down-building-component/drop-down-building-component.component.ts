@@ -32,16 +32,21 @@ import {map, takeUntil} from "rxjs/operators";
     },
   ],
 })
-export class DropDownBuildingComponentComponent implements ControlValueAccessor, Validator {
+export class DropDownBuildingComponentComponent implements ControlValueAccessor, Validator, OnInit {
   @Input() viewOnly: boolean = false;
 
   textDropDownComponent: FormGroup;
   options: DropDownListItem[] = [];
 
   // Need to use a seperate control to handle dropdown options being a string[] or string. If we use main form, it doesnt work.
-  testControl: FormControl = this.formBuilder.control(null);
+  public testControl: FormControl;
 
   private unsub$ = new Subject();
+
+  get dropDownOptions(): FormGroup {
+    console.log(this.textDropDownComponent.get('dropDownOptions') as FormGroup);
+    return this.textDropDownComponent.get('dropDownOptions') as FormGroup;
+  }
 
   constructor(private formBuilder: FormBuilder) {
     this.textDropDownComponent = this.formBuilder.group({
@@ -53,6 +58,7 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
         value: { value: '', disabled: false },
       }),
     });
+    this.testControl = this.formBuilder.control(null);
   }
   ngOnInit(): void {
     if (this.viewOnly) {
@@ -84,6 +90,8 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
     this.textDropDownComponent.patchValue(obj, { emitEvent: false });
     this.options = obj.dropDownOptions?.options ?? [];
     this.options = this.options.slice(0); // Trigger change detection
+    console.log(this.testControl.value);
+
   }
 
   registerOnChange(fn: any): void {
