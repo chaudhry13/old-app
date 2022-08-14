@@ -97,12 +97,15 @@ export class IncidentReportCreatePage implements OnInit {
 
   public submitForm() {
     if (this.incidentForm.valid && this.customFormSection.valid) {
-      this.insertIncidentReport();
+       this.createCustomFormIfExists().then(id => {
+        this.insertIncidentReport(id);
+      })
+
     }
   }
 
-  private insertIncidentReport() {
-    this.incidentReportService.insert(this.incidentForm.value).then((id) => {
+  private insertIncidentReport(customFormId: string) {
+    this.incidentReportService.insert({...this.incidentForm.value, customFormId: customFormId}).then((id) => {
       this.navigateToNewReport(id);
     });
   }
