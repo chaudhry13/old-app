@@ -6,6 +6,7 @@ import {
     DropDownBuildingComponentComponent
 } from "./building-components/drop-down-building-component/drop-down-building-component.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import {SharedModule} from "@shared/shared.module";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {ReactiveFormsModule} from "@angular/forms";
   ],
     imports: [
         CommonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SharedModule
     ],
   exports: [FormAnswerComponent],
 })
