@@ -5,6 +5,7 @@ import {FormAnswerComponent} from "./form-answer/form-answer.component";
 import {
     DropDownBuildingComponentComponent
 } from "./building-components/drop-down-building-component/drop-down-building-component.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -13,9 +14,10 @@ import {
     FormAnswerComponent,
       DropDownBuildingComponentComponent
   ],
-  imports: [
-      CommonModule
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule
+    ],
   exports: [FormAnswerComponent],
 })
 export class FormBuilderModule { }
