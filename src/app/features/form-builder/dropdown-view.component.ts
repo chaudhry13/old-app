@@ -4,12 +4,18 @@ import {Component, Input, OnInit} from "@angular/core";
 @Component({
     selector: "app-dropdown-view",
     template: `
-    <span class="badge badge-pill badge-primary p1 mr-2" *ngFor="let label of labels">{{
-          label
-        }}</span>
+    <ion-card-header>
+        <ion-card-subtitle>{{bc.label}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+        <ng-container *ngFor="let label of labels">
+            <ion-badge style="margin-right: 5px">
+                {{ label}}
+            </ion-badge>
+        </ng-container>
+    </ion-card-content>
+    
   `,
-    styles: [
-    ]
 })
 export class DropdownViewComponent implements OnInit {
     @Input() bc: DropDownBuildingComponent;

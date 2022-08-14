@@ -38,6 +38,76 @@
     ></default-report-details>
   </ng-container>
 
+  <!-- Custom form -->
+
+  <ng-container *ngIf="formDto">
+    <ng-container *ngFor="let section of formDto?.formSections">
+      <ng-container *ngFor="let buildingComponent of section?.buildingComponents">
+
+        <ng-container [ngSwitch]="buildingComponent?.type">
+
+          <app-dropdown-view *ngSwitchCase="BuildingComponentType.Dropdown"
+                             [bc]="buildingComponent">
+          </app-dropdown-view>
+
+
+          <!--
+          <ng-container *ngSwitchCase="BuildingComponentType.Text">
+            <div class=" card">
+              <div class="card-header"> {{ buildingComponent.label }} </div>
+              <div class="card-body">
+                <div>{{ parse(buildingComponent) }}</div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="BuildingComponentType.TextArea">
+            <div class=" card">
+              <div class="card-header"> {{ buildingComponent.label }} </div>
+              <div class="card-body">
+                <div>{{ parse(buildingComponent) }}</div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="BuildingComponentType.Date">
+            <div class=" card">
+              <div class="card-header"> {{ buildingComponent.label }} </div>
+              <div class="card-body">
+                <div>{{ parse(buildingComponent) }}</div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="BuildingComponentType.Number">
+            <div class=" card">
+              <div class="card-header"> {{ buildingComponent.label }} </div>
+              <div class="card-body">
+                <div>{{ parse(buildingComponent) }}</div>
+              </div>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="BuildingComponentType.Location">
+            <div class=" card">
+              <div class="card-header"> {{ buildingComponent.label }} </div>
+              <div class="card-body">
+                <app-location-view [locationBc]="buildingComponent"></app-location-view>
+              </div>
+            </div>
+          </ng-container>
+          -->
+
+          <div *ngSwitchDefault></div>
+        </ng-container>
+
+      </ng-container>
+    </ng-container>
+
+  </ng-container>
+
+  <!-- Custom form end -->
+
   <ion-card-content style="color: lightgray; font-size: small">
     {{ incidentReport.id }}
   </ion-card-content>
