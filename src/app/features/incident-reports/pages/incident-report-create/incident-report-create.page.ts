@@ -80,6 +80,8 @@ export class IncidentReportCreatePage implements OnInit {
   ngOnInit() {
     this.getDataToPopulateForm();
     // Use this when testing -> this.subscribeToIncidentReportChanges();
+
+    this.loadCustomFormTemplateIfExistsAndResetIds();
   }
 
   ngOnDestroy() {
@@ -94,7 +96,7 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   public submitForm() {
-    if (this.incidentForm.valid) {
+    if (this.incidentForm.valid && this.customFormSection.valid) {
       this.insertIncidentReport();
     }
   }
@@ -174,6 +176,13 @@ export class IncidentReportCreatePage implements OnInit {
           this.customFormSection.setValidators(x ? Validators.required : null);
           this.customFormSection.updateValueAndValidity({ emitEvent: false });
         });
+  }
+
+  private async createCustomFormIfExists() {
+    if (this.customFormSection.value) {
+      return await this.fbs.createFormInstance(this.customFormSection.value).toPromise();
+    }
+    else return null;
   }
 
 }
