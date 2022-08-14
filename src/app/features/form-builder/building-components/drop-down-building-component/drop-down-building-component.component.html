@@ -1,18 +1,14 @@
 <form [formGroup]="dropDownOptions">
-  <ion-list>
-    <ion-item>
-      <ion-label>{{ textDropDownComponent.value.label }}</ion-label>
-      <ion-select>
-        <ion-select
-                formControlName="testControl"
-                [multiple]="textDropDownComponent.value.dropDownOptions?.multiple"
-                cancelText="Cancel"
-                okText="Okay!">
-          <ion-select-option *ngFor="let option of options" value="{{ option.id }}">
-            {{ option.label }}
-          </ion-select-option>
-        </ion-select>
-      </ion-select>
-    </ion-item>
-  </ion-list>
+  <ion-item>
+    <ion-label position="stacked">{{ textDropDownComponent.value.label }}</ion-label>
+    <ion-select
+            formControlName="testControl"
+            [multiple]="textDropDownComponent.value.dropDownOptions?.multiple"
+            cancelText="Cancel"
+            okText="Okay!">
+      <ion-select-option *ngFor="let option of options" value="{{ option.id }}">
+        {{ option.label }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
 </form>
