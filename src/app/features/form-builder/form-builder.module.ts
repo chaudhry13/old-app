@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {EvalLogicPipe} from "./form-answer/eval-logic.pipe";
 
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    EvalLogicPipe,
+  ],
   imports: [
     CommonModule
   ]
