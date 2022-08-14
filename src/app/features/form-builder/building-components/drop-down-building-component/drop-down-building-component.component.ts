@@ -44,7 +44,6 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
   private unsub$ = new Subject();
 
   get dropDownOptions(): FormGroup {
-    console.log(this.textDropDownComponent.get('dropDownOptions') as FormGroup);
     return this.textDropDownComponent.get('dropDownOptions') as FormGroup;
   }
 
@@ -90,8 +89,6 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
     this.textDropDownComponent.patchValue(obj, { emitEvent: false });
     this.options = obj.dropDownOptions?.options ?? [];
     this.options = this.options.slice(0); // Trigger change detection
-    console.log(this.testControl.value);
-
   }
 
   registerOnChange(fn: any): void {
