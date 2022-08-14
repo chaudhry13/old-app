@@ -8,13 +8,15 @@ import {
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
 import {IonicModule} from "@ionic/angular";
+import {DropdownViewComponent} from "./dropdown-view.component";
 
 
 @NgModule({
   declarations: [
       EvalLogicPipe,
     FormAnswerComponent,
-      DropDownBuildingComponentComponent
+      DropDownBuildingComponentComponent,
+      DropdownViewComponent
   ],
     imports: [
         CommonModule,
@@ -22,6 +24,6 @@ import {IonicModule} from "@ionic/angular";
         SharedModule,
         IonicModule
     ],
-  exports: [FormAnswerComponent],
+    exports: [FormAnswerComponent, DropdownViewComponent],
 })
 export class FormBuilderModule { }
