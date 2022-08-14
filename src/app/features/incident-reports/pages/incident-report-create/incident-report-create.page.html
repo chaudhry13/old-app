@@ -54,6 +54,15 @@
       </ion-item>
     </ion-list>
   </form>
+
+  <!-- Formbuilder content -->
+  <ng-container *ngIf="customFormSection.value">
+    <app-form-answer [hideTitle]="true" [formControl]="customFormSection"></app-form-answer>
+  </ng-container>
+
+  <!-- Formbuilder content end -->
+
+
   <ng-container [ngSwitch]="formType">
     <div *ngSwitchCase="'crane-incident'">
       <investigation-report-form [incidentForm]="incidentForm">
@@ -68,6 +77,9 @@
       <default-report-form [incidentForm]="incidentForm"></default-report-form>
     </div>
   </ng-container>
+
+
+
   <div class="ion-padding-bottom">
     <ion-button
       class="ion-padding-top ion-padding-bottom"
