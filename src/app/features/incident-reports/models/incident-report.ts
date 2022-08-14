@@ -58,6 +58,7 @@ export class IncidentReport {
   customField7: string;
 
   icon: string;
+  customFormId:string;
 
   constructor() {
     this.files = new Array<Attachment>();
