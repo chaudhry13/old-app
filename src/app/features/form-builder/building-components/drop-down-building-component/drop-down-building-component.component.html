@@ -1,18 +1,3 @@
-<form [formGroup]="textDropDownComponent.get('dropDownOptions')">
-
-  <div class="input-group mb-1">
-    <ng-select
-            class="full-width"
-            [(items)]="options"
-            bindLabel="label"
-            bindValue="id"
-            [multiple]="textDropDownComponent.value.dropDownOptions?.multiple"
-            [closeOnSelect]="!textDropDownComponent.value.dropDownOptions?.multiple"
-            [clearable]="textDropDownComponent.value.dropDownOptions?.clearable"
-            >
-    </ng-select>
-  </div>
-
 <form [formGroup]="dropDownOptions">
   <ion-list>
     <ion-item>
