@@ -21,36 +21,39 @@
     <ng-container *ngFor="let sectionControl of formSections.controls">
       <ng-container *ngFor="let buildingComponent of sectionControl.controls?.buildingComponents?.controls">
         <ng-container [ngSwitch]="buildingComponent?.value?.type">
-          <ng-container *ngSwitchCase="BuildingComponentType.Dropdown">
 
-            <app-drop-down-building-component
-                    [id]="buildingComponent.value.id"
-                    [formControl]="buildingComponent">
-            </app-drop-down-building-component>
+          <app-drop-down-building-component *ngSwitchCase="BuildingComponentType.Dropdown"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-drop-down-building-component>
 
-            <app-text-building-component
-                    [id]="buildingComponent.value.id"
-                    [formControl]="buildingComponent">
-            </app-text-building-component>
+          <app-text-building-component *ngSwitchCase="BuildingComponentType.Text"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-text-building-component>
 
-            <app-text-area-building-component
-                    [id]="buildingComponent.value.id"
-                    [formControl]="buildingComponent">
-            </app-text-area-building-component>
+          <app-text-area-building-component *ngSwitchCase="BuildingComponentType.TextArea"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-text-area-building-component>
 
-            <app-date-building-component
-                    [id]="buildingComponent.value.id"
-                    [formControl]="buildingComponent">
-            </app-date-building-component>
+          <app-date-building-component *ngSwitchCase="BuildingComponentType.Date"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-date-building-component>
 
-            <app-number-building-component
-                    [id]="buildingComponent.value.id"
-                    [formControl]="buildingComponent">
-            </app-number-building-component>
+          <app-number-building-component *ngSwitchCase="BuildingComponentType.Number"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-number-building-component>
 
+          <app-location-building-component *ngSwitchCase="BuildingComponentType.Location"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-location-building-component>
 
-            <div *ngSwitchDefault></div>
-          </ng-container>
+          <div *ngSwitchDefault></div>
+
         </ng-container>
       </ng-container>
     </ng-container>
