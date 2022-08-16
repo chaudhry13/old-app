@@ -27,6 +27,7 @@ import {
 import {FormAnswerViewComponent} from "./form-answer-view/form-answer-view.component";
 import {ParseViewComponent} from "./form-answer-view/views/parse-view.component";
 import {AgmCoreModule} from "@agm/core";
+import {LocationViewComponent} from "./form-answer-view/views/location-view.component";
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {AgmCoreModule} from "@agm/core";
       LocationBuildingComponentComponent,
       FormAnswerViewComponent,
       ParseViewComponent,
+      LocationViewComponent,
 
   ],
     imports: [
