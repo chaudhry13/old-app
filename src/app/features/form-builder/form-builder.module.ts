@@ -25,6 +25,8 @@ import {
     LocationBuildingComponentComponent
 } from "./building-components/location-building-component/location-building-component.component";
 import {FormAnswerViewComponent} from "./form-answer-view/form-answer-view.component";
+import {ParseViewComponent} from "./form-answer-view/views/parse-view.component";
+import {AgmCoreModule} from "@agm/core";
 
 
 @NgModule({
@@ -38,14 +40,16 @@ import {FormAnswerViewComponent} from "./form-answer-view/form-answer-view.compo
       DateBuildingComponentComponent,
       NumberBuildingComponentComponent,
       LocationBuildingComponentComponent,
-      FormAnswerViewComponent
+      FormAnswerViewComponent,
+      ParseViewComponent,
 
   ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         SharedModule,
-        IonicModule
+        IonicModule,
+        AgmCoreModule
     ],
     exports: [FormAnswerComponent, DropdownViewComponent, FormAnswerViewComponent],
 })
