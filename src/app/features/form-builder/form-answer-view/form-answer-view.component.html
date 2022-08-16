@@ -1,0 +1,62 @@
+<ng-container *ngFor="let section of formDto?.formSections">
+  <ng-container *ngFor="let buildingComponent of section?.buildingComponents">
+
+    <ng-container [ngSwitch]="buildingComponent?.type">
+
+      <app-dropdown-view *ngSwitchCase="BuildingComponentType.Dropdown"
+                         [bc]="buildingComponent">
+      </app-dropdown-view>
+
+      <div *ngSwitchCase="BuildingComponentType.Text" class=" card">
+        <ion-card-header>
+          <ion-card-subtitle> {{ buildingComponent.label }} </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div>{{ parse(buildingComponent) }}</div>
+        </ion-card-content>
+      </div>
+
+
+      <!--
+      <ng-container *ngSwitchCase="BuildingComponentType.TextArea">
+        <div class=" card">
+          <div class="card-header"> {{ buildingComponent.label }} </div>
+          <div class="card-body">
+            <div>{{ parse(buildingComponent) }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="BuildingComponentType.Date">
+        <div class=" card">
+          <div class="card-header"> {{ buildingComponent.label }} </div>
+          <div class="card-body">
+            <div>{{ parse(buildingComponent) }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="BuildingComponentType.Number">
+        <div class=" card">
+          <div class="card-header"> {{ buildingComponent.label }} </div>
+          <div class="card-body">
+            <div>{{ parse(buildingComponent) }}</div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="BuildingComponentType.Location">
+        <div class=" card">
+          <div class="card-header"> {{ buildingComponent.label }} </div>
+          <div class="card-body">
+            <app-location-view [locationBc]="buildingComponent"></app-location-view>
+          </div>
+        </div>
+      </ng-container>
+      -->
+
+      <div *ngSwitchDefault></div>
+    </ng-container>
+
+  </ng-container>
+</ng-container>
