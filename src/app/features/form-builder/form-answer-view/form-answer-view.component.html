@@ -7,43 +7,22 @@
                          [bc]="buildingComponent">
       </app-dropdown-view>
 
-      <div *ngSwitchCase="BuildingComponentType.Text" class=" card">
-        <ion-card-header>
-          <ion-card-subtitle> {{ buildingComponent.label }} </ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <div>{{ parse(buildingComponent) }}</div>
-        </ion-card-content>
-      </div>
+      <app-parse-view *ngSwitchCase="BuildingComponentType.Text" [bc]="buildingComponent">
+      </app-parse-view>
 
+      <app-parse-view *ngSwitchCase="BuildingComponentType.TextArea" [bc]="buildingComponent">
+      </app-parse-view>
+
+      <app-parse-view *ngSwitchCase="BuildingComponentType.Date" [bc]="buildingComponent">
+      </app-parse-view>
+
+      <app-parse-view *ngSwitchCase="BuildingComponentType.Number" [bc]="buildingComponent">
+      </app-parse-view>
+
+      <app-location-view *ngSwitchCase="BuildingComponentType.Location" [bc]="buildingComponent">
+      </app-location-view>
 
       <!--
-      <ng-container *ngSwitchCase="BuildingComponentType.TextArea">
-        <div class=" card">
-          <div class="card-header"> {{ buildingComponent.label }} </div>
-          <div class="card-body">
-            <div>{{ parse(buildingComponent) }}</div>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="BuildingComponentType.Date">
-        <div class=" card">
-          <div class="card-header"> {{ buildingComponent.label }} </div>
-          <div class="card-body">
-            <div>{{ parse(buildingComponent) }}</div>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="BuildingComponentType.Number">
-        <div class=" card">
-          <div class="card-header"> {{ buildingComponent.label }} </div>
-          <div class="card-body">
-            <div>{{ parse(buildingComponent) }}</div>
-          </div>
-        </div>
-      </ng-container>
 
       <ng-container *ngSwitchCase="BuildingComponentType.Location">
         <div class=" card">
