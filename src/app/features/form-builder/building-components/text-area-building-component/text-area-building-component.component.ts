@@ -36,6 +36,10 @@ export class TextAreaBuildingComponentComponent implements OnInit, ControlValueA
 
   private unsub$ = new Subject();
 
+  get textAreaOptions(){
+    return this.textAreaComponent.get('textAreaOptions') as FormGroup;
+  }
+
   constructor(private formBuilder: FormBuilder) {
     this.textAreaComponent = this.formBuilder.group({
       ...new TextAreaBuildingComponent(),
