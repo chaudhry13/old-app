@@ -43,6 +43,11 @@
                     [formControl]="buildingComponent">
             </app-date-building-component>
 
+            <app-number-building-component
+                    [id]="buildingComponent.value.id"
+                    [formControl]="buildingComponent">
+            </app-number-building-component>
+
 
             <div *ngSwitchDefault></div>
           </ng-container>

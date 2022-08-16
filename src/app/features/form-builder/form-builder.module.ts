@@ -18,6 +18,9 @@ import {
 import {
     DateBuildingComponentComponent
 } from "./building-components/date-building-component/date-building-component.component";
+import {
+    NumberBuildingComponentComponent
+} from "./building-components/number-building-component/number-building-component.component";
 
 
 @NgModule({
@@ -29,6 +32,7 @@ import {
       TextBuildingComponentComponent,
       TextAreaBuildingComponentComponent,
       DateBuildingComponentComponent,
+      NumberBuildingComponentComponent,
 
   ],
     imports: [
