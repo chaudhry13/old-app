@@ -27,13 +27,13 @@ import {Country} from "@shared/models/country";
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col>
+                <ion-col *ngIf="bc.locationOptions.latitude">
                     <ion-item lines="none">
                         <ion-label position="stacked">Latitude</ion-label>
                         <ion-label position="stacked" readonly>{{ bc.locationOptions.latitude }}</ion-label>
                     </ion-item>
                 </ion-col>
-                <ion-col offset-4>
+                <ion-col offset-4 *ngIf="bc.locationOptions.longitude">
                     <ion-item lines="none">
                         <ion-label position="stacked">Longitude</ion-label>
                         <ion-label position="stacked" readonly>{{ bc.locationOptions.longitude }}</ion-label>
