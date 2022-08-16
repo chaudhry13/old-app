@@ -15,6 +15,9 @@ import {
 import {
     TextAreaBuildingComponentComponent
 } from "./building-components/text-area-building-component/text-area-building-component.component";
+import {
+    DateBuildingComponentComponent
+} from "./building-components/date-building-component/date-building-component.component";
 
 
 @NgModule({
@@ -25,6 +28,8 @@ import {
       DropdownViewComponent,
       TextBuildingComponentComponent,
       TextAreaBuildingComponentComponent,
+      DateBuildingComponentComponent,
+
   ],
     imports: [
         CommonModule,
