@@ -75,6 +75,7 @@ export class LocationBuildingComponentComponent implements OnInit, ControlValueA
   }
 
   public countries: Country[];
+  selectedCountry: any;
 
   ngOnInit(): void {
 
@@ -110,6 +111,7 @@ export class LocationBuildingComponentComponent implements OnInit, ControlValueA
 
   public showLocationModal() {
     this.locationService.showLocationModal().then((location) => {
+      this.selectedCountry = location.country;
       this.locationService.populateFormWithLocation(
           this.options,
           location
