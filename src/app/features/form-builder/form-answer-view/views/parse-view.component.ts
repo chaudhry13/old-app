@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {DropDownBuildingComponent} from "../../models/building-components/dropdown-building-component";
-import {BuildingComponent, BuildingComponentUnion} from "../../models/building-components/building-component";
+import {
+    BuildingComponent,
+    BuildingComponentType,
+    BuildingComponentUnion
+} from "../../models/building-components/building-component";
 
 @Component({
     selector: "app-parse-view",
@@ -9,13 +12,15 @@ import {BuildingComponent, BuildingComponentUnion} from "../../models/building-c
         <ion-card-subtitle>{{bc.label}}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-       <div> {{parse(bc)}} </div>
+       <div *ngIf="bc.type !== BuildingType.Date"> {{parse(bc)}} </div>
+       <div *ngIf="bc.type === BuildingType.Date"> {{parse(bc) | date: "MMM dd, yyyy"}} </div>
     </ion-card-content>
     
   `,
 })
 export class ParseViewComponent implements OnInit {
     @Input() bc: BuildingComponentUnion;
+    BuildingType = BuildingComponentType;
 
     constructor() { }
 
