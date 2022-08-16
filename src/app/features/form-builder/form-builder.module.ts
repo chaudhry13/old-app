@@ -21,6 +21,9 @@ import {
 import {
     NumberBuildingComponentComponent
 } from "./building-components/number-building-component/number-building-component.component";
+import {
+    LocationBuildingComponentComponent
+} from "./building-components/location-building-component/location-building-component.component";
 
 
 @NgModule({
@@ -33,6 +36,7 @@ import {
       TextAreaBuildingComponentComponent,
       DateBuildingComponentComponent,
       NumberBuildingComponentComponent,
+      LocationBuildingComponentComponent,
 
   ],
     imports: [
