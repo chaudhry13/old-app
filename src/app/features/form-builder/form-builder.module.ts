@@ -9,14 +9,22 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
 import {IonicModule} from "@ionic/angular";
 import {DropdownViewComponent} from "./dropdown-view.component";
+import {
+    TextBuildingComponentComponent
+} from "./building-components/text-building-component/text-building-component.component";
+import {
+    TextAreaBuildingComponentComponent
+} from "./building-components/text-area-building-component/text-area-building-component.component";
 
 
 @NgModule({
   declarations: [
       EvalLogicPipe,
-    FormAnswerComponent,
+      FormAnswerComponent,
       DropDownBuildingComponentComponent,
-      DropdownViewComponent
+      DropdownViewComponent,
+      TextBuildingComponentComponent,
+      TextAreaBuildingComponentComponent,
   ],
     imports: [
         CommonModule,

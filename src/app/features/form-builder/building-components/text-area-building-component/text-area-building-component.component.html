@@ -1,0 +1,6 @@
+<form [formGroup]="textAreaComponent.get('textAreaOptions')">
+  <label>{{ textAreaComponent.value.label }}</label>
+  <div class="input-group">
+    <textarea style="resize: none;" formControlName="value" class="form-control" placeholder="Text field"></textarea>
+  </div>
+</form>
