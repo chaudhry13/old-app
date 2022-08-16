@@ -1,8 +1,8 @@
-<form [formGroup]="dropDownOptions">
+
   <ion-item>
     <ion-label position="stacked">{{ textDropDownComponent.value.label }}</ion-label>
     <ion-select
-            formControlName="testControl"
+            [formControl]="testControl"
             [multiple]="textDropDownComponent.value.dropDownOptions?.multiple"
             cancelText="Cancel"
             okText="Okay!">
@@ -11,4 +11,4 @@
       </ion-select-option>
     </ion-select>
   </ion-item>
-</form>
+
