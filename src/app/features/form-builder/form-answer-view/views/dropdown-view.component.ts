@@ -1,4 +1,4 @@
-import {DropDownBuildingComponent} from "./models/building-components/dropdown-building-component";
+import {DropDownBuildingComponent} from "../../models/building-components/dropdown-building-component";
 import {Component, Input, OnInit} from "@angular/core";
 
 @Component({
