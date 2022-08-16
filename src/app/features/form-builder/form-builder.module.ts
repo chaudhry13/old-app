@@ -8,7 +8,7 @@ import {
 import {ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "@shared/shared.module";
 import {IonicModule} from "@ionic/angular";
-import {DropdownViewComponent} from "./dropdown-view.component";
+import {DropdownViewComponent} from "./form-answer-view/views/dropdown-view.component";
 import {
     TextBuildingComponentComponent
 } from "./building-components/text-building-component/text-building-component.component";
@@ -24,6 +24,7 @@ import {
 import {
     LocationBuildingComponentComponent
 } from "./building-components/location-building-component/location-building-component.component";
+import {FormAnswerViewComponent} from "./form-answer-view/form-answer-view.component";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {
       DateBuildingComponentComponent,
       NumberBuildingComponentComponent,
       LocationBuildingComponentComponent,
+      FormAnswerViewComponent
 
   ],
     imports: [
@@ -45,6 +47,6 @@ import {
         SharedModule,
         IonicModule
     ],
-    exports: [FormAnswerComponent, DropdownViewComponent],
+    exports: [FormAnswerComponent, DropdownViewComponent, FormAnswerViewComponent],
 })
 export class FormBuilderModule { }
