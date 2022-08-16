@@ -33,7 +33,6 @@ export class IncidentReportDetailsPage implements OnInit {
   public formType: string = "Default";
 
   formDto: FormDto;
-  BuildingComponentType = BuildingComponentType;
 
   constructor(
     public activatedRoute: ActivatedRoute,
