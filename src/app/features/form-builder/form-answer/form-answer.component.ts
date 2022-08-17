@@ -1,4 +1,4 @@
-import {Component, forwardRef, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, forwardRef, Input, OnInit} from '@angular/core';
 import {EvalLogicPipe} from "./eval-logic.pipe";
 import {
   AbstractControl,
@@ -56,7 +56,8 @@ export class FormAnswerComponent implements OnInit, ControlValueAccessor, Valida
   constructor(
       private fb: FormBuilder,
       private logicHelper: LogicHelperService,
-      private displayLogicPipe: EvalLogicPipe
+      private displayLogicPipe: EvalLogicPipe,
+      private readonly cdr: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       id: [''],
@@ -97,6 +98,7 @@ export class FormAnswerComponent implements OnInit, ControlValueAccessor, Valida
   }
 
   registerOnChange(fn: any): void {
+    this.cdr.detectChanges(); // TODO: This line of code fixed an issue where validation didnt register in IncidentReportCreate
     this.form.valueChanges.pipe(takeUntil(this.unsub$)).subscribe(fn);
   }
 
