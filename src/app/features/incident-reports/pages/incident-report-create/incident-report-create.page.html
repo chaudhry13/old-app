@@ -86,7 +86,7 @@
       expand="block"
       color="primary"
       type="submit"
-      [disabled]="!incidentForm.valid"
+      [disabled]="!incidentForm.valid  || !customFormSection.valid"
       (click)="submitForm()"
     >
       Create</ion-button
