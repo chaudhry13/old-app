@@ -71,7 +71,7 @@ export class IncidentReportDetailsPage implements OnInit {
       .get(this.id, this.source)
       .then((incidentReport) => {
         this.incidentReport = incidentReport;
-        this.loadForm(incidentReport.customFormId);
+        this.loadForm(incidentReport?.customFormId);
         this.listCategoryMappings();
       });
   }
@@ -85,7 +85,7 @@ export class IncidentReportDetailsPage implements OnInit {
 
   private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
     return mappingsTable.mappings.find(
-      (m) => m.incidentCategoryId == this.incidentReport.incidentCategory.id
+      (m) => m.incidentCategoryId == this.incidentReport?.incidentCategory?.id
     ).form;
   }
 }
