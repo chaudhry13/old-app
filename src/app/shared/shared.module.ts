@@ -27,6 +27,7 @@ import { LocationFormComponent } from "@shared/components/location-form/location
 import { UploadPhotoButtonComponent } from "@shared/components/upload-photo-button/upload-photo-button.component";
 import { PhotoListComponent } from "@shared/components/photo-list/photo-list.component";
 import { HRDatePipe } from "./pipes/hr-date.pipe";
+import {IsRequiredDirective} from "@shared/is-required.directive";
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { HRDatePipe } from "./pipes/hr-date.pipe";
     UploadPhotoButtonComponent,
     PhotoListComponent,
     HRDatePipe,
+      IsRequiredDirective,
   ],
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
   exports: [
@@ -61,6 +63,7 @@ import { HRDatePipe } from "./pipes/hr-date.pipe";
     UploadPhotoButtonComponent,
     PhotoListComponent,
     HRDatePipe,
+      IsRequiredDirective,
   ],
   providers: [
     CameraService,

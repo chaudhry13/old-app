@@ -1,6 +1,6 @@
 <form [formGroup]="options">
   <ion-item>
-    <ion-label position="stacked">{{ dateComponent.value.label }}</ion-label>
+    <ion-label [appIsRequired]="isRequired" position="stacked">{{ dateComponent.value.label }}</ion-label>
     <ion-datetime
             displayFormat="MMM DD, YYYY"
             pickerFormat="DD MMM YYYY"

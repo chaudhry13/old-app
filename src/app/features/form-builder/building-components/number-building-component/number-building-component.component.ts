@@ -34,6 +34,7 @@ export class NumberBuildingComponentComponent implements OnInit, ControlValueAcc
 
   numberGroup: FormGroup;
   public errorMsg = "";
+  public isRequired = false;
 
   get numberOptions() {
     return this.numberGroup.get('numberOptions') as FormGroup;
@@ -74,8 +75,9 @@ export class NumberBuildingComponentComponent implements OnInit, ControlValueAcc
     }
     else {
       isValid = value != null;
-      this.errorMsg = "A number is required"
+      this.errorMsg = "A number is required";
     }
+    this.isRequired = control.hasValidator(Validators.required);
 
     return !isValid && control.hasValidator(Validators.required)
         ? { invalidForm: { valid: false, message: 'numberOptions value is required' } }

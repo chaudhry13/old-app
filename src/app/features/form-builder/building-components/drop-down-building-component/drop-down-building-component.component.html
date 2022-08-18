@@ -1,6 +1,6 @@
 
   <ion-item>
-    <ion-label position="stacked">{{ textDropDownComponent.value.label }}</ion-label>
+    <ion-label [appIsRequired]="isRequired" position="stacked">{{ textDropDownComponent.value.label }}</ion-label>
     <ion-select
             [formControl]="testControl"
             [multiple]="textDropDownComponent.value.dropDownOptions?.multiple"

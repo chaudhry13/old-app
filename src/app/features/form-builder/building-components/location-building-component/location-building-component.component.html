@@ -21,7 +21,7 @@
       <ion-text color="primary">Search for an address..</ion-text>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Address</ion-label>
+      <ion-label [appIsRequired]="isRequired" position="stacked">Address</ion-label>
       <ion-input
               type="text"
               formControlName="address"
@@ -37,7 +37,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="stacked">Country</ion-label>
+      <ion-label [appIsRequired]="isRequired" position="stacked">Country</ion-label>
       <ion-input type="text" >{{ this.selectedCountry ?? "" }}</ion-input>
     </ion-item>
 

@@ -37,6 +37,7 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
 
   textDropDownComponent: FormGroup;
   options: DropDownListItem[] = [];
+  public isRequired = false;
 
   // Need to use a seperate control to handle dropdown options being a string[] or string. If we use main form, it doesnt work.
   public testControl: FormControl;
@@ -67,7 +68,7 @@ export class DropDownBuildingComponentComponent implements ControlValueAccessor,
   // if the parent sets this to required, then we run the custom validator
   validate(control: AbstractControl): ValidationErrors {
     const isValid = typeof this.testControl.value === 'object' ? this.testControl.value?.length > 0 : this.testControl.value !== null;
-
+    this.isRequired = control.hasValidator(Validators.required);
     return !isValid && control.hasValidator(Validators.required)
         ? { invalidForm: { valid: false, message: 'dropdownoptions value is required' } }
         : null;

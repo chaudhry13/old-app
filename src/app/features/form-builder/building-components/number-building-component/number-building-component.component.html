@@ -1,6 +1,6 @@
 <form [formGroup]="numberOptions">
   <ion-item>
-    <ion-label position="stacked">{{ numberGroup.value.label }}</ion-label>
+    <ion-label [appIsRequired]="isRequired" position="stacked">{{ numberGroup.value.label }}</ion-label>
     <ion-input type="number" formControlName="value"></ion-input>
     <!--[ngClass]="validationService.displayFieldCss('value', numberOptions)" -->
     <!--<app-field-error

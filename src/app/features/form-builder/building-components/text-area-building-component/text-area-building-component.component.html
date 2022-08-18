@@ -1,6 +1,6 @@
 <form [formGroup]="textAreaOptions">
   <ion-item>
-    <ion-label position="stacked">{{textAreaComponent.value.label}}</ion-label>
+    <ion-label [appIsRequired]="isRequired" position="stacked">{{textAreaComponent.value.label}}</ion-label>
     <ion-textarea rows="5" formControlName="value"></ion-textarea>
   </ion-item>
 </form>

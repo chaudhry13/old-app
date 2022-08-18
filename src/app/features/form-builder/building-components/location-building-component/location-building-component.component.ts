@@ -42,6 +42,7 @@ export class LocationBuildingComponentComponent implements OnInit, ControlValueA
 
 
   locationComponent: FormGroup;
+  public isRequired = false;
 
   get options() {
     return this.locationComponent.get('locationOptions') as FormGroup;
@@ -69,8 +70,8 @@ export class LocationBuildingComponentComponent implements OnInit, ControlValueA
 
   validate(control: AbstractControl): ValidationErrors {
     const locationOptions = this.options;
-    const validLocation = locationOptions.get('latitude').value && locationOptions.get('longitude').value && locationOptions.get('address').value && locationOptions.get('city').value && locationOptions.get('countryId').value;
-
+    const validLocation = locationOptions.get('latitude').value && locationOptions.get('longitude').value && locationOptions.get('address').value && locationOptions.get('countryId').value;
+    this.isRequired = control.hasValidator(Validators.required);
     return !validLocation && control.hasValidator(Validators.required) ? { invalidForm: {valid: false, message: "location values are required"} } : null;
   }
 

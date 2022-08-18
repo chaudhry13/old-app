@@ -33,6 +33,7 @@ export class DateBuildingComponentComponent implements ControlValueAccessor, Val
 
   public inputDate: Date;
   dateComponent: FormGroup;
+  public isRequired = false;
 
   private unsub$ = new Subject();
 
@@ -54,6 +55,7 @@ export class DateBuildingComponentComponent implements ControlValueAccessor, Val
 
   validate(control: AbstractControl): ValidationErrors {
     const isValid = this.options.get('value').value;
+    this.isRequired = control.hasValidator(Validators.required);
     return !isValid && control.hasValidator(Validators.required) ? { invalidForm: {valid: false, message: "dateOptions value is required"} } : null;
   }
 

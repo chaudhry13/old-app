@@ -33,6 +33,7 @@ export class TextBuildingComponentComponent implements OnInit, ControlValueAcces
   @Input() viewOnly: boolean = false;
 
   textComponent: FormGroup;
+  public isRequired = false;
 
   private unsub$ = new Subject();
 
@@ -51,7 +52,7 @@ export class TextBuildingComponentComponent implements OnInit, ControlValueAcces
 
   validate(control: AbstractControl): ValidationErrors {
     const isValid = this.textComponent.get('textOptions').get('value').value;
-
+    this.isRequired = control.hasValidator(Validators.required);
     return !isValid && control.hasValidator(Validators.required) ? { invalidForm: {valid: false, message: "textOptions value is required"} } : null;
   }
 

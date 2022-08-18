@@ -33,6 +33,7 @@ export class TextAreaBuildingComponentComponent implements OnInit, ControlValueA
   @Input() viewOnly: boolean = false;
 
   textAreaComponent: FormGroup;
+  public isRequired = false;
 
   private unsub$ = new Subject();
 
@@ -51,7 +52,7 @@ export class TextAreaBuildingComponentComponent implements OnInit, ControlValueA
 
   validate(control: AbstractControl): ValidationErrors {
     const isValid = this.textAreaComponent.get('textAreaOptions').get('value').value;
-
+    this.isRequired = control.hasValidator(Validators.required);
     return !isValid && control.hasValidator(Validators.required) ? { invalidForm: {valid: false, message: "textAreaOptions value is required"} } : null;
   }
 
