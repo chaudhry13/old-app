@@ -10,7 +10,7 @@ export class IsRequiredDirective {
   @Input() set appIsRequired(condition: boolean){
     if(condition){
       console.log(this.element.nativeElement)
-      this.element.nativeElement.insertAdjacentHTML('afterend', '<i class="required">*</i>')
+      this.element.nativeElement.insertAdjacentHTML('beforeend', '<i class="required">*</i>')
     }
   }
 
