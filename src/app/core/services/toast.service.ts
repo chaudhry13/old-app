@@ -8,7 +8,7 @@ export class ToastService {
   show(message: string, level: string = "success") {
     let toast = this.toastCtrl.create({
       message: message,
-      duration: 3000,
+      duration: 2000,
       color: level,
     });
 
