@@ -12,7 +12,11 @@ import { IncidentType } from "../../models/incident-type";
 import { IncidentReportService } from "@app/services/incident-report.service";
 import { ToastService } from "@app/services/toast.service";
 import { IncidentReportFormType } from "../../models/incident-report";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import {debounceTime, distinctUntilChanged, map, takeUntil} from "rxjs/operators";
+import {FormBuilderService} from "../../../form-builder/services/form-builder.service";
+import {FormHelperService} from "../../../form-builder/services/form-helper.service";
+import {HrFormType} from "../../../form-builder/models/hr-form";
+import {Subject} from "rxjs";
 
 @Component({
   selector: "app-incident-report-create",
@@ -31,13 +35,19 @@ export class IncidentReportCreatePage implements OnInit {
   public currentIncidentCategory: IncidentCategory;
   public currentIncidentTypes: IncidentType[];
 
+
+  customFormSection = this.formBuilder.control(null);
+  private unsub$ = new Subject();
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private incidentReportService: IncidentReportService,
     private toastService: ToastService,
     private incidentCategoryService: IncidentCategoryService,
-    private divisionService: DivisionService
+    private divisionService: DivisionService,
+    private fbs: FormBuilderService,
+    private fbh: FormHelperService
   ) {
     this.incidentForm = this.formBuilder.group({
       description: ["", Validators.required],
@@ -70,6 +80,13 @@ export class IncidentReportCreatePage implements OnInit {
   ngOnInit() {
     this.getDataToPopulateForm();
     // Use this when testing -> this.subscribeToIncidentReportChanges();
+
+    this.loadCustomFormTemplateIfExistsAndResetIds();
+  }
+
+  ngOnDestroy() {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 
   private getDataToPopulateForm() {
@@ -79,13 +96,16 @@ export class IncidentReportCreatePage implements OnInit {
   }
 
   public submitForm() {
-    if (this.incidentForm.valid) {
-      this.insertIncidentReport();
+    if (this.incidentForm.valid && this.customFormSection.valid) {
+       this.createCustomFormIfExists().then(id => {
+        this.insertIncidentReport(id);
+      })
+
     }
   }
 
-  private insertIncidentReport() {
-    this.incidentReportService.insert(this.incidentForm.value).then((id) => {
+  private insertIncidentReport(customFormId: string) {
+    this.incidentReportService.insert({...this.incidentForm.value, customFormId: customFormId}).then((id) => {
       this.navigateToNewReport(id);
     });
   }
@@ -144,4 +164,28 @@ export class IncidentReportCreatePage implements OnInit {
       this.incidentForm.get("divisionIds").setValue(data);
     }
   }
+
+
+  private loadCustomFormTemplateIfExistsAndResetIds() {
+    this.fbs
+        .getOrgIncidentTemplate()
+        .pipe(
+            map(this.fbh.resetAllIdsButKeepRefs),
+            map(this.fbh.setFormDtoType(HrFormType['Incident Report'])),
+            takeUntil(this.unsub$)
+        )
+        .subscribe(x => {
+          this.customFormSection.setValue(x ? x : null, { emitEvent: false });
+          this.customFormSection.setValidators(x ? Validators.required : null);
+          this.customFormSection.updateValueAndValidity({ emitEvent: false });
+        });
+  }
+
+  private async createCustomFormIfExists() {
+    if (this.customFormSection.value) {
+      return await this.fbs.createFormInstance(this.customFormSection.value).toPromise();
+    }
+    else return null;
+  }
+
 }

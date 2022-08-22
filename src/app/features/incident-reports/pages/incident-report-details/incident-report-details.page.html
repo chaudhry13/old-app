@@ -38,6 +38,10 @@
     ></default-report-details>
   </ng-container>
 
+  <!-- Custom form -->
+  <app-form-answer-view *ngIf="formDto" [formDto]="formDto"></app-form-answer-view>
+  <!-- Custom form end -->
+
   <ion-card-content style="color: lightgray; font-size: small">
     {{ incidentReport.id }}
   </ion-card-content>

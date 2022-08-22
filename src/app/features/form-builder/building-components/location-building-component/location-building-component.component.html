@@ -1,0 +1,63 @@
+<ion-grid *ngIf="buttonType == 'button'">
+  <ion-row>
+    <ion-col>
+      <ion-button expand="block" color="primary" (click)="showLocationModal()"
+      >Search address..</ion-button
+      >
+    </ion-col>
+  </ion-row>
+</ion-grid>
+<form [formGroup]="options">
+  <ion-list>
+    <ion-list-header *ngIf="buttonType == 'ion-item'">
+      {{ locationComponent.value.label }}
+    </ion-list-header>
+    <ion-item
+            *ngIf="buttonType == 'ion-item'"
+            button
+            lines="none"
+            (click)="showLocationModal()"
+    >
+      <ion-text color="primary">Search for an address..</ion-text>
+    </ion-item>
+    <ion-item>
+      <ion-label [appIsRequired]="isRequired" position="stacked">Address</ion-label>
+      <ion-input
+              type="text"
+              formControlName="address"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">City</ion-label>
+      <ion-input
+              type="text"
+              formControlName="city"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label [appIsRequired]="isRequired" position="stacked">Country</ion-label>
+      <ion-input type="text" >{{ this.selectedCountry ?? "" }}</ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Latitude</ion-label>
+      <ion-input
+              type="text"
+              formControlName="latitude"
+              readonly
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Longitude</ion-label>
+      <ion-input
+              type="text"
+              formControlName="longitude"
+              readonly
+      >
+      </ion-input>
+    </ion-item>
+  </ion-list>
+</form>

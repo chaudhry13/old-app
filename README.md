@@ -77,3 +77,14 @@ ionic cordova prepare ios
 When the app is prepared open the project in Android Studio or XCode.
 
 _Make sure to open the XCode Workspace file when using XCode to make sure all dependencies are loaded_
+
+
+## New Android
+
+REMEMBER: appId for Android app is com.humanrisks1 (with a 1 in the end) whereas iOS is just com.humanrisks
+
+1. Run ´build-android´ script.
+2. Change versionCode + versionName in build.gradle
+3. Build signed release in android studio - Build > Generate Signed Bundle / APK
+4. Make new release on Google Play Store Console
+5. Profit!

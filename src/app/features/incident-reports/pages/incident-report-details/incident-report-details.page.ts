@@ -7,6 +7,13 @@ import { User } from "@app/models/user";
 import { AgmMap } from "@agm/core";
 import { IncidentCategoryService } from "../../services/incident-category.service";
 import { IncidentCategoryMappingTable } from "../../models/incident-category";
+import {FormDto} from "../../../form-builder/models/form.dto";
+import {FormBuilderService} from "../../../form-builder/services/form-builder.service";
+import {
+  BuildingComponentType,
+  BuildingComponent,
+  BuildingComponentUnion
+} from "../../../form-builder/models/building-components/building-component";
 
 @Component({
   selector: "app-incident-report-details",
@@ -25,11 +32,14 @@ export class IncidentReportDetailsPage implements OnInit {
   public mappingsTable: IncidentCategoryMappingTable;
   public formType: string = "Default";
 
+  formDto: FormDto;
+
   constructor(
     public activatedRoute: ActivatedRoute,
     public incidentReportService: IncidentReportService,
     public cameraService: CameraService,
-    public incidentCategoryService: IncidentCategoryService
+    public incidentCategoryService: IncidentCategoryService,
+    private fbs: FormBuilderService
   ) {
     this.id = this.activatedRoute.snapshot.paramMap.get("id");
     this.source = this.activatedRoute.snapshot.paramMap.get("source");
@@ -38,6 +48,18 @@ export class IncidentReportDetailsPage implements OnInit {
   ngOnInit() {
     this.renderMap = false;
     this.getIncidentReport();
+  }
+
+  loadForm(id: string) {
+    if(!id)return;
+    this.fbs.get(id).subscribe(form => {
+      this.formDto = form;
+    });
+  }
+
+  parse(bc: BuildingComponentUnion) {
+    const options: any = BuildingComponent.childFieldsFactory(bc)[1];
+    return options.value;
   }
 
   ionViewDidEnter() {
@@ -49,6 +71,7 @@ export class IncidentReportDetailsPage implements OnInit {
       .get(this.id, this.source)
       .then((incidentReport) => {
         this.incidentReport = incidentReport;
+        this.loadForm(incidentReport?.customFormId);
         this.listCategoryMappings();
       });
   }
@@ -62,7 +85,7 @@ export class IncidentReportDetailsPage implements OnInit {
 
   private getFormType(mappingsTable: IncidentCategoryMappingTable): string {
     return mappingsTable.mappings.find(
-      (m) => m.incidentCategoryId == this.incidentReport.incidentCategory.id
+      (m) => m.incidentCategoryId == this.incidentReport?.incidentCategory?.id
     ).form;
   }
 }
