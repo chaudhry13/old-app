@@ -109,7 +109,7 @@ export class AuditDetailsPage implements OnInit {
 
     const path = (this.platform.is("ios") ?
         this.file.documentsDirectory :
-        this.file.dataDirectory) + "public/assets/" +  attachment.name;
+        this.file.dataDirectory) +  attachment.name;
 
     const fileEntry = await this.http.downloadFile(url, {}, {}, path);
 
