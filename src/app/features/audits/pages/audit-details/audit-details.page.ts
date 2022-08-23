@@ -114,7 +114,6 @@ export class AuditDetailsPage implements OnInit {
     const fileEntry = await this.http.downloadFile(url, {}, {}, path);
 
     fileEntry.file(success => {
-      this.document.viewDocument(fileEntry.nativeURL, success.type, {});
       this.fileOpener
           .open(fileEntry.nativeURL, success.type)
           .then(() => console.debug("File is opened"))
