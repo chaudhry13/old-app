@@ -11,7 +11,7 @@ import {
   Injectable,
 } from "@angular/core";
 import {
-  Question,
+  Question, QuestionAnsweredEdit,
   QuestionAnsweres,
   QuestionnaireUserAnswer,
   QuestionTypes,
@@ -289,23 +289,55 @@ export class QuestionComponent implements OnInit {
         this.hasComment = true;
       }*/
 
-    // Used to update the logic and which questions should be shown
+    // Update the answer in the database
     this.answerForm.valueChanges
       .pipe(debounceTime(200), distinctUntilChanged())
-      .subscribe(async () => {
-        const answer = this.qhs.getQuestionAnswer(
-          this.questionAnswer,
-          this.question,
-          this.questionnaireUserAnswer,
-          this.answerForm
-        );
+      .subscribe(() => {
+        var validation = this.validationService.isQuestionAnswerValid(this.question, this.answerForm);
+        this.errorMsg = validation.errorMsg;
+        this.hasError = !validation.isValid;
+        
+        if (validation.isValid) {
+          const answer = this.qhs.getQuestionAnswer(
+            this.questionAnswer,
+            this.question,
+            this.questionnaireUserAnswer,
+            this.answerForm
+          );
 
-        let index = this.questionnaireUserAnswer.questionAnsweres.findIndex(
-          (qa) => qa.id == this.questionAnswer.id
-        );
-        this.questionnaireUserAnswer.questionAnsweres[index] = <
-          QuestionAnsweres
-        >{
+          this.questionAnsweredService
+            .update(answer)
+            .then((data) => {
+              if(data){
+                this.updateQuestionAnswers(answer);
+
+                if (answer.na && answer.answered && !this.hasComment) {
+                  this.requireComment = true;
+                  this.openCommentModal();
+                } else if (this.checkOptionRequireComment()) {
+                  this.requireComment = true;
+                  this.openCommentModal();
+                } else {
+                  this.requireComment = false;
+                }
+                this.toastService.show("Answer saved!");
+              }
+            })
+            .catch(() => {
+              this.toastService.show("Could not save answer!");
+            });
+        }
+      });
+
+    this.listQuestionFiles();
+  }
+
+  updateQuestionAnswers(answer: QuestionAnsweredEdit){
+    // find the questionAnsweres and update with the new answer data
+    let index = this.questionnaireUserAnswer.questionAnsweres
+        .findIndex((qa) => qa.id == this.questionAnswer.id);
+    this.questionnaireUserAnswer.questionAnsweres[index] = <QuestionAnsweres>
+        {
           id: answer.id,
           answered: true,
           questionId: answer.questionId,
@@ -322,45 +354,8 @@ export class QuestionComponent implements OnInit {
           issueId: null,
           isIssue: null,
         };
-        // Send signal to update the logic
-        this.questionnaireUserAnswerChange.emit(this.questionnaireUserAnswer);
-      });
-    // Update the answer in the database
-    this.answerForm.valueChanges
-      .pipe(debounceTime(200))
-      .subscribe(() => {
-        var validation = this.validationService.isQuestionAnswerValid(this.question, this.answerForm);
-        this.errorMsg = validation.errorMsg;
-        this.hasError = !validation.isValid;
-        
-        if (validation.isValid) {
-          const answer = this.qhs.getQuestionAnswer(
-            this.questionAnswer,
-            this.question,
-            this.questionnaireUserAnswer,
-            this.answerForm
-          );
-          this.questionAnsweredService
-            .update(answer)
-            .then((data) => {
-              if (answer.na && answer.answered && !this.hasComment) {
-                this.requireComment = true;
-                this.openCommentModal();
-              } else if (this.checkOptionRequireComment()) {
-                this.requireComment = true;
-                this.openCommentModal();
-              } else {
-                this.requireComment = false;
-              }
-              this.toastService.show("Answer saved!");
-            })
-            .catch(() => {
-              this.toastService.show("Could not save answer!");
-            });
-        }
-      });
-
-    this.listQuestionFiles();
+    // Send signal to update the logic
+    this.questionnaireUserAnswerChange.emit(this.questionnaireUserAnswer);
   }
 
   checkOptionRequireComment(): boolean {

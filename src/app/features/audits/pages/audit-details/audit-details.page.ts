@@ -5,7 +5,7 @@ import { Control } from "../../models/control";
 import { StorageService } from "@app/services/storage.service";
 import { Attachment } from "@app/models/file";
 import { Platform } from "@ionic/angular";
-import { File } from "@ionic-native/file/ngx";
+import {File, FileEntry, IFile} from "@ionic-native/file/ngx";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
 import { AuditService } from "../../services/audit.service";
@@ -13,8 +13,9 @@ import { Audit, AuditStatus } from "../../models/audit";
 import cronstrue from "cronstrue";
 import { CommentService } from "@app/services/comment.service";
 import { User } from "@app/models/user";
-import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { AuthService } from "src/app/auth/auth.service";
+import {HTTP} from "@ionic-native/http/ngx";
+import {ToastService} from "@app/services/toast.service";
 
 @Component({
   selector: "app-audit-details",
@@ -43,8 +44,8 @@ export class AuditDetailsPage implements OnInit {
     private storageService: StorageService,
     private platform: Platform,
     private file: File,
-    private ft: FileTransfer, // TODO: Fix this warning:
-    // FileTransfer is deprecated
+    private http: HTTP,
+    public toastService: ToastService,
     private fileOpener: FileOpener,
     private document: DocumentViewer,
     private commentSevice: CommentService,
@@ -103,26 +104,28 @@ export class AuditDetailsPage implements OnInit {
     });
   }
 
-  downloadAndOpen(attachment: Attachment) {
-    const downloadUrl = attachment.url;
+  async downloadAndOpen(attachment: Attachment){
+    var url = attachment.url;
 
-    const path = this.file.dataDirectory;
+    const path = (this.platform.is("ios") ?
+        this.file.documentsDirectory :
+        this.file.dataDirectory) +  attachment.name;
 
-    const transfer = this.ft.create();
+    const fileEntry = await this.http.downloadFile(url, {}, {}, path);
 
-    transfer
-      .download(downloadUrl, path + attachment.name, true)
-      .then((entry) => {
-        const url = entry.toURL();
+    fileEntry.file(success => {
+      this.document.viewDocument(fileEntry.nativeURL, success.type, {});
+      this.fileOpener
+          .open(fileEntry.nativeURL, success.type)
+          .then(() => console.debug("File is opened"))
+          .catch((e) => {
+            this.toastService.show("Error opening file", "danger");
+            console.error("Error opening file (fileOpener.open)", e)}
+          );
+    }, error => {
+      this.toastService.show("Error opening file", "danger");
+      console.log("Error opening file (fileEntry.file)", error)
+    })
 
-        if (this.platform.is("ios")) {
-          this.document.viewDocument(url, "application/pdf", {});
-        } else {
-          this.fileOpener
-            .open(url, "application/pdf")
-            .then(() => console.debug("File is opened"))
-            .catch((e) => console.error("Error opening file", e));
-        }
-      });
   }
 }
