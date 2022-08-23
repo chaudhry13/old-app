@@ -27,6 +27,11 @@
     "@awesome-cordova-plugins/core": "^5.44.0",
     "@awesome-cordova-plugins/file-transfer": "^5.44.0",
     "@capacitor/android": "3.6.0",
+    "@awesome-cordova-plugins/camera": "^5.40.0",
+    "@awesome-cordova-plugins/deeplinks": "^5.40.0",
+    "@awesome-cordova-plugins/in-app-browser": "^5.40.0",
+    "@awesome-cordova-plugins/splash-screen": "^5.40.0",
+    "@awesome-cordova-plugins/status-bar": "^5.40.0",
     "@capacitor/app": "^1.1.1",
     "@capacitor/browser": "^1.0.7",
     "@capacitor/camera": "^1.3.1",
@@ -57,6 +62,7 @@
     "rxjs": "^6.6.7",
     "string-similarity": "^4.0.4",
     "tslib": "^1.13.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

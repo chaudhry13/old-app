@@ -1,0 +1,107 @@
+<form [formGroup]="form" >
+  <ng-container *ngIf="!hideTitle">
+    <label>Title</label>
+    <div class="mb-4">
+      <input type="text" value="title" formControlName="name" class="form-control">
+
+    </div>
+
+  </ng-container>
+
+  <ng-container *ngIf="showDivisions">
+    <label>Divisions</label>
+    <div class="input-group mb-4" >
+      <division-selector [textSize]="3"
+                         [asFilter]="false"
+                         (changeInSelectedDivisions)="divisionsChanged($event)" >
+      </division-selector>
+    </div>
+  </ng-container>
+  <ion-list>
+    <ng-container *ngFor="let sectionControl of formSections.controls">
+      <ng-container *ngFor="let buildingComponent of sectionControl.controls?.buildingComponents?.controls">
+        <ng-container [ngSwitch]="buildingComponent?.value?.type">
+
+          <app-drop-down-building-component *ngSwitchCase="BuildingComponentType.Dropdown"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-drop-down-building-component>
+
+          <app-text-building-component *ngSwitchCase="BuildingComponentType.Text"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-text-building-component>
+
+          <app-text-area-building-component *ngSwitchCase="BuildingComponentType.TextArea"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-text-area-building-component>
+
+          <app-date-building-component *ngSwitchCase="BuildingComponentType.Date"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-date-building-component>
+
+          <app-number-building-component *ngSwitchCase="BuildingComponentType.Number"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-number-building-component>
+
+          <app-location-building-component *ngSwitchCase="BuildingComponentType.Location"
+                  [id]="buildingComponent.value.id"
+                  [formControl]="buildingComponent">
+          </app-location-building-component>
+
+          <div *ngSwitchDefault></div>
+
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ion-list>
+
+
+              <!--    <ng-container *ngFor="let sectionControl of formSections.controls">-->
+<!--        <ion-item *ngFor="let buildingComponent of sectionControl.controls?.buildingComponents?.controls">-->
+<!--          <ng-container [ngSwitch]="buildingComponent?.value?.type">-->
+
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.Dropdown">-->
+<!--              <app-drop-down-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-drop-down-building-component>-->
+<!--            </ng-container>-->
+<!--            &lt;!&ndash;-->
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.Text">-->
+<!--              <app-text-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-text-building-component>-->
+<!--            </ng-container>-->
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.TextArea">-->
+<!--              <app-text-area-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-text-area-building-component>-->
+<!--            </ng-container>-->
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.Date">-->
+<!--              <app-date-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-date-building-component>-->
+<!--            </ng-container>-->
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.Location">-->
+<!--              <app-location-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-location-building-component>-->
+<!--            </ng-container>-->
+<!--            <ng-container *ngSwitchCase="BuildingComponentType.Number">-->
+<!--              <app-number-building-component-->
+<!--                      [id]="buildingComponent.value.id"-->
+<!--                      [formControl]="buildingComponent"></app-number-building-component>-->
+<!--            </ng-container>-->
+<!--            &ndash;&gt;-->
+
+<!--            <div *ngSwitchDefault></div>-->
+<!--          </ng-container>-->
+<!--        </ion-item>-->
+
+<!--      </ng-container>-->
+
+</form>
+

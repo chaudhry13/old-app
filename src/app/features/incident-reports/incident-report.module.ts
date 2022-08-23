@@ -29,6 +29,7 @@ import { HealthSafetyService } from "./services/health-safety.service";
 import { IncidentCategoryService } from "./services/incident-category.service";
 import { IncidentReportService } from "@app/services/incident-report.service";
 import { ActivityLogService } from "../activity-log/services/activity-log-service";
+import {FormBuilderModule} from "../form-builder/form-builder.module";
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { ActivityLogService } from "../activity-log/services/activity-log-servic
     ReactiveFormsModule,
     IncidentReportRoutingModule,
     SharedModule,
-    AgmCoreModule
+    AgmCoreModule,
+    FormBuilderModule
   ],
   declarations: [
     IncidentReportPage,
