@@ -18,6 +18,7 @@ import { TokenInterceptor } from "@app/interceptors/auth.interceptor";
 import { File } from "@ionic-native/file/ngx";
 import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { DocumentViewer } from "@ionic-native/document-viewer/ngx";
+import {HTTP} from "@ionic-native/http/ngx";
 
 import { AgmCoreModule } from "@agm/core";
 import { AccountService } from "@app/services/account.service";
@@ -33,6 +34,7 @@ import { SharedModule } from "@shared/shared.module";
 import { AuthConfigModule } from "./auth/auth-config.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
+
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ErrorPageComponent],
@@ -87,6 +89,7 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
     SplashScreen,
     InAppBrowser,
     Device,
+    HTTP,
     Keyboard,
     UserService,
     StorageService,
