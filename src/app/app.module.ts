@@ -1,9 +1,8 @@
-import { NgModule, APP_INITIALIZER } from "@angular/core";
+import { NgModule, APP_INITIALIZER, NgZone } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { RouteReuseStrategy } from "@angular/router";
+import { Router, RouteReuseStrategy } from "@angular/router";
 
-import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
-import { SplashScreen } from "@awesome-cordova-plugins/splash-screen/ngx";
+import { IonicModule, IonicRouteStrategy, Platform } from "@ionic/angular";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -31,9 +30,13 @@ import { StorageService } from "@app/services/storage.service";
 import { FileTransfer } from "@awesome-cordova-plugins/file-transfer/ngx";
 import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
-import { AuthConfigModule } from "./auth/auth-config.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
+import { configureAuth, initAuthListeners } from "./auth.init";
+import { AuthService } from "./auth/auth.service";
+import { StatusBar } from "@capacitor/status-bar";
+import { OAuthModule } from "angular-oauth2-oidc";
+import { beforeAppInit } from "./app.init";
 
 
 @NgModule({
@@ -48,45 +51,21 @@ import { ErrorPageComponent } from "./error-page/error-page.component";
     ReactiveFormsModule,
     AgmCoreModule.forRoot(),
     SharedModule,
-    AuthConfigModule,
+    OAuthModule.forRoot(),
   ],
   providers: [
     AccountService,
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [AppConfigService],
-      useFactory: (appConfigService: AppConfigService) => {
-        const outerPromise = new Promise<void>((resolve, reject) => {
-          // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
-          // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
-          appConfigService.getCached<OrgConfig>("orgConfig").then((x) => {
-            console.log("load org config", x);
-            if (x) {
-              appConfigService.orgConfig = x;
-
-              const script = document.createElement("script");
-              script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
-              script.async = true;
-              script.defer = true;
-              document.body.appendChild(script);
-              script.onload = () => resolve();
-              script.onerror = () => resolve();
-            } else {
-              resolve();
-            }
-          });
-        });
-
-        return () => outerPromise;
-      },
+      deps: [AppConfigService, AuthService, Platform, NgZone, Router],
+      useFactory: beforeAppInit
     },
     File,
     FileOpener,
     FileTransfer,
     DocumentViewer,
     AuthGuard,
-    SplashScreen,
     InAppBrowser,
     Device,
     HTTP,

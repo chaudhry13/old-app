@@ -8,8 +8,6 @@ import { Division } from "@app/models/division";
 import { DivisionList } from "@shared/models/division-list";
 import { AuthService } from "src/app/auth/auth.service";
 import { Browser } from "@capacitor/browser";
-import { from } from "rxjs";
-import { switchMap, tap } from "rxjs/operators";
 
 @Component({
   selector: "app-profile",
@@ -41,36 +39,12 @@ export class ProfilePage implements OnInit {
     this.divisionList.asFilter = false;
     this.divisionList.toplevelDivisions = [];
     this.divisionService.list().then((data) => {
-      this.divisions = data.filter(d => !d.individualDivision);
+      this.divisions = data.filter((d) => !d.individualDivision);
       this.divisionList.makeDivisionNodes(this.divisions);
     });
   }
 
   logout() {
-    //this.auth.logout().subscribe();
-    const idToken = this.auth.getIdToken();
-
-    this.auth
-      .revoke()
-      .pipe(
-        tap(() => this.auth.logoutLocal()),
-        switchMap(() => this.completeLogout(idToken))
-      )
-      .subscribe();
+    this.auth.logout();
   }
-
-  completeLogout = (token: string) => {
-    let url = this.auth.getLogoutUrl();
-
-    if (url.includes("id_token_hint=undefined")) {
-      url = this.auth.getLogoutUrl(token);
-      url = url.replace("id_token_hint=undefined", "");
-    }
-
-    return from(this.openCapacitorSite(url));
-  };
-
-  openCapacitorSite = async (url: string) => {
-    await Browser.open({ url, windowName: "_self" });
-  };
 }

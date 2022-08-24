@@ -1,195 +1,123 @@
 import { Injectable } from "@angular/core";
-import { OrgConfig } from "@app/interfaces/org-config";
 import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
-import { LoginResponse, OidcSecurityService } from "angular-auth-oidc-client";
-import { stringify } from "querystring";
+import {  AuthConfig, OAuthService } from "angular-oauth2-oidc";
 import {
   BehaviorSubject,
   combineLatest,
-  EMPTY,
-  forkJoin,
-  from,
-  NEVER,
-  Observable,
-  of,
-  throwError,
 } from "rxjs";
-import { catchError, filter, map, switchMap, tap } from "rxjs/operators";
+import { filter, map, tap } from "rxjs/operators";
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
   private _user: User = null;
-  private readonly error = new BehaviorSubject<any>(false);
-  private readonly isLoading = new BehaviorSubject(true);
-
-  /**
-   * Authenticated user with claims
-   */
+  private readonly isDoneLoading = new BehaviorSubject(false);
+  private readonly isAuthenticated = new BehaviorSubject(false);
+ 
   public get user() {
     return this._user;
   }
 
-  /** Loading observable which emits false when the login is
-   * successfully completed. Initial value: true.
-   */
-  public error$ = this.error.asObservable();
+  public isDoneLoading$ = this.isDoneLoading.asObservable();
+  public isAuthenticated$ = this.isAuthenticated.asObservable();
 
-  /** Loading observable which emits false when the login is
-   * successfully completed. Initial value: true.
-   */
-  public isLoading$ = this.isLoading.asObservable();
-
-  /**
-   * Observable which emits true if the user is authenticated. This observable
-   * relies on the isLoading$ observable, which means it will only emit its first value,
-   * once the authentication has successfully completed. This is neccessary in Auth guards,
-   * when all the routes have guards combined with auto login. This will prevent timing issue,
-   * infinite loop redirects.
-   */
-  public isAuthenticated$ = combineLatest([
-    this.isLoading$,
-    this.auth.isAuthenticated$,
-  ]).pipe(
-    filter(([isLoading, _]) => !isLoading),
-    map(([isLoading, { isAuthenticated }]) => ({
-      isLoading,
-      isAuthenticated,
-    }))
+  public canLoadInGuard$ = combineLatest([this.isAuthenticated$, this.isDoneLoading$]).pipe(
+    filter(([isAuthenticated, isDoneLoading]) => isDoneLoading),
+    map(([isAuthenticated, isDoneLoading]) => ({ isAuthenticated, isDoneLoading }))
   );
 
-  constructor(
-    private auth: OidcSecurityService,
-    private userService: UserService,
-    private config: AppConfigService
-  ) {}
+  constructor(private auth: OAuthService, private userService: UserService, private config: AppConfigService) {}
 
-  getIdToken() {
-    return this.auth.getIdToken();
+  configure(config: AuthConfig) {
+    this.auth.configure(config);
   }
 
-  /**
-   * Authentication initialization method. Subscribe to it once in app component to start auth process,
-   * call backend for user info, set authenticated user state, and push false to isLoading$. If there is
-   * an error with authentication, just logout to redirect to login as there is no unprotected pages.
-   * @returns Returns the OidcSecurityService.checkAuth observable.
-   */
-  initializeAuth(url: string = null) {
-    if (url) {
-      return this.auth.checkAuth(url).pipe(
-        switchMap(({ isAuthenticated, idToken, accessToken }) => {
-          if (isAuthenticated)
-            return this.initUser().pipe(tap(() => this.isLoading.next(false)));
-          this.isLoading.next(false);
-          return of({ isAuthenticated, idToken, accessToken });
-        }),
-        catchError((err) => {
-          this.error.next(err);
-          return this.logout();
-        })
-      );
-    }
+  initAutomaticSilentRefresh() {
+    this.auth.setupAutomaticSilentRefresh();
+  }
 
-    return this.auth.checkAuth().pipe(
-      switchMap(({ isAuthenticated, idToken, accessToken }) => {
-        if (isAuthenticated)
-          return this.initUser().pipe(tap(() => this.isLoading.next(false)));
-        this.isLoading.next(false);
-        return of({ isAuthenticated, idToken, accessToken });
-      }),
-      catchError((err) => {
-        this.error.next(err);
-        return this.logout();
+  async initLogin(customFragment?: string) {
+    customFragment ? await this.auth.tryLogin({customHashFragment: customFragment}) : await this.auth.tryLogin();
+    
+    this.getUserIfAuthenticated()
+      .catch(() => {
+        this.logout();
       })
-    );
+      .finally(() => this.isDoneLoading.next(true));
   }
 
-  /**
-   * Call any functions inside the login callback observable pipe to execute it once when the
-   * user has logged in. In this case we want to sync the user data with the backend.
-   * @returns Login callback observable
-   */
-  loginCallback(): Observable<boolean> {
-    return this.auth.stsCallback$
-      .pipe
-      //switchMap(() => this.userService.updateUserOnLogin())
-      ();
+  registerEvents() {
+    this.auth.events
+      .pipe(
+        tap(x => {
+          this.isAuthenticated.next(this.auth.hasValidIdToken());
+          if (x.type === 'token_received') {
+            const redirectUrl = localStorage.getItem('redirect_after_auth_url');
+            if (redirectUrl) {
+              localStorage.removeItem('redirect_after_auth_url');
+              location.href = redirectUrl;
+            }
+          }
+        })
+      )
+      .subscribe();
   }
 
-  /**
-   * Log out and revoke tokens (also refresh tokens).
-   * @returns Return OidcSecurityService.logoffAndRevokeTokens() observable.
-   */
-  logout() {
-    return this.auth.logoffAndRevokeTokens();
+  async logout() {
+    if(!this.config.orgConfig.logoutUrl && !this.config.orgConfig.useDiscovery) return;
+
+    if (this.config.orgConfig.useDiscovery && this.config.orgConfig.revocationUrl || (this.config.orgConfig.logoutUrl && this.config.orgConfig.revocationUrl)) {
+
+      await this.auth.revokeTokenAndLogout(
+        {
+          client_id: this.auth.clientId,
+          returnTo: this.auth.postLogoutRedirectUri,
+        },
+        true
+      );
+      this.isAuthenticated.next(false);
+    } else if(this.config.orgConfig.useDiscovery || this.config.orgConfig.logoutUrl) {
+      this.auth.logOut({
+        client_id: this.auth.clientId,
+        returnTo: this.auth.postLogoutRedirectUri,
+      });
+      this.isAuthenticated.next(false);
+    }
   }
 
-  logoutLocal() {
-    this.auth.logoffLocal();
-  }
-
-  /**
-   * Initialize login flow, redirect to Identity provider.
-   */
-  login() {
+  login(redirectUrl?: string) {
+    if (redirectUrl) localStorage.setItem('redirect_after_auth_url', redirectUrl);
     // Auth0 specific, specify organization login screen
     const auth0OrgId = this.config.orgConfig.auth0OrgId;
-    if (auth0OrgId)
-      this.auth.authorize(null, {
-        customParams: {
-          organization: auth0OrgId,
-        },
-      });
-    else this.auth.authorize();
+    if (auth0OrgId) this.auth.initLoginFlow(null, { organization: auth0OrgId });
+    else this.auth.initLoginFlow();
   }
 
-  getLoginUrl() {
-    const auth0OrgId = this.config.orgConfig.auth0OrgId;
-    if (auth0OrgId)
-      return this.auth.getAuthorizeUrl({
-        organization: auth0OrgId,
-      });
-    else return this.auth.getAuthorizeUrl();
+  setValidationHandler() {
+    this.auth.tokenValidationHandler = new JwksValidationHandler();
   }
 
-  getLogoutUrl(idToken?: string) {
-    return idToken
-      ? this.auth.getEndSessionUrl({
-          id_token_hint: idToken,
-        })
-      : this.auth.getEndSessionUrl();
-  }
-
-  revoke() {
-    return forkJoin([
-      this.auth.revokeAccessToken(),
-      this.auth.revokeRefreshToken(),
-    ]);
-  }
-
-  forceRefresh() {
-    return this.auth.forceRefreshSession();
-  }
-
-  /**
-   *
-   * @returns Access token for authenticated user.
-   */
   getAccessToken() {
     return this.auth.getAccessToken();
   }
 
-  private initUser() {
-    //console.log("init user");
-    return this.userService.getUserInfo().pipe(
-      tap((u) => {
-        //console.log("user", u);
+  private async getUserIfAuthenticated() {
+    const isAuthenticated = this.auth.hasValidIdToken();
+    console.log('isAuthenticated', isAuthenticated);
 
-        this._user = u;
-      })
-    );
+    if (isAuthenticated) {
+      const userInfo = await this.userService.getUserInfo().toPromise();
+      this._user = userInfo;
+    }
+    this.isAuthenticated.next(isAuthenticated);
   }
+
+  loadDiscoveryDocument() {
+    return this.auth.loadDiscoveryDocument();
+  }
+
 }

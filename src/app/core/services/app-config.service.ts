@@ -3,8 +3,6 @@ import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { environment } from "src/environments/environment";
 import { OrgConfig } from "@app/interfaces/org-config";
-import { AuthConfig } from "@app/interfaces/auth-config";
-import { GenericService } from "./generic.service";
 import { Router } from "@angular/router";
 
 /**
@@ -30,71 +28,24 @@ export class AppConfigService {
     this._orgConfig = val;
   }
 
-  private _authConfig: AuthConfig;
-  public get authConfig() {
-    return this._authConfig;
-  }
-
   constructor(
     private storage: Storage,
     private httpClient: HttpClient,
     private router: Router
   ) {}
 
-  public async loadAuthConfig() {
-    const res = await this.httpClient
-      .get<AuthConfig>(
-        "https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getAuthConfig",
-        {
-          headers: { "x-api-key": "hrmobilekey" },
-        }
-      )
-      .toPromise()
-      .catch((x) => console.log(x));
-    this._authConfig = res as AuthConfig;
+  loadPublicKey() {
+    const pubKeyUrl = this.orgConfig.pubKeyUrl;
+    const pubKey = this.httpClient.get(pubKeyUrl, { responseType: 'text' }).toPromise();
 
-    return;
-
-    if (environment.production) {
-      const res = await this.httpClient
-        .get<AuthConfig>(
-          "https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getAuthConfig",
-          {
-            headers: { "x-api-key": "hrmobilekey" },
-          }
-        )
-        .toPromise();
-      this._authConfig = res;
-    } else {
-      const res = await this.httpClient
-        .get<AuthConfig>(
-          "https://localhost:5000/api/mobileappsettings/getAuthConfig",
-          {
-            headers: { "x-api-key": "hrmobilekey" },
-          }
-        )
-        .toPromise();
-      this._authConfig = res;
-    }
+    return pubKey;
   }
 
   public async setConfigFromOrgName(orgName: string) {
-    const orgConfig = await this.httpClient
-      .get<OrgConfig>(
-        `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
-        {
-          headers: { "x-api-key": "hrmobilekey" },
-        }
-      )
-      .toPromise();
-    this._orgConfig = orgConfig;
-    await this.setCache("orgConfig", orgConfig);
-    return;
-
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://humanrisks-core-hangfire.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
@@ -106,7 +57,7 @@ export class AppConfigService {
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://localhost:5000/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://staging-api.humanrisks.com/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
