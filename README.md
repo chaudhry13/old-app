@@ -84,7 +84,17 @@ _Make sure to open the XCode Workspace file when using XCode to make sure all de
 REMEMBER: appId for Android app is com.humanrisks1 (with a 1 in the end) whereas iOS is just com.humanrisks
 
 1. Run ´build-android´ script.
-2. Change versionCode + versionName in build.gradle
+2. Change versionCode + versionName and change applicationId to com.humanrisks1 in build.gradle
 3. Build signed release in android studio - Build > Generate Signed Bundle / APK
+- select "Android App Bundle"
+- select keystore.jks (can be found on usb drive or /Users/humanrisks/Documents/Keys on the macbook)
+- keystore password: Humanrisks123!
+- key alias: upload
+- key password: Humanrisks123!
+- next --> select "release" --> finish
 4. Make new release on Google Play Store Console
-5. Profit!
+- go to "Production"
+- press "Create new release"
+- upload the generated "app-release.aab" file (humanrisks-appv2/android/app/release/app-release.aab)
+- update "Release notes"
+5. Done deal!
