@@ -44,8 +44,10 @@ export const initAuthListeners = async (platform: Platform,auth: AuthService, zo
       
       zone.run(async () => {
         const hash = url.substring(url.indexOf('?'));
-        console.log('hash', hash);
-        await auth.initLogin(hash)
+        const hashWithoutPound = hash.charAt(hash.length - 1) === '#' ? hash.substring(0, hash.length - 1) : hash;
+
+        console.log('hash', hashWithoutPound);
+        await auth.initLogin(hashWithoutPound);
         platform.is('ios') && await Browser.close();
         router.navigate(['/tabs/tab1']);
       });

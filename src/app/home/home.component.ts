@@ -52,6 +52,7 @@ export class HomeComponent implements OnInit {
       );
       this.auth.login();
     } catch (e) {
+      console.log(e);
       this.toastService.show("Invalid Organization!", "danger");
     }
   }
