@@ -33,6 +33,7 @@ export class Control {
   riskAssessmentId: string;
 
   files: Attachment[];
+  associatedWith: number;
 
   constructor() {
     this.responsible = new User();

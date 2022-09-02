@@ -16,9 +16,9 @@ export class ControlService extends GenericService {
     return this.http.get<Control>(this.apiBase + "/" + id).toPromise();
   }
 
-  async list(filter: FormGroup): Promise<Control[]> {
+  async list(filter: FormGroup): Promise<{controls: Control[]}> {
     return this.http
-      .post<Control[]>(this.apiBase + "/list/", filter)
+      .post<{controls: Control[]}>(this.apiBase + "/ListTasks/", filter)
       .toPromise();
   }
 

@@ -80,8 +80,9 @@ export class AuditPage implements OnInit {
     if (this.controlFilterForm.valid) {
       this.controlService
         .list(this.controlFilterForm.value)
-        .then((controls) => {
-          this.controls = controls;
+        .then((res) => {
+          // 16 is enum value for issues, any control associated with 16 is a corrrective action behind the scenes (unfortunatly)
+          this.controls = res.controls.filter(x => x.associatedWith !== 16);
         });
     }
   }
