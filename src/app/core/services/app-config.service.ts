@@ -53,7 +53,7 @@ export class AppConfigService {
         .toPromise();
 
       this._orgConfig = orgConfig;
-      await this.setCache("orgConfig", orgConfig);
+      await this.setCache("orgConfig", orgName);
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
@@ -65,7 +65,7 @@ export class AppConfigService {
         .toPromise();
       this._orgConfig = orgConfig;
 
-      await this.setCache("orgConfig", orgConfig);
+      await this.setCache("orgConfig", orgName);
     }
   }
 

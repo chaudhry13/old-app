@@ -25,8 +25,9 @@ export const beforeAppInit = (
       console.log("status bar overlay set");
       // In order to load the google script with dynamic API key, we need to first load config, then attach script to body.
       // script.onload/onerror is necessary, otherwise there is a timeing error, even though it should be syncronous
-      appConfigService.getCached<OrgConfig>("orgConfig").then(async (x) => {
+      appConfigService.setConfigFromOrgName(await appConfigService.getCached<string>("orgConfig")).then(async () => {
         console.log("orgConfig loaded");
+        const x = appConfigService.orgConfig;
         if (x) {
           appConfigService.orgConfig = x;
           await configureAuth(appConfigService, platform, zone, auth, router);
