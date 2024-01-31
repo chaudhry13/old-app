@@ -45,7 +45,7 @@ export class AppConfigService {
     if (environment.production) {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://humanrisks-core-api.azurewebsites.net/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://app-api.humanrisks.com/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }
