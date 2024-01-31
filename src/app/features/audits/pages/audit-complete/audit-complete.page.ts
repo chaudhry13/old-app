@@ -87,10 +87,9 @@ export class AuditCompletePage implements OnInit {
     // let secondUser = this.audit.flow[1].id;
     // let thirdUser = this.audit.flow[2].id;
     if (
-      this.audit.currentId === this.audit.flow[0].id &&
       this.audit.flow.length === 3 &&
-      this.audit.flow[0].id !== this.audit.flow[1].id &&
-      this.audit.flow[1].id !== this.audit.flow[2].id
+      this.audit.currentId === this.audit.flow[0].id &&
+      this.audit.flow[0].id !== this.audit.flow[1].id 
     ) {
       this.sendToForm = this.formBuilder.group({
         id: this.audit.id,
@@ -116,16 +115,15 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Approved");
+                  this.toastService.show("Success");
                 });
             });
         }
       });
     } else if (
-      this.audit.currentId === this.audit.flow[1].id &&
       this.audit.flow.length === 3 &&
-      this.audit.flow[0].id !== this.audit.flow[1].id &&
-      this.audit.flow[1].id !== this.audit.flow[2].id
+      this.audit.currentId === this.audit.flow[1].id &&
+      this.audit.flow[0].id !== this.audit.flow[1].id 
     ) {
       this.sendToForm = this.formBuilder.group({
         id: this.audit.id,
@@ -151,14 +149,14 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Approved");
+                  this.toastService.show("Success");
                 });
             });
         }
       });
     } else if (
-      this.audit.currentId === this.audit.flow[0].id &&
       this.audit.flow.length === 2 &&
+      this.audit.currentId === this.audit.flow[0].id &&
       this.audit.flow[0].id !== this.audit.flow[1].id
     ) {
       this.sendToForm = this.formBuilder.group({
@@ -185,14 +183,14 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Approved");
+                  this.toastService.show("Success");
                 });
             });
         }
       });
     } else if (
-      this.audit.currentId === this.audit.flow[0].id &&
       this.audit.flow.length === 2 &&
+      this.audit.currentId === this.audit.flow[0].id &&
       this.audit.flow[0].id === this.audit.flow[1].id
     ) {
       this.sendToForm = this.formBuilder.group({
@@ -219,7 +217,7 @@ export class AuditCompletePage implements OnInit {
               this.router
                 .navigate(["/tabs/tab1/details/" + this.audit.controlId])
                 .then(() => {
-                  this.toastService.show("Approved");
+                  this.toastService.show("Success");
                 });
             });
         }
