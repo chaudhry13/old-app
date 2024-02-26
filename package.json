@@ -32,6 +32,7 @@
     "@awesome-cordova-plugins/in-app-browser": "^5.40.0",
     "@awesome-cordova-plugins/splash-screen": "^5.40.0",
     "@awesome-cordova-plugins/status-bar": "^5.40.0",
+    "@byteowls/capacitor-oauth2": "^3.0.1",
     "@capacitor/android": "^3.9.0",
     "@capacitor/app": "^1.1.1",
     "@capacitor/browser": "^1.0.7",
