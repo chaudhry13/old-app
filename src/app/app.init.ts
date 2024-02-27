@@ -4,7 +4,6 @@ import { OrgConfig } from "@app/interfaces/org-config";
 import { AppConfigService } from "@app/services/app-config.service";
 import { StatusBar } from "@capacitor/status-bar";
 import { Platform } from "@ionic/angular";
-import { configureAuth, initAuthListeners } from "./auth.init";
 import { AuthService } from "./auth/auth.service";
 import { SplashScreen } from '@capacitor/splash-screen';
 
@@ -30,8 +29,9 @@ export const beforeAppInit = (
         const x = appConfigService.orgConfig;
         if (x) {
           appConfigService.orgConfig = x;
-          await configureAuth(appConfigService, platform, zone, auth, router);
-          await initAuthListeners(platform, auth, zone, router);
+          // start auth based on config
+          await auth.initLoginV2();
+        
           const script = document.createElement("script");
           script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
           script.async = true;
@@ -40,7 +40,8 @@ export const beforeAppInit = (
           script.onload = () => resolve();
           script.onerror = () => resolve();
         } else {
-          await initAuthListeners(platform, auth, zone, router);
+          // No config, so just check for valid tokens, and if not redirect to login
+          await auth.initLoginV2();
           console.log("default home route");
           resolve();
         }

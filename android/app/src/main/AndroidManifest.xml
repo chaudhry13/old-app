@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.humanrisks">
-
+    package="com.humanrisks1">
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,26 +12,54 @@
 
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
-            android:name="com.humanrisks.MainActivity"
+            android:name="com.humanrisks1.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBarLaunch"
-            android:exported="true"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="localhost" />
-                <data android:scheme="com.humanrisks" android:host="login"/>
-                <data android:scheme="com.humanrisks" android:host="logout"/>
+                <data android:scheme="@string/custom_url_scheme" android:host="@string/custom_host" />
             </intent-filter>
 
+        </activity>
+
+        <!-- <activity
+            android:name="com.microsoft.identity.client.BrowserTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/azure_b2c_scheme" android:host="@string/package_name"
+                    android:path="@string/azure_b2c_signature_hash" />
+            </intent-filter>
+        </activity> -->
+
+        <activity android:name="net.openid.appauth.RedirectUriReceiverActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/custom_url_scheme" android:host="@string/custom_host" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/azure_b2c_scheme" android:host="@string/package_name"
+                    android:path="@string/azure_b2c_signature_hash" />
+            </intent-filter>
         </activity>
 
         <provider
@@ -47,5 +75,5 @@
 
     <!-- Permissions -->
 
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

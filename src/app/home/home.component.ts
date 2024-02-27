@@ -10,8 +10,8 @@ import {
 import { AuthService } from "../auth/auth.service";
 import { Browser } from "@capacitor/browser";
 import { Platform } from "@ionic/angular";
-import { configureAuth } from "../auth.init";
 import { Router } from "@angular/router";
+import { OAuth2Client } from "@byteowls/capacitor-oauth2";
 
 @Component({
   selector: "app-home",
@@ -43,14 +43,9 @@ export class HomeComponent implements OnInit {
       await this.configService.setConfigFromOrgName(
         this.form.get("orgName").value
       );
-      await configureAuth(
-        this.configService,
-        this.platform,
-        this.ngZone,
-        this.auth,
-        this.router
-      );
-      this.auth.login();
+
+      await this.auth.login();
+
     } catch (e) {
       console.log(e);
       this.toastService.show("Invalid Organization!", "danger");

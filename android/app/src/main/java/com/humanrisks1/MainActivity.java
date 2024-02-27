@@ -1,4 +1,4 @@
-package com.humanrisks;
+package com.humanrisks1;
 
 import com.getcapacitor.BridgeActivity;
 

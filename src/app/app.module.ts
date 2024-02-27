@@ -32,7 +32,6 @@ import { HomeComponent } from "./home/home.component";
 import { SharedModule } from "@shared/shared.module";
 import { OrgConfig } from "@app/interfaces/org-config";
 import { ErrorPageComponent } from "./error-page/error-page.component";
-import { configureAuth, initAuthListeners } from "./auth.init";
 import { AuthService } from "./auth/auth.service";
 import { StatusBar } from "@capacitor/status-bar";
 import { OAuthModule } from "angular-oauth2-oidc";

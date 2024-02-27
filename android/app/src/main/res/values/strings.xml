@@ -2,6 +2,9 @@
 <resources>
     <string name="app_name">Human Risks</string>
     <string name="title_activity_main">Human Risks</string>
-    <string name="package_name">com.humanrisks</string>
-    <string name="custom_url_scheme">com.humanrisks</string>
+    <string name="package_name">com.humanrisks1</string>
+    <string name="custom_url_scheme">com.humanrisks1</string>
+    <string name="azure_b2c_scheme">msauth</string>
+    <string name="custom_host">oauth</string>
+    <string name="azure_b2c_signature_hash">/zpHXBHFLFpi9Tejy67zniJToURc=</string>
 </resources>

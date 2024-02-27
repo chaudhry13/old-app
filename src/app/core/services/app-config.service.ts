@@ -57,7 +57,7 @@ export class AppConfigService {
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://staging-api.humanrisks.com/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://stirring-bullfrog-central.ngrok-free.app/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
             headers: { "x-api-key": "hrmobilekey" },
           }

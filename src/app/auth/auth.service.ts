@@ -2,13 +2,12 @@ import { Injectable } from "@angular/core";
 import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
-import {  AuthConfig, OAuthService } from "angular-oauth2-oidc";
+import { OAuth2AuthenticateOptions, OAuth2Client } from "@byteowls/capacitor-oauth2";
 import {
   BehaviorSubject,
   combineLatest,
 } from "rxjs";
 import { filter, map, tap } from "rxjs/operators";
-import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @Injectable({
   providedIn: "root",
@@ -30,19 +29,10 @@ export class AuthService {
     map(([isAuthenticated, isDoneLoading]) => ({ isAuthenticated, isDoneLoading }))
   );
 
-  constructor(private auth: OAuthService, private userService: UserService, private config: AppConfigService) {}
+  constructor(private userService: UserService, private config: AppConfigService) {}
 
-  configure(config: AuthConfig) {
-    this.auth.configure(config);
-  }
-
-  initAutomaticSilentRefresh() {
-    this.auth.setupAutomaticSilentRefresh();
-  }
-
-  async initLogin(customFragment?: string) {
-    customFragment ? await this.auth.tryLogin({customHashFragment: customFragment}) : await this.auth.tryLogin();
-    
+  async initLogin() {
+    // check for token and set initial state
     this.getUserIfAuthenticated()
       .catch(() => {
         this.logout();
@@ -50,63 +40,34 @@ export class AuthService {
       .finally(() => this.isDoneLoading.next(true));
   }
 
-  registerEvents() {
-    this.auth.events
-      .pipe(
-        tap(x => {
-          this.isAuthenticated.next(this.auth.hasValidIdToken());
-          if (x.type === 'token_received') {
-            const redirectUrl = localStorage.getItem('redirect_after_auth_url');
-            if (redirectUrl) {
-              localStorage.removeItem('redirect_after_auth_url');
-              location.href = redirectUrl;
-            }
-          }
-        })
-      )
-      .subscribe();
+  async initLoginV2() {
+    this.isDoneLoading.next(true);
   }
 
   async logout() {
-    if(!this.config.orgConfig.logoutUrl && !this.config.orgConfig.useDiscovery) return;
-
-    if (this.config.orgConfig.useDiscovery && this.config.orgConfig.revocationUrl || (this.config.orgConfig.logoutUrl && this.config.orgConfig.revocationUrl)) {
-
-      await this.auth.revokeTokenAndLogout(
-        {
-          client_id: this.auth.clientId,
-          returnTo: this.auth.postLogoutRedirectUri,
-        },
-        true
-      );
-      this.isAuthenticated.next(false);
-    } else if(this.config.orgConfig.useDiscovery || this.config.orgConfig.logoutUrl) {
-      this.auth.logOut({
-        client_id: this.auth.clientId,
-        returnTo: this.auth.postLogoutRedirectUri,
-      });
-      this.isAuthenticated.next(false);
-    }
+    
   }
 
-  login(redirectUrl?: string) {
-    if (redirectUrl) localStorage.setItem('redirect_after_auth_url', redirectUrl);
+  async login() {
+    const oidcConfig = this.getAuthConfig();
     // Auth0 specific, specify organization login screen
     const auth0OrgId = this.config.orgConfig.auth0OrgId;
-    if (auth0OrgId) this.auth.initLoginFlow(null, { organization: auth0OrgId });
-    else this.auth.initLoginFlow();
-  }
+    if (auth0OrgId) {
+        oidcConfig.additionalParameters = { organization: auth0OrgId };
+    }
 
-  setValidationHandler() {
-    this.auth.tokenValidationHandler = new JwksValidationHandler();
+    const authRes = await OAuth2Client.authenticate(oidcConfig);
+
+    console.log("authRes", authRes);
   }
 
   getAccessToken() {
-    return this.auth.getAccessToken();
+    // get access token, if expired then handle it
   }
 
   private async getUserIfAuthenticated() {
-    const isAuthenticated = this.auth.hasValidIdToken();
+    const isAuthenticated = true;
+    //this.auth.hasValidIdToken();
     console.log('isAuthenticated', isAuthenticated);
 
     if (isAuthenticated) {
@@ -116,8 +77,20 @@ export class AuthService {
     this.isAuthenticated.next(isAuthenticated);
   }
 
-  loadDiscoveryDocument() {
-    return this.auth.loadDiscoveryDocument();
-  }
+  private getAuthConfig(): OAuth2AuthenticateOptions {
+    const config = this.config.orgConfig;
 
+    return {
+        accessTokenEndpoint: config.tokenUrl,
+        appId: config.clientId,
+        authorizationBaseUrl: `${config.authServer}/authorize`,
+        logsEnabled: true,
+        pkceEnabled: true,
+        responseType: "code",
+        scope: "openid email profile offline_access",
+        android: {
+            redirectUrl:config.pubKeyUrl
+        }
+    }
+  }
 }
