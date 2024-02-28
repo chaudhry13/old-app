@@ -76,6 +76,7 @@
     "install": "^0.13.0",
     "ionic-plugin-deeplinks": "^1.0.24",
     "jetifier": "^1.6.8",
+    "jose": "^5.2.2",
     "moment": "^2.29.1",
     "npm": "^7.3.0",
     "rxjs": "^6.6.7",

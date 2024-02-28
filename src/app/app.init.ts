@@ -30,7 +30,7 @@ export const beforeAppInit = (
         if (x) {
           appConfigService.orgConfig = x;
           // start auth based on config
-          await auth.initLoginV2();
+          await auth.initLogin();
         
           const script = document.createElement("script");
           script.src = `https://maps.googleapis.com/maps/api/js?key=${x.googleApiKey}&libraries=places,visualization`;
@@ -41,7 +41,7 @@ export const beforeAppInit = (
           script.onerror = () => resolve();
         } else {
           // No config, so just check for valid tokens, and if not redirect to login
-          await auth.initLoginV2();
+          await auth.initLogin();
           console.log("default home route");
           resolve();
         }
