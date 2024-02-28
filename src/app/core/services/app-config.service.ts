@@ -34,13 +34,6 @@ export class AppConfigService {
     private router: Router
   ) {}
 
-  loadPublicKey() {
-    const pubKeyUrl = this.orgConfig.pubKeyUrl;
-    const pubKey = this.httpClient.get(pubKeyUrl, { responseType: 'text' }).toPromise();
-
-    return pubKey;
-  }
-
   public async setConfigFromOrgName(orgName: string) {
     if (environment.production) {
       const orgConfig = await this.httpClient
@@ -57,9 +50,9 @@ export class AppConfigService {
     } else {
       const orgConfig = await this.httpClient
         .get<OrgConfig>(
-          `https://stirring-bullfrog-central.ngrok-free.app/api/mobileappsettings/getOrgConfig/${orgName}`,
+          `https://staging-api.humanrisks.com/api/mobileappsettings/getOrgConfig/${orgName}`,
           {
-            headers: { "x-api-key": "hrmobilekey" },
+            headers: { "x-api-key": "hrmobilekey"},
           }
         )
         .toPromise();

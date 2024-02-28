@@ -3,10 +3,7 @@ import { User } from "@app/models/user";
 import { AppConfigService } from "@app/services/app-config.service";
 import { UserService } from "@app/services/user.service";
 import { OAuth2AuthenticateOptions, OAuth2Client } from "@byteowls/capacitor-oauth2";
-import {
-  BehaviorSubject,
-  combineLatest,
-} from "rxjs";
+import { BehaviorSubject, combineLatest } from "rxjs";
 import { filter, map, tap } from "rxjs/operators";
 
 @Injectable({
@@ -16,7 +13,7 @@ export class AuthService {
   private _user: User = null;
   private readonly isDoneLoading = new BehaviorSubject(false);
   private readonly isAuthenticated = new BehaviorSubject(false);
- 
+
   public get user() {
     return this._user;
   }
@@ -44,31 +41,40 @@ export class AuthService {
     this.isDoneLoading.next(true);
   }
 
-  async logout() {
-    
-  }
+  async logout() {}
 
   async login() {
     const oidcConfig = this.getAuthConfig();
+    console.log("oidcConfig", oidcConfig);
     // Auth0 specific, specify organization login screen
     const auth0OrgId = this.config.orgConfig.auth0OrgId;
     if (auth0OrgId) {
-        oidcConfig.additionalParameters = { organization: auth0OrgId };
+      oidcConfig.additionalParameters = { organization: auth0OrgId };
     }
 
     const authRes = await OAuth2Client.authenticate(oidcConfig);
 
-    console.log("authRes", authRes);
+    const { id_token, access_token, refresh_token } = authRes["access_token_response"];
+
+    if (!id_token || !access_token || !refresh_token) {
+      console.error("Invalid token response");
+      return;
+    }
+
+    console.log("id_token", id_token);
+    console.log("access_token", access_token);
+    console.log("refresh_token", refresh_token);
   }
 
   getAccessToken() {
     // get access token, if expired then handle it
+    return "lmao";
   }
 
   private async getUserIfAuthenticated() {
     const isAuthenticated = true;
     //this.auth.hasValidIdToken();
-    console.log('isAuthenticated', isAuthenticated);
+    console.log("isAuthenticated", isAuthenticated);
 
     if (isAuthenticated) {
       const userInfo = await this.userService.getUserInfo().toPromise();
@@ -81,16 +87,19 @@ export class AuthService {
     const config = this.config.orgConfig;
 
     return {
-        accessTokenEndpoint: config.tokenUrl,
-        appId: config.clientId,
-        authorizationBaseUrl: `${config.authServer}/authorize`,
-        logsEnabled: true,
-        pkceEnabled: true,
-        responseType: "code",
-        scope: "openid email profile offline_access",
-        android: {
-            redirectUrl:config.pubKeyUrl
-        }
-    }
+      accessTokenEndpoint: config.tokenUrl,
+      appId: config.clientId,
+      authorizationBaseUrl: `${config.authServer}/authorize`,
+      logsEnabled: true,
+      pkceEnabled: true,
+      responseType: "code",
+      scope: "openid email profile offline_access",
+      android: {
+        redirectUrl: config.pubkeyUrl,
+      },
+      web: {
+        redirectUrl: config.pubkeyUrl,
+      },
+    };
   }
 }

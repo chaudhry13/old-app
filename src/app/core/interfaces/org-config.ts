@@ -9,7 +9,7 @@ export interface OrgConfig {
   authFlow: 'CODE' | 'IMPLICIT';
   useDiscovery: boolean;
   loginUrl: string;
-  pubKeyUrl: string;
+  pubkeyUrl: string;
   tokenUrl: string;
   revocationUrl: string;
   kid: string;
