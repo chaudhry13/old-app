@@ -203,7 +203,7 @@ export class AuthService {
       logsEnabled: true,
       pkceEnabled: true,
       responseType: "code",
-      scope: "openid email profile offline_access",
+      scope: `openid email profile offline_access ${config.apiAudience}`,
       additionalParameters: {
         audience: config.apiAudience,
       },
