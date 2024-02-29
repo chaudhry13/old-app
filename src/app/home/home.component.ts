@@ -11,7 +11,6 @@ import { AuthService } from "../auth/auth.service";
 import { Browser } from "@capacitor/browser";
 import { Platform } from "@ionic/angular";
 import { Router } from "@angular/router";
-import { OAuth2Client } from "@byteowls/capacitor-oauth2";
 
 @Component({
   selector: "app-home",

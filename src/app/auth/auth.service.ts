@@ -7,6 +7,7 @@ import { BehaviorSubject, combineLatest } from "rxjs";
 import { filter, map, tap } from "rxjs/operators";
 import { SecureStoragePlugin } from "capacitor-secure-storage-plugin";
 import { decodeJwt } from "jose";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: "root",
@@ -28,7 +29,7 @@ export class AuthService {
     map(([isAuthenticated, isDoneLoading]) => ({ isAuthenticated, isDoneLoading }))
   );
 
-  constructor(private userService: UserService, private config: AppConfigService) {}
+  constructor(private userService: UserService, private config: AppConfigService, private router: Router) {}
 
   async initLogin() {
     try {
@@ -37,22 +38,24 @@ export class AuthService {
       if (!token) {
         this.isDoneLoading.next(true);
         this.isAuthenticated.next(false);
-
+        this.router.navigate(["home"]);
         return;
       }
 
       const shouldRefreshToken = this.isTokenAboutToExpire(token);
 
+     // in case we have a config in cache, we could try to refresh token here
       if (shouldRefreshToken) {
         this.isDoneLoading.next(true);
         this.isAuthenticated.next(false);
-
+        this.router.navigate(["home"]);
         return;
       }
 
       await this.getUser();
 
       this.isAuthenticated.next(true);
+      this.router.navigate(["/tabs/tab1"]);
     } catch (e) {
       console.error("Error initializing login", e);
       this.logout();
@@ -62,11 +65,17 @@ export class AuthService {
   }
 
   async logout() {
+    const oidcConfig = this.getAuthConfig();
+
+    await OAuth2Client.logout(oidcConfig);
+
     await SecureStoragePlugin.remove({
       key: "tokens",
     });
 
     this.isAuthenticated.next(false);
+
+    this.router.navigate(["home"]);
   }
 
   async login() {
@@ -75,7 +84,7 @@ export class AuthService {
     // Auth0 specific, specify organization login screen
     const auth0OrgId = this.config.orgConfig.auth0OrgId;
     if (auth0OrgId) {
-      oidcConfig.additionalParameters = { organization: auth0OrgId };
+      oidcConfig.additionalParameters = { ...oidcConfig.additionalParameters, organization: auth0OrgId };
     }
 
     const authRes = await OAuth2Client.authenticate(oidcConfig);
@@ -95,6 +104,8 @@ export class AuthService {
     await this.getUser();
 
     this.isAuthenticated.next(true);
+
+    this.router.navigate(["/tabs/tab1"]);
   }
 
   async getOrRefreshAccessToken() {
@@ -112,11 +123,17 @@ export class AuthService {
   }
 
   private async getAccessToken(): Promise<string | null> {
-    const tokensRes = await SecureStoragePlugin.get({
-      key: "tokens",
-    });
+    let tokensRes;
 
-    if(!tokensRes.value) return null;
+    try {
+      tokensRes = await SecureStoragePlugin.get({
+        key: "tokens",
+      });
+    } catch (e) {
+      tokensRes = null;
+    }
+
+    if (!tokensRes) return null;
 
     const tokens = JSON.parse(tokensRes.value);
 
@@ -128,11 +145,17 @@ export class AuthService {
   }
 
   private async refreshTokens() {
-    const tokensRes = await SecureStoragePlugin.get({
+    let tokensRes;
+
+    try {
+      tokensRes = await SecureStoragePlugin.get({
         key: "tokens",
-        });
-    
-    if(!tokensRes.value) throw new Error("No tokens found, so couldn't refresh");
+      });
+    } catch (e) {
+      tokensRes = null;
+    }
+
+    if (!tokensRes) throw new Error("No tokens found, so couldn't refresh");
 
     const tokens = JSON.parse(tokensRes.value);
 
@@ -181,6 +204,9 @@ export class AuthService {
       pkceEnabled: true,
       responseType: "code",
       scope: "openid email profile offline_access",
+      additionalParameters: {
+        audience: config.apiAudience,
+      },
       android: {
         redirectUrl: config.pubkeyUrl,
       },
@@ -191,6 +217,7 @@ export class AuthService {
   }
 
   private isTokenAboutToExpire(accessToken) {
+    console.log("accessToken", accessToken);
     const decodedToken = decodeJwt(accessToken);
     const expirationTimeInSeconds = decodedToken.exp;
     const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Current time in seconds

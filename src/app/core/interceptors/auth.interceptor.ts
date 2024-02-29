@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
   async handle(req: HttpRequest<any>, next: HttpHandler) {
     const apiServer = this.config?.orgConfig?.apiServer;
     // Only attach access token to calls made to the api url, after config is loaded (previous call is to laod config)
-    if (apiServer && req.url.startsWith(apiServer)) {
+    if (apiServer && req.url.startsWith(apiServer) && !req.url.includes('getOrgConfig')) {
       let token = await this.auth.getOrRefreshAccessToken();
       if (token) {
         req = req.clone({

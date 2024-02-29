@@ -35,8 +35,8 @@ export class CameraService {
     });
   }
 
-  getOptions(image: Photo): FileUploadOptions {
-    const token = this.auth.getAccessToken();
+  async getOptions(image: Photo): Promise<FileUploadOptions> {
+    const token = await this.auth.getOrRefreshAccessToken();
 
     return {
       fileKey: "file",
@@ -75,12 +75,12 @@ export class CameraService {
     });
   }
 
-  private uploadPhoto(urlExtension: string, image: Photo): Promise<boolean> {
+  private async uploadPhoto(urlExtension: string, image: Photo): Promise<boolean> {
     const apiServer = this.appConfigService.orgConfig.apiServer;
     const uri = encodeURI(apiServer + "/api/storage" + urlExtension);
 
     const fileTransfer: FileTransferObject = this.fileTransfer.create();
-    const options = this.getOptions(image);
+    const options = await this.getOptions(image);
     options.chunkedMode = false;
     options.params = {};
 
