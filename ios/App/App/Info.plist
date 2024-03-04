@@ -26,6 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>capacitor</string>
+                <string>msauth.com.humanrisks</string>
 			</array>
 		</dict>
 		<dict>
