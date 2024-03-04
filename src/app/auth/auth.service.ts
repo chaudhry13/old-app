@@ -210,8 +210,9 @@ export class AuthService {
       android: {
         redirectUrl: config.pubkeyUrl,
       },
-      web: {
-        redirectUrl: "http://localhost:8100",
+      ios: {
+        pkceEnabled: true,
+        redirectUrl: config.authFlow,
       },
     };
   }
