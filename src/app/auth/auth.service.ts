@@ -212,7 +212,7 @@ export class AuthService {
       },
       ios: {
         pkceEnabled: true,
-        redirectUrl: config.authFlow,
+        redirectUrl: config.kid,
       },
     };
   }
