@@ -6,5 +6,5 @@
     <string name="custom_url_scheme">com.humanrisks1</string>
     <string name="azure_b2c_scheme">msauth</string>
     <string name="custom_host">oauth</string>
-    <string name="azure_b2c_signature_hash">/v7JtlfBRhoRsi5evmDLMQNhbdeU=</string>
+    <string name="azure_b2c_signature_hash">/50iBf7AMaCsqroi94sDCFLVt0Lc=</string>
 </resources>
