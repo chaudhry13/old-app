@@ -195,11 +195,13 @@ export class AuthService {
 
   private getAuthConfig(): OAuth2AuthenticateOptions {
     const config = this.config.orgConfig;
+    const authServer = config.authServer;
+    const authorizeUrl = `${authServer}${authServer.endsWith('/') ? '' : '/'}authorize`;
 
     return {
       accessTokenEndpoint: config.tokenUrl,
       appId: config.clientId,
-      authorizationBaseUrl: `${config.authServer}/authorize`,
+      authorizationBaseUrl: authorizeUrl,
       logsEnabled: true,
       pkceEnabled: true,
       responseType: "code",
