@@ -16,6 +16,7 @@ export class AuthService {
   private _user: User = null;
   private readonly isDoneLoading = new BehaviorSubject(false);
   private readonly isAuthenticated = new BehaviorSubject(false);
+  private readonly userSubject = new BehaviorSubject<User | null>(null);
 
   public get user() {
     return this._user;
@@ -23,6 +24,7 @@ export class AuthService {
 
   public isDoneLoading$ = this.isDoneLoading.asObservable();
   public isAuthenticated$ = this.isAuthenticated.asObservable();
+  public user$ = this.userSubject.asObservable();
 
   public canLoadInGuard$ = combineLatest([this.isAuthenticated$, this.isDoneLoading$]).pipe(
     filter(([isAuthenticated, isDoneLoading]) => isDoneLoading),
@@ -74,6 +76,7 @@ export class AuthService {
     });
 
     this.isAuthenticated.next(false);
+    this.userSubject.next(null);
 
     this.router.navigate(["home"]);
   }
@@ -86,6 +89,8 @@ export class AuthService {
     if (auth0OrgId) {
       oidcConfig.additionalParameters = { ...oidcConfig.additionalParameters, organization: auth0OrgId };
     }
+
+    oidcConfig.additionalParameters = { ...oidcConfig.additionalParameters, prompt: "login" };
 
     const authRes = await OAuth2Client.authenticate(oidcConfig);
 
@@ -191,6 +196,7 @@ export class AuthService {
   private async getUser() {
     const userInfo = await this.userService.getUserInfo().toPromise();
     this._user = userInfo;
+    this.userSubject.next(userInfo);
   }
 
   private getAuthConfig(): OAuth2AuthenticateOptions {

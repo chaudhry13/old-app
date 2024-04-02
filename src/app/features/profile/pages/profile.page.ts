@@ -28,6 +28,9 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.user = this.auth.user;
+    this.auth.user$.subscribe((user) => {
+        this.user = user;
+    });
     this.listProfileInfo();
   }
 
