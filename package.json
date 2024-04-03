@@ -9,6 +9,7 @@
     "build": "ionic build",
     "dev": "set NODE_OPTIONS=--openssl-legacy-provider && ionic serve",
     "android": "set NODE_OPTIONS=--openssl-legacy-provider && ionic build && npx jetify && npx cap sync android && npx cap open android",
+    "ios": "set NODE_OPTIONS=--openssl-legacy-provider && ionic build && npx cap sync ios && npx cap open ios",
     "test": "npx jest",
     "lint": "ng lint",
     "e2e": "ng e2e",
